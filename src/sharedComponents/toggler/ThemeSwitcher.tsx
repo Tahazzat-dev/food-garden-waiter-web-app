@@ -22,7 +22,7 @@ export default function ThemeSwitcher() {
             <span
                 className={clsx(
                     "flex items-center justify-center w-5 h-5 rounded-full bg-white shadow-md transition-transform duration-300",
-                    isDark ? "translate-x-5" : "translate-x-0"
+                    isDark ? "translate-x-0" : "translate-x-0"
                 )}
             >
                 {isDark ? (

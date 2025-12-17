@@ -17,6 +17,7 @@ export default function PubliceHeader() {
     <>
       <section className='w-full py-1 bg-[var(--bg-header)]'>
         <Container className='flex items-center gap-3 lg:justify-between lg:gap-5'>
+          <PublicSidebar />
           <SiteLogo />
           <SearchFilter />
           <div className='flex grow items-center justify-end gap-5 lg:grow-0 lg:justify-between'>
@@ -32,8 +33,8 @@ export default function PubliceHeader() {
               <User fill='white' className='h-6 w-6' />
             </div>
             <LocaleSwitcher />
-            <PublicSidebar />
             <ThemeSwitcher />
+            {/* <PublicSidebar /> */}
           </div>
         </Container>
       </section>

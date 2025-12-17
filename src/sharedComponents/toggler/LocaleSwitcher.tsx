@@ -1,10 +1,9 @@
 'use client';
 
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { usePathname, useRouter } from '@/i18n/navigation';
 import { useLocale } from 'next-intl';
 import Image from 'next/image';
-import { useState } from 'react';
 
 const languages = [
     {
@@ -54,11 +53,5 @@ export default function LocaleSwitcher() {
                 ))}
             </SelectContent>
         </Select>
-        // <select
-        //     className='text-white outline-none'
-        //     onChange={e => switchLocale(e.target.value)}>
-        //     <option className='text-black' value="en">EN</option>
-        //     <option className='text-black' value="bn">BN</option>
-        // </select>
     );
 }
