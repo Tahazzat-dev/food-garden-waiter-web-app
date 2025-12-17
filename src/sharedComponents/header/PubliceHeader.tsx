@@ -17,10 +17,9 @@ export default function PubliceHeader() {
     <>
       <section className='w-full py-1 bg-[var(--bg-header)]'>
         <Container className='flex items-center gap-3 lg:justify-between lg:gap-5'>
-          <PublicSidebar />
           <SiteLogo />
           <SearchFilter />
-          <div className='flex grow items-center justify-end gap-5 lg:grow-0 lg:justify-between'>
+          <div className='flex grow items-center justify-end gap-3  lg:grow-0 lg:justify-between'>
             <div className='hidden text-white items-center gap-2 md:flex'>
               <span className='fg_fs-xs '>{tTracking('trackingTxt')}</span>
             </div>
@@ -32,9 +31,9 @@ export default function PubliceHeader() {
             <div className='text-white hidden md:block'>
               <User fill='white' className='h-6 w-6' />
             </div>
-            <LocaleSwitcher />
-            <ThemeSwitcher />
-            {/* <PublicSidebar /> */}
+            <LocaleSwitcher type='ghost' className='hidden xl:block' />
+            <ThemeSwitcher type='ghost' className='hidden xl:flex' />
+            <PublicSidebar />
           </div>
         </Container>
       </section>

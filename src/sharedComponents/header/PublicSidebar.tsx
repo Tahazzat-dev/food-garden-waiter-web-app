@@ -64,8 +64,8 @@ export default function PublicSidebar() {
     return (
         <Drawer direction="left" >
             <DrawerTrigger asChild>
-                <Button className="!p-1  !h-auto !border-0" variant="link" >
-                    <MenuIcon className='w-5 md:w-6 lg:w-10 min-w-10 h-5 md:h-6 text-white' />
+                <Button className="!px-2 !h-auto !border-0 xl:hidden" >
+                    <MenuIcon className='w-5 md:w-6 h-5 md:h-6 text-white' />
                 </Button>
             </DrawerTrigger>
             <DrawerContent>

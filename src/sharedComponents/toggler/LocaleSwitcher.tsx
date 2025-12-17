@@ -2,23 +2,29 @@
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { usePathname, useRouter } from '@/i18n/navigation';
+import clsx from 'clsx';
 import { useLocale } from 'next-intl';
 import Image from 'next/image';
 
 const languages = [
     {
         code: 'en',
-        label: 'English',
+        label: 'EN',
         flag: 'https://flagcdn.com/w20/us.png'
     },
     {
         code: 'bn',
-        label: 'বাংলা',
+        label: 'BN',
         flag: 'https://flagcdn.com/w20/bd.png'
     }
 ];
 
-export default function LocaleSwitcher() {
+type Props = {
+    className?: string;
+    type?: 'ghost' | 'default';
+}
+
+export default function LocaleSwitcher({ className = "", type = "default" }: Props) {
     const currentLocale = useLocale();
     const router = useRouter();
     const pathname = usePathname();
@@ -32,26 +38,28 @@ export default function LocaleSwitcher() {
         // setSelectedLocale(newLocale);
     };
     return (
-        <Select defaultValue={currentLocale} onValueChange={switchLocale}>
-            <SelectTrigger className="!bg-white text-black !outline-none !px-2 !py-0.5 !shadow-none gap-2">
-                <SelectValue placeholder="Language" />
-            </SelectTrigger>
+        <div className={clsx("ml-3", className)}>
+            <Select defaultValue={currentLocale} onValueChange={switchLocale}>
+                <SelectTrigger className={clsx("gap-2", type === "ghost" ? "!outline-none !px-0 !py-0 !border-none !bg-transparent !shadow-none !text-white" : "")}>
+                    <SelectValue placeholder="Language" />
+                </SelectTrigger>
 
-            <SelectContent className='!bg-white text-black'>
-                {languages.map(lang => (
-                    <SelectItem key={lang.code} value={lang.code}>
-                        <div className="flex items-center gap-2">
-                            <Image
-                                src={lang.flag}
-                                alt={lang.label}
-                                width={20}
-                                height={14}
-                            />
-                            <span>{lang.label}</span>
-                        </div>
-                    </SelectItem>
-                ))}
-            </SelectContent>
-        </Select>
+                <SelectContent className='!bg-white text-black'>
+                    {languages.map(lang => (
+                        <SelectItem key={lang.code} value={lang.code}>
+                            <div className="flex items-center gap-2">
+                                <Image
+                                    src={lang.flag}
+                                    alt={lang.label}
+                                    width={20}
+                                    height={14}
+                                />
+                                <span>{lang.label}</span>
+                            </div>
+                        </SelectItem>
+                    ))}
+                </SelectContent>
+            </Select>
+        </div>
     );
 }
