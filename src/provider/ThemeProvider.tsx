@@ -30,14 +30,24 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
             : "light";
     });
 
+    // handler
+    const setThemeClass = (theme: "light" | "dark") => {
+        document.documentElement.classList.remove("light", "dark");
+        document.documentElement.classList.add(theme);
+    }
+
     const toggleTheme = () => {
         const newTheme: Theme = theme === "light" ? "dark" : "light";
 
         setTheme(newTheme);
-        document.documentElement.classList.remove("light", "dark");
-        document.documentElement.classList.add(newTheme);
+        setThemeClass(newTheme);
         setToStorage(STORAGE_KEY, newTheme);
     };
+
+    // select the theme initially
+    useEffect(() => {
+        setThemeClass(theme);
+    }, [theme]);
 
     return (
         <THEME_CONTEXT.Provider value={{ theme, toggleTheme }}>

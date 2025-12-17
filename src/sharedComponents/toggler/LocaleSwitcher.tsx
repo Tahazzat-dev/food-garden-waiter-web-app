@@ -34,11 +34,11 @@ export default function LocaleSwitcher() {
     };
     return (
         <Select defaultValue={currentLocale} onValueChange={switchLocale}>
-            <SelectTrigger className="!bg-white !outline-none !px-2 !py-0.5 !shadow-none gap-2">
+            <SelectTrigger className="!bg-white text-black !outline-none !px-2 !py-0.5 !shadow-none gap-2">
                 <SelectValue placeholder="Language" />
             </SelectTrigger>
 
-            <SelectContent>
+            <SelectContent className='!bg-white text-black'>
                 {languages.map(lang => (
                     <SelectItem key={lang.code} value={lang.code}>
                         <div className="flex items-center gap-2">

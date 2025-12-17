@@ -30,7 +30,7 @@ export default function SearchFilter() {
                 </SelectContent>
             </Select>
             <div className="grow flex gap-2">
-                <input type="text" className='grow fg_fs-sm lg:min-w-[150px] xl:min-w-[350px] py-1 rounded-[4px] px-3 bg-white focus:border-0 focus:outline-0' placeholder={tSearch('placeholder')} />
+                <input type="text" className=' dark:text-black grow fg_fs-sm lg:min-w-[150px] xl:min-w-[350px] py-1 rounded-[4px] px-3 bg-white focus:border-0 focus:outline-0' placeholder={tSearch('placeholder')} />
                 <Button variant="primary" className='mr-4 text-white'>
                     {
                         tSearch('btn')
