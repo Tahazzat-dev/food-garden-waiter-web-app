@@ -1,5 +1,27 @@
 {
   "home": {
     "title": "হ্যালো"
+  },
+  "header": {
+    "categories": {
+      "all": "সব ক্যাটাগরি",
+      "burger": "বার্গার",
+      "pizza": "পিজ্জা",
+      "sushi": "সুশি",
+      "pasta": "পাস্তা",
+      "taco": "টাকো",
+      "salad": "সালাদ",
+      "steak": "স্টেক",
+      "soup": "সুপ",
+      "sandwich": "স্যান্ডউইচ",
+      "dessert": "ডেজার্ট",
+      "appetizer": "অ্যাপেটাইজার",
+      "drink": "পানীয়"
+    },
+    "search": {
+      "placeholder": "খুঁজুন",
+      "btn": "খুঁজুন"
+    },
+    "trackingTxt": "পার্সেল ট্র্যাকিং"
   }
 }

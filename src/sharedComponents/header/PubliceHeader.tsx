@@ -11,8 +11,10 @@ import { CartSheet } from '../cart/CartSheet';
 import { RecentlyViewed } from '../dropdown/RecentlyViewed';
 import SiteLogo from './SiteLogo';
 import LocaleSwitcher from '../toggler/LocaleSwitcher';
+import { useTranslations } from 'next-intl';
 
 export default function PubliceHeader() {
+  const tTracking = useTranslations('header');
   return (
     <>
       {/* <section className='fg_border-primary w-full border-b'>
@@ -40,12 +42,11 @@ export default function PubliceHeader() {
       </section> */}
       <section className='w-full py-1 bg-[#003211]'>
         <Container className='flex items-center gap-3 lg:justify-between lg:gap-5'>
-          <PublicSidebar />
           <SiteLogo />
           <SearchFilter />
           <div className='flex grow items-center justify-end gap-5 lg:grow-0 lg:justify-between'>
             <div className='hidden text-white items-center gap-2 md:flex'>
-              <span className='fg_fs-xs '>Tracking Parcel</span>
+              <span className='fg_fs-xs '>{tTracking('trackingTxt')}</span>
             </div>
             <VerticalDivider className='hidden h-full lg:block' />
             <Link href='' className='text-white hidden md:block'>
@@ -56,6 +57,7 @@ export default function PubliceHeader() {
               <User fill='white' className='h-6 w-6' />
             </div>
             <LocaleSwitcher />
+            <PublicSidebar />
           </div>
         </Container>
       </section>

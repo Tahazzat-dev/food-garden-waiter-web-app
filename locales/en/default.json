@@ -1,5 +1,28 @@
 {
   "home": {
     "title": "Hello"
+  },
+
+  "header": {
+    "categories": {
+      "all": "All Categories",
+      "burger": "Burger",
+      "pizza": "Pizza",
+      "sushi": "Sushi",
+      "pasta": "Pasta",
+      "taco": "Taco",
+      "salad": "Salad",
+      "steak": "Steak",
+      "soup": "Soup",
+      "sandwich": "Sandwich",
+      "dessert": "Dessert",
+      "appetizer": "Appetizer",
+      "drink": "Drink"
+    },
+    "search": {
+      "placeholder": "Search",
+      "btn": "Search"
+    },
+    "trackingTxt": "Tracking Parcel"
   }
 }
