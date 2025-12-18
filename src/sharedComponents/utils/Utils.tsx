@@ -11,9 +11,15 @@ export const VerticalDivider = ({ className = "" }: { className?: string; }) => 
 // search utility
 const isBangla = (query: string) => /[\u0980-\u09FF]/.test(query);
 
-export const fakeSearch = (query: string) => {
+const delay = (ms: number) =>
+    new Promise(resolve => setTimeout(resolve, ms));
+
+export const fakeSearch = async (query: string) => {
     const q = query.trim().toLowerCase();
     if (!q) return [];
+
+    // ⏳ fake loading delay (1 second)
+    await delay(500);
 
     const bangla = isBangla(q);
 

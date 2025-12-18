@@ -3,11 +3,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button'
 import { useTranslations } from 'next-intl';
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { TFoodItem } from '@/types/demoData';
 import { fakeSearch } from '../utils/Utils';
-import LoadingSpinner from '../loading/LoadingSpinner';
 import SearchProductLoader from '../loading/searchingLoader';
+import Image from 'next/image';
 
 export default function SearchFilter({ className }: { className?: string }) {
     // translations functions
@@ -19,27 +19,33 @@ export default function SearchFilter({ className }: { className?: string }) {
     const [searchTxt, setSearchTxt] = useState('');
     const [results, setResults] = useState<TFoodItem[]>([]);
     const [loading, setLoading] = useState(false);
-    const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
+    const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
-    // 🔹 Debounce effect
     useEffect(() => {
         if (!searchTxt.trim()) {
             setResults([]);
+            setLoading(false);
             return;
         }
-        if (intervalId) clearTimeout(intervalId);
 
-        const timer = setTimeout(() => {
+        // clear previous timer
+        if (debounceRef.current) {
+            clearTimeout(debounceRef.current);
+        }
+
+        debounceRef.current = setTimeout(async () => {
             setLoading(true);
-            const matched = fakeSearch(searchTxt);
+            const matched = await fakeSearch(searchTxt);
             setResults(matched);
             setLoading(false);
-        }, 400); // debounce time
+        }, 400);
 
-        setIntervalId(timer);
-
-        return () => clearTimeout(timer);
-    }, [searchTxt, intervalId]);
+        return () => {
+            if (debounceRef.current) {
+                clearTimeout(debounceRef.current);
+            }
+        };
+    }, [searchTxt]);
 
     // handlers
     const handleSearch = () => {
@@ -92,10 +98,28 @@ export default function SearchFilter({ className }: { className?: string }) {
                 </Button>
             </div>
             {
-                !loading || results.length > 0 ? <div className="w-full absolute p-2 top-[110%] left-0 max-h-[300px] lg:max-h-[350px] h-auto overflow-y-auto rounded-md lg:rounded-lg min-h-20 bg-body border border-slate-300 dark:border-slate-600 shadow-sm dark:shadow-slate-600">
-                    {
-                        !loading && <SearchProductLoader />
-                    }
+                !!searchTxt ? <div className="w-full absolute p-2 top-[110%] left-0 h-auto rounded-md lg:rounded-lg min-h-20 bg-body border border-slate-300 dark:border-slate-600 shadow-sm dark:shadow-slate-600">
+                    <div className='max-h-[300px] lg:max-h-[350px] h-auto overflow-y-auto'>
+                        {
+                            !!loading ? <SearchProductLoader /> :
+                                results.length === 0 ? <p className='fg_fs-sm text-center py-4'>No results found</p> :
+                                    <div className="w-full mx-auto space-y-2">
+                                        {
+                                            results.map((item) => <div
+                                                key={item.price + item.titleEn}
+                                                className="flex gap-2 p-2 shadow rounded-lg bg-white dark:bg-slate-700 "
+                                            >
+                                                <Image src={item.productImage} className='w-12 h-12' width={300} height={400} alt={item.titleEn} />
+                                                <div className="flex flex-col flex-1">
+                                                    <h5>{item.titleBn} | {item.titleEn}</h5>
+                                                    <p className='flex items-center gap-3'><span>৳{item.discountPrice}</span> <span className='line-through'>৳{item.price}</span></p>
+                                                </div>
+                                            </div>)
+                                        }
+                                    </div>
+
+                        }
+                    </div>
                 </div> : <></>
             }
 
