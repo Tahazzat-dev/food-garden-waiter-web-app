@@ -21,7 +21,7 @@ export default function PubliceHeader() {
             <PublicSidebar />
             <SiteLogo />
           </div>
-          <div className='hidden lg:flex fg_rounded items-center  h-9 gap-2'>
+          <div className='hidden relative lg:flex fg_rounded items-center  h-9 gap-2'>
             <SearchFilter />
           </div>
           <div className='flex grow items-center justify-end gap-3  lg:grow-0 lg:justify-between'>

@@ -505,6 +505,13 @@ body {
   text-rendering: auto; /* default */
   text-rendering: optimizeLegibility; /* better kerning & ligatures */
 }
+.bg-body {
+  background-color: var(--clr-bg-body);
+}
+
+.clr-body {
+  color: var(--clr-text-body);
+}
 
 .btn-primary {
   @apply bg-primary hover:bg-primary/80 text-white shadow-sm;
