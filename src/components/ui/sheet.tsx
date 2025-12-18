@@ -58,10 +58,26 @@ interface SheetContentProps
 const SheetContent = React.forwardRef<
   React.ComponentRef<typeof SheetPrimitive.Content>,
   SheetContentProps
->(({ side = 'right', hideOverlay = false, className, children, ...props }, ref) => (
-  <SheetPortal>
+>(({ side = 'right', hideOverlay = false, className, children, ...props }, ref) => {
+  return <SheetPortal>
     {!hideOverlay && <SheetOverlay />}
-    <SheetPrimitive.Content ref={ref} className={cn(sheetVariants({ side }), className)} {...props}>
+    <SheetPrimitive.Content
+      ref={ref}
+      className={cn(
+        'fixed z-50 gap-4 bg-background p-6 shadow-lg transition-transform duration-1000 ease-in-out',
+        side === 'right' && 'inset-y-0 right-0 h-full w-3/4 sm:max-w-sm',
+        side === 'left' && 'inset-y-0 left-0 h-full w-3/4 sm:max-w-sm',
+        side === 'top' && 'inset-x-0 top-0 border-b',
+        side === 'bottom' && 'inset-x-0 bottom-0 border-t',
+        // sliding based on Radix state
+        side === 'right' && 'data-[state=open]:translate-x-0 data-[state=closed]:translate-x-full',
+        side === 'left' && 'data-[state=open]:translate-x-0 data-[state=closed]:-translate-x-full',
+        side === 'top' && 'data-[state=open]:translate-y-0 data-[state=closed]:-translate-y-full',
+        side === 'bottom' && 'data-[state=open]:translate-y-0 data-[state=closed]:translate-y-full',
+        className
+      )}
+      {...props}
+    >
       <SheetPrimitive.Close className='ring-offset-background focus:ring-ring data-[state=open]:bg-secondary absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:pointer-events-none'>
         <X className='h-4 w-4' />
         <span className='sr-only'>Close</span>
@@ -69,7 +85,7 @@ const SheetContent = React.forwardRef<
       {children}
     </SheetPrimitive.Content>
   </SheetPortal>
-));
+});
 SheetContent.displayName = SheetPrimitive.Content.displayName;
 
 const SheetHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
