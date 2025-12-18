@@ -1,14 +1,13 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import React from 'react'
-import { Search } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useTranslations } from 'next-intl';
+import clsx from 'clsx';
 
-export default function SearchFilter() {
+export default function SearchFilter({ className }: { className?: string }) {
     const tCategory = useTranslations('header.categories');
     const tSearch = useTranslations('header.search');
     return (
-        <div className='hidden lg:flex fg_rounded items-center  h-9 gap-2'>
+        <>
             <Select>
                 <SelectTrigger className="!border-none !shadow-none btn-primary">
                     <SelectValue placeholder={tCategory('all')} />
@@ -30,13 +29,13 @@ export default function SearchFilter() {
                 </SelectContent>
             </Select>
             <div className="grow flex gap-2">
-                <input type="text" className=' dark:text-black grow fg_fs-sm lg:min-w-[150px] xl:min-w-[350px] py-1 rounded-[4px] px-3 bg-white focus:border-0 focus:outline-0' placeholder={tSearch('placeholder')} />
+                <input type="text" className={clsx("dark:text-black grow fg_fs-sm w-full lg:min-w-[150px] xl:min-w-[350px] py-1 rounded-[4px] px-3 bg-white focus:border-0 focus:outline-0", className)} placeholder={tSearch('placeholder')} />
                 <Button variant="primary" className='mr-4 text-white'>
                     {
                         tSearch('btn')
                     }
                 </Button>
             </div>
-        </div>
+        </>
     )
 }

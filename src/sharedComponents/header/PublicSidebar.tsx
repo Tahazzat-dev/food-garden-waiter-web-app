@@ -68,7 +68,7 @@ export default function PublicSidebar() {
                     <MenuIcon className='w-5 md:w-6 h-5 md:h-6 text-white' />
                 </Button>
             </DrawerTrigger>
-            <DrawerContent>
+            <DrawerContent className="z-[9999]" >
                 <div className="w-full h-full p-5 pt-2">
                     <div className="w-full flex items-center gap-5 mb-4">
                         <div className="grow flex">

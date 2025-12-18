@@ -17,20 +17,16 @@ const bannerData = [
 ]
 
 export default function Banner() {
-    const pagination = {
-        clickable: true,
-        renderBullet: (index: number, className: string) => {
-            return `<span class="${className} custom-bullet">${index + 1}</span>`
-        },
-    }
-
     return (
-        <section className='w-full'>
+        <section className='w-full pt-[70px]'>
             <div className="w-full h-full ">
                 <Swiper
-                    pagination={pagination}
                     modules={[Pagination]}
-                    className="home-banner-swiper bg-gray-500 h-[50vh] min-h-[400px] max-h-[700px] overflow-hidden"
+                    pagination={{
+                        clickable: true,
+                        type: "bullets",
+                    }}
+                    className="home-banner-swiper h-[50vh] min-h-[300px] md:min-h-[400px] max-h-[700px] overflow-hidden"
                 >
                     {bannerData.map((item) => (
                         <SwiperSlide

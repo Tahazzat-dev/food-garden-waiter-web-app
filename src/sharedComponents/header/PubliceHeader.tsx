@@ -15,10 +15,15 @@ export default function PubliceHeader() {
   const tTracking = useTranslations('header');
   return (
     <>
-      <section className='w-full py-1 bg-[var(--bg-header)]'>
+      <section className='z-[9998] w-full fixed top-0 left-0 py-1 bg-[var(--bg-header)]'>
         <Container className='flex items-center gap-3 lg:justify-between lg:gap-5'>
-          <SiteLogo />
-          <SearchFilter />
+          <div className="grow lg:grow-0 flex items-center justify-between lg:justify-start gap-4 lg:gap-5">
+            <PublicSidebar />
+            <SiteLogo />
+          </div>
+          <div className='hidden lg:flex fg_rounded items-center  h-9 gap-2'>
+            <SearchFilter />
+          </div>
           <div className='flex grow items-center justify-end gap-3  lg:grow-0 lg:justify-between'>
             <div className='hidden text-white items-center gap-2 md:flex'>
               <span className='fg_fs-xs '>{tTracking('trackingTxt')}</span>
@@ -28,12 +33,11 @@ export default function PubliceHeader() {
               <Heart fill='white' className='h-6 w-6' />
             </Link>
             <CartSheet />
-            <div className='text-white hidden md:block'>
+            <div className='text-white'>
               <User fill='white' className='h-6 w-6' />
             </div>
             <LocaleSwitcher type='ghost' className='hidden xl:block' />
             <ThemeSwitcher type='ghost' className='hidden xl:flex' />
-            <PublicSidebar />
           </div>
         </Container>
       </section>
