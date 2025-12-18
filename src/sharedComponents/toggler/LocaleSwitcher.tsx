@@ -49,6 +49,7 @@ export default function LocaleSwitcher({ className = "", type = "default" }: Pro
                         <SelectItem key={lang.code} value={lang.code}>
                             <div className="flex items-center gap-2">
                                 <Image
+                                    className='border border-slate-50/50'
                                     src={lang.flag}
                                     alt={lang.label}
                                     width={20}
