@@ -19,7 +19,7 @@ export const fakeSearch = async (query: string) => {
     if (!q) return [];
 
     // ⏳ fake loading delay (1 second)
-    await delay(500);
+    await delay(1000);
 
     const bangla = isBangla(q);
 
