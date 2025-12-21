@@ -52,6 +52,7 @@ import {
     Drawer,
     DrawerClose,
     DrawerContent,
+    DrawerTitle,
     DrawerTrigger,
 } from "@/components/ui/drawer"
 import Link from "next/link"
@@ -68,14 +69,15 @@ export default function PublicSidebar() {
                     <MenuIcon className='w-5 md:w-6 h-5 md:h-6 text-white' />
                 </Button>
             </DrawerTrigger>
-            <DrawerContent className="z-[9999]" >
+            <DrawerContent className="z-[9999]">
                 <div className="w-full h-full p-5 pt-2">
                     <div className="w-full flex items-center gap-5 mb-4">
-                        <div className="grow flex">
+                        <DrawerTitle className="grow flex">
                             {/* <SiteLogo /> */}
                             <Image className='w-full fill-black text-black min-w-[140px] lg:min-w-[160px] max-w-[160px] h-auto' width={190} height={42} src="/images/shared/site-logo-black.svg" alt="Site logo" />
-                        </div>
-
+                        </DrawerTitle>
+                        {/* <div className="grow flex">
+                        </div> */}
                         <div className="w-full max-w-6">
                             <DrawerClose>
                                 <X className=" w-5 md:w-6 md:h-6 h-5" />

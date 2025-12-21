@@ -44,7 +44,7 @@ export default function LocaleSwitcher({ className = "", type = "default" }: Pro
                     <SelectValue placeholder="Language" />
                 </SelectTrigger>
 
-                <SelectContent className='!bg-white text-black'>
+                <SelectContent className='z-[9999] !bg-white text-black'>
                     {languages.map(lang => (
                         <SelectItem key={lang.code} value={lang.code}>
                             <div className="flex items-center gap-2">

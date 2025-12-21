@@ -517,6 +517,11 @@ body {
   @apply bg-primary hover:bg-primary/80 text-white shadow-sm;
 }
 
+.clr-opposite {
+  background-color: var(--clr-text-body);
+  color: var(--clr-bg-body);
+}
+
 .home-banner-swiper .swiper-pagination-bullet {
   background-color: white !important;
   content: "" !important;

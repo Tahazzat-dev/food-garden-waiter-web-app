@@ -71,7 +71,7 @@ export default function SearchFilter({ className }: { className?: string }) {
                     <SelectValue placeholder={tCategory('all')} />
                 </SelectTrigger>
 
-                <SelectContent>
+                <SelectContent className='z-[9999]' >
                     <SelectItem value="burger">{tCategory('burger')}</SelectItem>
                     <SelectItem value="pizza">{tCategory('pizza')}</SelectItem>
                     <SelectItem value="sushi">{tCategory('sushi')}</SelectItem>

@@ -4,6 +4,7 @@ import { Sun, Moon } from "lucide-react";
 import { useTheme } from "@/provider/ThemeProvider"; // adjust path if needed
 import clsx from "clsx";
 import { MoonIcon, SunIcon } from "../icons/Icons";
+import { useEffect, useState } from "react";
 
 type Props = {
     className?: string;
@@ -11,6 +12,14 @@ type Props = {
 }
 export default function ThemeSwitcher({ className = "", type = "default" }: Props) {
     const { theme, toggleTheme } = useTheme();
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    if (!mounted) return null; // 🔥 prevents hydration error
+
 
     const isDark = theme === "dark";
 
