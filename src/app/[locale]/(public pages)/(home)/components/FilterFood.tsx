@@ -2,6 +2,7 @@ import Container from '@/sharedComponents/wrapper/Container'
 import React from 'react'
 import FoodCart from './FoodCart'
 import { demoProducts } from '@/lib/demo-data'
+import { FoodModal } from './FoodModal'
 
 export default function FilterFood() {
     return (
@@ -11,6 +12,7 @@ export default function FilterFood() {
                     demoProducts.map(product => <FoodCart product={product} key={product?.id} />)
                 }
             </Container>
+            {/* <FoodModal onOpenChange={() => { }} food={demoProducts[0]} open={true} /> */}
         </section>
     )
 }

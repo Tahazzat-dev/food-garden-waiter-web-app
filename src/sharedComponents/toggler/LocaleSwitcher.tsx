@@ -2,9 +2,12 @@
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { usePathname, useRouter } from '@/i18n/navigation';
+import { setLocale } from '@/redux/features/locale/locale';
+import { Lang } from '@/types/types';
 import clsx from 'clsx';
 import { useLocale } from 'next-intl';
 import Image from 'next/image';
+import { useDispatch } from 'react-redux';
 
 const languages = [
     {
@@ -25,15 +28,17 @@ type Props = {
 }
 
 export default function LocaleSwitcher({ className = "", type = "default" }: Props) {
+    const dispatch = useDispatch();
     const currentLocale = useLocale();
     const router = useRouter();
     const pathname = usePathname();
     // const [selectedLocale, setSelectedLocale] = useState(locale);
 
-    const switchLocale = (newLocale: string) => {
+    const switchLocale = (newLocale: Lang) => {
         if (newLocale !== currentLocale) {
             router.replace(pathname, { locale: newLocale });
             router.refresh();
+            dispatch(setLocale(newLocale));
         }
         // setSelectedLocale(newLocale);
     };

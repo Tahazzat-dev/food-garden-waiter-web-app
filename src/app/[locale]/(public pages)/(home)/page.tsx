@@ -1,4 +1,3 @@
-'use client'
 import { useTranslations } from "next-intl";
 import Banner from "./components/Banner";
 import MobileSearch from "./components/MobileSearch";
@@ -18,6 +17,10 @@ export default function HomePage() {
             <AddsSection />
             <CategorySection />
             <FilterFood />
+            <div className="w-full min-h-screen">
+
+            </div>
+            {/* <FilterFood /> */}
         </>
     );
 }

@@ -7,14 +7,6 @@ export type TFoodItem = {
     productImage: string;
 }
 
-
-export type TCategory = {
-    id: string;
-    name: string;
-    img: string;
-    slug: string;
-}
-
 // TODO: have to add necessary properties
 export type TProduct = {
     id: string;

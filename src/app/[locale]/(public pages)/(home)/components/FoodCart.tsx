@@ -30,7 +30,6 @@ export default function FoodCart({ product }: { product: TProduct }) {
                     <Button className='w-full mt-2 font-semibold hover:bg-secondary' ><ShoppingCart /> <span>Add To Cart</span></Button>
                 </div>
             </Card>
-
         </>
     )
 }

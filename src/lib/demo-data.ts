@@ -120,69 +120,98 @@ export const foodItems: TFoodItem[] = [
 ];
 
 
-
 export const categoryItems: TCategory[] = [
     {
-        id: '1',
-        name: "Pizza",
+        id: "1",
+        name: {
+            en: "Pizza",
+            bn: "পিজ্জা",
+        },
         slug: "pizza",
-        img: "/images/home/pizza-category.png"
+        img: "/images/home/pizza-category.png",
     },
     {
-        id: '2',
-        name: "Appitizer",
-        slug: "appitizer",
-        img: "/images/home/pizza-category.png"
+        id: "2",
+        name: {
+            en: "Appetizer",
+            bn: "অ্যাপেটাইজার",
+        },
+        slug: "appetizer",
+        img: "/images/home/pizza-category.png",
     },
     {
-        id: '3',
-        name: "Chilers",
-        slug: "chilers",
-        img: "/images/home/pizza-category.png"
+        id: "3",
+        name: {
+            en: "Chillers",
+            bn: "চিলারস",
+        },
+        slug: "chillers",
+        img: "/images/home/pizza-category.png",
     },
     {
-        id: '4',
-        name: "Chawmin",
-        slug: "chawmin",
-        img: "/images/home/pizza-category.png"
+        id: "4",
+        name: {
+            en: "Chowmein",
+            bn: "চাউমিন",
+        },
+        slug: "chowmein",
+        img: "/images/home/pizza-category.png",
     },
     {
-        id: '5',
-        name: "Chicken",
+        id: "5",
+        name: {
+            en: "Chicken",
+            bn: "চিকেন",
+        },
         slug: "chicken",
-        img: "/images/home/pizza-category.png"
+        img: "/images/home/pizza-category.png",
     },
     {
-        id: '6',
-        name: "Brianny",
-        slug: "brianny",
-        img: "/images/home/pizza-category.png"
+        id: "6",
+        name: {
+            en: "Biryani",
+            bn: "বিরিয়ানি",
+        },
+        slug: "biryani",
+        img: "/images/home/pizza-category.png",
     },
     {
-        id: '7',
-        name: "Sup",
-        slug: "sup",
-        img: "/images/home/pizza-category.png"
+        id: "7",
+        name: {
+            en: "Soup",
+            bn: "সুপ",
+        },
+        slug: "soup",
+        img: "/images/home/pizza-category.png",
     },
     {
-        id: '8',
-        name: "Sea-food",
+        id: "8",
+        name: {
+            en: "Sea Food",
+            bn: "সি ফুড",
+        },
         slug: "sea-food",
-        img: "/images/home/pizza-category.png"
+        img: "/images/home/pizza-category.png",
     },
     {
-        id: '9',
-        name: "Coffee",
+        id: "9",
+        name: {
+            en: "Coffee",
+            bn: "কফি",
+        },
         slug: "coffee",
-        img: "/images/home/pizza-category.png"
+        img: "/images/home/pizza-category.png",
     },
     {
-        id: '10',
-        name: "Pasta",
+        id: "10",
+        name: {
+            en: "Pasta",
+            bn: "পাস্তা",
+        },
         slug: "pasta",
-        img: "/images/home/pizza-category.png"
+        img: "/images/home/pizza-category.png",
     },
-]
+];
 
 
 

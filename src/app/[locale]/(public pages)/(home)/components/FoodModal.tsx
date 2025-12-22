@@ -1,0 +1,102 @@
+"use client";
+
+import * as Dialog from "@radix-ui/react-dialog";
+import { Minus, Plus, ShoppingCart, X } from "lucide-react"; // optional icon
+import { Button } from "@/components/ui/button";
+import { TProduct } from "@/types/demoData";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+
+interface FoodModalProps {
+    food: TProduct | null;
+    open: boolean;
+    onOpenChange: (open: boolean) => void;
+}
+
+export function FoodModal({ food, open, onOpenChange }: FoodModalProps) {
+    const [variant, setVariant] = useState<string>("1");
+    const [quantity, setQuantity] = useState(1);
+
+    const handleQuantityChange = (newQuantity: number) => {
+        if (newQuantity < 1) return;
+        setQuantity(newQuantity);
+    };
+
+    const subtotal = food?.price ? food.price * quantity : 0;
+
+    useEffect(() => {
+        if (open) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "";
+        }
+
+        return () => {
+            document.body.style.overflow = "";
+        };
+    }, [open]);
+
+    if (!food) return null;
+    return (
+        <Dialog.Root open={open} onOpenChange={onOpenChange}>
+            <Dialog.Portal>
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50" />
+                <Dialog.Content className="fixed top-1/2 left-1/2 max-w-[700px] !rounded-[10px] lg:!rounded-[12px] overflow-hidden w-full -translate-x-1/2 -translate-y-1/2 bg-body rounded-lg shadow-lg z-50">
+                    <div className="flex items-center justify-between bg-primary px-4 py-2">
+                        <Dialog.Title className="fg_fs-md text-white">
+                            Food Details
+                        </Dialog.Title>
+                        {/* <h4 className="font-semibold text-white"></h4> */}
+                        <Button className="rounded-full !px-2.5" variant="secondary"> <X className=" w-5 md:w-6 md:h-6 h-5 lg:w-8 lg:h-8" /></Button>
+                    </div>
+                    <div className="p-4">
+                        <h5 className="font-semibold text-lg text-primary">{food.title}</h5>
+                        <div className="flex gap-4 mt-4">
+                            <Image className="max-w-[250px] max-h-[250px] rounded-[8px]" src={food.img} width={300} height={400} alt="Food Image" />
+                            <div className="grow flex justify-between flex-col gap-2">
+                                <div className="flex items-center gap-2">
+                                    <Button onClick={() => setVariant('1')} variant={variant === "1" ? "secondary" : "primary"} className="custom-shadow-md !py-0.5">Variants 1</Button>
+                                    <Button onClick={() => setVariant('2')} variant={variant === "2" ? "secondary" : "primary"} className="custom-shadow-md !py-0.5">Variants 2</Button>
+                                    <Button onClick={() => setVariant('3')} variant={variant === "3" ? "secondary" : "primary"} className="custom-shadow-md !py-0.5">Variants 3</Button>
+                                </div>
+
+                                <div className="w-full">
+                                    <p className="mb-3">Product Notes:</p>
+                                    <div className='mt-auto flex items-center justify-between bg-slate-300/60 px-2 py-1 rounded-[4px]'>
+                                        <p className='fg_fs-xs font-semibold text-center grow dark:!text-black'>{food.price.toFixed(2)}/-</p>
+                                        <div className='flex items-center gap-1 lg:gap-2 rounded-md py-0.5'>
+                                            <Button
+                                                variant='primary'
+                                                size='icon'
+                                                className='h-6 w-6 !rounded-full'
+                                                onClick={() => handleQuantityChange(quantity - 1)}
+                                            >
+                                                <Minus className='h-3 w-3' />
+                                            </Button>
+                                            <span className='rounded-[4px] fg_fs-xs py-0.5 bg-white dark:!text-black px-4 inline-block text-center text-xs'>{quantity}</span>
+                                            <Button
+                                                variant='primary'
+                                                size='icon'
+                                                className='h-6 w-6 !rounded-full'
+                                                onClick={() => handleQuantityChange(quantity + 1)}
+                                            >
+                                                <Plus className='h-3 w-3' />
+                                            </Button>
+                                        </div>
+
+                                        <p className='fg_fs-sm font-semibold text-center grow dark:!text-black'>{subtotal.toFixed(2)}/-</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="w-full flex justify-end p-4">
+                        <Dialog.Close className="" asChild >
+                            <Button className='mt-2 font-semibold hover:bg-secondary' ><ShoppingCart /> <span>Add To Cart</span></Button>
+                        </Dialog.Close>
+                    </div>
+                </Dialog.Content>
+            </Dialog.Portal>
+        </Dialog.Root>
+    );
+}

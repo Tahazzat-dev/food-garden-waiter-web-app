@@ -1,3 +1,4 @@
+"use client"
 import { HeartIcon } from 'lucide-react'
 import Swal from 'sweetalert2';
 
@@ -5,9 +6,9 @@ export default function CartButton({ productId }: { productId: string }) {
     const handleFavourite = () => {
         // Implementation for handling favourite action
         Swal.fire({
-            title: "Success!",
+            title: "Warning!",
             text: "Feature in progress",
-            icon: "success",
+            icon: "warning",
             confirmButtonText: "OK",
         });
         console.log(productId);
