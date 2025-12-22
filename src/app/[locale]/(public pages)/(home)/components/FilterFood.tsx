@@ -5,6 +5,7 @@ import { demoProducts } from '@/lib/demo-data'
 import { FoodModal } from './FoodModal'
 
 export default function FilterFood() {
+
     return (
         <section className="my-4">
             <Container className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
