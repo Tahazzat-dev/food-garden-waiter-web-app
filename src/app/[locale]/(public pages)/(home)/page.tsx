@@ -6,6 +6,7 @@ import AddsSection from "./components/AddsSection";
 import CategorySection from "./components/CategorySection";
 import FoodCart from "./components/FoodCart";
 import Container from "@/sharedComponents/wrapper/Container";
+import FilterFood from "./components/FilterFood";
 // import Image from "next/image";
 
 export default function HomePage() {
@@ -16,11 +17,7 @@ export default function HomePage() {
             <MobileSearch />
             <AddsSection />
             <CategorySection />
-            <div className="w-full min-h-[200vh] ">
-                <Container>
-                    <FoodCart />
-                </Container>
-            </div>
+            <FilterFood />
         </>
     );
 }
