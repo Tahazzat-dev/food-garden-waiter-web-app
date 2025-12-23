@@ -143,3 +143,65 @@ export default function Shotcut() {
                       https://res.cloudinary.com/dirjayri8/raw/upload/v1748532597/k0tyb0wshuc3ei0oqvae.svg
                       https://res.cloudinary.com/dirjayri8/raw/upload/v1748532597/r2rg0cgdr3xa8e8bctbw.svg
                       */ 
+
+
+
+
+      // {/* SUCCESS */}
+      // {type === "success" && (
+      //   <CustomAlert
+      //     open={open}
+      //     onOpenChange={setOpen}
+      //     type="success"
+      //     title="Saved Successfully!"
+      //     description="Your data has been saved."
+      //   />
+      // )}
+
+      // {/* WARNING */}
+      // {type === "warning" && (
+      //   <CustomAlert
+      //     open={open}
+      //     onOpenChange={setOpen}
+      //     type="warning"
+      //     title="Feature in progress"
+      //     description="This feature will be available soon."
+      //   />
+      // )}
+
+      // {/* ERROR */}
+      // {type === "error" && (
+      //   <CustomAlert
+      //     open={open}
+      //     onOpenChange={setOpen}
+      //     type="error"
+      //     title="Something went wrong"
+      //     description="Please try again later."
+      //   />
+      // )}
+
+      // {/* INFO */}
+      // {type === "info" && (
+      //   <CustomAlert
+      //     open={open}
+      //     onOpenChange={setOpen}
+      //     type="info"
+      //     title="Heads up!"
+      //     description="This action may affect your account."
+      //   />
+      // )}
+
+      // {/* CONFIRM */}
+      // {type === "warning" && (
+      //   <CustomAlert
+      //     open={open}
+      //     onOpenChange={setOpen}
+      //     type="warning"
+      //     title="Are you sure?"
+      //     description="This action cannot be undone."
+      //     showCancel
+      //     confirmText="Yes, continue"
+      //     cancelText="Cancel"
+      //     onConfirm={() => console.log("Confirmed")}
+      //   />
+      // )}

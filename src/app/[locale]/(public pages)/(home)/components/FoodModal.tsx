@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 interface FoodModalProps {
     food: TProduct | null;
     open: boolean;
-    onOpenChange: (open: boolean) => void;
+    onOpenChange: () => void;
 }
 
 export function FoodModal({ food, open, onOpenChange }: FoodModalProps) {
@@ -46,8 +46,7 @@ export function FoodModal({ food, open, onOpenChange }: FoodModalProps) {
                         <Dialog.Title className="fg_fs-md text-white">
                             Food Details
                         </Dialog.Title>
-                        {/* <h4 className="font-semibold text-white"></h4> */}
-                        <Button className="rounded-full !px-2.5" variant="secondary"> <X className=" w-5 md:w-6 md:h-6 h-5 lg:w-8 lg:h-8" /></Button>
+                        <Button onClick={onOpenChange} className="rounded-full !px-2.5" variant="secondary"> <X className=" w-5 md:w-6 md:h-6 h-5 lg:w-8 lg:h-8" /></Button>
                     </div>
                     <div className="p-4">
                         <h5 className="font-semibold text-lg text-primary">{food.title}</h5>

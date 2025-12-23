@@ -1,19 +1,20 @@
+"use client"
 import Container from '@/sharedComponents/wrapper/Container'
-import React from 'react'
 import FoodCart from './FoodCart'
 import { demoProducts } from '@/lib/demo-data'
-import { FoodModal } from './FoodModal'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/redux/store'
 
 export default function FilterFood() {
-
+    const { homeActiveCategoryId } = useSelector((state: RootState) => state.categorySlice)
+    const filteredFoods = demoProducts.filter(product => product.categoryId === homeActiveCategoryId)
     return (
         <section className="my-4">
             <Container className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
                 {
-                    demoProducts.map(product => <FoodCart product={product} key={product?.id} />)
+                    filteredFoods.map(product => <FoodCart product={product} key={product?.id} />)
                 }
             </Container>
-            {/* <FoodModal onOpenChange={() => { }} food={demoProducts[0]} open={true} /> */}
         </section>
     )
 }
