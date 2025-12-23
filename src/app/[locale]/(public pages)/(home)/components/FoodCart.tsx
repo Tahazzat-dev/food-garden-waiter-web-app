@@ -34,7 +34,7 @@ export default function FoodCart({ product }: { product: TProduct }) {
 
     return (
         <>
-            <Card onClick={() => setOpenModal(true)} className='custom-shadow-card overflow-hidden shadow-2xl !border-slate-300 dark:!border-slate-600 group z-0'>
+            <Card onClick={() => setOpenModal(true)} className='custom-shadow-card overflow-hidden shadow-2xl !border-none group z-0'>
                 <div className="w-full relative h-[200px]">
                     <button onClick={handleFavourite} className='hover:scale-105 absolute top-2 left-2 z-20'>
                         <HeartIcon fill='white' className='w-8 h-8 text-secondary' />
@@ -50,7 +50,7 @@ export default function FoodCart({ product }: { product: TProduct }) {
 
                 </div>
 
-                <div className="w-full p-4">
+                <div className="w-full p-4 bg-slate-100 dark:bg-slate-700">
                     {/* <h6 className='mb-1'>{locale === "bn" ? product?.title.bn : product?.title.en}</h6> */}
                     <h6 className='mb-1'>{product?.title.bn}</h6>
                     <p className='fg_fs-sm'>{product.discount < 1 ? <span className=''>{product?.price}TK</span> : <span className='flex items-center gap-3'> <span className='line-through fg_fs-xs'>{product?.price}TK</span> <span className='text-primary'>{discountedPrice}TK</span></span>}</p>
