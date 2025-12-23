@@ -5,9 +5,12 @@ import { cartDemoData, CartItem } from '@/lib/demo-data';
 import { useState } from 'react';
 import { Drawer, DrawerClose, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 import { DialogTitle } from '@radix-ui/react-dialog';
+import { RootState } from '@/redux/store';
+import { useSelector } from 'react-redux';
 
 export function CartSheet() {
   const [cartItems, setCartItems] = useState<CartItem[]>(cartDemoData);
+  const { cartProducts } = useSelector((state: RootState) => state.productSlice);
 
   const handleQuantityChange = (id: number, quantity: number) => {
     setCartItems((items) => items.map((item) => (item.id === id ? { ...item, quantity } : item)));
@@ -22,15 +25,17 @@ export function CartSheet() {
       <DrawerTrigger asChild>
         <div className='relative'>
           <ShoppingCart fill='white' className='text-white h-6 w-6 cursor-pointer' />
-          <span className='flex items-center justify-center text-xs px-0.5 min-w-4.5 min-h-4.5  absolute -top-[40%] left-[80%] translate-x-[-50%] bg-secondary text-white rounded-full p-[1px]'>2</span>
+          {
+            cartProducts.length > 0 ?
+              <span className='flex items-center justify-center text-xs px-0.5 min-w-4.5 min-h-4.5  absolute -top-[40%] left-[80%] translate-x-[-50%] bg-secondary text-white rounded-full p-[1px]'>{cartProducts.length}</span> : <></>
+          }
         </div>
-
       </DrawerTrigger>
       <DrawerContent hideOverlay={true} className="z-9999 shadow-2xl dark:shadow-amber-50 right-0 max-h-[90%] lg:max-h-[70%] top-[50%] rounded-md lg:rounded-lg -translate-y-[50%]" >
         <div className="w-full h-full flex flex-col">
           <div className="w-full flex items-center gap-5 py-5 px-4 bg-primary">
             <DialogTitle className="grow flex text-white">
-              <span className='fg_fs-lg'>Add To Cart (3)</span>
+              <span className='fg_fs-lg'>Add To Cart ({cartProducts.length})</span>
             </DialogTitle>
 
             <div className="w-full max-w-6">
@@ -40,13 +45,10 @@ export function CartSheet() {
             </div>
           </div>
           <div className="w-full h-full grow px-4 overflow-y-auto py-4 dark:border-l dark:border-slate-700">
-            {cartItems.map((item) => (
+            {cartProducts.map((item) => (
               <CartCard
                 key={item.id}
                 item={item}
-                variant='compact'
-                onQuantityChange={handleQuantityChange}
-                onRemove={handleRemove}
               />
             ))}
           </div>

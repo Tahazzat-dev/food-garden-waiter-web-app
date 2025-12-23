@@ -1,3 +1,5 @@
+import { TProduct } from "./demoData";
+
 // types/lang.ts
 export type TCategory = {
     id: string;
@@ -11,3 +13,8 @@ export type TCategory = {
 
 
 export type Lang = "en" | "bn";
+
+
+export interface TCartProduct extends TProduct {
+    quantity: number;
+}

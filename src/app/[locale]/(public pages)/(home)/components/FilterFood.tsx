@@ -9,7 +9,7 @@ export default function FilterFood() {
     const { homeActiveCategoryId } = useSelector((state: RootState) => state.categorySlice)
     const filteredFoods = demoProducts.filter(product => product.categoryId === homeActiveCategoryId)
     return (
-        <section className="my-4">
+        <section className="mb-4">
             <Container className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
                 {
                     filteredFoods.map(product => <FoodCart product={product} key={product?.id} />)

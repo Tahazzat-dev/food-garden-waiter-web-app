@@ -216,237 +216,248 @@ export const categoryItems: TCategory[] = [
 
 
 export const demoProducts: TProduct[] = [
+    // 🍕 Pizza
     {
-        "id": "p1",
-        "categoryId": "1",
-        "title": "Margherita Pizza",
-        "des": "Classic pizza with mozzarella and basil",
-        "price": 550,
-        "discount": 10,
-        "img": "/images/demo-food/pizza.jpg"
+        id: "p1",
+        categoryId: "1",
+        title: { en: "Margherita Pizza", bn: "মার্গারিটা পিজ্জা" },
+        des: { en: "Classic pizza with mozzarella and basil", bn: "মোজারেলা চিজ ও তুলসি পাতা দিয়ে তৈরি ক্লাসিক পিজ্জা" },
+        price: 550,
+        discount: 10,
+        img: "/images/demo-food/pizza.jpg",
     },
     {
-        "id": "p2",
-        "categoryId": "1",
-        "title": "Pepperoni Pizza",
-        "des": "Spicy pepperoni with cheese",
-        "price": 650,
-        "discount": 5,
-        "img": "/images/demo-food/pizza.jpg"
+        id: "p2",
+        categoryId: "1",
+        title: { en: "Pepperoni Pizza", bn: "পেপারোনি পিজ্জা" },
+        des: { en: "Spicy pepperoni with cheese", bn: "ঝাল পেপারোনি ও চিজের মিশ্রণ" },
+        price: 650,
+        discount: 5,
+        img: "/images/demo-food/pizza.jpg",
     },
     {
-        "id": "p3",
-        "categoryId": "1",
-        "title": "BBQ Chicken Pizza",
-        "des": "Grilled chicken with BBQ sauce",
-        "price": 700,
-        "discount": 8,
-        "img": "/images/demo-food/pizza.jpg"
+        id: "p3",
+        categoryId: "1",
+        title: { en: "BBQ Chicken Pizza", bn: "বিবিকিউ চিকেন পিজ্জা" },
+        des: { en: "Grilled chicken with BBQ sauce", bn: "বিবিকিউ সসের সাথে গ্রিল করা চিকেন" },
+        price: 700,
+        discount: 8,
+        img: "/images/demo-food/pizza.jpg",
     },
     {
-        "id": "p4",
-        "categoryId": "1",
-        "title": "Veggie Supreme Pizza",
-        "des": "Loaded with fresh vegetables",
-        "price": 600,
-        "discount": 12,
-        "img": "/images/demo-food/pizza.jpg"
+        id: "p4",
+        categoryId: "1",
+        title: { en: "Veggie Supreme Pizza", bn: "ভেজি সুপ্রিম পিজ্জা" },
+        des: { en: "Loaded with fresh vegetables", bn: "তাজা সবজিতে ভরপুর পিজ্জা" },
+        price: 600,
+        discount: 12,
+        img: "/images/demo-food/pizza.jpg",
     },
     {
-        "id": "p5",
-        "categoryId": "1",
-        "title": "Four Cheese Pizza",
-        "des": "Blend of four premium cheeses",
-        "price": 720,
-        "discount": 9,
-        "img": "/images/demo-food/pizza.jpg"
-    },
-
-    {
-        "id": "a1",
-        "categoryId": "2",
-        "title": "Chicken Wings",
-        "des": "Crispy fried wings",
-        "price": 350,
-        "discount": 5,
-        "img": "/images/demo-food/Chicken.jpg"
-    },
-    {
-        "id": "a2",
-        "categoryId": "2",
-        "title": "French Fries",
-        "des": "Golden crispy fries",
-        "price": 200,
-        "discount": 0,
-        "img": "/images/demo-food/Chicken.jpg"
-    },
-    {
-        "id": "a3",
-        "categoryId": "2",
-        "title": "Garlic Bread",
-        "des": "Toasted garlic bread",
-        "price": 180,
-        "discount": 5,
-        "img": "/images/demo-food/Chicken.jpg"
+        id: "p5",
+        categoryId: "1",
+        title: { en: "Four Cheese Pizza", bn: "ফোর চিজ পিজ্জা" },
+        des: { en: "Blend of four premium cheeses", bn: "চার ধরনের প্রিমিয়াম চিজের মিশ্রণ" },
+        price: 720,
+        discount: 9,
+        img: "/images/demo-food/pizza.jpg",
     },
 
+    // 🍗 Appetizers
     {
-        "id": "c1",
-        "categoryId": "3",
-        "title": "Cold Coffee",
-        "des": "Chilled creamy coffee",
-        "price": 220,
-        "discount": 5,
-        "img": "/images/demo-food/Coffee.jpg"
+        id: "a1",
+        categoryId: "2",
+        title: { en: "Chicken Wings", bn: "চিকেন উইংস" },
+        des: { en: "Crispy fried wings", bn: "মচমচে ভাজা চিকেন উইংস" },
+        price: 350,
+        discount: 5,
+        img: "/images/demo-food/Chicken.jpg",
     },
     {
-        "id": "c2",
-        "categoryId": "3",
-        "title": "Chocolate Shake",
-        "des": "Rich chocolate milkshake",
-        "price": 250,
-        "discount": 6,
-        "img": "/images/demo-food/Coffee.jpg"
+        id: "a2",
+        categoryId: "2",
+        title: { en: "French Fries", bn: "ফ্রেঞ্চ ফ্রাই" },
+        des: { en: "Golden crispy fries", bn: "সোনালি ও মচমচে ফ্রাই" },
+        price: 200,
+        discount: 0,
+        img: "/images/demo-food/Chicken.jpg",
     },
     {
-        "id": "c3",
-        "categoryId": "3",
-        "title": "Mint Lemonade",
-        "des": "Refreshing mint drink",
-        "price": 150,
-        "discount": 0,
-        "img": "/images/demo-food/Coffee.jpg"
-    },
-
-    {
-        "id": "ch1",
-        "categoryId": "4",
-        "title": "Chicken Chow Mein",
-        "des": "Stir fried noodles with chicken",
-        "price": 320,
-        "discount": 5,
-        "img": "/images/demo-food/Chawmin.jpg"
-    },
-    {
-        "id": "ch2",
-        "categoryId": "4",
-        "title": "Vegetable Chow Mein",
-        "des": "Mixed veggie noodles",
-        "price": 280,
-        "discount": 6,
-        "img": "/images/demo-food/Chawmin.jpg"
+        id: "a3",
+        categoryId: "2",
+        title: { en: "Garlic Bread", bn: "গার্লিক ব্রেড" },
+        des: { en: "Toasted garlic bread", bn: "টোস্ট করা রসুনের ব্রেড" },
+        price: 180,
+        discount: 5,
+        img: "/images/demo-food/Chicken.jpg",
     },
 
+    // ☕ Drinks
     {
-        "id": "ck1",
-        "categoryId": "5",
-        "title": "Grilled Chicken",
-        "des": "Charcoal grilled chicken",
-        "price": 450,
-        "discount": 8,
-        "img": "/images/demo-food/Chicken.jpg"
+        id: "c1",
+        categoryId: "3",
+        title: { en: "Cold Coffee", bn: "ঠান্ডা কফি" },
+        des: { en: "Chilled creamy coffee", bn: "ঠান্ডা ও ক্রিমি কফি" },
+        price: 220,
+        discount: 5,
+        img: "/images/demo-food/Coffee.jpg",
     },
     {
-        "id": "ck2",
-        "categoryId": "5",
-        "title": "Fried Chicken",
-        "des": "Crispy fried chicken",
-        "price": 400,
-        "discount": 5,
-        "img": "/images/demo-food/Chicken.jpg"
-    },
-
-    {
-        "id": "b1",
-        "categoryId": "6",
-        "title": "Chicken Biryani",
-        "des": "Traditional spicy biryani",
-        "price": 380,
-        "discount": 6,
-        "img": "/images/demo-food/biryani.jpg"
+        id: "c2",
+        categoryId: "3",
+        title: { en: "Chocolate Shake", bn: "চকলেট শেক" },
+        des: { en: "Rich chocolate milkshake", bn: "ঘন চকলেট মিল্কশেক" },
+        price: 250,
+        discount: 6,
+        img: "/images/demo-food/Coffee.jpg",
     },
     {
-        "id": "b2",
-        "categoryId": "6",
-        "title": "Beef Biryani",
-        "des": "Slow cooked beef biryani",
-        "price": 420,
-        "discount": 7,
-        "img": "/images/demo-food/biryani.jpg"
+        id: "c3",
+        categoryId: "3",
+        title: { en: "Mint Lemonade", bn: "মিন্ট লেমনেড" },
+        des: { en: "Refreshing mint drink", bn: "তাজা মিন্টের পানীয়" },
+        price: 150,
+        discount: 0,
+        img: "/images/demo-food/Coffee.jpg",
     },
 
+    // 🍜 Chow Mein
     {
-        "id": "s1",
-        "categoryId": "7",
-        "title": "Chicken Corn Soup",
-        "des": "Warm chicken corn soup",
-        "price": 220,
-        "discount": 5,
-        "img": "/images/demo-food/Sup.jpg"
+        id: "ch1",
+        categoryId: "4",
+        title: { en: "Chicken Chow Mein", bn: "চিকেন চাউমিন" },
+        des: { en: "Stir fried noodles with chicken", bn: "চিকেন দিয়ে স্টার ফ্রাই করা নুডলস" },
+        price: 320,
+        discount: 5,
+        img: "/images/demo-food/Chawmin.jpg",
     },
     {
-        "id": "s2",
-        "categoryId": "7",
-        "title": "Thai Soup",
-        "des": "Spicy Thai style soup",
-        "price": 260,
-        "discount": 6,
-        "img": "/images/demo-food/Sup.jpg"
-    },
-
-    {
-        "id": "sf1",
-        "categoryId": "8",
-        "title": "Grilled Prawn",
-        "des": "Charcoal grilled prawns",
-        "price": 520,
-        "discount": 8,
-        "img": "/images/demo-food/Sup.jpg"
-    },
-    {
-        "id": "sf2",
-        "categoryId": "8",
-        "title": "Fried Calamari",
-        "des": "Crispy fried squid",
-        "price": 480,
-        "discount": 7,
-        "img": "/images/demo-food/Sea-food.jpg"
-    },
-    {
-        "id": "cf1",
-        "categoryId": "9",
-        "title": "Espresso",
-        "des": "Strong hot espresso",
-        "price": 180,
-        "discount": 0,
-        "img": "/images/demo-food/Sea-food.jpg"
-    },
-    {
-        "id": "cf2",
-        "categoryId": "9",
-        "title": "Cappuccino",
-        "des": "Milk coffee with foam",
-        "price": 240,
-        "discount": 5,
-        "img": "/images/demo-food/Sea-food.jpg"
+        id: "ch2",
+        categoryId: "4",
+        title: { en: "Vegetable Chow Mein", bn: "ভেজিটেবল চাউমিন" },
+        des: { en: "Mixed veggie noodles", bn: "মিশ্র সবজি দিয়ে তৈরি নুডলস" },
+        price: 280,
+        discount: 6,
+        img: "/images/demo-food/Chawmin.jpg",
     },
 
+    // 🍗 Chicken
     {
-        "id": "ps1",
-        "categoryId": "10",
-        "title": "Chicken Alfredo Pasta",
-        "des": "Creamy white sauce pasta",
-        "price": 420,
-        "discount": 7,
-        "img": "/images/demo-food/Pasta.jpg"
+        id: "ck1",
+        categoryId: "5",
+        title: { en: "Grilled Chicken", bn: "গ্রিলড চিকেন" },
+        des: { en: "Charcoal grilled chicken", bn: "কয়লার আগুনে গ্রিল করা চিকেন" },
+        price: 450,
+        discount: 8,
+        img: "/images/demo-food/Chicken.jpg",
     },
     {
-        "id": "ps2",
-        "categoryId": "10",
-        "title": "Spaghetti Bolognese",
-        "des": "Classic red sauce pasta",
-        "price": 400,
-        "discount": 6,
-        "img": "/images/demo-food/Pasta.jpg"
-    }
-]
+        id: "ck2",
+        categoryId: "5",
+        title: { en: "Fried Chicken", bn: "ফ্রাইড চিকেন" },
+        des: { en: "Crispy fried chicken", bn: "মচমচে ভাজা চিকেন" },
+        price: 400,
+        discount: 5,
+        img: "/images/demo-food/Chicken.jpg",
+    },
+
+    // 🍚 Biryani
+    {
+        id: "b1",
+        categoryId: "6",
+        title: { en: "Chicken Biryani", bn: "চিকেন বিরিয়ানি" },
+        des: { en: "Traditional spicy biryani", bn: "ঐতিহ্যবাহী ঝাল বিরিয়ানি" },
+        price: 380,
+        discount: 6,
+        img: "/images/demo-food/biryani.jpg",
+    },
+    {
+        id: "b2",
+        categoryId: "6",
+        title: { en: "Beef Biryani", bn: "বিফ বিরিয়ানি" },
+        des: { en: "Slow cooked beef biryani", bn: "ধীরে রান্না করা বিফ বিরিয়ানি" },
+        price: 420,
+        discount: 7,
+        img: "/images/demo-food/biryani.jpg",
+    },
+
+    // 🍲 Soup
+    {
+        id: "s1",
+        categoryId: "7",
+        title: { en: "Chicken Corn Soup", bn: "চিকেন কর্ন স্যুপ" },
+        des: { en: "Warm chicken corn soup", bn: "গরম চিকেন কর্ন স্যুপ" },
+        price: 220,
+        discount: 5,
+        img: "/images/demo-food/Sup.jpg",
+    },
+    {
+        id: "s2",
+        categoryId: "7",
+        title: { en: "Thai Soup", bn: "থাই স্যুপ" },
+        des: { en: "Spicy Thai style soup", bn: "ঝাল থাই স্টাইল স্যুপ" },
+        price: 260,
+        discount: 6,
+        img: "/images/demo-food/Sup.jpg",
+    },
+
+    // 🦐 Sea Food
+    {
+        id: "sf1",
+        categoryId: "8",
+        title: { en: "Grilled Prawn", bn: "গ্রিলড চিংড়ি" },
+        des: { en: "Charcoal grilled prawns", bn: "কয়লার আগুনে গ্রিল করা চিংড়ি" },
+        price: 520,
+        discount: 8,
+        img: "/images/demo-food/Sup.jpg",
+    },
+    {
+        id: "sf2",
+        categoryId: "8",
+        title: { en: "Fried Calamari", bn: "ফ্রাইড ক্যালামারি" },
+        des: { en: "Crispy fried squid", bn: "মচমচে ভাজা স্কুইড" },
+        price: 480,
+        discount: 7,
+        img: "/images/demo-food/Sea-food.jpg",
+    },
+
+    // ☕ Coffee
+    {
+        id: "cf1",
+        categoryId: "9",
+        title: { en: "Espresso", bn: "এসপ্রেসো" },
+        des: { en: "Strong hot espresso", bn: "গাঢ় গরম কফি" },
+        price: 180,
+        discount: 0,
+        img: "/images/demo-food/Sea-food.jpg",
+    },
+    {
+        id: "cf2",
+        categoryId: "9",
+        title: { en: "Cappuccino", bn: "ক্যাপুচিনো" },
+        des: { en: "Milk coffee with foam", bn: "ফেনাযুক্ত দুধ কফি" },
+        price: 240,
+        discount: 5,
+        img: "/images/demo-food/Sea-food.jpg",
+    },
+
+    // 🍝 Pasta
+    {
+        id: "ps1",
+        categoryId: "10",
+        title: { en: "Chicken Alfredo Pasta", bn: "চিকেন আলফ্রেডো পাস্তা" },
+        des: { en: "Creamy white sauce pasta", bn: "ক্রিমি হোয়াইট সস পাস্তা" },
+        price: 420,
+        discount: 7,
+        img: "/images/demo-food/Pasta.jpg",
+    },
+    {
+        id: "ps2",
+        categoryId: "10",
+        title: { en: "Spaghetti Bolognese", bn: "স্প্যাগেটি বোলোনেজ" },
+        des: { en: "Classic red sauce pasta", bn: "ক্লাসিক রেড সস পাস্তা" },
+        price: 400,
+        discount: 6,
+        img: "/images/demo-food/Pasta.jpg",
+    },
+];

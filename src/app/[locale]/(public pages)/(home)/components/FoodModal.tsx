@@ -6,6 +6,9 @@ import { Button } from "@/components/ui/button";
 import { TProduct } from "@/types/demoData";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
+import { useTranslations } from "next-intl";
 
 interface FoodModalProps {
     food: TProduct | null;
@@ -14,8 +17,10 @@ interface FoodModalProps {
 }
 
 export function FoodModal({ food, open, onOpenChange }: FoodModalProps) {
+    const t = useTranslations('shared');
     const [variant, setVariant] = useState<string>("1");
     const [quantity, setQuantity] = useState(1);
+    const { cartProducts } = useSelector((state: RootState) => state.productSlice);
 
     const handleQuantityChange = (newQuantity: number) => {
         if (newQuantity < 1) return;
@@ -37,6 +42,7 @@ export function FoodModal({ food, open, onOpenChange }: FoodModalProps) {
     }, [open]);
 
     if (!food) return null;
+    const isAddedToCart = cartProducts.some(item => item.id === food.id);
     return (
         <Dialog.Root open={open} onOpenChange={onOpenChange}>
             <Dialog.Portal>
@@ -44,12 +50,12 @@ export function FoodModal({ food, open, onOpenChange }: FoodModalProps) {
                 <Dialog.Content className="fixed top-1/2 left-1/2 max-w-[700px] !rounded-[10px] lg:!rounded-[12px] overflow-hidden w-full -translate-x-1/2 -translate-y-1/2 bg-body rounded-lg shadow-lg z-50">
                     <div className="flex items-center justify-between bg-primary px-4 py-2">
                         <Dialog.Title className="fg_fs-md text-white">
-                            Food Details
+                            {t('foodDetails')}
                         </Dialog.Title>
                         <Button onClick={onOpenChange} className="rounded-full !px-2.5" variant="secondary"> <X className=" w-5 md:w-6 md:h-6 h-5 lg:w-8 lg:h-8" /></Button>
                     </div>
                     <div className="p-4">
-                        <h5 className="font-semibold text-lg text-primary">{food.title}</h5>
+                        <h5 className="font-semibold text-lg text-primary">{food.title.bn}</h5>
                         <div className="flex gap-4 mt-4">
                             <Image className="max-w-[250px] max-h-[250px] rounded-[8px]" src={food.img} width={300} height={400} alt="Food Image" />
                             <div className="grow flex justify-between flex-col gap-2">
@@ -91,7 +97,7 @@ export function FoodModal({ food, open, onOpenChange }: FoodModalProps) {
                     </div>
                     <div className="w-full flex justify-end p-4">
                         <Dialog.Close className="" asChild >
-                            <Button className='mt-2 font-semibold hover:bg-secondary' ><ShoppingCart /> <span>Add To Cart</span></Button>
+                            <Button disabled={isAddedToCart} className='mt-2 font-semibold hover:bg-secondary' ><ShoppingCart /> <span>Add To Cart</span></Button>
                         </Dialog.Close>
                     </div>
                 </Dialog.Content>

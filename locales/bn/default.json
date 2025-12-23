@@ -1,6 +1,14 @@
 {
-  "home": {
-    "title": "হ্যালো"
+  "shared": {
+    "ads": "আপনার বিজ্ঞাপন এখানে",
+    "addToCart": "কার্টে যোগ করুন",
+    "total": "মোট",
+    "quantity": "পরিমাণ",
+    "emptyCart": "আপনার কার্ট খালি",
+    "viewCart": "কার্ট দেখুন",
+    "checkout": "চেকআউট",
+    "visit": "পরিদর্শন করুন",
+    "foodDetails": "খাবারের বিবরণ"
   },
   "header": {
     "categories": {
@@ -23,5 +31,8 @@
       "btn": "খুঁজুন"
     },
     "trackingTxt": "পার্সেল ট্র্যাকিং"
+  },
+  "home": {
+    "title": "হ্যালো"
   }
 }

@@ -7,12 +7,18 @@ export type TFoodItem = {
     productImage: string;
 }
 
+type TLocal = {
+    en: string;
+    bn: string;
+}
+
+
 // TODO: have to add necessary properties
-export type TProduct = {
+export interface TProduct {
     id: string;
     categoryId: string;
-    title: string;
-    des: string;
+    title: TLocal;
+    des: TLocal;
     price: number;
     discount: number;
     img: string;

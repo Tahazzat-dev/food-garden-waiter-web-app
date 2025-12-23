@@ -1,8 +1,7 @@
-"use client"
 import { configureStore } from "@reduxjs/toolkit";
 import localeReducer from "./features/locale/locale";
 import categorySlice from "./features/category/categorySlice";
-import productSlice from "./features/product/product";
+import productSlice from "./features/product/productSlice";
 export const store = configureStore({
   reducer: {
     // packages: packagesSlice,

@@ -1,6 +1,14 @@
 {
-  "home": {
-    "title": "Hello"
+  "shared": {
+    "ads": "Your ads here",
+    "addToCart": "Add to Cart",
+    "total": "Total",
+    "quantity": "Quantity",
+    "emptyCart": "Your cart is empty",
+    "viewCart": "View Cart",
+    "checkout": "Checkout",
+    "visit": "Visit",
+    "foodDetails": "Food Details"
   },
 
   "header": {
@@ -24,5 +32,8 @@
       "btn": "Search"
     },
     "trackingTxt": "Tracking Parcel"
+  },
+  "home": {
+    "title": "Hello"
   }
 }
