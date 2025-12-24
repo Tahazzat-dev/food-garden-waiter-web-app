@@ -22,9 +22,11 @@
   --popover-foreground: oklch(0.145 0 0);
 
   --primary: oklch(0.4839 0.1428 143.9312);
+  --primary-500: hsla(125, 64%, 27%, 0.89);
   --primary-foreground: oklch(0.985 0 0);
 
   --secondary: oklch(0.6263 0.2566 29.0971);
+  --secondary-500: oklch(62.626% 0.25671 29.198 / 0.87);
   --secondary-foreground: oklch(0.985 0 0);
 
   --muted: oklch(0.97 0 0);
@@ -131,9 +133,11 @@
   --popover-foreground: oklch(0.985 0 0);
 
   --primary: oklch(66.468% 0.22328 142.899);
+  --primary-500: oklch(66.468% 0.22328 142.899 / 0.897);
   --primary-foreground: oklch(1 0 0);
 
   --secondary: oklch(0.6263 0.2566 29.0971);
+  --secondary-500: oklch(0.6263 0.2566 29.0971 / 0.87);
   --secondary-foreground: oklch(0.985 0 0);
 
   --muted: oklch(0.269 0 0);
@@ -544,26 +548,26 @@ body {
   .custom-shadow-md {
     box-shadow: 2.3px 4px 5px #6e6e6e !important;
     border: 1px solid #a9a3a3;
-    border-radius: 8px;
+    border-radius: 6px;
     transition-duration: 0.3s;
   }
 
   .dark .custom-shadow-md {
     box-shadow: 2.3px 4px 5px #585858 !important;
     border: 1px solid #747474;
-    border-radius: 8px;
+    border-radius: 6px;
     transition-duration: 0.3s;
   }
 
   .custom-shadow-md:hover {
     border: 1px solid #747474;
-    border-radius: 9px;
+    border-radius: 7px;
     box-shadow: 2.3px 5px 5px #585858 !important;
   }
 
   .dark .custom-shadow-md:hover {
     border: 1px solid #a9a3a3;
-    border-radius: 9px;
+    border-radius: 7px;
     box-shadow: 2.3px 5px 5px #6e6e6e !important;
   }
 

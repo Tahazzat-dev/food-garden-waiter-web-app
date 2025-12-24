@@ -35,7 +35,7 @@ export default function FoodCart({ product }: { product: TProduct }) {
     return (
         <>
             <Card onClick={() => setOpenModal(true)} className='custom-shadow-card overflow-hidden shadow-2xl !border-none group z-0'>
-                <div className="w-full relative h-[200px]">
+                <div className="w-full relative h-[220px] sm:h-[200px]">
                     <button onClick={handleFavourite} className='hover:scale-105 absolute top-2 left-2 z-20'>
                         <HeartIcon fill='white' className='w-8 h-8 text-secondary' />
                     </button>

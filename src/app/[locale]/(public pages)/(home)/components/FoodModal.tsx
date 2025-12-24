@@ -60,9 +60,9 @@ export function FoodModal({ food, open, onOpenChange }: FoodModalProps) {
                             <Image className="max-w-[250px] max-h-[250px] rounded-[8px]" src={food.img} width={300} height={400} alt="Food Image" />
                             <div className="grow flex justify-between flex-col gap-2">
                                 <div className="flex items-center gap-2">
-                                    <Button onClick={() => setVariant('1')} variant={variant === "1" ? "secondary" : "primary"} className="custom-shadow-md !py-0.5">Variants 1</Button>
-                                    <Button onClick={() => setVariant('2')} variant={variant === "2" ? "secondary" : "primary"} className="custom-shadow-md !py-0.5">Variants 2</Button>
-                                    <Button onClick={() => setVariant('3')} variant={variant === "3" ? "secondary" : "primary"} className="custom-shadow-md !py-0.5">Variants 3</Button>
+                                    <Button onClick={() => setVariant('1')} variant={variant === "1" ? "secondary" : "primary"} className="text-white custom-shadow-md !py-0.5">Variants 1</Button>
+                                    <Button onClick={() => setVariant('2')} variant={variant === "2" ? "secondary" : "primary"} className="text-white custom-shadow-md !py-0.5">Variants 2</Button>
+                                    <Button onClick={() => setVariant('3')} variant={variant === "3" ? "secondary" : "primary"} className="text-white custom-shadow-md !py-0.5">Variants 3</Button>
                                 </div>
 
                                 <div className="w-full">
@@ -97,7 +97,7 @@ export function FoodModal({ food, open, onOpenChange }: FoodModalProps) {
                     </div>
                     <div className="w-full flex justify-end p-4">
                         <Dialog.Close className="" asChild >
-                            <Button disabled={isAddedToCart} className='mt-2 font-semibold hover:bg-secondary' ><ShoppingCart /> <span>Add To Cart</span></Button>
+                            <Button disabled={isAddedToCart} className='mt-2 font-semibold text-white hover:bg-secondary' ><ShoppingCart /> <span>Add To Cart</span></Button>
                         </Dialog.Close>
                     </div>
                 </Dialog.Content>
