@@ -9,16 +9,17 @@ import { RootState } from '@/redux/store';
 import { useSelector } from 'react-redux';
 
 export function CartSheet() {
-  const [cartItems, setCartItems] = useState<CartItem[]>(cartDemoData);
   const { cartProducts } = useSelector((state: RootState) => state.productSlice);
 
-  const handleQuantityChange = (id: number, quantity: number) => {
-    setCartItems((items) => items.map((item) => (item.id === id ? { ...item, quantity } : item)));
-  };
+  // const handleQuantityChange = (id: number, quantity: number) => {
+  //   setCartItems((items) => items.map((item) => (item.id === id ? { ...item, quantity } : item)));
+  // };
 
-  const handleRemove = (id: number) => {
-    setCartItems((items) => items.filter((item) => item.id !== id));
-  };
+  // const handleRemove = (id: number) => {
+  //   setCartItems((items) => items.filter((item) => item.id !== id));
+  // };
+
+
 
   return (
     <Drawer direction="right" >
@@ -27,11 +28,11 @@ export function CartSheet() {
           <ShoppingCart fill='white' className='text-white h-6 w-6 cursor-pointer' />
           {
             cartProducts.length > 0 ?
-              <span className='flex items-center justify-center text-xs px-0.5 min-w-4.5 min-h-4.5  absolute -top-[40%] left-[80%] translate-x-[-50%] bg-secondary text-white rounded-full p-[1px]'>{cartProducts.length}</span> : <></>
+              <span className='flex items-center justify-center text-xs px-0.5 min-w-4 min-h-4  absolute -top-[40%] left-[80%] translate-x-[-50%] bg-secondary text-white rounded-full p-[1px]'>{cartProducts.length}</span> : <></>
           }
         </div>
       </DrawerTrigger>
-      <DrawerContent hideOverlay={true} className="z-9999 shadow-2xl dark:shadow-amber-50 right-0 max-h-[90%] lg:max-h-[70%] top-[50%] rounded-md lg:rounded-lg -translate-y-[50%]" >
+      <DrawerContent hideOverlay={true} className="z-[9999] top-[5%] lg:top-[15%] dark:shadow-amber-50 right-0 max-h-[90%] lg:max-h-[70%] rounded-md lg:rounded-lg " >
         <div className="w-full h-full flex flex-col">
           <div className="w-full flex items-center gap-5 py-5 px-4 bg-primary">
             <DialogTitle className="grow flex text-white">
@@ -53,9 +54,9 @@ export function CartSheet() {
             ))}
           </div>
           <div className="w-full">
-            <div className="w-full flex justify-between gap-4 flex-wrap px-4 bg-black text-white dark:bg-white clr-opposite py-2 ">
+            <div className="w-full flex justify-between gap-4 flex-wrap px-4 bg-black dark:bg-white clr-opposite py-2 ">
               <p>Total Bill</p>
-              <p className='font-semibold'>1,600/-</p>
+              <p className='font-semibold'>{cartProducts.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2)}/-</p>
             </div>
             <button className="bg-primary fg_fs-md py-3 !text-white font-semibold !rounded-0 w-full">
               Checkout

@@ -16,6 +16,14 @@ const productSlice = createSlice({
         setCartProducts: (state, action: PayloadAction<TCartProduct[] | null>) => {
             state.cartProducts = action.payload || [];
         },
+        updateCartProduct: (state, action: PayloadAction<{ product: TCartProduct, id: string }>) => {
+            state.cartProducts = state.cartProducts.map(prod => {
+                if (prod.id === action.payload.id) {
+                    return action.payload.product;
+                }
+                return prod;
+            });
+        },
         addCartProduct: (state, action: PayloadAction<TCartProduct>) => {
             state.cartProducts.push(action.payload);
         },
@@ -26,5 +34,5 @@ const productSlice = createSlice({
     },
 });
 
-export const { setCartProducts, addCartProduct, removeCartProduct } = productSlice.actions;
+export const { setCartProducts, addCartProduct, removeCartProduct, updateCartProduct } = productSlice.actions;
 export default productSlice.reducer;

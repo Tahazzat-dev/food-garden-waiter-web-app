@@ -54,7 +54,7 @@ export default function FoodCart({ product }: { product: TProduct }) {
                     {/* <h6 className='mb-1'>{locale === "bn" ? product?.title.bn : product?.title.en}</h6> */}
                     <h6 className='mb-1'>{product?.title.bn}</h6>
                     <p className='fg_fs-sm'>{product.discount < 1 ? <span className=''>{product?.price}TK</span> : <span className='flex items-center gap-3'> <span className='line-through fg_fs-xs'>{product?.price}TK</span> <span className='text-primary'>{discountedPrice}TK</span></span>}</p>
-                    <Button disabled={isAddedToCart} onClick={handleAddToCart} className='custom-shadow-md w-full mt-2 font-semibold hover:bg-secondary' ><ShoppingCart /> <span>Add To Cart</span></Button>
+                    <Button disabled={isAddedToCart} onClick={handleAddToCart} className='custom-shadow-md text-white w-full mt-2 font-semibold hover:bg-secondary' ><ShoppingCart /> <span>Add To Cart</span></Button>
                 </div>
             </Card>
 

@@ -4,7 +4,7 @@ import { Minus, Plus, Trash2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { TCartProduct } from '@/types/types';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeCartProduct } from '@/redux/features/product/productSlice';
+import { removeCartProduct, updateCartProduct } from '@/redux/features/product/productSlice';
 import { RootState } from '@/redux/store';
 
 export function CartCard({ item }: { item: TCartProduct }) {
@@ -13,12 +13,12 @@ export function CartCard({ item }: { item: TCartProduct }) {
   // handlers
   const handleQuantityChange = (newQuantity: number) => {
     if (newQuantity < 1) return;
+    // Update the quantity in the Redux store
+    const updateProduct = { ...item, quantity: newQuantity };
+    dispatch(updateCartProduct({ product: updateProduct, id: item.id }));
   };
 
   const subtotal = item.price * item.quantity;
-
-  console.log('Rendering CartCard for item:', locale);
-  console.log("Rendering product", item)
 
   return (
     <div className='flex gap-3 pb-3 border-b border-dashed mb-3'>
