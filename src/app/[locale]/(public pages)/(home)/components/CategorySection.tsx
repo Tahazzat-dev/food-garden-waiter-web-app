@@ -8,7 +8,7 @@ import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { setCategories, setHomeActiveCategoryId } from '@/redux/features/category/categorySlice'
 
-export default function CategorySection() {
+export default function CategorySection({ className }: { className?: string }) {
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(setCategories(categoryItems))
@@ -21,8 +21,8 @@ export default function CategorySection() {
         dispatch(setHomeActiveCategoryId(categoryId))
     }
     return (
-        <section>
-            <Container className='overflow-x-auto pt-4 pb-2 mb-2'>
+        <section className={`bg-inherit ${className}`}>
+            <Container className='overflow-x-auto mt-4 lg:mt-0 lg:pt-4 pb-3 mb-1'>
                 <div className="flex flex-nowrap gap-2">
                     {
                         categoryItems.map(item => <button

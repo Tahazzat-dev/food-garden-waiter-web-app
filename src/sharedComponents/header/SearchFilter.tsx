@@ -89,7 +89,7 @@ export default function SearchFilter({ className }: { className?: string }) {
             <div className="grow flex gap-2">
                 <input
                     value={searchTxt} onChange={(e) => setSearchTxt(e.target.value)}
-                    type="text" className={clsx("dark:text-black grow fg_fs-sm w-full lg:min-w-[150px] xl:min-w-[350px] py-1 rounded-[4px] px-3 bg-white focus:border-0 focus:outline-0",
+                    type="text" className={clsx("dark:text-black grow fg_fs-sm w-full lg:min-w-[150px] xl:min-w-[350px] py-1 rounded-[4px] px-3 bg-white focus:outline-0",
                         className)} placeholder={tSearch('placeholder')} />
                 <Button onClick={handleSearch} variant="primary" className='text-white'>
                     {
