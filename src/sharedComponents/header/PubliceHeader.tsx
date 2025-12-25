@@ -10,15 +10,21 @@ import SiteLogo from './SiteLogo';
 import LocaleSwitcher from '../toggler/LocaleSwitcher';
 import { useTranslations } from 'next-intl';
 import ThemeSwitcher from '../toggler/ThemeSwitcher';
+import Image from 'next/image';
 
 export default function PubliceHeader() {
   const tTracking = useTranslations('header');
   return (
     <>
       <section className='z-[9998] w-full fixed top-0 left-0 py-1 bg-[var(--bg-header)]'>
-        <Container className='flex items-center gap-3 lg:justify-between lg:gap-5'>
+        <Container className='flex items-center gap-3 lg:justify-between lg:gap-5 py-1 lg:py-1.5'>
           <div className="grow lg:grow-0 flex items-center justify-between lg:justify-start gap-4 lg:gap-5">
-            <PublicSidebar />
+            <div className="flex gap-5  items-center">
+              <PublicSidebar />
+              <Link href="/" className=' inline-block'>
+                <Image className='w-9 lg:w-10 h-auto' src="/images/shared/home-icon.svg" width={40} height={70} alt="Home Icon" />
+              </Link>
+            </div>
             <SiteLogo />
           </div>
           <div className='hidden relative lg:flex fg_rounded items-center  h-9 gap-2'>

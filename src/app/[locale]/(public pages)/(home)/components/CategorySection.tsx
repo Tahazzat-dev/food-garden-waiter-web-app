@@ -22,13 +22,13 @@ export default function CategorySection() {
     }
     return (
         <section>
-            <Container className='overflow-x-auto py-4'>
+            <Container className='overflow-x-auto pt-4 pb-2 mb-2'>
                 <div className="flex flex-nowrap gap-2">
                     {
                         categoryItems.map(item => <button
                             onClick={() => handleSelectCategory(item.id)}
                             // href={item.slug}
-                            className='rounded-[6px] custom-shadow-card-sm min-w-[120px] grow group group block overflow-hidden z-30 relative' key={item.id} >
+                            className='rounded-[6px] custom-shadow-card-sm min-w-[80px] lg:min-w-[120px] grow group group block overflow-hidden z-30 relative' key={item.id} >
                             <Image className='object-cover w-full duration-300 group-hover:scale-105 ' src={item.img} width={300} height={400} alt="Google add banner" />
                             <CategoryName category={item} />
                         </button>)

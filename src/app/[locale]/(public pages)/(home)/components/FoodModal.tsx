@@ -9,7 +9,7 @@ import { MouseEvent, useEffect, useState } from "react";
 import { RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslations } from "next-intl";
-import { addCartProduct } from "@/redux/features/product/productSlice";
+import { addCartProduct, updateCartProduct } from "@/redux/features/product/productSlice";
 
 interface FoodModalProps {
     food: TProduct | null;
@@ -30,9 +30,16 @@ export function FoodModal({ food, open, onOpenChange }: FoodModalProps) {
         event.stopPropagation();
         event.preventDefault();
         if (!food) return;
-        // Add your add to cart logic here
         dispatch(addCartProduct({ ...food, quantity: 1 }));
 
+    }
+
+
+    const handleQuantityChange = (newQuantity: number) => {
+        if (newQuantity < 1) return;
+        if (!food?.id) return;
+        setQuantity(newQuantity);
+        dispatch(updateCartProduct({ id: food.id, product: { ...food, quantity: newQuantity } }));
     }
 
     const subtotal = food?.price ? food.price * quantity : 0;
@@ -49,6 +56,15 @@ export function FoodModal({ food, open, onOpenChange }: FoodModalProps) {
         };
     }, [open]);
 
+
+    useEffect(() => {
+        setQuantity(1);
+        return () => {
+            console.log("FoodModal unmounted");
+        }
+    }, [])
+
+
     if (!food) return null;
     const isAddedToCart = cartProducts.some(item => item.id === food.id);
     return (
@@ -60,7 +76,7 @@ export function FoodModal({ food, open, onOpenChange }: FoodModalProps) {
                         <Dialog.Title className="fg_fs-md text-white">
                             {t('foodDetails')}
                         </Dialog.Title>
-                        <Button onClick={onOpenChange} className="rounded-full !px-2.5" variant="secondary"> <X className=" w-5 md:w-6 md:h-6 h-5 lg:w-8 lg:h-8" /></Button>
+                        <Button onClick={onOpenChange} className="rounded-full !px-2.5" variant="secondary"> <X className="!text-white w-5 md:w-6 md:h-6 h-5 lg:w-8 lg:h-8" /></Button>
                     </div>
                     <div className="p-4">
                         <h5 className="font-semibold text-lg text-primary">{locale === "bn" ? food.title.bn : food.title.en}</h5>
@@ -82,7 +98,7 @@ export function FoodModal({ food, open, onOpenChange }: FoodModalProps) {
                                                 variant='primary'
                                                 size='icon'
                                                 className='h-6 w-6 !rounded-full'
-                                            // onClick={() => handleQuantityChange(quantity - 1)}
+                                                onClick={() => handleQuantityChange(quantity - 1)}
                                             >
                                                 <Minus className='h-3 w-3' />
                                             </Button>
@@ -91,7 +107,7 @@ export function FoodModal({ food, open, onOpenChange }: FoodModalProps) {
                                                 variant='primary'
                                                 size='icon'
                                                 className='h-6 w-6 !rounded-full'
-                                            // onClick={() => handleQuantityChange(quantity + 1)}
+                                                onClick={() => handleQuantityChange(quantity + 1)}
                                             >
                                                 <Plus className='h-3 w-3' />
                                             </Button>
