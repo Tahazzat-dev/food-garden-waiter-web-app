@@ -26,8 +26,9 @@ export function CartCard({ item }: { item: TCartProduct }) {
         <Image
           src={item.img || '/images/placeholder/placeholder.jpg'}
           alt={locale === "bn" ? item.title.bn : item.title.en || 'Product Image'}
-          fill
-          className='object-cover'
+          width={72}
+          height={72}
+          className='object-cover w-full h-full'
         />
       </div>
 

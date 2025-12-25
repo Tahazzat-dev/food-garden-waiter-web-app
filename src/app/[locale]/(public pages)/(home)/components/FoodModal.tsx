@@ -9,7 +9,7 @@ import { MouseEvent, useEffect, useState } from "react";
 import { RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslations } from "next-intl";
-import { addCartProduct, updateCartProduct } from "@/redux/features/product/productSlice";
+import { addCartProduct } from "@/redux/features/product/productSlice";
 
 interface FoodModalProps {
     food: TProduct | null;
@@ -30,7 +30,8 @@ export function FoodModal({ food, open, onOpenChange }: FoodModalProps) {
         event.stopPropagation();
         event.preventDefault();
         if (!food) return;
-        dispatch(addCartProduct({ ...food, quantity: 1 }));
+        dispatch(addCartProduct({ ...food, quantity }));
+        onOpenChange();
 
     }
 
@@ -39,7 +40,6 @@ export function FoodModal({ food, open, onOpenChange }: FoodModalProps) {
         if (newQuantity < 1) return;
         if (!food?.id) return;
         setQuantity(newQuantity);
-        dispatch(updateCartProduct({ id: food.id, product: { ...food, quantity: newQuantity } }));
     }
 
     const subtotal = food?.price ? food.price * quantity : 0;
@@ -121,7 +121,7 @@ export function FoodModal({ food, open, onOpenChange }: FoodModalProps) {
                     </div>
                     <div className="w-full flex justify-end p-4">
                         <Dialog.Close className="" asChild >
-                            <Button onClick={handleAddToCart} disabled={isAddedToCart} className='mt-2 font-semibold text-white hover:bg-secondary' ><ShoppingCart /> <span>{t('addToCart')}</span></Button>
+                            <Button onClick={handleAddToCart} className={`text-white mt-2 font-semibold  ${isAddedToCart ? ' bg-secondary hover:bg-secondary !cursor-not-allowed' : 'custom-shadow-md  bg-primary hover:bg-primary-500'}`} ><ShoppingCart /> <span>{t('addToCart')}</span></Button>
                         </Dialog.Close>
                     </div>
                 </Dialog.Content>
