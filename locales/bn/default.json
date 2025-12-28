@@ -2,13 +2,21 @@
   "shared": {
     "ads": "আপনার বিজ্ঞাপন এখানে",
     "addToCart": "কার্টে যোগ করুন",
+    "addedToCart": "কার্টে যোগ করা হয়েছে",
+    "removedFromCart": "কার্ট থেকে মুছে ফেলা হয়েছে",
     "total": "মোট",
     "quantity": "পরিমাণ",
     "emptyCart": "আপনার কার্ট খালি",
     "viewCart": "কার্ট দেখুন",
     "checkout": "চেকআউট",
     "visit": "পরিদর্শন করুন",
-    "foodDetails": "খাবারের বিবরণ"
+    "foodDetails": "খাবারের বিবরণ",
+    "favouriteFoods": "প্রিয় খাবার",
+    "noFavouriteFoods": "কোন প্রিয় খাবার যোগ করা হয়নি",
+    "removeAll": "সব মুছে ফেলুন",
+    "remove": "মুছে ফেলুন",
+    "addedToFavourite": "প্রিয় তালিকায় যোগ করা হয়েছে",
+    "removedFromFavourite": "প্রিয় তালিকা থেকে মুছে ফেলা হয়েছে"
   },
   "header": {
     "categories": {

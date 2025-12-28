@@ -32,7 +32,7 @@ export function CartSheet() {
           }
         </div>
       </DrawerTrigger>
-      <DrawerContent hideOverlay={true} className="z-[9999] top-[5%] lg:top-[15%] dark:shadow-amber-50 right-0 max-h-[90%] lg:max-h-[70%] rounded-md lg:rounded-lg " >
+      <DrawerContent hideOverlay={true} className="z-[9999] max-w-[500px] top-[5%] lg:top-[15%] dark:shadow-amber-50 right-0 max-h-[90%] lg:max-h-[70%] rounded-md lg:rounded-lg " >
         <div className="w-full h-full flex flex-col">
           <div className="w-full flex items-center gap-5 py-5 px-4 bg-primary">
             <DialogTitle className="grow flex text-white">

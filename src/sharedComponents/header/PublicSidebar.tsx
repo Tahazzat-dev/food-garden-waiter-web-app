@@ -62,11 +62,11 @@ export default function PublicSidebar() {
     return (
         <Drawer direction="left" >
             <DrawerTrigger asChild>
-                <Button className="!px-2 !h-auto !border-0 xl:hidden" >
+                <Button className="!px-2 !h-auto !border-0" >
                     <MenuIcon className='w-5 md:w-6 h-5 md:h-6 text-white' />
                 </Button>
             </DrawerTrigger>
-            <DrawerContent className="top-0 left-0 z-[9999]">
+            <DrawerContent className="w-[78vw] max-w-[400px] top-0 left-0 z-[9999]">
                 <div className="w-full h-full p-5 pt-2">
                     <div className="w-full flex items-center gap-5 mb-4">
                         <DrawerTitle className="grow flex">

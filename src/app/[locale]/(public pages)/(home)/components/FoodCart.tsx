@@ -54,9 +54,9 @@ export default function FoodCart({ product }: { product: TProduct }) {
                     <div className="w-full h-full overflow-hidden">
                         <Image src={product?.img} className='z-10 w-full duration-300 group-hover:scale-105 h-full' width={300} height={400} alt={locale === "bn" ? product?.title.bn : product?.title.en || 'Product Image'} />
                     </div>
-                    <Link className='font-semibold p-1 px-[5.5px] custom-shadow-md bg-primary hover:bg-primary-500 text-white absolute bottom-1 md:bottom-2 right-1 md:right-2 z-20' href={`/products/${product.id}`}>
+                    <span className='font-semibold p-1 px-[5.5px] custom-shadow-md bg-primary hover:bg-primary-500 text-white absolute bottom-1 md:bottom-2 right-1 md:right-2 z-20' href={`/products/${product.id}`}>
                         <Eye className='w-5 h-5' />
-                    </Link>
+                    </span>
                     {
                         !!product?.discount && <span className='absolute fg_fs-xxs  top-2 right-2 bg-secondary text-white px-2 py-1 rounded-md'>
                             {product?.discount}% Off

@@ -1,6 +1,6 @@
 import Container from '../wrapper/Container';
 import Link from 'next/link';
-import { Heart, User } from 'lucide-react';
+import { User } from 'lucide-react';
 import SearchFilter from './SearchFilter';
 import { VerticalDivider } from '../utils/Utils';
 import PublicSidebar from './PublicSidebar';
@@ -9,6 +9,7 @@ import SiteLogo from './SiteLogo';
 import LocaleSwitcher from '../toggler/LocaleSwitcher';
 import { useTranslations } from 'next-intl';
 import ThemeSwitcher from '../toggler/ThemeSwitcher';
+import { FavouriteFoods } from '../favourite/FavouriteFoods';
 
 export default function PubliceHeader() {
   const tTracking = useTranslations('header');
@@ -30,9 +31,7 @@ export default function PubliceHeader() {
               <span className='fg_fs-xs '>{tTracking('trackingTxt')}</span>
             </div>
             <VerticalDivider className='hidden h-full lg:block' />
-            <Link href='' className='text-white hidden md:block'>
-              <Heart fill='white' className='h-6 w-6' />
-            </Link>
+            <FavouriteFoods />
             <CartSheet />
             <div className='text-white'>
               <User fill='white' className='h-6 w-6' />

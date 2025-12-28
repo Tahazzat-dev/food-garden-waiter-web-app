@@ -2,13 +2,21 @@
   "shared": {
     "ads": "Your ads here",
     "addToCart": "Add to Cart",
+    "addedToCart": "Added to Cart",
+    "removedFromCart": "Removed from Cart",
     "total": "Total",
     "quantity": "Quantity",
     "emptyCart": "Your cart is empty",
     "viewCart": "View Cart",
     "checkout": "Checkout",
     "visit": "Visit",
-    "foodDetails": "Food Details"
+    "foodDetails": "Food Details",
+    "favouriteFoods": "Favourite Foods",
+    "noFavouriteFoods": "No favourite foods added",
+    "removeAll": "Remove All",
+    "remove": "Remove",
+    "addedToFavourite": "Added to favourite",
+    "removedFromFavourite": "Removed from favourite"
   },
 
   "header": {
