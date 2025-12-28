@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { TProduct } from '@/types/demoData'
-import { HeartIcon, Info, ShoppingCart, View } from 'lucide-react'
+import { Eye, HeartIcon, Info, ShoppingCart, View } from 'lucide-react'
 import Image from 'next/image'
 import { MouseEvent, useState } from 'react'
 import { FoodModal } from './FoodModal'
@@ -54,11 +54,9 @@ export default function FoodCart({ product }: { product: TProduct }) {
                     <div className="w-full h-full overflow-hidden">
                         <Image src={product?.img} className='z-10 w-full duration-300 group-hover:scale-105 h-full' width={300} height={400} alt={locale === "bn" ? product?.title.bn : product?.title.en || 'Product Image'} />
                     </div>
-                    <Link className='custom-btn absolute left-0 bottom-0' href={`/products/${product.id}`}>
-                        {/* <Button variant="primary" className=''> */}
-                        <EyeIcon className='!w-10' />
-                        <View size={35} className='' />
-                        {/* </Button> */}
+                    <Link className='font-semibold !rounded-full custom-shadow-md bg-primary hover:bg-primary-500 text-white absolute bottom-1 md:bottom-2 right-1 md:right-2 z-20' href={`/products/${product.id}`}>
+                        {/* <Info /> */}
+                        <Eye />
                     </Link>
                     {
                         !!product?.discount && <span className='absolute fg_fs-xxs  top-2 right-2 bg-secondary text-white px-2 py-1 rounded-md'>
@@ -70,12 +68,13 @@ export default function FoodCart({ product }: { product: TProduct }) {
                 <div className="w-full p-3 md:p-4 bg-slate-100 dark:bg-slate-700">
                     <h6 className='mb-1'>{locale === "bn" ? product?.title.bn : product?.title.en}</h6>
                     <p className='fg_fs-sm'>{product.discount < 1 ? <span className=''>{product?.price}TK</span> : <span className='flex items-center gap-3'> <span className='line-through fg_fs-xs'>{product?.price}TK</span> <span className='text-primary'>{discountedPrice}TK</span></span>}</p>
+
                     <div className="w-full flex gap-3 lg:gap-5 mt-2">
-                        <Link href={`/products/${product.id}`} className="text-primary hover:underline">
+                        {/* <Link href={`/products/${product.id}`} className="text-primary hover:underline">
                             <Button variant="primary" className='md:min-w-10 custom-shadow-md' >
                                 <span className='fg_fs-lg'>i</span>
                             </Button>
-                        </Link>
+                        </Link> */}
                         <Button onClick={openDetailsModal} className={`text-white w-full font-semibold  ${isAddedToCart ? ' bg-secondary hover:bg-secondary !cursor-not-allowed' : 'custom-shadow-md  bg-primary hover:bg-primary-500'}`} ><ShoppingCart /> <span>{t('addToCart')}</span></Button>
                     </div>
                 </div>
