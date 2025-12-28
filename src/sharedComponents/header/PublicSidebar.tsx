@@ -46,8 +46,6 @@ export function MenuTabSwitcher() {
 }
 
 
-
-import * as React from "react"
 import {
     Drawer,
     DrawerClose,

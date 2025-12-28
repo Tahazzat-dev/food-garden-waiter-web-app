@@ -48,50 +48,42 @@ export default function SearchFilter({ className }: { className?: string }) {
     }, [searchTxt]);
 
     // handlers
-    const handleSearch = () => {
-        try {
-            if (!searchTxt.trim()) return;
-
-            setLoading(true);
-            // TODO: have to implement real search API later  
-            // TODO: have to navigate to the all items page with search query
-
-        } catch (error) {
-            console.error("Search error:", error);
-        } finally {
-            setLoading(false);
-        }
+    const handleRefresh = () => {
+        setSearchTxt('');
+        setResults([]);
     }
 
     // 
     return (
         <>
-            <Select>
-                <SelectTrigger className="border-none bg-primary hover:bg-primary-500 text-white shadow-sm">
-                    <SelectValue placeholder={tCategory('all')} />
-                </SelectTrigger>
+            <div className='hidden lg:block'>
+                <Select>
+                    <SelectTrigger className="border-none bg-primary hover:bg-primary-500 text-white shadow-sm">
+                        <SelectValue placeholder={tCategory('all')} />
+                    </SelectTrigger>
 
-                <SelectContent className='z-[9999] bg-white dark:bg-black' >
-                    <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="burger">{tCategory('burger')}</SelectItem>
-                    <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="pizza">{tCategory('pizza')}</SelectItem>
-                    <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="sushi">{tCategory('sushi')}</SelectItem>
-                    <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="pasta">{tCategory('pasta')}</SelectItem>
-                    <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="taco">{tCategory('taco')}</SelectItem>
-                    <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="salad">{tCategory('salad')}</SelectItem>
-                    <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="steak">{tCategory('steak')}</SelectItem>
-                    <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="soup">{tCategory('soup')}</SelectItem>
-                    <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="sandwich">{tCategory('sandwich')}</SelectItem>
-                    <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="dessert">{tCategory('dessert')}</SelectItem>
-                    <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="appetizer">{tCategory('appetizer')}</SelectItem>
-                    <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="drink">{tCategory('drink')}</SelectItem>
-                </SelectContent>
-            </Select>
+                    <SelectContent className='z-[9999] bg-white dark:bg-black' >
+                        <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="burger">{tCategory('burger')}</SelectItem>
+                        <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="pizza">{tCategory('pizza')}</SelectItem>
+                        <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="sushi">{tCategory('sushi')}</SelectItem>
+                        <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="pasta">{tCategory('pasta')}</SelectItem>
+                        <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="taco">{tCategory('taco')}</SelectItem>
+                        <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="salad">{tCategory('salad')}</SelectItem>
+                        <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="steak">{tCategory('steak')}</SelectItem>
+                        <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="soup">{tCategory('soup')}</SelectItem>
+                        <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="sandwich">{tCategory('sandwich')}</SelectItem>
+                        <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="dessert">{tCategory('dessert')}</SelectItem>
+                        <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="appetizer">{tCategory('appetizer')}</SelectItem>
+                        <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="drink">{tCategory('drink')}</SelectItem>
+                    </SelectContent>
+                </Select>
+            </div>
             <div className="grow flex gap-2">
                 <input
                     value={searchTxt} onChange={(e) => setSearchTxt(e.target.value)}
                     type="text" className={clsx("dark:text-black grow fg_fs-sm w-full lg:min-w-[150px] xl:min-w-[350px] py-1 rounded-[4px] px-3 bg-white focus:outline-0",
                         className)} placeholder={tSearch('placeholder')} />
-                <Button onClick={handleSearch} variant="primary" className='text-white'>
+                <Button onClick={handleRefresh} variant="primary" className='text-white'>
                     {
                         tSearch('btn')
                     }

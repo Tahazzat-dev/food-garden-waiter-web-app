@@ -70,8 +70,8 @@ export function FoodModal({ food, open, onOpenChange }: FoodModalProps) {
     return (
         <Dialog.Root open={open} onOpenChange={onOpenChange}>
             <Dialog.Portal>
-                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50" />
-                <Dialog.Content className="fixed top-1/2 left-1/2 max-w-[700px] !rounded-[10px] lg:!rounded-[12px] overflow-hidden w-full -translate-x-1/2 -translate-y-1/2 bg-body rounded-lg shadow-lg dark:shadow-slate-800 z-50">
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999]" />
+                <Dialog.Content className="fixed top-1/2 left-1/2 max-w-[700px] !rounded-[10px] lg:!rounded-[12px] overflow-hidden w-full -translate-x-1/2 -translate-y-1/2 bg-body rounded-lg shadow-lg dark:shadow-slate-800 z-[99999]">
                     <div className="flex items-center justify-between bg-primary px-4 py-2">
                         <Dialog.Title className="fg_fs-md text-white">
                             {t('foodDetails')}
