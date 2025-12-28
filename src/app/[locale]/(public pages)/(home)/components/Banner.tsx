@@ -20,19 +20,37 @@ const bannerData = [
 export default function Banner() {
     return (
         <section className='w-full pt-[70px]'>
-            <div className="w-full h-full ">
+            <div className="w-full">
                 <Swiper
                     modules={[Pagination]}
-                    pagination={{
-                        clickable: true,
-                        type: "bullets",
-                    }}
-                    className="home-banner-swiper h-[28vh] md:h-[34vh] min-h-[250px] md:min-h-[350px] lg:min-h-[400px] max-h-[700px] overflow-hidden"
+                    pagination={{ clickable: true }}
+                    className="
+        home-banner-swiper
+        w-full
+        aspect-[16/9]              /* base ratio */
+        sm:aspect-[16/8]
+        lg:aspect-[16/6]
+        xl:aspect-[16/5]
+
+        min-h-[220px]
+        sm:min-h-[260px]
+        md:min-h-[320px]
+        lg:min-h-[380px]
+        xl:min-h-[420px]
+
+        max-h-[280px]
+        sm:max-h-[360px]
+        md:max-h-[440px]
+        lg:max-h-[520px]
+        xl:max-h-[600px]
+        text-white dark:text-black
+        overflow-hidden
+      "
                 >
                     {bannerData.map((item) => (
                         <SwiperSlide
                             key={item.id}
-                            className="flex items-center justify-center h-[300px] md:h-[420px] bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-3xl font-semibold"
+                            className="flex items-center justify-center bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-3xl font-semibold"
                         >
                             <Image className='object-cover w-full h-full' src={item.imageUrl} width={300} height={400} alt={item.altText} />
                         </SwiperSlide>

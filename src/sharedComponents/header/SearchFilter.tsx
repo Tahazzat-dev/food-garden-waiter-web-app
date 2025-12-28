@@ -62,7 +62,7 @@ export default function SearchFilter({ className }: { className?: string }) {
                         <SelectValue placeholder={tCategory('all')} />
                     </SelectTrigger>
 
-                    <SelectContent className='z-[9999] bg-white dark:bg-black' >
+                    <SelectContent className='bg-white dark:bg-black' >
                         <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="burger">{tCategory('burger')}</SelectItem>
                         <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="pizza">{tCategory('pizza')}</SelectItem>
                         <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="sushi">{tCategory('sushi')}</SelectItem>
