@@ -54,7 +54,7 @@ export default function FoodCart({ product }: { product: TProduct }) {
                     <div className="w-full h-full overflow-hidden">
                         <Image src={product?.img} className='z-10 w-full duration-300 group-hover:scale-105 h-full' width={300} height={400} alt={locale === "bn" ? product?.title.bn : product?.title.en || 'Product Image'} />
                     </div>
-                    <Link className='font-semibold !rounded-full custom-shadow-md bg-primary hover:bg-primary-500 text-white absolute bottom-1 md:bottom-2 right-1 md:right-2 z-20' href={`/products/${product.id}`}>
+                    <Link className='font-semibold p-0.5 custom-shadow-md bg-primary hover:bg-primary-500 text-white absolute bottom-1 md:bottom-2 right-1 md:right-2 z-20' href={`/products/${product.id}`}>
                         {/* <Info /> */}
                         <Eye />
                     </Link>
