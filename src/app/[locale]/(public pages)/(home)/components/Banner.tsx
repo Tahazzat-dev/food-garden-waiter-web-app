@@ -27,7 +27,7 @@ export default function Banner() {
                         clickable: true,
                         type: "bullets",
                     }}
-                    className="home-banner-swiper h-[50vh] min-h-[300px] md:min-h-[400px] max-h-[700px] overflow-hidden"
+                    className="home-banner-swiper h-[28vh] md:h-[34vh] min-h-[250px] md:min-h-[350px] lg:min-h-[400px] max-h-[700px] overflow-hidden"
                 >
                     {bannerData.map((item) => (
                         <SwiperSlide
