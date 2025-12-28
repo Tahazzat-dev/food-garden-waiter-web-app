@@ -80,8 +80,8 @@ export function FoodModal({ food, open, onOpenChange }: FoodModalProps) {
                     </div>
                     <div className="p-4">
                         <h5 className="font-semibold text-lg text-primary">{locale === "bn" ? food.title.bn : food.title.en}</h5>
-                        <div className="flex gap-4 mt-4">
-                            <Image className="max-w-[180px] lg:max-w-[250px] max-h-[180px] lg:max-h-[250px] rounded-[8px]" src={food.img} width={300} height={400} alt="Food Image" />
+                        <div className="flex gap-3 lg:gap-4 mt-4">
+                            <Image className="max-w-[120px] md:max-w-[180px] lg:max-w-[250px] max-h-[120px] md:max-h-[180px] lg:max-h-[250px] rounded-[8px]" src={food.img} width={300} height={400} alt="Food Image" />
                             <div className="grow flex justify-between flex-col gap-2">
                                 <div className="flex flex-wrap items-center gap-2">
                                     <Button onClick={() => setVariant('1')} variant={variant === "1" ? "secondary" : "primary"} className="text-white custom-shadow-md !py-0.5">{locale === "bn" ? "বিকল্প 1" : "Variants 1"}</Button>
@@ -119,8 +119,8 @@ export function FoodModal({ food, open, onOpenChange }: FoodModalProps) {
                             </div>
                         </div>
                         <div className="w-full block md:hidden mt-5">
-                            <p className="mb-3">{locale === "bn" ? "পণ্য নোটস:" : "Product Notes:"}</p>
-                            <div className='mt-auto flex items-center justify-between bg-slate-300/60 px-2 py-1 rounded-[4px]'>
+                            <p className="mb-2">{locale === "bn" ? "পণ্য নোটস:" : "Product Notes:"}</p>
+                            <div className='mt-auto flex items-center justify-between lg:bg-slate-300/60 px-2 py-1 rounded-[4px]'>
                                 <p className='fg_fs-xs font-semibold text-center grow dark:!text-black'>{food.price.toFixed(2)}/-</p>
                                 <div className='flex items-center gap-3 lg:gap-2 rounded-md py-0.5'>
                                     <Button
