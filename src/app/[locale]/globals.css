@@ -620,4 +620,6 @@ body {
   max-height: 80vh;
   max-height: calc(100vh - 156px);
   max-height: calc(100dvh - 156px);
+
+  @apply lg:max-h-[500px];
 }
