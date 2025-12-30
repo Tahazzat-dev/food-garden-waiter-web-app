@@ -44,14 +44,14 @@ export function FavouriteFoodsModal({ open, onOpenChange }: Props) {
                         </Dialog.Title>
                         <Button onClick={onOpenChange} className="rounded-full !px-2.5" variant="secondary"> <X className="!text-white w-5 md:w-6 md:h-6 h-5 lg:w-8 lg:h-8" /></Button>
                     </div>
-                    <div className="px-2.5 md:px-4 my-2.5 md:my-4 overflow-y-auto grow">
+                    <div className="px-2.5 md:px-4 my-2.5 md:my-4 overflow-y-auto grow flex flex-col gap-5">
                         {
                             favouriteProducts.length > 1 ?
                                 favouriteProducts.map((food) => {
                                     const discountedPrice = food.price - (food.price * food.discount) / 100;
                                     const isAddedToCart = cartProducts.some(item => item.id === food.id);
-                                    return <div key={food.id} className='flex gap-3 pb-3 border-b border-dashed mb-3'>
-                                        <div className='bg-muted relative w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 xl:w-[72px] xl:h-[72px] rounded-md overflow-hidden'>
+                                    return <div key={food.id} className='flex gap-3 pb-3'>
+                                        <div className='bg-muted relative w-14 h-14 lg:w-16 lg:h-16 xl:w-[72px] xl:h-[72px] rounded-md overflow-hidden'>
                                             <Image
                                                 src={food.img || '/images/placeholder/placeholder.jpg'}
                                                 alt={locale === "bn" ? food.title.bn : food.title.en || 'Product Image'}
