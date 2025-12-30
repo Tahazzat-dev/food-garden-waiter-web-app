@@ -609,3 +609,8 @@ body {
     box-shadow: 5px 7px 14px #4d4d4d !important;
   }
 }
+
+/* auth form input styles */
+.auth-input {
+  @apply border p-3 py-1.5 rounded-md w-full border-slate-300 focus:border-slate-400 outline-none;
+}

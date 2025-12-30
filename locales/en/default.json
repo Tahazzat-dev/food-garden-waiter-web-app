@@ -19,6 +19,29 @@
     "removedFromFavourite": "Removed from favourite"
   },
 
+  "authentication": {
+    "login": "Login",
+    "register": "Register",
+    "name": "Name",
+    "nameError": "Name is required",
+    "namePlaceholder": "Enter name",
+    "email": "Email",
+    "emailError": "Email is required",
+    "emailPlaceholder": "Enter email",
+    "phone": "Phone",
+    "phoneError": "Phone number must be at least 11 digits",
+    "phonePlaceholder": "Enter phone number",
+    "password": "Password",
+    "passwordPlaceholder": "Enter password",
+    "passwordError": "Password must be at least 8 characters",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Enter confirm password",
+    "confirmPasswordError": "Passwords don't match",
+    "forgotPassword": "Forgot Password?",
+    "dontHaveAccount": "Don't have an account? Register",
+    "haveAccount": "Already have an account? Login",
+    "submit": "Submit"
+  },
   "header": {
     "categories": {
       "all": "All Categories",

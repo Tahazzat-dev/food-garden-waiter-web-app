@@ -22,7 +22,7 @@ export function CartCard({ item }: { item: TCartProduct }) {
 
   return (
     <div className='flex gap-3 pb-3 border-b border-dashed mb-3'>
-      <div className='bg-muted relative h-18 w-18 flex-shrink-0 overflow-hidden rounded-md'>
+      <div className='bg-muted relative min-h-14 min-w-14 md:min-w-16 md:min-h-16 flex-shrink-0 overflow-hidden rounded-md'>
         <Image
           src={item.img || '/images/placeholder/placeholder.jpg'}
           alt={locale === "bn" ? item.title.bn : item.title.en || 'Product Image'}
@@ -32,7 +32,7 @@ export function CartCard({ item }: { item: TCartProduct }) {
         />
       </div>
 
-      <div className='flex gap-1 flex-col flex-grow'>
+      <div className='flex gap-1 flex-col flex-grow max-w-[300px]'>
         <div className="flex items-center gap-2 justify-between">
           <div className="flex flex-col">
             <h3 className='line-clamp-2 fg_fs-xs text-primary leading-tight font-medium'>{locale === "bn" ? item.title.bn : item.title.en}</h3>
@@ -41,7 +41,7 @@ export function CartCard({ item }: { item: TCartProduct }) {
           <Button
             variant='secondary'
             size='icon'
-            className='p-1 h-6 w-6 rounded-full shadow-sm'
+            className='prevent-body-trigger p-1 h-6 w-6 rounded-full shadow-sm'
             onClick={() => dispatch(removeCartProduct(item.id))}
           >
             <Trash2 className='text-white  h-3 w-3' />

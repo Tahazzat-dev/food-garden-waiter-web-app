@@ -10,6 +10,7 @@ import LocaleSwitcher from '../toggler/LocaleSwitcher';
 import { useTranslations } from 'next-intl';
 import ThemeSwitcher from '../toggler/ThemeSwitcher';
 import { FavouriteFoods } from '../favourite/FavouriteFoods';
+import AuthUser from './AuthUser';
 
 export default function PubliceHeader() {
   const tTracking = useTranslations('header');
@@ -33,9 +34,7 @@ export default function PubliceHeader() {
             <VerticalDivider className='hidden h-full lg:block' />
             <FavouriteFoods />
             <CartSheet />
-            <div className='text-white'>
-              <User fill='white' className='h-6 w-6' />
-            </div>
+            <AuthUser />
             <LocaleSwitcher type='ghost' className='hidden xl:block' />
             <ThemeSwitcher type='ghost' className='hidden xl:flex' />
           </div>

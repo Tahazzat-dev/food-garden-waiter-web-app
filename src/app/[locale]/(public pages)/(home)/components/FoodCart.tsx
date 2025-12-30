@@ -1,60 +1,55 @@
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
 import { TProduct } from '@/types/demoData'
-import { Eye, HeartIcon, Info, ShoppingCart, View } from 'lucide-react'
+import { Eye, HeartIcon, ShoppingCart } from 'lucide-react'
 import Image from 'next/image'
 import { MouseEvent, useState } from 'react'
 import { FoodModal } from './FoodModal'
 import { useDispatch, useSelector } from 'react-redux'
-import { addCartProduct } from '@/redux/features/product/productSlice'
+import { addCartProduct, addFavouriteProduct } from '@/redux/features/product/productSlice'
 import { RootState } from '@/redux/store'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
-import { EyeIcon } from '@/sharedComponents/icons/Icons'
 
 export default function FoodCart({ product }: { product: TProduct }) {
     const dispatch = useDispatch()
     const t = useTranslations('shared');
     const discountedPrice = product.price - (product.price * product.discount) / 100;
     const [openModal, setOpenModal] = useState(false);
-    const { cartProducts } = useSelector((state: RootState) => state.productSlice)
+    const { cartProducts, favouriteProducts } = useSelector((state: RootState) => state.productSlice)
     const { locale } = useSelector((state: RootState) => state.locale)
 
     const isAddedToCart = cartProducts.some(item => item.id === product.id);
-    // handlers
-    const handleAddToCart = (event: MouseEvent<HTMLButtonElement>) => {
-        event.stopPropagation();
-        event.preventDefault();
-        // Add your add to cart logic here
-        dispatch(addCartProduct({ ...product, quantity: 1 }));
-
-    }
-
+    const isFvourite = favouriteProducts.some(item => item.id === product.id);
     // handlers
     const openDetailsModal = (event: MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
         event.preventDefault();
-        if (isAddedToCart) return;
+        if (isAddedToCart) {
+
+            return;
+        }
+
         setOpenModal(true)
     }
 
     const handleFavourite = (event: MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
         event.preventDefault();
+        const isAlreadyFavourite = favouriteProducts.some(item => item.id === product.id);
+        if (isAlreadyFavourite) return;
+        dispatch(addFavouriteProduct(product));
     }
-
-
     return (
         <>
-            <Link href={`/products/${product.id}`} className='custom-shadow-card overflow-hidden shadow-2xl !border-none group z-0'>
+            <Link href={`/products/${product.id}`} className='custom-shadow-card flex flex-col overflow-hidden shadow-2xl !border-none group z-0'>
                 <div className="w-full relative h-[150px] sm:h-[200px]">
                     <button onClick={handleFavourite} className='hover:scale-105 absolute top-1 md:top-2 left-1 md:left-2 z-20'>
-                        <HeartIcon fill='white' className='w-8 h-8 text-secondary' />
+                        <HeartIcon fill={isFvourite ? "red" : 'white'} className={`w-8 h-8 ${isFvourite ? 'text-white' : 'text-secondary'}`} />
                     </button>
                     <div className="w-full h-full overflow-hidden">
                         <Image src={product?.img} className='z-10 w-full duration-300 group-hover:scale-105 h-full' width={300} height={400} alt={locale === "bn" ? product?.title.bn : product?.title.en || 'Product Image'} />
                     </div>
-                    <span className='font-semibold p-1 px-[5.5px] custom-shadow-md bg-primary hover:bg-primary-500 text-white absolute bottom-1 md:bottom-2 right-1 md:right-2 z-20'>
+                    <span className='font-semibold p-1 px-[5.5px] custom-shadow-md bg-primary hover:bg-primary-500 text-white absolute bottom-2 right-2 z-20'>
                         <Eye className='w-5 h-5' />
                     </span>
                     {
@@ -64,9 +59,11 @@ export default function FoodCart({ product }: { product: TProduct }) {
                     }
                 </div>
 
-                <div className="w-full p-3 md:p-4 bg-slate-100 dark:bg-slate-700">
-                    <h6 className='mb-1'>{locale === "bn" ? product?.title.bn : product?.title.en}</h6>
-                    <p className='fg_fs-sm'>{product.discount < 1 ? <span className=''>{product?.price}TK</span> : <span className='flex items-center gap-3'> <span className='line-through fg_fs-xs'>{product?.price}TK</span> <span className='text-primary'>{discountedPrice}TK</span></span>}</p>
+                <div className="w-full grow flex flex-col p-3 md:p-4 bg-slate-100 dark:bg-slate-700">
+                    <div className="w-full flex flex-col grow">
+                        <h6 className='mb-1'>{locale === "bn" ? product?.title.bn : product?.title.en}</h6>
+                        <p className='fg_fs-sm'>{product.discount < 1 ? <span className=''>{product?.price}TK</span> : <span className='flex items-center gap-3'> <span className='line-through fg_fs-xs'>{product?.price}TK</span> <span className='text-primary'>{discountedPrice}TK</span></span>}</p>
+                    </div>
                     <Button onClick={openDetailsModal} className={`mt-2 text-white w-full font-semibold  ${isAddedToCart ? ' bg-secondary hover:bg-secondary !cursor-not-allowed' : 'custom-shadow-md  bg-primary hover:bg-primary-500'}`} ><ShoppingCart /> <span>{t('addToCart')}</span></Button>
                 </div>
             </Link>
