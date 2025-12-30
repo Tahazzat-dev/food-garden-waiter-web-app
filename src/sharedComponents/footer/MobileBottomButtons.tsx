@@ -31,6 +31,12 @@ export default function MobileBottomButtons() {
                     </div>
                     <span className='text-white font-semibold text-sm sm:text-base'>Cart</span>
                 </button>
+
+                <Link href="/orders" onClick={() => dispatch(SET_EXPAND('CART_SHEET'))} className='relative flex flex-col gap-1 items-center justify-between' >
+                    <Image src="/images/shared/my-order.svg" width={25} height={40} alt="Orders icon" />
+                    <span className='text-white font-semibold text-sm sm:text-base'>Orders</span>
+                </Link>
+
                 <button className='flex flex-col gap-1 items-center justify-between' >
                     <Image src="/images/shared/whatsapp.svg" width={25} height={40} alt="Whatsapp icon" />
                     <span className='text-white font-semibold text-sm sm:text-base'>Message</span>
