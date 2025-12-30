@@ -116,7 +116,7 @@ function LoginForm({ setFormType }: { setFormType: Dispatch<SetStateAction<TAuth
                 <input {...register("password")} className="auth-input" placeholder={t('passwordPlaceholder')} type="password" />
                 {errors.password && errors.password.message && <ErrorEl message={t('passwordError')} />}
             </div>
-            <Button className="mt-2 text-white font-semibold" type="submit" disabled={isSubmitting}>
+            <Button size="auth" className="mt-2  text-white font-semibold" type="submit" disabled={isSubmitting}>
                 {isSubmitting ? "Submitting..." : t("submit")}
             </Button>
         </form>
