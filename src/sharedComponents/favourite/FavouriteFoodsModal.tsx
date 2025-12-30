@@ -20,19 +20,10 @@ interface Props {
 export function FavouriteFoodsModal({ open, onOpenChange }: Props) {
     const t = useTranslations('shared');
     const dispatch = useDispatch();
-    const { favouriteProducts } = useSelector((state: RootState) => state.productSlice);
+    const { favouriteProducts, cartProducts } = useSelector((state: RootState) => state.productSlice);
     const { locale } = useSelector((state: RootState) => state.locale)
 
     // handlers
-    // const handleAddToCart = (event: MouseEvent<HTMLButtonElement>) => {
-    //     event.stopPropagation();
-    //     event.preventDefault();
-    //     if (!food) return;
-    //     dispatch(addCartProduct({ ...food, quantity }));
-    //     onOpenChange();
-
-    // }
-
 
     // const handleQuantityChange = (newQuantity: number) => {
     //     if (newQuantity < 1) return;
@@ -53,6 +44,10 @@ export function FavouriteFoodsModal({ open, onOpenChange }: Props) {
             document.body.style.overflow = "";
         };
     }, [open]);
+
+
+
+    console.log('favouriteProducts', demoProducts);
     return (
         <Dialog.Root open={open} onOpenChange={onOpenChange}>
             <Dialog.Portal>
@@ -66,9 +61,11 @@ export function FavouriteFoodsModal({ open, onOpenChange }: Props) {
                     </div>
                     <div className="px-2.5 md:px-4 my-2.5 md:my-4 overflow-y-auto grow">
                         {
-                            demoProducts.map((food) => (
-                                <div key={food.id} className='flex gap-3 pb-3 border-b border-dashed mb-3'>
-                                    <div className='bg-muted border border-red-500 relative w-10 h-10 md:w-12 md:h-12 lg:h-18 lg:w-18 flex-shrink-0 overflow-hidden rounded-md'>
+                            demoProducts.map((food) => {
+                                const discountedPrice = food.price - (food.price * food.discount) / 100;
+                                const isAddedToCart = cartProducts.some(item => item.id === food.id);
+                                return <div key={food.id} className='flex gap-3 pb-3 border-b border-dashed mb-3'>
+                                    <div className='bg-muted relative w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 xl:w-[72px] xl:h-[72px] rounded-md overflow-hidden'>
                                         <Image
                                             src={food.img || '/images/placeholder/placeholder.jpg'}
                                             alt={locale === "bn" ? food.title.bn : food.title.en || 'Product Image'}
@@ -78,12 +75,19 @@ export function FavouriteFoodsModal({ open, onOpenChange }: Props) {
                                         />
                                     </div>
 
-                                    <div className='flex gap-1 flex-col flex-grow'>
-                                        <div className="flex items-center gap-2 justify-between">
-                                            <div className="flex flex-col">
-                                                <h5 className='line-clamp-2 text-primary leading-tight font-medium'>{locale === "bn" ? food.title.bn : food.title.en}</h5>
-                                                <p className='text-muted-foreground fg_fs-xs text-primary font-medium'>{locale === "bn" ? food.title.bn : food.title.en}</p>
+                                    <div className='flex gap-1 justify-between flex-grow'>
+                                        <div className="flex items-center flex-grow gap-2 justify-between">
+                                            <div className="flex flex-col gap-1 justify-between">
+                                                <div className="w-full grow">
+                                                    <h6 className='line-clamp-2 text-primary leading-tight font-medium'>{locale === "bn" ? food.title.bn : food.title.en}</h6>
+                                                    <p className='text-muted-foreground fg_fs-xs text-primary font-medium'>{locale === "bn" ? food.title.bn : food.title.en}</p>
+                                                </div>
+                                                <p className='fg_fs-sm'>{food.discount < 1 ? <span className=''>{food?.price}TK</span> : <span className='flex items-center gap-3'> <span className='line-through fg_fs-xs'>{food?.price}TK</span> <span className='text-primary'>{discountedPrice}TK</span></span>}</p>
                                             </div>
+
+                                        </div>
+
+                                        <div className='flex flex-col justify-between items-end'>
                                             <Button
                                                 variant='secondary'
                                                 size='icon'
@@ -92,38 +96,16 @@ export function FavouriteFoodsModal({ open, onOpenChange }: Props) {
                                             >
                                                 <Trash2 className='text-white  h-3 w-3' />
                                             </Button>
-                                        </div>
-                                        <div className='mt-auto flex items-center justify-between bg-slate-200 px-2 py-0.5 rounded-[4px]'>
-                                            <p className='fg_fs-xs font-semibold text-center grow dark:!text-black'>{food.price.toFixed(2)}/-</p>
-                                            <div className='flex items-center gap-1 lg:gap-2 rounded-md py-0.5'>
-                                                <Button
-                                                    variant='primary'
-                                                    size='icon'
-                                                    className='h-6 w-6 !rounded-full'
-                                                //   onClick={() => handleQuantityChange(item.quantity - 1)}
-                                                >
-                                                    <Minus className='h-3 w-3' />
-                                                </Button>
-                                                <span className='rounded-[4px] fg_fs-xs py-0.5 bg-white dark:!text-black px-4 inline-block text-center text-xs'></span>
-                                                <Button
-                                                    variant='primary'
-                                                    size='icon'
-                                                    className='h-6 w-6 !rounded-full'
-                                                //   onClick={() => handleQuantityChange(item.quantity + 1)}
-                                                >
-                                                    <Plus className='h-3 w-3' />
-                                                </Button>
-                                            </div>
-                                            {/* <p className='fg_fs-sm font-semibold text-center grow dark:!text-black'>{subtotal.toFixed(2)}/-</p> */}
+                                            <Button onClick={() => { dispatch(addCartProduct({ ...food, quantity: 1 })) }} className={`mt-2 fg_fs-xxs text-white font-semibold  ${isAddedToCart ? ' bg-secondary hover:bg-secondary !cursor-not-allowed' : 'custom-shadow-md  bg-primary hover:bg-primary-500'}`} ><ShoppingCart /> <span>{t('addToCart')}</span></Button>
                                         </div>
                                     </div>
                                 </div>
 
-                            ))
+                            })
                         }
                     </div>
                 </Dialog.Content>
-            </Dialog.Portal>
-        </Dialog.Root>
+            </Dialog.Portal >
+        </Dialog.Root >
     );
 }

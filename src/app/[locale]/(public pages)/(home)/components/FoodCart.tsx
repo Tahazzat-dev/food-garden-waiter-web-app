@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
 import { TProduct } from '@/types/demoData'
-import { Eye, HeartIcon, Info, ShoppingCart, View } from 'lucide-react'
+import { Eye, HeartIcon, ShoppingCart } from 'lucide-react'
 import Image from 'next/image'
 import { MouseEvent, useState } from 'react'
 import { FoodModal } from './FoodModal'
@@ -10,7 +9,6 @@ import { addCartProduct } from '@/redux/features/product/productSlice'
 import { RootState } from '@/redux/store'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
-import { EyeIcon } from '@/sharedComponents/icons/Icons'
 
 export default function FoodCart({ product }: { product: TProduct }) {
     const dispatch = useDispatch()
@@ -22,15 +20,6 @@ export default function FoodCart({ product }: { product: TProduct }) {
 
     const isAddedToCart = cartProducts.some(item => item.id === product.id);
     // handlers
-    const handleAddToCart = (event: MouseEvent<HTMLButtonElement>) => {
-        event.stopPropagation();
-        event.preventDefault();
-        // Add your add to cart logic here
-        dispatch(addCartProduct({ ...product, quantity: 1 }));
-
-    }
-
-    // handlers
     const openDetailsModal = (event: MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
         event.preventDefault();
@@ -41,6 +30,8 @@ export default function FoodCart({ product }: { product: TProduct }) {
     const handleFavourite = (event: MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
         event.preventDefault();
+
+
     }
 
 

@@ -22,7 +22,7 @@ export function CartSheet() {
         }
       </button>
       <Drawer open={openCart} direction="right" >
-        <DrawerContent hideOverlay={true} className="z-[9999] max-w-[500px] top-[5%] lg:top-[15%] dark:shadow-amber-50 right-0 max-h-[90%] lg:max-h-[70%] rounded-md lg:rounded-lg " >
+        <DrawerContent hideOverlay={true} className="prevent-body-trigger z-[9999] max-w-[500px] top-[5%] lg:top-[15%] dark:shadow-amber-50 right-0 max-h-[90%] lg:max-h-[70%] rounded-md lg:rounded-lg " >
           <div className="w-full h-full flex flex-col">
             <div className="w-full flex items-center gap-5 py-5 px-4 bg-primary">
               <DialogTitle className="grow flex text-white">
@@ -30,9 +30,9 @@ export function CartSheet() {
               </DialogTitle>
 
               <div className="w-full max-w-6">
-                <DrawerClose className='bg-secondary p-1 rounded-full' >
+                <button onClick={() => dispatch(SET_EXPAND(null))} className='bg-secondary p-1 rounded-full' >
                   <X className="text-white w-5 md:w-6 md:h-6 h-5" />
-                </DrawerClose>
+                </button>
               </div>
             </div>
             <div className="w-full h-full grow px-4 overflow-y-auto py-4 dark:border-l dark:border-slate-700">
