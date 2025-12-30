@@ -19,6 +19,17 @@
     "removedFromFavourite": "Removed from favourite"
   },
 
+  "authentication": {
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "forgotPassword": "Forgot Password?",
+    "dontHaveAccount": "Don't have an account? Register",
+    "haveAccount": "Already have an account? Login",
+    "submit": "Submit"
+  },
   "header": {
     "categories": {
       "all": "All Categories",

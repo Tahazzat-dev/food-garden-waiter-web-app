@@ -18,6 +18,19 @@
     "addedToFavourite": "প্রিয় তালিকায় যোগ করা হয়েছে",
     "removedFromFavourite": "প্রিয় তালিকা থেকে মুছে ফেলা হয়েছে"
   },
+
+  "authentication": {
+    "login": "লগইন",
+    "register": "রেজিস্টার",
+    "email": "ইমেইল",
+    "password": "পাসওয়ার্ড",
+    "confirmPassword": "পাসওয়ার্ড নিশ্চিত করুন",
+    "forgotPassword": "পাসওয়ার্ড ভুলে গেছেন?",
+    "dontHaveAccount": "একটি অ্যাকাউন্ট নেই? রেজিস্টার করুন",
+    "haveAccount": "ইতিমধ্যে একটি অ্যাকাউন্ট আছে? লগইন করুন",
+    "submit": "জমা দিন"
+  },
+
   "header": {
     "categories": {
       "all": "সব ক্যাটাগরি",

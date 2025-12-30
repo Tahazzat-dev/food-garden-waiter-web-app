@@ -38,7 +38,7 @@ export function FavouriteFoodsModal({ open, onOpenChange }: Props) {
             <Dialog.Portal>
                 <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999]" />
                 <Dialog.Content className="fixed flex flex-col top-1/2 left-1/2 max-h-[80vh]  max-w-[93vw] md:max-w-[700px] !rounded-[10px] lg:!rounded-[12px] overflow-hidden w-full -translate-x-1/2 -translate-y-1/2 bg-body rounded-lg shadow-lg dark:shadow-slate-800 z-[99999]">
-                    <div className="flex items-center justify-between bg-primary px-4 py-2">
+                    <div className="flex items-center justify-between bg-primary px-2.5 sm:px-4 py-2">
                         <Dialog.Title className="fg_fs-md text-white">
                             {t('favouriteFoods')}
                         </Dialog.Title>

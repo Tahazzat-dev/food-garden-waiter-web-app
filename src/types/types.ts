@@ -18,3 +18,6 @@ export type Lang = "en" | "bn";
 export interface TCartProduct extends TProduct {
     quantity: number;
 }
+
+
+export type TAuthFormType = "login" | "register";
