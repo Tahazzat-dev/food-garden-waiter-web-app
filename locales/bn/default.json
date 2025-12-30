@@ -18,6 +18,14 @@
     "addedToFavourite": "প্রিয় তালিকায় যোগ করা হয়েছে",
     "removedFromFavourite": "প্রিয় তালিকা থেকে মুছে ফেলা হয়েছে"
   },
+
+  "mobileBottomActions": {
+    "home": "হোম",
+    "offers": "অফার",
+    "cart": "কার্ট",
+    "orders": "অর্ডার",
+    "message": "মেসেজ"
+  },
   "authentication": {
     "login": "লগইন",
     "register": "রেজিস্ট্রেশন",

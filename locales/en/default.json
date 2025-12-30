@@ -19,6 +19,14 @@
     "removedFromFavourite": "Removed from favourite"
   },
 
+  "mobileBottomActions": {
+    "home": "Home",
+    "offers": "Offers",
+    "cart": "Cart",
+    "orders": "Orders",
+    "message": "Message"
+  },
+
   "authentication": {
     "login": "Login",
     "register": "Register",
