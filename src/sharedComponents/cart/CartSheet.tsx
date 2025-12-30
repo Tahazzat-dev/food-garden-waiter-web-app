@@ -22,9 +22,9 @@ export function CartSheet() {
         }
       </button>
       <Drawer open={openCart} direction="right" >
-        <DrawerContent hideOverlay={true} className="prevent-body-trigger z-[9999] max-w-[500px] top-[5%] lg:top-[15%] dark:shadow-amber-50 right-0 max-h-[90%] lg:max-h-[70%] rounded-md lg:rounded-lg " >
+        <DrawerContent hideOverlay={true} className="cartsheet-drawer prevent-body-trigger z-[9999] w-[90vw] max-w-[450px] top-[86px] dark:shadow-amber-50 right-0 rounded-md lg:rounded-lg" >
           <div className="w-full h-full flex flex-col">
-            <div className="w-full flex items-center gap-5 py-5 px-4 bg-primary">
+            <div className="w-full flex items-center gap-5 py-3 px-4 bg-primary">
               <DialogTitle className="grow flex text-white">
                 <span className='fg_fs-lg'>Add To Cart ({cartProducts.length})</span>
               </DialogTitle>
@@ -35,7 +35,7 @@ export function CartSheet() {
                 </button>
               </div>
             </div>
-            <div className="w-full h-full grow px-4 overflow-y-auto py-4 dark:border-l dark:border-slate-700">
+            <div className="w-full h-full grow px-2.5 sm:px-4 overflow-y-auto py-4 dark:border-l dark:border-slate-700">
               {cartProducts.map((item) => (
                 <CartCard
                   key={item.id}

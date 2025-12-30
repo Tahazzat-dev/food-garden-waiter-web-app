@@ -21,8 +21,8 @@ export function CartCard({ item }: { item: TCartProduct }) {
   const subtotal = item.price * item.quantity;
 
   return (
-    <div className='flex gap-3 pb-3 border-b border-dashed mb-3'>
-      <div className='bg-muted relative min-h-14 min-w-14 md:min-w-16 md:min-h-16 flex-shrink-0 overflow-hidden rounded-md'>
+    <div className='flex gap-2.5 sm:gap-3 pb-3 border-b border-dashed mb-3'>
+      <div className='bg-muted relative h-16 w-16 md:min-w-16 md:min-h-16 flex-shrink-0 overflow-hidden rounded-md'>
         <Image
           src={item.img || '/images/placeholder/placeholder.jpg'}
           alt={locale === "bn" ? item.title.bn : item.title.en || 'Product Image'}

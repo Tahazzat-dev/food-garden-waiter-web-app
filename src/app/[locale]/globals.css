@@ -614,3 +614,10 @@ body {
 .auth-input {
   @apply border p-3 py-1.5 rounded-md w-full border-slate-300 focus:border-slate-400 outline-none;
 }
+
+/* cartsheet */
+.cartsheet-drawer {
+  max-height: 80vh;
+  max-height: calc(100vh - 156px);
+  max-height: calc(100dvh - 156px);
+}
