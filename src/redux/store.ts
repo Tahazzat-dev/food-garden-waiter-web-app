@@ -2,12 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import localeReducer from "./features/locale/locale";
 import categorySlice from "./features/category/categorySlice";
 import productSlice from "./features/product/productSlice";
+import actionSlice from "./features/actions/actionSlice";
 export const store = configureStore({
   reducer: {
     // packages: packagesSlice,
     locale: localeReducer,
     categorySlice: categorySlice,
     productSlice: productSlice,
+    actions: actionSlice,
 
     // [authApi.reducerPath]:authApi.reducer,
   },

@@ -10,7 +10,10 @@ const nextConfig: NextConfig = {
         hostname: 'flagcdn.com'
       }
     ]
-  }
+  },
+  devIndicators: {
+    position: "top-right",
+  },
 };
 
 
