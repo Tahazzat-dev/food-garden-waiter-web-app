@@ -46,7 +46,7 @@ export function FavouriteFoodsModal({ open, onOpenChange }: Props) {
                     </div>
                     <div className="px-2.5 md:px-4 my-2.5 md:my-4 overflow-y-auto grow flex flex-col gap-5">
                         {
-                            favouriteProducts.length > 1 ?
+                            favouriteProducts.length > 0 ?
                                 favouriteProducts.map((food) => {
                                     const discountedPrice = food.price - (food.price * food.discount) / 100;
                                     const isAddedToCart = cartProducts.some(item => item.id === food.id);

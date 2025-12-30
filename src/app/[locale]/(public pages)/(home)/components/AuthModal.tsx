@@ -45,10 +45,10 @@ export default function AuthModal() {
 
 
     return (
-        <Dialog.Root open={true} onOpenChange={closeModal}>
+        <Dialog.Root open={KEY === EXPAND} onOpenChange={closeModal}>
             <Dialog.Portal>
-                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999]" />
-                <Dialog.Content className=" fixed top-1/2 left-1/2  max-w-[93vw] md:max-w-[500px] !rounded-[10px] lg:!rounded-[12px] overflow-hidden w-full -translate-x-1/2 -translate-y-1/2 bg-body rounded-lg shadow-lg dark:shadow-slate-800 z-[99999]">
+                <div className=" fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999]" />
+                <Dialog.Content className="prevent-body-trigger fixed top-1/2 left-1/2  max-w-[93vw] md:max-w-[500px] !rounded-[10px] lg:!rounded-[12px] overflow-hidden w-full -translate-x-1/2 -translate-y-1/2 bg-body rounded-lg shadow-lg dark:shadow-slate-800 z-[99999]">
                     <button onClick={closeModal} className="absolute top-4 right-4 rounded-full !px-2.5"
                     // variant="secondary"
                     > <X className="text-secondary w-6 h-6 lg:w-7 lg:h-7" /></button>
