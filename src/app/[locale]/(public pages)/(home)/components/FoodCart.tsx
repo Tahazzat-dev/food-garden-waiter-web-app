@@ -46,7 +46,7 @@ export default function FoodCart({ product }: { product: TProduct }) {
 
     return (
         <>
-            <Link href={`/products/${product.id}`} className='custom-shadow-card overflow-hidden shadow-2xl !border-none group z-0'>
+            <Link href={`/products/${product.id}`} className='custom-shadow-card flex flex-col overflow-hidden shadow-2xl !border-none group z-0'>
                 <div className="w-full relative h-[150px] sm:h-[200px]">
                     <button onClick={handleFavourite} className='hover:scale-105 absolute top-1 md:top-2 left-1 md:left-2 z-20'>
                         <HeartIcon fill='white' className='w-8 h-8 text-secondary' />
@@ -54,7 +54,7 @@ export default function FoodCart({ product }: { product: TProduct }) {
                     <div className="w-full h-full overflow-hidden">
                         <Image src={product?.img} className='z-10 w-full duration-300 group-hover:scale-105 h-full' width={300} height={400} alt={locale === "bn" ? product?.title.bn : product?.title.en || 'Product Image'} />
                     </div>
-                    <span className='font-semibold p-1 px-[5.5px] custom-shadow-md bg-primary hover:bg-primary-500 text-white absolute bottom-1 md:bottom-2 right-1 md:right-2 z-20'>
+                    <span className='font-semibold p-1 px-[5.5px] custom-shadow-md bg-primary hover:bg-primary-500 text-white absolute bottom-2 right-2 z-20'>
                         <Eye className='w-5 h-5' />
                     </span>
                     {
@@ -64,9 +64,11 @@ export default function FoodCart({ product }: { product: TProduct }) {
                     }
                 </div>
 
-                <div className="w-full p-3 md:p-4 bg-slate-100 dark:bg-slate-700">
-                    <h6 className='mb-1'>{locale === "bn" ? product?.title.bn : product?.title.en}</h6>
-                    <p className='fg_fs-sm'>{product.discount < 1 ? <span className=''>{product?.price}TK</span> : <span className='flex items-center gap-3'> <span className='line-through fg_fs-xs'>{product?.price}TK</span> <span className='text-primary'>{discountedPrice}TK</span></span>}</p>
+                <div className="w-full grow flex flex-col p-3 md:p-4 bg-slate-100 dark:bg-slate-700">
+                    <div className="w-full flex flex-col grow">
+                        <h6 className='mb-1'>{locale === "bn" ? product?.title.bn : product?.title.en}</h6>
+                        <p className='fg_fs-sm'>{product.discount < 1 ? <span className=''>{product?.price}TK</span> : <span className='flex items-center gap-3'> <span className='line-through fg_fs-xs'>{product?.price}TK</span> <span className='text-primary'>{discountedPrice}TK</span></span>}</p>
+                    </div>
                     <Button onClick={openDetailsModal} className={`mt-2 text-white w-full font-semibold  ${isAddedToCart ? ' bg-secondary hover:bg-secondary !cursor-not-allowed' : 'custom-shadow-md  bg-primary hover:bg-primary-500'}`} ><ShoppingCart /> <span>{t('addToCart')}</span></Button>
                 </div>
             </Link>

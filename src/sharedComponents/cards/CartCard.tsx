@@ -22,7 +22,7 @@ export function CartCard({ item }: { item: TCartProduct }) {
 
   return (
     <div className='flex gap-3 pb-3 border-b border-dashed mb-3'>
-      <div className='bg-muted relative h-18 w-18 flex-shrink-0 overflow-hidden rounded-md'>
+      <div className='bg-muted relative h-14 w-14 flex-shrink-0 overflow-hidden rounded-md'>
         <Image
           src={item.img || '/images/placeholder/placeholder.jpg'}
           alt={locale === "bn" ? item.title.bn : item.title.en || 'Product Image'}
