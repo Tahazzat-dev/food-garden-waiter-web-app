@@ -24,11 +24,6 @@ export default function FoodCart({ product }: { product: TProduct }) {
     const openDetailsModal = (event: MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
         event.preventDefault();
-        if (isAddedToCart) {
-
-            return;
-        }
-
         setOpenModal(true)
     }
 
