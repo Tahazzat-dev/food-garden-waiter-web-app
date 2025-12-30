@@ -45,15 +45,15 @@ export default function AuthModal() {
 
 
     return (
-        <Dialog.Root open={KEY === EXPAND} onOpenChange={closeModal}>
+        <Dialog.Root open={true} onOpenChange={closeModal}>
             <Dialog.Portal>
                 <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999]" />
-                <Dialog.Content className=" fixed top-1/2 left-1/2  max-w-[93vw] md:max-w-[550px] !rounded-[10px] lg:!rounded-[12px] overflow-hidden w-full -translate-x-1/2 -translate-y-1/2 bg-body rounded-lg shadow-lg dark:shadow-slate-800 z-[99999]">
+                <Dialog.Content className=" fixed top-1/2 left-1/2  max-w-[93vw] md:max-w-[500px] !rounded-[10px] lg:!rounded-[12px] overflow-hidden w-full -translate-x-1/2 -translate-y-1/2 bg-body rounded-lg shadow-lg dark:shadow-slate-800 z-[99999]">
                     <button onClick={closeModal} className="absolute top-4 right-4 rounded-full !px-2.5"
                     // variant="secondary"
-                    > <X className="!text-white w-5 md:w-6 md:h-6 h-5 lg:w-8 lg:h-8" /></button>
+                    > <X className="text-secondary w-6 h-6 lg:w-7 lg:h-7" /></button>
                     <div className="p-4">
-                        <Dialog.Title className="fg_fs-lg text-center mt-4 mb-6">
+                        <Dialog.Title className="fg_fs-3xl text-center mt-4 mb-6">
                             {formType === "login" ? t('login') : t('register')}
                         </Dialog.Title>
                         {
@@ -69,7 +69,7 @@ export default function AuthModal() {
 
 function ErrorEl({ message }: { message: string }) {
     return (
-        <p className="text-red-500">{message}</p>
+        <p className="text-red-500 mt-1.5">{message}</p>
     )
 }
 
@@ -82,6 +82,7 @@ const loginSchema = z.object({
 
 type LoginSchema = z.infer<typeof loginSchema>;
 function LoginForm({ setFormType }: { setFormType: Dispatch<SetStateAction<TAuthFormType>> }) {
+    const t = useTranslations('authentication');
     // hooks
     const {
         register,
@@ -101,24 +102,23 @@ function LoginForm({ setFormType }: { setFormType: Dispatch<SetStateAction<TAuth
         reset();
     };
 
-
     return (
-        <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '400px' }}>
-            <div>
-                <label>Phone</label>
-                <input {...register("phone")} placeholder="Enter phone number" />
-                {!!errors.phone && !!errors.phone?.message && <ErrorEl message={errors.phone.message} />}
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
+            <div className="w-full">
+                <label className="mb-1 block font-semibold">{t('phone')}</label>
+                <input {...register("phone")} className="auth-input" placeholder={t("phonePlaceholder")} />
+                {!!errors.phone && !!errors.phone?.message && <ErrorEl message={t("phoneError")} />}
             </div>
 
             {/* Password Field */}
-            <div>
-                <label>Password</label>
-                <input {...register("password")} type="password" />
-                {errors.password && errors.password.message && <ErrorEl message={errors.password.message} />}
+            <div className="w-full">
+                <label className="mb-1 block font-semibold">{t('password')}</label>
+                <input {...register("password")} className="auth-input" placeholder={t('passwordPlaceholder')} type="password" />
+                {errors.password && errors.password.message && <ErrorEl message={t('passwordError')} />}
             </div>
-            <button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Submitting..." : "Register"}
-            </button>
+            <Button className="mt-2 text-white font-semibold" type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Submitting..." : t("submit")}
+            </Button>
         </form>
     )
 }

@@ -7,6 +7,7 @@ import { notFound } from "next/navigation";
 import { ThemeProvider } from "@/provider/ThemeProvider";
 import ReduxProvider from "@/provider/ReduxProvider";
 import BodyEventListeners from "@/sharedComponents/DOM/BodyEventListener";
+import DevToolIndicator from "@/sharedComponents/DOM/DevToolIndicator";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -51,8 +52,6 @@ export default async function RootLayout({
           <ThemeProvider>
             <NextIntlClientProvider>{children}</NextIntlClientProvider>
           </ThemeProvider>
-
-
           <BodyEventListeners />
         </ReduxProvider>
       </body>
