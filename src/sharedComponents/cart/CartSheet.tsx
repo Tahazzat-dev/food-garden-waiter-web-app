@@ -28,7 +28,7 @@ export function CartSheet() {
           <ShoppingCart fill='white' className='text-white h-6 w-6 cursor-pointer' />
           {
             cartProducts.length > 0 ?
-              <span className='flex items-center justify-center text-xs px-0.5 min-w-4 min-h-4  absolute -top-[40%] left-[80%] translate-x-[-50%] bg-secondary text-white rounded-full p-[1px]'>{cartProducts.length}</span> : <></>
+              <span className='flex items-center justify-center text-xs px-0.5 min-w-[18px] min-h-4  absolute -top-[40%] left-[80%] translate-x-[-50%] bg-secondary text-white rounded-full p-[1px]'>{cartProducts.length}</span> : <></>
           }
         </div>
       </DrawerTrigger>
