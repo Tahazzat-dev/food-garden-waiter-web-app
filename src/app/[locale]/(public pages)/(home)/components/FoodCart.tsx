@@ -38,17 +38,17 @@ export default function FoodCart({ product }: { product: TProduct }) {
         <>
             <Link href={`/products/${product.id}`} className='custom-shadow-card flex flex-col overflow-hidden shadow-2xl !border-none group z-0'>
                 <div className="w-full relative h-[150px] sm:h-[200px]">
-                    <button onClick={handleFavourite} className='hover:scale-105 absolute top-1 md:top-2 left-1 md:left-2 z-20'>
+                    <button onClick={handleFavourite} className='hover:scale-105 absolute top-[1px] left-0.5 z-20'>
                         <HeartIcon fill={isFvourite ? "red" : 'white'} className={`w-8 h-8 ${isFvourite ? 'text-white' : 'text-secondary'}`} />
                     </button>
                     <div className="w-full h-full overflow-hidden">
                         <Image src={product?.img} className='z-10 w-full duration-300 group-hover:scale-105 h-full' width={300} height={400} alt={locale === "bn" ? product?.title.bn : product?.title.en || 'Product Image'} />
                     </div>
-                    <span className='font-semibold p-1 px-[5.5px] custom-shadow-md bg-primary hover:bg-primary-500 text-white absolute bottom-2 right-2 z-20'>
+                    <span className='font-semibold p-1 px-[5.5px] rounded-md hover:bg-white bg-slate-100 text-black absolute bottom-1 right-1 z-20'>
                         <Eye className='w-5 h-5' />
                     </span>
                     {
-                        !!product?.discount && <span className='absolute fg_fs-xxs  top-2 right-2 bg-secondary text-white px-2 py-1 rounded-md'>
+                        !!product?.discount && <span className='absolute fg_fs-xxs  top-0 right-0 bg-secondary text-white px-2 py-1 rounded-md'>
                             {product?.discount}% Off
                         </span>
                     }
