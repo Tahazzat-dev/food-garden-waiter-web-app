@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { MouseEvent, useState } from 'react'
 import { FoodModal } from './FoodModal'
 import { useDispatch, useSelector } from 'react-redux'
-import { addCartProduct } from '@/redux/features/product/productSlice'
+import { addCartProduct, addFavouriteProduct } from '@/redux/features/product/productSlice'
 import { RootState } from '@/redux/store'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
@@ -15,32 +15,36 @@ export default function FoodCart({ product }: { product: TProduct }) {
     const t = useTranslations('shared');
     const discountedPrice = product.price - (product.price * product.discount) / 100;
     const [openModal, setOpenModal] = useState(false);
-    const { cartProducts } = useSelector((state: RootState) => state.productSlice)
+    const { cartProducts, favouriteProducts } = useSelector((state: RootState) => state.productSlice)
     const { locale } = useSelector((state: RootState) => state.locale)
 
     const isAddedToCart = cartProducts.some(item => item.id === product.id);
+    const isFvourite = favouriteProducts.some(item => item.id === product.id);
     // handlers
     const openDetailsModal = (event: MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
         event.preventDefault();
-        if (isAddedToCart) return;
+        if (isAddedToCart) {
+
+            return;
+        }
+
         setOpenModal(true)
     }
 
     const handleFavourite = (event: MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
         event.preventDefault();
-
-
+        const isAlreadyFavourite = favouriteProducts.some(item => item.id === product.id);
+        if (isAlreadyFavourite) return;
+        dispatch(addFavouriteProduct(product));
     }
-
-
     return (
         <>
             <Link href={`/products/${product.id}`} className='custom-shadow-card flex flex-col overflow-hidden shadow-2xl !border-none group z-0'>
                 <div className="w-full relative h-[150px] sm:h-[200px]">
                     <button onClick={handleFavourite} className='hover:scale-105 absolute top-1 md:top-2 left-1 md:left-2 z-20'>
-                        <HeartIcon fill='white' className='w-8 h-8 text-secondary' />
+                        <HeartIcon fill={isFvourite ? "red" : 'white'} className={`w-8 h-8 ${isFvourite ? 'text-white' : 'text-secondary'}`} />
                     </button>
                     <div className="w-full h-full overflow-hidden">
                         <Image src={product?.img} className='z-10 w-full duration-300 group-hover:scale-105 h-full' width={300} height={400} alt={locale === "bn" ? product?.title.bn : product?.title.en || 'Product Image'} />
