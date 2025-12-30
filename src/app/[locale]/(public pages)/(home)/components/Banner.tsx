@@ -1,7 +1,7 @@
 "use client"
 import React from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Pagination } from 'swiper/modules'
+import { Autoplay, Pagination } from 'swiper/modules'
 
 import 'swiper/css'
 import 'swiper/css/pagination'
@@ -22,7 +22,8 @@ export default function Banner() {
         <section className='w-full pt-[70px]'>
             <div className="w-full">
                 <Swiper
-                    modules={[Pagination]}
+                    autoplay={true}
+                    modules={[Pagination, Autoplay]}
                     pagination={{ clickable: true }}
                     className="
         home-banner-swiper
