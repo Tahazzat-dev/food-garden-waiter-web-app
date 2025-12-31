@@ -120,7 +120,7 @@ function LoginForm({ setFormType }: { setFormType: Dispatch<SetStateAction<TAuth
                     <label className="mb-1 block">{t('password')}</label>
                     <input {...register("password")} className="auth-input" placeholder={t('passwordPlaceholder')} type="password" />
                     {errors.password && errors.password.message && <ErrorEl message={t('passwordError')} />}
-                    <button onClick={handleForgotPassword} type="button" className="mt-1.5">{t('forgotPassword')}</button>
+                    <button onClick={handleForgotPassword} type="button" className="mt-1.5 text-blue-500 hover:text-blue-600">{t('forgotPassword')}</button>
                 </div>
                 <SubmitBtn isSubmitting={isSubmitting} />
 

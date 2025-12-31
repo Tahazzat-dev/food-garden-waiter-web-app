@@ -22,7 +22,7 @@ export function CartSheet() {
         }
       </button>
       <Drawer open={openCart} direction="right" >
-        <DrawerContent hideOverlay={true} className="cartsheet-drawer prevent-body-trigger z-[9999] w-[90vw] max-w-[450px] top-[86px] sm:top-[84px] md:top-[81px] lg:top-[88px] dark:shadow-amber-50 right-0 rounded-md lg:!rounded-r-none" >
+        <DrawerContent overlayStyle='cart-overlay top-[81px] !border-none lg:top-[83.53px] z-[9999]' className="cartsheet-drawer prevent-body-trigger z-[9999] w-[90vw] max-w-[450px] top-[86px] sm:top-[84px] md:top-[81px] lg:top-[88px] dark:shadow-amber-50 right-0 rounded-md lg:!rounded-r-none" >
           <div className="w-full h-full flex flex-col">
             <div className="w-full flex items-center gap-5 py-3 px-4 bg-primary">
               <DialogTitle className="grow flex text-white">

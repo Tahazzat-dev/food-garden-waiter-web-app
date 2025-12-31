@@ -653,6 +653,12 @@ body {
   max-height: calc(100dvh - 146px);
 }
 
+.cart-overlay {
+  max-height: 80vh;
+  max-height: calc(100vh - 146px);
+  max-height: calc(100dvh - 146px);
+}
+
 @media (min-width: 768px) {
   .wishlist-modal {
     /* max-height: calc(100vh - 81px); */
@@ -660,6 +666,10 @@ body {
   }
 
   .wishlist-overlay {
+    max-height: calc(100vh - 81px);
+  }
+
+  .cart-overlay {
     max-height: calc(100vh - 81px);
   }
 }
@@ -670,6 +680,9 @@ body {
     max-height: calc(100vh - 93px);
   }
   .wishlist-overlay {
+    max-height: calc(100vh - 83.53px);
+  }
+  .cart-overlay {
     max-height: calc(100vh - 83.53px);
   }
 }

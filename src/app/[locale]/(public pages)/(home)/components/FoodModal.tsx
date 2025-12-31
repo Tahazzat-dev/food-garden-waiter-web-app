@@ -148,7 +148,7 @@ export function FoodModal({ food, open, onOpenChange }: FoodModalProps) {
                     </div>
                     <div className="w-full flex justify-end p-4">
                         <Dialog.Close className="" asChild >
-                            <Button onClick={handleAddToCart} className={`text-white mt-2 font-semibold  ${isAddedToCart ? ' bg-secondary hover:bg-secondary !cursor-not-allowed' : 'custom-shadow-md  bg-primary hover:bg-primary-500'}`} ><ShoppingCart /> <span>{t('addToCart')}</span></Button>
+                            <Button onClick={handleAddToCart} className={`text-white mt-2 font-semibold  ${isAddedToCart ? ' bg-secondary hover:bg-secondary !cursor-not-allowed pointer-events-none' : 'custom-shadow-md  bg-primary hover:bg-primary-500'}`} ><ShoppingCart /> <span>{t('addToCart')}</span></Button>
                         </Dialog.Close>
                     </div>
                 </Dialog.Content>
