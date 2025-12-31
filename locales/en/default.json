@@ -49,7 +49,14 @@
     "dontHaveAccount": "Don't have an account?",
     "haveAccount": "Already have an account?",
     "submit": "Submit",
-    "optional": "optional"
+    "optional": "optional",
+    "otp": "OTP",
+    "otpPlaceholder": "Enter OTP",
+    "otpError": "OTP is required",
+    "wrongOTP": "Invalid or expired OTP",
+    "verify": "Verify",
+    "rememberedPassword": "Remembered password?",
+    "success": "Success"
   },
   "header": {
     "categories": {

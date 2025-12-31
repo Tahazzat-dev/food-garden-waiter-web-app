@@ -48,7 +48,14 @@
     "dontHaveAccount": "অ্যাকাউন্ট নেই?",
     "haveAccount": "আগে থেকেই অ্যাকাউন্ট আছে?",
     "submit": "জমা দিন",
-    "optional": "ঐচ্ছিক"
+    "optional": "ঐচ্ছিক",
+    "otp": "ওটিপি",
+    "otpPlaceholder": "ওটিপি লিখুন",
+    "otpError": "ওটিপি অবশ্যই দিতে হবে",
+    "wrongOTP": "ভুল অথবা মেয়াদোত্তীর্ণ ওটিপি",
+    "verify": "যাচাই করুন",
+    "rememberedPassword": "পাসওয়ার্ড মনে পড়েছে?",
+    "success": "সফল হয়েছে"
   },
   "header": {
     "categories": {

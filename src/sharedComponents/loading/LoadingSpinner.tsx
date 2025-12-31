@@ -1,7 +1,7 @@
-import { Loader } from 'lucide-react';
+import { LoaderCircle } from 'lucide-react';
 
 const LoadingSpinner = ({ className = '' }: { className?: string }) => {
-  return <Loader className={`max-w-6 ${className} !animate-spin`} />;
+  return <LoaderCircle className={`max-w-6 ${className} !animate-spin`} />;
 };
 
 export default LoadingSpinner;
