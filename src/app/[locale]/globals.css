@@ -636,3 +636,29 @@ body {
     max-height: calc(100vh - 93px);
   }
 }
+
+/* wishlist */
+.wishlist-modal {
+  max-height: 80vh;
+  /* max-height: calc(100vh - 146px);
+  max-height: calc(100dvh - 146px); */
+  max-height: calc(100vh - 166px);
+  max-height: calc(100dvh - 176px);
+  box-shadow: 0px 4px 6px -3px rgb(150, 150, 150);
+}
+
+@media (min-width: 768px) {
+  .wishlist-modal {
+    max-height: 80vh;
+    /* max-height: calc(100vh - 81px); */
+    max-height: calc(100vh - 300px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .wishlist-modal {
+    max-height: 80vh;
+    /* max-height: calc(100vh - 93.53px); */
+    max-height: calc(100vh - 93px);
+  }
+}

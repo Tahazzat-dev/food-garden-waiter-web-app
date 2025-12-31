@@ -1,8 +1,6 @@
 import Container from '../wrapper/Container';
 import Link from 'next/link';
-import { User } from 'lucide-react';
 import SearchFilter from './SearchFilter';
-import { VerticalDivider } from '../utils/Utils';
 import PublicSidebar from './PublicSidebar';
 import { CartSheet } from '../cart/CartSheet';
 import SiteLogo from './SiteLogo';
@@ -31,7 +29,7 @@ export default function PubliceHeader() {
             <div className='hidden text-white items-center gap-2 md:flex'>
               <span className='fg_fs-xs '>{tTracking('trackingTxt')}</span>
             </div>
-            <VerticalDivider className='hidden h-full lg:block' />
+            {/* <VerticalDivider className='hidden h-full lg:block' /> */}
             <FavouriteFoods />
             <CartSheet />
             <AuthUser />
