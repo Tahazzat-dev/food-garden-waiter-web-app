@@ -2,13 +2,14 @@
 import { RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 // import { FavouriteFoodsModal } from './FavouriteFoodsModal';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as Dialog from "@radix-ui/react-dialog";
 import { ShoppingCart, Trash2, X, Heart } from "lucide-react"; // optional icon
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { addCartProduct, removeFavouriteProduct } from "@/redux/features/product/productSlice";
 import { useTranslations } from 'next-intl';
+import { getResponsivePX } from '@/lib/utils';
 
 export function FavouriteFoods() {
     // hooks
@@ -17,14 +18,30 @@ export function FavouriteFoods() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const t = useTranslations('shared');
     const { locale } = useSelector((state: RootState) => state.locale)
+    const cartRef = useRef<HTMLButtonElement | null>(null)
+    const [right, setRight] = useState('0')
 
     // handlers 
     const toggleModal = () => {
+        if (!cartRef.current || typeof window === "undefined") return;
         setIsModalOpen((prev) => !prev)
+        const rect = cartRef.current.getBoundingClientRect();
+        const rightPX = window.innerWidth - rect.right - window.scrollX
+        const positionPx = getResponsivePX(rightPX);
+        setRight(`${positionPx}px`)
     }
+
+    useEffect(() => {
+        if (!cartRef.current || typeof window === "undefined") return;
+        const rect = cartRef.current.getBoundingClientRect();
+        const rightPX = window.innerWidth - rect.right - window.scrollX
+        const positionPx = getResponsivePX(rightPX);
+        setRight(`${positionPx}px`)
+    }, [cartRef])
+
     return (
         <>
-            <button onClick={toggleModal} className='relative'>
+            <button ref={cartRef} onClick={toggleModal} className='relative'>
                 <Heart fill='white' className='text-white h-6 w-6 cursor-pointer' />
                 {
                     favouriteProducts.length > 0 ?
@@ -34,16 +51,16 @@ export function FavouriteFoods() {
                 {!!isModalOpen && <span className='w-5 h-5 rotate-45 bg-primary absolute pointer-events-none top-[190%] left-1/2 -translate-x-1/2'></span>}
             </button>
 
+
             <Dialog.Root open={isModalOpen} onOpenChange={toggleModal}>
                 <Dialog.Portal>
                     {/* <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999]" /> */}
-                    <Dialog.Content className="wishlist-modal fixed flex flex-col top-[80.83px] !border-none !m-0 !p-0 sm:top-[84px] md:top-[81px] lg:top-[83.53px] right-0 md:right-[3%] lg:right-[10vw] max-w-[93vw] md:max-w-[700px] !rounded-[10px] lg:!rounded-[12px] overflow-hidden bg-body z-[99999]">
-                        {/* <Dialog.Content className="wishlist-modal fixed z-[9999] w-[90vw] top-[86px] sm:top-[84px] md:top-[81px] lg:top-[88px] dark:shadow-amber-50 left-1/2 rounded-md lg:!rounded-r-none"> */}
+                    <Dialog.Content style={{ right: right }} className="wishlist-modal fixed min-w-[300px] md:min-w-[400px] lg:translate-x-[50%] flex flex-col top-[80.83px] !border-none !m-0 !p-0 sm:top-[84px] md:top-[81px] lg:top-[83.53px] max-w-[93vw] md:max-w-[700px] !rounded-[6px] md:rounded-[8px] lg:!rounded-[10px] overflow-hidden bg-body z-[99999]">
                         <div className="flex items-center justify-between bg-primary px-2.5 sm:px-4 py-2">
                             <Dialog.Title className="fg_fs-md text-white">
                                 {t('favouriteFoods')}
                             </Dialog.Title>
-                            <Button onClick={toggleModal} className="rounded-full !px-2.5" variant="secondary"> <X className="!text-white w-5 md:w-6 md:h-6 h-5 lg:w-8 lg:h-8" /></Button>
+                            <Button onClick={toggleModal} className="rounded-full !px-2 max-h-8" variant="secondary"> <X className="!text-white w-5 md:w-6 md:h-6 h-5 lg:w-8 lg:h-8" /></Button>
                         </div>
                         <div className="px-2.5 md:px-4 my-2.5 md:my-4 overflow-y-auto grow flex flex-col gap-5">
                             {
@@ -96,7 +113,6 @@ export function FavouriteFoods() {
                     </Dialog.Content>
                 </Dialog.Portal >
             </Dialog.Root >
-
 
             {/* <FavouriteFoodsModal open={isModalOpen} onOpenChange={() => setIsModalOpen(false)} /> */}
         </>
