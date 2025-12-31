@@ -1,20 +1,27 @@
 'use client';
 import { ShoppingCart, X } from 'lucide-react';
 import { CartCard } from '../cards/CartCard';
-import { Drawer, DrawerClose, DrawerContent } from '@/components/ui/drawer';
+import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import { DialogTitle } from '@radix-ui/react-dialog';
 import { RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { SET_EXPAND } from '@/redux/features/actions/actionSlice';
 
 export function CartSheet() {
+  // variables
+  const KEY = "CART_SHEET"
+
+  // hooks
   const dispatch = useDispatch();
   const { cartProducts } = useSelector((state: RootState) => state.productSlice);
   const { EXPAND } = useSelector((state: RootState) => state.actions);
-  const openCart = EXPAND === "CART_SHEET";
+  const openCart = EXPAND === KEY;
+
+  // handlers
+
   return (
     <>
-      <button onClick={() => dispatch(SET_EXPAND('CART_SHEET'))} className='relative'>
+      <button onClick={() => dispatch(SET_EXPAND(EXPAND === KEY ? null : KEY))} className='prevent-body-trigger relative'>
         <ShoppingCart fill='white' className='text-white h-6 w-6 cursor-pointer' />
         {
           cartProducts.length > 0 ?
