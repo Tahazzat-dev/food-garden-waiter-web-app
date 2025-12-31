@@ -686,3 +686,7 @@ body {
     max-height: calc(100vh - 83.53px);
   }
 }
+
+.global-overlay {
+  @apply bg-black/40 backdrop-blur-[1px];
+}

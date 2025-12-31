@@ -34,6 +34,7 @@ export default function FoodCart({ product }: { product: TProduct }) {
         if (isAlreadyFavourite) return;
         dispatch(addFavouriteProduct(product));
     }
+
     return (
         <>
             <Link href={`/products/${product.id}`} className='custom-shadow-card flex flex-col overflow-hidden shadow-2xl !border-none group z-0'>
@@ -59,7 +60,7 @@ export default function FoodCart({ product }: { product: TProduct }) {
                         <h6 className='mb-1'>{locale === "bn" ? product?.title.bn : product?.title.en}</h6>
                         <p className='fg_fs-sm'>{product.discount < 1 ? <span className=''>{product?.price}TK</span> : <span className='flex items-center gap-3'> <span className='line-through fg_fs-xs'>{product?.price}TK</span> <span className='text-primary'>{discountedPrice}TK</span></span>}</p>
                     </div>
-                    <Button onClick={openDetailsModal} className={`mt-2 text-white w-full font-semibold  ${isAddedToCart ? ' bg-secondary hover:bg-secondary !cursor-not-allowed' : 'custom-shadow-md  bg-primary hover:bg-primary-500'}`} ><ShoppingCart /> <span>{t('addToCart')}</span></Button>
+                    <Button onClick={openDetailsModal} className={`mt-2 text-white w-full font-semibold  ${isAddedToCart ? ' bg-secondary hover:bg-secondary' : 'custom-shadow-md  bg-primary hover:bg-primary-500'}`} ><ShoppingCart /> <span>{t('addToCart')}</span></Button>
                 </div>
             </Link>
 
