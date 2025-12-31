@@ -670,6 +670,6 @@ body {
     max-height: calc(100vh - 93px);
   }
   .wishlist-overlay {
-    max-height: calc(100vh - 93.53px);
+    max-height: calc(100vh - 83.53px);
   }
 }

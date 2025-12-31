@@ -2,13 +2,14 @@
 import { RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 // import { FavouriteFoodsModal } from './FavouriteFoodsModal';
-import { useEffect, useRef, useState } from 'react';
+import { CSSProperties, useEffect, useRef, useState } from 'react';
 import * as Dialog from "@radix-ui/react-dialog";
 import { ShoppingCart, Trash2, X, Heart } from "lucide-react"; // optional icon
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { addCartProduct, removeFavouriteProduct } from "@/redux/features/product/productSlice";
 import { useTranslations } from 'next-intl';
+import { getResponsiveRightStyle } from '@/lib/utils';
 
 export function FavouriteFoods() {
     // hooks
@@ -18,40 +19,19 @@ export function FavouriteFoods() {
     const t = useTranslations('shared');
     const { locale } = useSelector((state: RootState) => state.locale)
     const cartRef = useRef<HTMLButtonElement | null>(null)
-    const [right, setRight] = useState('0')
+    const [style, setStyle] = useState<CSSProperties>({})
 
     // handlers 
     const toggleModal = () => {
         if (!cartRef.current || typeof window === "undefined") return;
         setIsModalOpen((prev) => !prev)
-        const rect = cartRef.current.getBoundingClientRect();
-        const rightPX = window.innerWidth - rect.right - window.scrollX
-
-        if (window.innerWidth > 767 && window.innerWidth < 1280) {
-            const position = "40px";
-            setRight(`${position}`)
-        } else if (window.innerWidth > 1279) {
-            const position = rightPX + 12;
-            setRight(`${position}px`)
-        } else {
-            setRight(`50%`)
-        }
+        const elStyle = getResponsiveRightStyle(cartRef)
+        setStyle(elStyle)
     }
 
     useEffect(() => {
-        if (!cartRef.current || typeof window === "undefined") return;
-        const rect = cartRef.current.getBoundingClientRect();
-        const rightPX = window.innerWidth - rect.right - window.scrollX
-
-        if (window.innerWidth > 767 && window.innerWidth < 1280) {
-            const position = "40px";
-            setRight(`${position}`)
-        } else if (window.innerWidth > 1279) {
-            const position = rightPX + 12;
-            setRight(`${position}px`)
-        } else {
-            setRight(`50%`)
-        }
+        const elStyle = getResponsiveRightStyle(cartRef)
+        setStyle(elStyle)
     }, [cartRef])
 
     return (
@@ -62,15 +42,14 @@ export function FavouriteFoods() {
                     favouriteProducts.length > 0 ?
                         <span className='flex items-center justify-center text-xs px-0.5 min-w-4 min-h-4  absolute -top-[40%] left-[80%] translate-x-[-50%] bg-secondary text-white rounded-full p-[1px]'>{favouriteProducts.length}</span> : <></>
                 }
-
                 {!!isModalOpen && <span className='w-5 h-5 rotate-45 bg-primary absolute pointer-events-none top-[190%] left-1/2 -translate-x-1/2'></span>}
             </button>
 
 
             <Dialog.Root open={isModalOpen} onOpenChange={toggleModal}>
                 <Dialog.Portal>
-                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm wishlist-overlay md:hidden top-[81px] !border-none md:top-[81px] lg:top-[83.53px] z-[9999]" />
-                    <Dialog.Content style={{ right: right }} className="wishlist-modal fixed w-full translate-x-1/2 md:translate-x-0 xl:translate-x-1/2 flex flex-col top-[81px] !border-none !m-0 !p-0 md:top-[81px] lg:top-[83.53px] max-w-[90vw] sm:max-w-[600px] md:max-w-[600px] !rounded-[6px] md:rounded-[8px] lg:!rounded-[10px] overflow-hidden bg-body z-[99999]">
+                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm wishlist-overlay top-[81px] !border-none lg:top-[83.53px] z-[9999]" />
+                    <Dialog.Content style={style} className="wishlist-modal fixed w-full flex flex-col top-[81px] !border-none !m-0 !p-0 lg:top-[83.53px] max-w-[90vw] sm:max-w-[600px] md:max-w-[600px] !rounded-[6px] md:rounded-[8px] lg:!rounded-[10px] overflow-hidden bg-body z-[99999]">
                         <div className="flex items-center justify-between bg-primary px-2.5 sm:px-4 py-2">
                             <Dialog.Title className="fg_fs-md text-white">
                                 {t('favouriteFoods')}
