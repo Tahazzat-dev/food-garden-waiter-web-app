@@ -620,6 +620,19 @@ body {
   max-height: 80vh;
   max-height: calc(100vh - 156px);
   max-height: calc(100dvh - 156px);
+}
 
-  @apply lg:max-h-[500px];
+@media (min-width: 768px) {
+  .cartsheet-drawer {
+    max-height: 80vh;
+    max-height: calc(100vh - 81px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .cartsheet-drawer {
+    max-height: 80vh;
+    /* max-height: calc(100vh - 93.53px); */
+    max-height: calc(100vh - 93px);
+  }
 }
