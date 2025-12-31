@@ -102,23 +102,34 @@ function LoginForm({ setFormType }: { setFormType: Dispatch<SetStateAction<TAuth
         reset();
     };
 
+
+    const handleForgotPassword = () => {
+        console.log("")
+    }
+
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
+        <form onSubmit={handleSubmit(onSubmit)} className="prevent-body-trigger flex flex-col gap-4 w-full">
             <div className="w-full">
-                <label className="mb-1 block font-semibold">{t('phone')}</label>
+                <label className="mb-1 block">{t('phone')}</label>
                 <input {...register("phone")} className="auth-input" placeholder={t("phonePlaceholder")} />
                 {!!errors.phone && !!errors.phone?.message && <ErrorEl message={t("phoneError")} />}
             </div>
 
             {/* Password Field */}
             <div className="w-full">
-                <label className="mb-1 block font-semibold">{t('password')}</label>
+                <label className="mb-1 block">{t('password')}</label>
                 <input {...register("password")} className="auth-input" placeholder={t('passwordPlaceholder')} type="password" />
                 {errors.password && errors.password.message && <ErrorEl message={t('passwordError')} />}
+                <button onClick={handleForgotPassword} type="button" className="mt-1.5">{t('forgotPassword')}</button>
             </div>
             <Button size="auth" className="mt-2  text-white font-semibold" type="submit" disabled={isSubmitting}>
                 {isSubmitting ? "Submitting..." : t("submit")}
             </Button>
+
+            <div className="w-full flex justify-center gap-2">
+                <p className="">{t('dontHaveAccount')}</p>
+                <button onClick={() => setFormType("register")} type="button" className="prevent-body-trigger duration-300 text-blue-500 hover:text-blue-600">{t('register')}</button>
+            </div>
         </form>
     )
 }
@@ -142,6 +153,7 @@ type SignUpSchema = z.infer<typeof signUpSchema>;
 
 function RegisterForm({ setFormType }: { setFormType: Dispatch<SetStateAction<TAuthFormType>> }) {
     // hooks
+    const t = useTranslations('authentication');
     const {
         register,
         handleSubmit,
@@ -160,46 +172,42 @@ function RegisterForm({ setFormType }: { setFormType: Dispatch<SetStateAction<TA
         reset();
     };
     return (
-        <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '400px' }}>
-
-            {/* Name Field */}
-            <div>
-                <label>Name</label>
-                <input {...register("name")} placeholder="John Doe" />
-                {errors.name && errors.name.message && <ErrorEl message={errors.name.message} />}
+        <form onSubmit={handleSubmit(onSubmit)} className="prevent-body-trigger flex flex-col gap-4 w-full">
+            <div className="w-full">
+                <label className="mb-1 block">{t('name')}</label>
+                <input {...register("name")} className="auth-input" placeholder={t("namePlaceholder")} />
+                {!!errors.name && !!errors.name?.message && <ErrorEl message={t("nameError")} />}
             </div>
 
-            {/* Email Field (Optional) */}
-            <div>
-                <label>Email (Optional)</label>
-                <input {...register("email")} type="email" placeholder="john@example.com" />
-                {errors.email && errors.email.message && <ErrorEl message={errors.email.message} />}
+            <div className="w-full">
+                <label className="mb-1 block">{t('phone')}</label>
+                <input {...register("phone")} className="auth-input" placeholder={t("phonePlaceholder")} />
+                {!!errors.phone && !!errors.phone?.message && <ErrorEl message={t("phoneError")} />}
             </div>
 
-            {/* Phone Field */}
-            <div>
-                <label>Phone</label>
-                <input {...register("phone")} placeholder="1234567890" />
-                {errors.phone && errors.phone.message && <ErrorEl message={errors.phone.message} />}
+            <div className="w-full">
+                <label className="mb-1 block">{t('email')} ({t('optional')})</label>
+                <input {...register("email")} className="auth-input" placeholder={t("emailPlaceholder")} />
+                {!!errors.email && !!errors.email?.message && <ErrorEl message={t("emailError")} />}
             </div>
-
-            {/* Password Field */}
-            <div>
-                <label>Password</label>
-                <input {...register("password")} type="password" />
-                {errors.password && errors.password.message && <ErrorEl message={errors.password.message} />}
+            <div className="w-full">
+                <label className="mb-1 block">{t('password')}</label>
+                <input {...register("password")} className="auth-input" placeholder={t('passwordPlaceholder')} type="password" />
+                {errors.password && errors.password.message && <ErrorEl message={t('passwordError')} />}
             </div>
-
-            {/* Confirm Password Field */}
-            <div>
-                <label>Confirm Password</label>
-                <input {...register("confirmPassword")} type="password" />
-                {errors.confirmPassword && errors.confirmPassword.message && <ErrorEl message={errors.confirmPassword.message} />}
+            <div className="w-full">
+                <label className="mb-1 block">{t('confirmPassword')}</label>
+                <input {...register("confirmPassword")} className="auth-input" placeholder={t('confirmPasswordPlaceholder')} type="password" />
+                {errors.confirmPassword && errors.confirmPassword.message && <ErrorEl message={t('confirmPasswordError')} />}
             </div>
+            <Button size="auth" className="mt-2  text-white font-semibold" type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Submitting..." : t("submit")}
+            </Button>
 
-            <button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Submitting..." : "Register"}
-            </button>
+            <div className="w-full flex justify-center gap-2">
+                <p className="">{t('haveAccount')}</p>
+                <button onClick={() => setFormType("login")} type="button" className="prevent-body-trigger duration-300 text-blue-500 hover:text-blue-600">{t('login')}</button>
+            </div>
         </form>
     )
 }

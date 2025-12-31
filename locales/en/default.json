@@ -46,9 +46,10 @@
     "confirmPasswordPlaceholder": "Enter confirm password",
     "confirmPasswordError": "Passwords don't match",
     "forgotPassword": "Forgot Password?",
-    "dontHaveAccount": "Don't have an account? Register",
-    "haveAccount": "Already have an account? Login",
-    "submit": "Submit"
+    "dontHaveAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "submit": "Submit",
+    "optional": "optional"
   },
   "header": {
     "categories": {

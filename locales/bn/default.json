@@ -27,8 +27,8 @@
     "message": "মেসেজ"
   },
   "authentication": {
-    "login": "লগইন",
-    "register": "রেজিস্ট্রেশন",
+    "login": "লগইন করুন",
+    "register": "রেজিস্ট্রেশন করুন",
     "name": "নাম",
     "nameError": "নাম অবশ্যই দিতে হবে",
     "namePlaceholder": "নাম লিখুন",
@@ -45,9 +45,10 @@
     "confirmPasswordPlaceholder": "পাসওয়ার্ড নিশ্চিত করুন",
     "confirmPasswordError": "পাসওয়ার্ড মিলছে না",
     "forgotPassword": "পাসওয়ার্ড ভুলে গেছেন?",
-    "dontHaveAccount": "অ্যাকাউন্ট নেই? রেজিস্ট্রেশন করুন",
-    "haveAccount": "আগে থেকেই অ্যাকাউন্ট আছে? লগইন করুন",
-    "submit": "জমা দিন"
+    "dontHaveAccount": "অ্যাকাউন্ট নেই?",
+    "haveAccount": "আগে থেকেই অ্যাকাউন্ট আছে?",
+    "submit": "জমা দিন",
+    "optional": "ঐচ্ছিক"
   },
   "header": {
     "categories": {
