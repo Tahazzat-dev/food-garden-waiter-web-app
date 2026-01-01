@@ -9,7 +9,6 @@ const BodyEventListeners = () => {
     const dispatch = useDispatch();
     useEffect(() => {
         const handleListeners = (event: MouseEvent) => {
-            console.log("Clicked body", EXPAND)
             if (!EXPAND) return;
 
             const targetElement = event.target as HTMLElement;
