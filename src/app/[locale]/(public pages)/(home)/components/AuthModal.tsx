@@ -1,7 +1,7 @@
 "use client";
 
 import * as Dialog from "@radix-ui/react-dialog";
-import { X } from "lucide-react"; // optional icon
+import { Eye, EyeOff, X } from "lucide-react"; // optional icon
 import { Button } from "@/components/ui/button";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { RootState } from "@/redux/store";
@@ -56,14 +56,16 @@ export default function AuthModal() {
                     <div className="p-4">
                         <Dialog.Title className="fg_fs-3xl text-center mt-4 mb-6">
                             {formType === "login" ? t('login') :
-                                formType === "reset" ? t("otp") :
-                                    t('register')}
+                                formType === "otp" ? t("otp") :
+                                    formType === "reset" ? t('resetPassword') :
+                                        t('register')}
                         </Dialog.Title>
 
                         {
                             formType === "login" ? <LoginForm setFormType={setFormType} /> :
-                                formType === "reset" ? <PasswordResetForm setFormType={setFormType} /> :
-                                    <RegisterForm setFormType={setFormType} />
+                                formType === "otp" ? <PasswordResetForm setFormType={setFormType} /> :
+                                    formType === "reset" ? <NewPasswordForm setFormType={setFormType} /> :
+                                        <RegisterForm setFormType={setFormType} />
                         }
                     </div>
                 </Dialog.Content>
@@ -91,12 +93,14 @@ function LoginForm({ setFormType }: { setFormType: Dispatch<SetStateAction<TAuth
     } = useForm<LoginSchema>({
         resolver: zodResolver(loginSchema),
     });
+    const [showPassword, setShowPassword] = useState(false);
 
 
     // handlers
     const onSubmit = async (data: LoginSchema) => {
         // Simulate API call
         await new Promise((resolve) => setTimeout(resolve, 1000));
+        alert("API integration in progress")
         console.log("Form Submitted:", data);
         reset();
     };
@@ -118,7 +122,13 @@ function LoginForm({ setFormType }: { setFormType: Dispatch<SetStateAction<TAuth
                 {/* Password Field */}
                 <div className="w-full">
                     <label className="mb-1 block">{t('password')}</label>
-                    <input {...register("password")} className="auth-input" placeholder={t('passwordPlaceholder')} type="password" />
+                    <div className="w-full relative">
+                        <input {...register("password")} className="auth-input" placeholder={t('passwordPlaceholder')} type={showPassword ? "text" : "password"} />
+                        {
+                            showPassword ? <button className="prevent-body-trigger absolute top-1/2 -translate-y-1/2 right-3" onClick={() => setShowPassword(false)} type="button" ><EyeOff /></button> :
+                                <button className="prevent-body-trigger absolute top-1/2 -translate-y-1/2 right-3" onClick={() => setShowPassword(true)} type="button" ><Eye /></button>
+                        }
+                    </div>
                     {errors.password && errors.password.message && <ErrorEl message={t('passwordError')} />}
                     <button onClick={handleForgotPassword} type="button" className="mt-1.5 text-blue-500 hover:text-blue-600">{t('forgotPassword')}</button>
                 </div>
@@ -225,6 +235,7 @@ const passwordResetSchema = z.object({
 type PasswordResetSchema = z.infer<typeof passwordResetSchema>;
 function PasswordResetForm({ setFormType }: { setFormType: Dispatch<SetStateAction<TAuthFormType>> }) {
     const t = useTranslations('authentication');
+
     // hooks
     const {
         register,
@@ -239,16 +250,28 @@ function PasswordResetForm({ setFormType }: { setFormType: Dispatch<SetStateActi
     const onSubmit = async (data: PasswordResetSchema) => {
         // Simulate API call
         await new Promise((resolve) => setTimeout(resolve, 1000));
+        alert("API integration in progress");
         console.log("Form Submitted:", data);
         reset();
     };
+
+    const handleResendOTP = () => {
+        alert("API integration in progress");
+    }
     return (
         <>
             <form onSubmit={handleSubmit(onSubmit)} className="prevent-body-trigger flex flex-col gap-4 w-full">
                 <div className="w-full">
                     <label className="mb-1 block">{t('otp')}</label>
                     <input {...register("otp")} className="auth-input" placeholder={t("otpPlaceholder")} />
-                    {!!errors.otp && !!errors.otp?.message && <ErrorEl message={t("otpError")} />}
+                    {!!errors.otp && !!errors.otp?.message && <ErrorEl message={
+                        errors.otp.type === "too_small"
+                            ? t("otpLengthError")
+                            : t("otpRequiredError")} />}
+                </div>
+
+                <div className="w-full flex gap-2">
+                    <button onClick={handleResendOTP} type="button" className="prevent-body-trigger duration-300 text-blue-500 hover:text-blue-600">{t('resendOtp')}</button>
                 </div>
                 <SubmitBtn isSubmitting={isSubmitting} />
                 <div className="w-full flex justify-center gap-2">
@@ -259,6 +282,61 @@ function PasswordResetForm({ setFormType }: { setFormType: Dispatch<SetStateActi
         </>
     )
 }
+
+
+
+// Login form
+const newPasswordSchema = z.object({
+    newPassword: z.string().min(6, "Password must be at least 6 characters"),
+    confirmPassword: z.string().min(6, "Password must be at least 6 characters")
+}).refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+})
+
+type NewPasswordSchema = z.infer<typeof newPasswordSchema>;
+function NewPasswordForm({ setFormType }: { setFormType: Dispatch<SetStateAction<TAuthFormType>> }) {
+    const t = useTranslations('authentication');
+    // hooks
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+        reset,
+    } = useForm<NewPasswordSchema>({
+        resolver: zodResolver(newPasswordSchema),
+    });
+
+    // handlers
+    const onSubmit = async (data: NewPasswordSchema) => {
+        // Simulate API call
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        console.log("Form Submitted:", data);
+        reset();
+    };
+    return (
+        <>
+            <form onSubmit={handleSubmit(onSubmit)} className="prevent-body-trigger flex flex-col gap-4 w-full">
+                <div className="w-full">
+                    <label className="mb-1 block">{t('newPassword')}</label>
+                    <input {...register("newPassword")} className="auth-input" placeholder={t("newPasswordPlaceholder")} />
+                    {!!errors.newPassword && !!errors.newPassword?.message && <ErrorEl message={t("passwordError")} />}
+                </div>
+                <div className="w-full">
+                    <label className="mb-1 block">{t('confirmPassword')}</label>
+                    <input {...register("confirmPassword")} className="auth-input" placeholder={t("confirmPasswordPlaceholder")} />
+                    {!!errors.newPassword && !!errors.newPassword?.message && <ErrorEl message={t("confirmPasswordError")} />}
+                </div>
+                <SubmitBtn isSubmitting={isSubmitting} />
+                <div className="w-full flex justify-center gap-2">
+                    <p className="">{t('rememberedPassword')}</p>
+                    <button onClick={() => setFormType("login")} type="button" className="prevent-body-trigger duration-300 text-blue-500 hover:text-blue-600">{t('login')}</button>
+                </div>
+            </form>
+        </>
+    )
+}
+
 
 
 const SubmitBtn = ({ isSubmitting }: { isSubmitting: boolean }) => {

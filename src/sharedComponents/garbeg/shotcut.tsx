@@ -22,6 +22,9 @@ export default function Shotcut() {
   )
 }
 
+
+// alert("API integration in progress")
+
 //  ===== section padding
 // py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18
 

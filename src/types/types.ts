@@ -20,4 +20,4 @@ export interface TCartProduct extends TProduct {
 }
 
 
-export type TAuthFormType = "login" | "register" | "reset";
+export type TAuthFormType = "login" | "register" | "otp" | "reset";
