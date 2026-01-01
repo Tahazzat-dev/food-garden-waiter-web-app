@@ -37,6 +37,7 @@
     "emailError": "Email is required",
     "emailPlaceholder": "Enter email",
     "phone": "Phone",
+    "verifyPhone": "Verify Phone",
     "phoneError": "Phone number must be at least 11 digits",
     "phonePlaceholder": "Enter phone number",
     "password": "Password",

@@ -56,16 +56,18 @@ export default function AuthModal() {
                     <div className="p-4">
                         <Dialog.Title className="fg_fs-3xl text-center mt-4 mb-6">
                             {formType === "login" ? t('login') :
-                                formType === "otp" ? t("otp") :
-                                    formType === "reset" ? t('resetPassword') :
-                                        t('register')}
+                                formType === "phone" ? t("verifyPhone") :
+                                    formType === "otp" ? t("otp") :
+                                        formType === "reset" ? t('resetPassword') :
+                                            t('register')}
                         </Dialog.Title>
 
                         {
                             formType === "login" ? <LoginForm setFormType={setFormType} /> :
-                                formType === "otp" ? <PasswordResetForm setFormType={setFormType} /> :
-                                    formType === "reset" ? <NewPasswordForm setFormType={setFormType} /> :
-                                        <RegisterForm setFormType={setFormType} />
+                                formType === "phone" ? <VerifyPhoneForm setFormType={setFormType} /> :
+                                    formType === "otp" ? <OTPForm setFormType={setFormType} /> :
+                                        formType === "reset" ? <NewPasswordForm setFormType={setFormType} /> :
+                                            <RegisterForm setFormType={setFormType} />
                         }
                     </div>
                 </Dialog.Content>
@@ -108,7 +110,7 @@ function LoginForm({ setFormType }: { setFormType: Dispatch<SetStateAction<TAuth
 
     const handleForgotPassword = () => {
         // send password reset request
-        setFormType("reset");
+        setFormType("phone");
     }
     return (
         <>
@@ -124,10 +126,7 @@ function LoginForm({ setFormType }: { setFormType: Dispatch<SetStateAction<TAuth
                     <label className="mb-1 block">{t('password')}</label>
                     <div className="w-full relative">
                         <input {...register("password")} className="auth-input" placeholder={t('passwordPlaceholder')} type={showPassword ? "text" : "password"} />
-                        {
-                            showPassword ? <button className="prevent-body-trigger absolute top-1/2 -translate-y-1/2 right-3" onClick={() => setShowPassword(false)} type="button" ><EyeOff /></button> :
-                                <button className="prevent-body-trigger absolute top-1/2 -translate-y-1/2 right-3" onClick={() => setShowPassword(true)} type="button" ><Eye /></button>
-                        }
+                        <PasswordToggler show={showPassword} dispatcher={setShowPassword} />
                     </div>
                     {errors.password && errors.password.message && <ErrorEl message={t('passwordError')} />}
                     <button onClick={handleForgotPassword} type="button" className="mt-1.5 text-blue-500 hover:text-blue-600">{t('forgotPassword')}</button>
@@ -171,6 +170,8 @@ function RegisterForm({ setFormType }: { setFormType: Dispatch<SetStateAction<TA
     } = useForm<SignUpSchema>({
         resolver: zodResolver(signUpSchema),
     });
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
 
     // handlers
@@ -205,12 +206,18 @@ function RegisterForm({ setFormType }: { setFormType: Dispatch<SetStateAction<TA
                 </div>
                 <div className="w-full">
                     <label className="mb-1 block">{t('password')}</label>
-                    <input {...register("password")} className="auth-input" placeholder={t('passwordPlaceholder')} type="password" />
+                    <div className="w-full relative">
+                        <input {...register("password")} className="auth-input" placeholder={t('passwordPlaceholder')} type={showPassword ? "text" : "password"} />
+                        <PasswordToggler show={showPassword} dispatcher={setShowPassword} />
+                    </div>
                     {errors.password && errors.password.message && <ErrorEl message={t('passwordError')} />}
                 </div>
                 <div className="w-full">
                     <label className="mb-1 block">{t('confirmPassword')}</label>
-                    <input {...register("confirmPassword")} className="auth-input" placeholder={t('confirmPasswordPlaceholder')} type="password" />
+                    <div className="w-full relative">
+                        <input {...register("confirmPassword")} className="auth-input" placeholder={t('confirmPasswordPlaceholder')} type={showConfirmPassword ? "text" : "password"} />
+                        <PasswordToggler show={showConfirmPassword} dispatcher={setShowConfirmPassword} />
+                    </div>
                     {errors.confirmPassword && errors.confirmPassword.message && <ErrorEl message={t('confirmPasswordError')} />}
                 </div>
                 <SubmitBtn isSubmitting={isSubmitting} />
@@ -224,16 +231,60 @@ function RegisterForm({ setFormType }: { setFormType: Dispatch<SetStateAction<TA
 }
 
 
+// Verify phone form
+const verifyPhoneSchema = z.object({
+    phone: z.string().min(11, "Phone number must be at least 11 digits"),
+})
+
+type VerifyPhoneSchema = z.infer<typeof verifyPhoneSchema>;
+function VerifyPhoneForm({ setFormType }: { setFormType: Dispatch<SetStateAction<TAuthFormType>> }) {
+    const t = useTranslations('authentication');
+
+    // hooks
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+        reset,
+    } = useForm<VerifyPhoneSchema>({
+        resolver: zodResolver(verifyPhoneSchema),
+    });
+
+    // handlers
+    const onSubmit = async (data: VerifyPhoneSchema) => {
+        // Simulate API call
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        console.log("Form Submitted:", data);
+        reset();
+        setFormType("otp")
+    };
+    return (
+        <>
+            <form onSubmit={handleSubmit(onSubmit)} className="prevent-body-trigger flex flex-col gap-4 w-full">
+                <div className="w-full">
+                    <label className="mb-1 block">{t('phone')}</label>
+                    <input {...register("phone")} className="auth-input" placeholder={t("phonePlaceholder")} />
+                    {!!errors.phone && !!errors.phone?.message && <ErrorEl message={t("phoneError")} />}
+                </div>
+                <SubmitBtn isSubmitting={isSubmitting} />
+                <div className="w-full flex justify-center gap-2">
+                    <p className="">{t('rememberedPassword')}</p>
+                    <button onClick={() => setFormType("login")} type="button" className="prevent-body-trigger duration-300 text-blue-500 hover:text-blue-600">{t('login')}</button>
+                </div>
+            </form>
+        </>
+    )
+}
 
 
 
-// Login form
+// OTP form
 const passwordResetSchema = z.object({
     otp: z.string().min(6, "OTP must be 6 digits"),
 })
 
 type PasswordResetSchema = z.infer<typeof passwordResetSchema>;
-function PasswordResetForm({ setFormType }: { setFormType: Dispatch<SetStateAction<TAuthFormType>> }) {
+function OTPForm({ setFormType }: { setFormType: Dispatch<SetStateAction<TAuthFormType>> }) {
     const t = useTranslations('authentication');
 
     // hooks
@@ -285,7 +336,7 @@ function PasswordResetForm({ setFormType }: { setFormType: Dispatch<SetStateActi
 
 
 
-// Login form
+// New password form
 const newPasswordSchema = z.object({
     newPassword: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z.string().min(6, "Password must be at least 6 characters")
@@ -293,6 +344,7 @@ const newPasswordSchema = z.object({
     message: "Passwords don't match",
     path: ["confirmPassword"],
 })
+
 
 type NewPasswordSchema = z.infer<typeof newPasswordSchema>;
 function NewPasswordForm({ setFormType }: { setFormType: Dispatch<SetStateAction<TAuthFormType>> }) {
@@ -306,6 +358,8 @@ function NewPasswordForm({ setFormType }: { setFormType: Dispatch<SetStateAction
     } = useForm<NewPasswordSchema>({
         resolver: zodResolver(newPasswordSchema),
     });
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     // handlers
     const onSubmit = async (data: NewPasswordSchema) => {
@@ -319,13 +373,19 @@ function NewPasswordForm({ setFormType }: { setFormType: Dispatch<SetStateAction
             <form onSubmit={handleSubmit(onSubmit)} className="prevent-body-trigger flex flex-col gap-4 w-full">
                 <div className="w-full">
                     <label className="mb-1 block">{t('newPassword')}</label>
-                    <input {...register("newPassword")} className="auth-input" placeholder={t("newPasswordPlaceholder")} />
+                    <div className="w-full relative">
+                        <input {...register("newPassword")} className="auth-input" type={showPassword ? "text" : "password"} placeholder={t("newPasswordPlaceholder")} />
+                        <PasswordToggler show={showPassword} dispatcher={setShowPassword} />
+                    </div>
                     {!!errors.newPassword && !!errors.newPassword?.message && <ErrorEl message={t("passwordError")} />}
                 </div>
                 <div className="w-full">
                     <label className="mb-1 block">{t('confirmPassword')}</label>
-                    <input {...register("confirmPassword")} className="auth-input" placeholder={t("confirmPasswordPlaceholder")} />
-                    {!!errors.newPassword && !!errors.newPassword?.message && <ErrorEl message={t("confirmPasswordError")} />}
+                    <div className="w-full relative">
+                        <input {...register("confirmPassword")} className="auth-input" placeholder={t("confirmPasswordPlaceholder")} type={showConfirmPassword ? "text" : "password"} />
+                        <PasswordToggler show={showConfirmPassword} dispatcher={setShowConfirmPassword} />
+                    </div>
+                    {!!errors.confirmPassword && !!errors.confirmPassword?.message && <ErrorEl message={t("confirmPasswordError")} />}
                 </div>
                 <SubmitBtn isSubmitting={isSubmitting} />
                 <div className="w-full flex justify-center gap-2">
@@ -351,6 +411,22 @@ function ErrorEl({ message }: { message: string }) {
     return (
         <p className="text-red-500 mt-1.5">{message}</p>
     )
+}
+
+
+type TPasswordToggleProps = {
+    dispatcher: Dispatch<SetStateAction<boolean>>;
+    show: boolean;
+}
+function PasswordToggler({ dispatcher, show }: TPasswordToggleProps) {
+    // handler
+    const toggleVisibility = () => {
+        dispatcher(prev => !prev);
+    }
+    return <>
+        <button className={`absolute top-1/2 right-3 -translate-y-1/2 ${!show && "opacity-0 pointer-events-none"}`} onClick={toggleVisibility} type="button" ><Eye /></button>
+        <button className={`absolute top-1/2 right-3 -translate-y-1/2 ${!!show && "opacity-0 pointer-events-none"}`} onClick={toggleVisibility} type="button" ><EyeOff /></button>
+    </>
 }
 
 const Loader = () => {

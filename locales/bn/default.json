@@ -36,6 +36,7 @@
     "emailError": "ইমেইল অবশ্যই দিতে হবে",
     "emailPlaceholder": "ইমেইল লিখুন",
     "phone": "ফোন নম্বর",
+    "verifyPhone": "ফোন নম্বর যাচাই করুন",
     "phoneError": "ফোন নম্বর অবশ্যই কমপক্ষে ১১ সংখ্যার হতে হবে",
     "phonePlaceholder": "ফোন নম্বর লিখুন",
     "password": "পাসওয়ার্ড",
