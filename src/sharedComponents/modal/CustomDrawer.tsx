@@ -1,11 +1,10 @@
 'use client';
-import { ReactNode, useEffect, useRef } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 interface DrawerProps {
     open: boolean;
     children: ReactNode;
-    direction?: "right" | "left";
     className?: string;
     overlayClassName?: string;
     hideOverlay?: boolean;
@@ -14,42 +13,49 @@ interface DrawerProps {
 export function CustomDrawer({
     open,
     children,
-    direction = "right",
     className = "",
     overlayClassName = "",
     hideOverlay = false,
 }: DrawerProps) {
+    // hooks
     const drawerRef = useRef<HTMLDivElement>(null);
+    const [mounted, setMounted] = useState(false);
 
-    // prevent body scroll when drawer is open
+    //  ========== hidden overflow of body ========
     useEffect(() => {
+        if (mounted) return;
+        setMounted(true)
+    }, [])
+
+    useEffect(() => {
+        if (typeof window === "undefined") return;
+
         if (open) {
             document.body.style.overflowY = "hidden";
         } else {
-            document.body.style.overflowY = "";
+            document.body.style.overflowY = "auto";
         }
+
         return () => {
-            document.body.style.overflowY = "";
+            document.body.style.overflow = "auto";
         };
     }, [open]);
 
-    if (!open) return null;
-
+    if (!mounted) return <></>;
     return createPortal(
         <>
-            {!hideOverlay && (
+            {!hideOverlay && !!open && (
                 <div
-                    className={`fixed inset-0 global-overlay z-[9999] ${overlayClassName}`}
+                    className={`fixed top-[81px] !border-none lg:top-[83.53px] inset-0 cart-overlay global-overlay z-[99999] ${overlayClassName}`}
                 />
             )}
             <div
                 ref={drawerRef}
-                className={`fixed flex  flex-col rounded-r-[10px] overflow-hidden bg-background cartsheet-drawer prevent-body-trigger z-[9999] w-[90vw] max-w-[450px] top-[86px] sm:top-[84px] md:top-[81px] lg:top-[88px] dark:shadow-amber-50 rounded-md lg:!rounded-r-none ${className} ${direction === "right" ? "right-0" : "left-0"
-                    }`}
+                className={`fixed flex  flex-col rounded-r-[10px] overflow-hidden bg-background cartsheet-drawer prevent-body-trigger z-[99999] w-[90vw] max-w-[450px] right-0 top-[86px] sm:top-[84px] md:top-[81px] lg:top-[88px] dark:shadow-amber-50 h-full rounded-md lg:!rounded-r-none duration-200 ${open ? "translate-x-0" : "translate-x-full"} ${className}`}
             >
                 {children}
             </div>
         </>,
-        document.body
+        window.document.body
     );
 }

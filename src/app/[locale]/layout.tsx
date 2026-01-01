@@ -38,10 +38,6 @@ export default async function RootLayout({
     notFound();
   }
 
-  // console.log('params locale:', params);
-
-  // const locale = 'en'
-
   return (
     <html lang={locale}>
       <body

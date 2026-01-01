@@ -1,8 +1,6 @@
 'use client';
 import { ShoppingCart, X } from 'lucide-react';
 import { CartCard } from '../cards/CartCard';
-import { Drawer, DrawerContent } from '@/components/ui/drawer';
-import { DialogTitle } from '@radix-ui/react-dialog';
 import { RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { SET_EXPAND } from '@/redux/features/actions/actionSlice';
@@ -17,21 +15,6 @@ export function CartSheet() {
   const { cartProducts } = useSelector((state: RootState) => state.productSlice);
   const { EXPAND } = useSelector((state: RootState) => state.actions);
   const openCart = EXPAND === KEY;
-
-  //  useEffect(() => {
-  //   const handleClickOutside = (e: MouseEvent) => {
-  //     if (cartRef.current && !cartRef.current.contains(e.target as Node)) {
-  //       setIsModalOpen(false);
-  //     }
-  //   };
-
-  //   if (isModalOpen) {
-  //     document.addEventListener("mousedown", handleClickOutside);
-  //   }
-
-  //   return () => document.removeEventListener("mousedown", handleClickOutside);
-  // }, [isModalOpen]);
-
   return (
     <>
       <button onClick={() => dispatch(SET_EXPAND(EXPAND === KEY ? null : KEY))} className='prevent-body-trigger relative'>
@@ -44,13 +27,12 @@ export function CartSheet() {
 
       <CustomDrawer
         open={openCart}
-        direction='right'
       >
         <div className="w-full h-full flex flex-col">
           <div className="w-full flex items-center gap-5 py-3 px-4 bg-primary">
-            <DialogTitle className="grow flex text-white">
+            <h3 className="grow flex text-white">
               <span className='fg_fs-lg'>Add To Cart ({cartProducts.length})</span>
-            </DialogTitle>
+            </h3>
 
             <div className="w-full max-w-6">
               <button onClick={() => dispatch(SET_EXPAND(null))} className='bg-secondary p-1 rounded-full' >
