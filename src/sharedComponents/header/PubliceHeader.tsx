@@ -9,6 +9,7 @@ import { useTranslations } from 'next-intl';
 import ThemeSwitcher from '../toggler/ThemeSwitcher';
 import { FavouriteFoods } from '../favourite/FavouriteFoods';
 import AuthUser from './AuthUser';
+import { CheckoutModal } from '../modal/CheckoutModal';
 
 export default function PubliceHeader() {
   const tTracking = useTranslations('header');
@@ -38,6 +39,9 @@ export default function PubliceHeader() {
           </div>
         </Container>
       </section>
+
+      {/* modals */}
+      <CheckoutModal />
     </>
   );
 }

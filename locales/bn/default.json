@@ -86,6 +86,33 @@
     },
     "trackingTxt": "পার্সেল ট্র্যাকিং"
   },
+  "checkout": {
+    "makeConfirmOrder": "অর্ডার নিশ্চিত করুন",
+    "yourName": "আপনার নাম",
+    "yourNamePlaceholder": "আপনার নাম লিখুন",
+    "yourNameError": "নাম দেওয়া বাধ্যতামূলক",
+    "phoneNo": "ফোন নম্বর",
+    "phoneNoPlaceholder": "আপনার ফোন নম্বর লিখুন",
+    "phoneNoError": "ফোন নম্বর দেওয়া বাধ্যতামূলক",
+    "deliveryAddress": "ডেলিভারি ঠিকানা",
+    "deliveryAddressPlaceholder": "আপনার ঠিকানা লিখুন",
+    "deliveryAddressError": "ডেলিভারি ঠিকানা দেওয়া বাধ্যতামূলক",
+    "orderNote": "অর্ডার নোট",
+    "orderNotePlaceholder": "নোট লিখুন",
+    "homeDelivery": "হোম ডেলিভারি",
+    "selfPickup": "নিজে এসে নেবো",
+    "dineIn": "রেস্টুরেন্টে খাওয়া",
+    "cashOnDelivery": "ক্যাশ অন ডেলিভারি",
+    "payment": "পেমেন্ট",
+    "bkash": "বিকাশ",
+    "nagad": "নগদ",
+    "totalOrderAmount": "মোট অর্ডারের পরিমাণ",
+    "deliveryCharge": "ডেলিভারি চার্জ",
+    "discountAmount": "ডিসকাউন্ট",
+    "confirmOrder": "অর্ডার কনফার্ম করুন",
+    "orderSuccess": "অর্ডার সফল হয়েছে",
+    "orderFail": "অর্ডার ব্যর্থ হয়েছে"
+  },
   "home": {
     "title": "হ্যালো"
   }

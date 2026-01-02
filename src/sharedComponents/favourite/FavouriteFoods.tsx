@@ -107,8 +107,6 @@ export function FavouriteFoods() {
                     </Dialog.Content>
                 </Dialog.Portal >
             </Dialog.Root >
-
-            {/* <FavouriteFoodsModal open={isModalOpen} onOpenChange={() => setIsModalOpen(false)} /> */}
         </>
     );
 }

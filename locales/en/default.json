@@ -87,6 +87,33 @@
     },
     "trackingTxt": "Tracking Parcel"
   },
+  "checkout": {
+    "makeConfirmOrder": "Make Confirm Order",
+    "yourName": "Your Name",
+    "yourNamePlaceholder": "Enter Your name",
+    "yourNameError": "Name is required",
+    "phoneNo": "Phone No",
+    "phoneNoPlaceholder": "Enter Your Phone No",
+    "phoneNoError": "Phone number is required",
+    "deliveryAddress": "Delivery Address",
+    "deliveryAddressPlaceholder": "Enter Your Address",
+    "deliveryAddressError": "Delivery address is required",
+    "orderNote": "Order Note",
+    "orderNotePlaceholder": "Note",
+    "homeDelivery": "Home Delivery",
+    "selfPickup": "Self Pickup",
+    "dineIn": "Dine-In",
+    "cashOnDelivery": "Cash On Delivery",
+    "payment": "Payment",
+    "bkash": "Bkash",
+    "nagad": "Nagad",
+    "totalOrderAmount": "Total Order Amount",
+    "deliveryCharge": "Delivery Charge",
+    "discountAmount": "Discount Amount",
+    "confirmOrder": "Confirm Order",
+    "orderSuccess": "Order success",
+    "orderFail": "Order failed"
+  },
   "home": {
     "title": "Hello"
   }
