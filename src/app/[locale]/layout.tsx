@@ -7,6 +7,7 @@ import { notFound } from "next/navigation";
 import { ThemeProvider } from "@/provider/ThemeProvider";
 import ReduxProvider from "@/provider/ReduxProvider";
 import BodyEventListeners from "@/sharedComponents/DOM/BodyEventListener";
+import { ToastContainer } from 'react-toastify';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,7 +46,10 @@ export default async function RootLayout({
       >
         <ReduxProvider>
           <ThemeProvider>
-            <NextIntlClientProvider>{children}</NextIntlClientProvider>
+            <NextIntlClientProvider>
+              {children}
+              <ToastContainer className="z-[9999999]" />
+            </NextIntlClientProvider>
           </ThemeProvider>
           <BodyEventListeners />
         </ReduxProvider>

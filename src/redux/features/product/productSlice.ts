@@ -1,5 +1,4 @@
-import { TProduct } from "@/types/demoData";
-import { TCartProduct } from "@/types/types";
+import { TCartProduct, TProduct } from "@/types/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface IInitialState {

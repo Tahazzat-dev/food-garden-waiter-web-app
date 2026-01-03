@@ -25,7 +25,7 @@ export function CartSheet() {
         }
       </button>
 
-      <CustomDrawer
+      {/* <CustomDrawer
         open={openCart}
       >
         <div className="w-full h-full flex flex-col">
@@ -58,7 +58,7 @@ export function CartSheet() {
             </button>
           </div>
         </div>
-      </CustomDrawer>
+      </CustomDrawer> */}
     </>
   );
 }

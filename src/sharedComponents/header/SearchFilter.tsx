@@ -7,8 +7,8 @@ import { useEffect, useRef, useState } from 'react';
 import { fakeSearch } from '../utils/Utils';
 import SearchProductLoader from '../loading/searchingLoader';
 import Image from 'next/image';
-import { TProduct } from '@/types/demoData';
 import { getDiscountPrice } from '@/lib/utils';
+import { TProduct } from '@/types/types';
 
 export default function SearchFilter({ className }: { className?: string }) {
     // translations functions

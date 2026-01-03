@@ -3,6 +3,8 @@
     "ads": "Your ads here",
     "addToCart": "Add to Cart",
     "addedToCart": "Added to Cart",
+    "alreadyExist": "Already added",
+    "quantityUpdated": "Quantity updated",
     "removedFromCart": "Removed from Cart",
     "total": "Total",
     "quantity": "Quantity",

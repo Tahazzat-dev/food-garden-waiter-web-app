@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button'
-import { TProduct } from '@/types/demoData'
 import { Eye, HeartIcon, ShoppingCart } from 'lucide-react'
 import Image from 'next/image'
 import { MouseEvent } from 'react'
@@ -11,6 +10,7 @@ import Link from 'next/link'
 import { SET_EXPAND } from '@/redux/features/actions/actionSlice'
 import { getDiscountPrice } from '@/lib/utils'
 import useFormatPrice from '@/hooks/useFormatPrice'
+import { TProduct } from '@/types/types'
 
 export default function FoodCart({ product }: { product: TProduct }) {
     // hooks

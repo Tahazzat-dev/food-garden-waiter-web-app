@@ -1,5 +1,3 @@
-import { TProduct } from "./demoData";
-
 // types/lang.ts
 export type TCategory = {
     id: string;
@@ -15,9 +13,39 @@ export type TCategory = {
 export type Lang = "en" | "bn";
 
 
-export interface TCartProduct extends TProduct {
-    quantity: number;
+export type TAuthFormType = "login" | "register" | "phone" | "otp" | "reset";
+
+
+type TLocal = {
+    en: string;
+    bn: string;
 }
 
 
-export type TAuthFormType = "login" | "register" | "phone" | "otp" | "reset";
+// TODO: have to add necessary properties
+
+export type TFoodVariant = {
+    id: string;
+    name: TLocal;
+    price: number;
+    discount: number;
+};
+
+export interface TProduct {
+    id: string;
+    categoryId: string;
+    title: TLocal;
+    des: TLocal;
+    img: string;
+    variants: TFoodVariant[];
+}
+export interface TCartProduct {
+    id: string;
+    productId: string;
+    categoryId: string;
+    img: string;
+    name: TLocal;
+    price: number;
+    discount: number;
+    quantity: number;
+}
