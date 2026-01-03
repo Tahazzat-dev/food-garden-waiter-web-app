@@ -21,7 +21,7 @@ export default function HomePage() {
 
 
             {/* ==== modal to show product details ====== */}
-            {/* <ProductDetailsModal /> */}
+            <ProductDetailsModal />
         </>
     );
 }

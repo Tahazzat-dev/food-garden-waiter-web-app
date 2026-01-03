@@ -66,3 +66,14 @@ export const getDiscountAmount = (price: number, discount: number): number => {
 
 
 export const formatPrice = (locale: Lang = "bn", amount: number = 0) => locale !== "bn" ? `${amount}TK` : `৳${amount}`;
+
+
+export const calculateSubtotal = (price: number = 0, quantity: number = 1): number => {
+  const total = price * quantity;
+  return Number(total.toFixed(2))
+}
+
+export const getSellingPrice = (price: number, discount: number): number => {
+  if (discount < 1) return price;
+  return getDiscountPrice(price, discount);
+}

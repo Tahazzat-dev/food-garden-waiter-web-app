@@ -3,7 +3,6 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { Minus, Plus, ShoppingCart, X } from "lucide-react"; // optional icon
 import { Button } from "@/components/ui/button";
-import { TProduct } from "@/types/demoData";
 import Image from "next/image";
 import { MouseEvent, useEffect, useState } from "react";
 import { RootState } from "@/redux/store";
@@ -11,13 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTranslations } from "next-intl";
 import { addCartProduct } from "@/redux/features/product/productSlice";
 import { SET_EXPAND } from "@/redux/features/actions/actionSlice";
-
-interface FoodModalProps {
-    food: TProduct | null;
-    open: boolean;
-    onOpenChange: () => void;
-}
-
+import useFormatPrice from "@/hooks/useFormatPrice";
+import { calculateSubtotal, getDiscountPrice, getSellingPrice } from "@/lib/utils";
 
 export default function ProductDetailsModal() {
     // variables
@@ -26,11 +20,12 @@ export default function ProductDetailsModal() {
     // hooks
     const t = useTranslations('shared');
     const dispatch = useDispatch();
-    const [variant, setVariant] = useState<string>("1");
     const [quantity, setQuantity] = useState(1);
     const { EXPAND } = useSelector((state: RootState) => state.actions);
     const { cartProducts, modalProduct } = useSelector((state: RootState) => state.productSlice);
+    const [variantId, setVariant] = useState<string | null>(null);
     const { locale } = useSelector((state: RootState) => state.locale)
+    const { formatPrice } = useFormatPrice()
 
     // handlers
     const handleAddToCart = (event: MouseEvent<HTMLButtonElement>) => {
@@ -45,9 +40,6 @@ export default function ProductDetailsModal() {
         if (!modalProduct?.id) return;
         setQuantity(newQuantity);
     }
-
-    const subtotal = modalProduct?.price ? modalProduct.price * quantity : 0;
-
     useEffect(() => {
         if (KEY === EXPAND) {
             document.body.style.overflow = "hidden";
@@ -62,10 +54,17 @@ export default function ProductDetailsModal() {
 
 
     useEffect(() => {
+        if (!modalProduct) return;
         setQuantity(1);
-    }, [])
+        setVariant(modalProduct.variants[0].id);
+    }, [modalProduct])
 
     if (!modalProduct) return null;
+
+    const selectedVariant = modalProduct.variants.find(item => item.id === variantId);
+    if (!selectedVariant) return;
+
+    // we will fix this later
     const isAddedToCart = cartProducts.some(item => item.id === modalProduct.id);
     return (
         <Dialog.Root open={KEY === EXPAND} onOpenChange={() => dispatch(SET_EXPAND(null))}>
@@ -79,20 +78,25 @@ export default function ProductDetailsModal() {
                         <Button onClick={() => dispatch(SET_EXPAND(null))} className="rounded-full !px-2.5" variant="secondary"> <X className="!text-white w-5 md:w-6 md:h-6 h-5 lg:w-8 lg:h-8" /></Button>
                     </div>
                     <div className="p-4">
-                        <h5 className="font-semibold text-lg text-primary">{locale === "bn" ? modalProduct.title.bn : modalProduct.title.en}</h5>
+                        <h5 className="font-semibold text-lg text-primary">{locale === "bn" ? modalProduct.title.bn : modalProduct.title.en}
+                            {selectedVariant ? " - " : ""}
+                            {selectedVariant ? locale === "bn" ? selectedVariant?.name?.bn || "" : selectedVariant?.name?.en || "" : ""}</h5>
                         <div className="flex gap-3 lg:gap-4 mt-4">
                             <Image className="max-w-[120px] md:max-w-[180px] lg:max-w-[250px] max-h-[120px] md:max-h-[180px] lg:max-h-[250px] rounded-[8px]" src={modalProduct.img} width={300} height={400} alt="Food Image" />
                             <div className="grow flex justify-between flex-col gap-2">
-                                <div className="flex flex-wrap items-center gap-2">
-                                    <Button onClick={() => setVariant('1')} variant={variant === "1" ? "secondary" : "primary"} className="text-white custom-shadow-md !py-0.5">{locale === "bn" ? "বিকল্প 1" : "Variants 1"}</Button>
-                                    <Button onClick={() => setVariant('2')} variant={variant === "2" ? "secondary" : "primary"} className="text-white custom-shadow-md !py-0.5">{locale === "bn" ? "বিকল্প 2" : "Variants 2"}</Button>
-                                    <Button onClick={() => setVariant('3')} variant={variant === "3" ? "secondary" : "primary"} className="text-white custom-shadow-md !py-0.5">{locale === "bn" ? "বিকল্প 3" : "Variants 3"}</Button>
+                                <div className="flex flex-col gap-5">
+                                    <div className="flex flex-wrap items-center gap-2">
+                                        {
+                                            modalProduct.variants.map(variant => <Button key={variant.id} onClick={() => setVariant(variant.id)} variant={variant.id === variantId ? "secondary" : "primary"} className="text-white custom-shadow-md !py-0.5">{locale === "bn" ? variant.name.bn : variant.name.en}</Button>)
+                                        }
+                                    </div>
+                                    <p className='fg_fs-sm flex gap-2'>{t('price')} : {selectedVariant.discount < 1 ? <span className=''>{formatPrice(selectedVariant?.price)}</span> : <span className='flex items-center gap-3'> <span className='line-through fg_fs-xs'>{formatPrice(selectedVariant?.price)}</span> <span className='text-primary'>{formatPrice(getDiscountPrice(selectedVariant.price, selectedVariant.discount))}</span></span>}</p>
                                 </div>
 
                                 <div className="w-full hidden md:block">
                                     <p className="mb-3">{locale === "bn" ? "পণ্য নোটস:" : "Product Notes:"}</p>
                                     <div className='mt-auto flex items-center justify-between bg-slate-300/60 px-2 py-1 rounded-[4px]'>
-                                        <p className='fg_fs-xs font-semibold text-center grow dark:!text-black'>{modalProduct.price.toFixed(2)}/-</p>
+                                        <p className='fg_fs-xs font-semibold text-center grow dark:!text-black'>{!!selectedVariant && selectedVariant.discount < 1 ? formatPrice(selectedVariant?.price) : getDiscountPrice(selectedVariant.price, selectedVariant.discount)}/-</p>
                                         <div className='flex items-center gap-1 lg:gap-2 rounded-md py-0.5'>
                                             <Button
                                                 variant='primary'
@@ -113,12 +117,12 @@ export default function ProductDetailsModal() {
                                             </Button>
                                         </div>
 
-                                        <p className='fg_fs-sm font-semibold text-center grow dark:!text-black'>{subtotal.toFixed(2)}/-</p>
+                                        <p className='fg_fs-sm font-semibold text-center grow dark:!text-black'>{calculateSubtotal(getSellingPrice(selectedVariant.price, selectedVariant.discount), quantity)}/-</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="w-full block md:hidden mt-5">
+                        {/* <div className="w-full block md:hidden mt-5">
                             <p className="mb-2">{locale === "bn" ? "পণ্য নোটস:" : "Product Notes:"}</p>
                             <div className='mt-auto bg-slate-300/60 flex items-center justify-between px-2 py-1 rounded-[4px]'>
                                 <p className='fg_fs-xs font-semibold text-center grow dark:!text-black'>{modalProduct.price.toFixed(2)}/-</p>
@@ -144,7 +148,7 @@ export default function ProductDetailsModal() {
 
                                 <p className='fg_fs-sm font-semibold text-center grow dark:!text-black'>{subtotal.toFixed(2)}/-</p>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="w-full flex justify-end p-4">
                         <Dialog.Close className="" asChild >
