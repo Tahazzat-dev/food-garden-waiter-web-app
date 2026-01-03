@@ -5,13 +5,15 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { ShoppingCart, Trash2, X } from "lucide-react"; // optional icon
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { addCartProduct, removeFavouriteProduct } from "@/redux/features/product/productSlice";
+import { addCartProduct, clearCartProducts, removeFavouriteProduct } from "@/redux/features/product/productSlice";
 import { useLocale, useTranslations } from 'next-intl';
 import { SET_EXPAND } from '@/redux/features/actions/actionSlice';
 import z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useMemo, useState } from 'react';
+import { calculateSubtotal, getDiscountAmount, getDiscountPrice } from '@/lib/utils';
+import { toast } from 'react-toastify';
 
 
 
@@ -49,6 +51,9 @@ export function CheckoutModal() {
     const deliveryCost = { en: 150, bn: "১৫০" };
     // hooks
     const dispatch = useDispatch();
+    const t = useTranslations('checkout');
+    const sharedMsg = useTranslations("shared");
+    const { locale } = useSelector((state: RootState) => state.locale)
     const { EXPAND } = useSelector((state: RootState) => state.actions);
     const { cartProducts } = useSelector((state: RootState) => state.productSlice);
     const {
@@ -64,17 +69,18 @@ export function CheckoutModal() {
         },
     });
 
+    const openModal = EXPAND === KEY;
     const paymentType = watch("paymentType");
     const deliveryType = watch("deliveryType");
 
     const onSubmit = (data: OrderFormValues) => {
         console.log("Order Data:", data);
+        toast.success(t("orderSuccess"));
+        dispatch(clearCartProducts());
+        dispatch(SET_EXPAND(null));
     };
 
-    const t = useTranslations('checkout');
-    const sharedMsg = useTranslations("shared");
-    const { locale } = useSelector((state: RootState) => state.locale)
-    const openModal = EXPAND === KEY;
+
 
     const formatPrice = (amount: number) => locale !== "bn" ? `${amount}TK` : `৳${amount}`;
 
@@ -84,8 +90,8 @@ export function CheckoutModal() {
         let totalDiscount = 0;
 
         cartProducts.forEach((item) => {
-            total += item.price * item.quantity;
-            totalDiscount += (item.price * (item.discount / 100)) * item.quantity;
+            total += calculateSubtotal(item.price, item.quantity);
+            totalDiscount += getDiscountAmount(item.price, item.discount) * item.quantity;
         });
 
         const subtotal = total + (deliveryType === "Home Delivery" ? deliveryCost.en : 0) - totalDiscount;
@@ -104,7 +110,7 @@ export function CheckoutModal() {
                             <Dialog.Title className="fg_fs-lg text-white">
                                 {t('makeConfirmOrder')}
                             </Dialog.Title>
-                            <button onClick={() => dispatch(SET_EXPAND(EXPAND === KEY ? null : KEY))} className='prevent-body-trigger relative'>
+                            <button onClick={() => dispatch(SET_EXPAND("CART_SHEET"))} className='prevent-body-trigger relative'>
                                 <ShoppingCart fill='white' className='text-white h-6 w-6 cursor-pointer' />
                                 {
                                     cartProducts.length > 0 ?
@@ -192,7 +198,7 @@ export function CheckoutModal() {
                                                 {...register("deliveryType")}
                                             />
                                             <span className='flex items-center justify-between grow'>
-                                                <span className='grow'>{t("homeDelivery")}</span> <span>{locale == 'bn' ? `${deliveryCost.en}TK` : `৳${deliveryCost.bn}`}</span>
+                                                <span className='grow'>{t("homeDelivery")}</span> <span>{locale !== 'bn' ? `${deliveryCost.en}TK` : `৳${deliveryCost.bn}`}</span>
                                             </span>
                                         </label>
                                         <label key="Self Pickup" className={`flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${deliveryType === "Self Pickup" ? "bg-secondary text-white" : "bg-slate-300/60"}`}>

@@ -37,8 +37,10 @@ const productSlice = createSlice({
             state.cartProducts.push(action.payload);
         },
         removeCartProduct: (state, action: PayloadAction<string>) => {
-            console.log("Removing product with id:", action.payload);
             state.cartProducts = state.cartProducts.filter(product => product.id !== action.payload);
+        },
+        clearCartProducts: (state) => {
+            state.cartProducts = [];
         },
 
 
@@ -62,6 +64,7 @@ export const {
     setModalProduct,
     addCartProduct,
     removeCartProduct,
+    clearCartProducts,
     updateCartProduct,
     setFavouriteProducts,
     addFavouriteProduct,

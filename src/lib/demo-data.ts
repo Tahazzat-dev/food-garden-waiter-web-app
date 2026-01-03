@@ -1,5 +1,4 @@
-import { TProduct } from "@/types/demoData";
-import { TCategory } from "@/types/types";
+import { TCategory, TProduct } from "@/types/types";
 
 //  cart demo data
 export type TCartItem = {

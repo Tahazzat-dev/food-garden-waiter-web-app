@@ -5,16 +5,23 @@ import { RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { SET_EXPAND } from '@/redux/features/actions/actionSlice';
 import { CustomDrawer } from '../modal/CustomDrawer';
+import { useTranslations } from 'next-intl';
+import { calculateSubtotal, getSellingPrice } from '@/lib/utils';
 
 export function CartSheet() {
   // variables
   const KEY = "CART_SHEET"
 
   // hooks
+  const t = useTranslations('shared')
   const dispatch = useDispatch();
   const { cartProducts } = useSelector((state: RootState) => state.productSlice);
   const { EXPAND } = useSelector((state: RootState) => state.actions);
   const openCart = EXPAND === KEY;
+
+
+  // calculated cart total 
+  const totalPrice = cartProducts.reduce((total, item) => total + (calculateSubtotal(getSellingPrice(item.price, item.discount), item.quantity)), 0)
   return (
     <>
       <button onClick={() => dispatch(SET_EXPAND(EXPAND === KEY ? null : KEY))} className='prevent-body-trigger relative'>
@@ -25,7 +32,7 @@ export function CartSheet() {
         }
       </button>
 
-      {/* <CustomDrawer
+      <CustomDrawer
         open={openCart}
       >
         <div className="w-full h-full flex flex-col">
@@ -50,15 +57,15 @@ export function CartSheet() {
           </div>
           <div className="w-full">
             <div className="w-full flex justify-between gap-4 flex-wrap px-4 bg-black dark:bg-white clr-opposite py-2 ">
-              <p>Total Bill</p>
-              <p className='font-semibold'>{cartProducts.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2)}/-</p>
+              <p>{t('totalBill')}</p>
+              <p className='font-semibold'>{Number(totalPrice.toFixed(2))}/-</p>
             </div>
             <button onClick={() => dispatch(SET_EXPAND("CHECKOUT_MODAL"))} className="bg-primary fg_fs-md py-3 !text-white font-semibold !rounded-0 w-full">
-              Checkout
+              {t("checkout")}
             </button>
           </div>
         </div>
-      </CustomDrawer> */}
+      </CustomDrawer>
     </>
   );
 }

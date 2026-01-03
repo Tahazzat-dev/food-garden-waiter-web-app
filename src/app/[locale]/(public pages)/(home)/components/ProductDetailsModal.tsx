@@ -54,6 +54,7 @@ export default function ProductDetailsModal() {
             productId: modalProduct.id,
             categoryId: modalProduct.categoryId,
             img: modalProduct.img,
+            title: modalProduct.title
         }
         dispatch(addCartProduct(cartItem));
         toast.success(t('addedToCart'));

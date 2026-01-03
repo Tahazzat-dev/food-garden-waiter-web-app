@@ -42,6 +42,7 @@ export interface TProduct {
 export interface TCartProduct {
     id: string;
     productId: string;
+    title: TLocal,
     categoryId: string;
     img: string;
     name: TLocal;
