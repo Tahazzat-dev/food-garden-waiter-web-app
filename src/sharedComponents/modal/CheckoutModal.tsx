@@ -6,7 +6,7 @@ import { ShoppingCart, Trash2, X } from "lucide-react"; // optional icon
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { addCartProduct, removeFavouriteProduct } from "@/redux/features/product/productSlice";
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { SET_EXPAND } from '@/redux/features/actions/actionSlice';
 import z from 'zod';
 import { useForm } from 'react-hook-form';
@@ -14,7 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 
 // schema/orderSchema.ts
-export const deliveryTypes = ["Home", "Self Pickup", "Dine-In"] as const;
+export const deliveryTypes = ["Home Delivery", "Self Pickup", "Dine-In"] as const;
 export const paymentTypes = ["Cash On Delivery", "Payment"] as const;
 export const paymentMethods = ["Bkash", "Nagad"] as const;
 
@@ -46,7 +46,8 @@ export type OrderFormValues = z.infer<typeof orderSchema>;
 
 export function CheckoutModal() {
     // variables
-    const KEY = "CHECKOUT_MODAL"
+    const KEY = "CHECKOUT_MODAL";
+    const deliveryCost = { en: "150", bn: "১৫০" };
     // hooks
     const dispatch = useDispatch();
     const { EXPAND } = useSelector((state: RootState) => state.actions);
@@ -59,13 +60,14 @@ export function CheckoutModal() {
     } = useForm<OrderFormValues>({
         resolver: zodResolver(orderSchema),
         defaultValues: {
-            deliveryType: "Home",
+            deliveryType: "Home Delivery",
             paymentType: "Payment",
             paymentMethod: "Bkash",
         },
     });
 
     const paymentType = watch("paymentType");
+    const deliveryType = watch("deliveryType");
 
     const onSubmit = (data: OrderFormValues) => {
         console.log("Order Data:", data);
@@ -74,10 +76,9 @@ export function CheckoutModal() {
     const t = useTranslations('checkout');
     const { locale } = useSelector((state: RootState) => state.locale)
     const openModal = EXPAND === KEY;
-
     return (
 
-        <Dialog.Root open={!openModal} onOpenChange={() => dispatch(SET_EXPAND(null))}>
+        <Dialog.Root open={openModal} onOpenChange={() => dispatch(SET_EXPAND(null))}>
             <Dialog.Portal>
                 <div className="fixed inset-0 global-overlay wishlist-overlay top-[81px] !border-none lg:top-[83.53px] z-[9999]" />
                 <Dialog.Content className="checkout-modal fixed w-full h-full flex flex-col right-1/2 translate-x-1/2 bottom-[85px] md:bottom-5 !border-none !m-0 !p-0 max-w-[90vw] sm:max-w-[500px] md:max-w-[500px] !rounded-[6px] md:rounded-[8px] lg:!rounded-[10px] overflow-hidden bg-body z-[99999]">
@@ -97,7 +98,6 @@ export function CheckoutModal() {
                     <form onSubmit={handleSubmit(onSubmit)} className="px-2.5 md:px-3 my-2.5 overflow-y-auto grow flex flex-col gap-5">
                         {/* Name and information */}
                         <div className="w-full bg-slate-300/60 flex flex-col p-3 gap-3 rounded-md">
-                            {/* Name */}
                             <div className="input-box">
                                 <label htmlFor="name" className="label">
                                     <span>{t("yourName")}</span> <span>:</span>
@@ -109,8 +109,6 @@ export function CheckoutModal() {
                                 />
                                 {errors.name && <p className="text-red-500">{t("yourNameError")}</p>}
                             </div>
-
-                            {/* Phone */}
                             <div className="input-box">
                                 <label htmlFor="phone" className="label">
                                     <span>{t("phoneNo")}</span> <span>:</span>
@@ -122,8 +120,6 @@ export function CheckoutModal() {
                                 />
                                 {errors.phone && <p className="text-red-500">{t("phoneNoError")}</p>}
                             </div>
-
-                            {/* Address */}
                             <div className="input-box">
                                 <label htmlFor="address" className="label">
                                     <span>{t("deliveryAddress")}</span> <span>:</span>
@@ -137,8 +133,6 @@ export function CheckoutModal() {
                                     <p className="text-red-500">{t("deliveryAddressError")}</p>
                                 )}
                             </div>
-
-                            {/* Order Note */}
                             <div className="input-box">
                                 <label htmlFor="orderNote" className="label">
                                     <span>{t("orderNote")}</span> <span>:</span>
@@ -151,21 +145,65 @@ export function CheckoutModal() {
                             </div>
                         </div>
 
+                        {/* delivery order type */}
+                        <div className='w-full flex flex-col gap-1'>
+                            <label key="Home Delivery" className={`flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${deliveryType === "Home Delivery" ? "bg-secondary text-white" : "bg-slate-300/60"}`}>
+                                <input
+                                    type="radio"
+                                    value="Home Delivery"
+                                    {...register("deliveryType")}
+                                />
+                                <span className='flex items-center justify-between grow'>
+                                    <span className='grow'>{t("homeDelivery")}</span> <span>{locale == 'bn' ? `${deliveryCost.en}TK` : `৳${deliveryCost.bn}`}</span>
+                                </span>
+                            </label>
+                            <label key="Self Pickup" className={`flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${deliveryType === "Self Pickup" ? "bg-secondary text-white" : "bg-slate-300/60"}`}>
+                                <input
+                                    type="radio"
+                                    value="Self Pickup"
+                                    {...register("deliveryType")}
+                                />
+                                {t("selfPickup")}
+                            </label>
+                            <label key="Dine-In" className={`flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${deliveryType === "Dine-In" ? "bg-secondary text-white" : "bg-slate-300/60"}`}>
+                                <input
+                                    type="radio"
+                                    value="Dine-In"
+                                    {...register("deliveryType")}
+                                />
+                                {t("dineIn")}
+                            </label>
+                            {errors.deliveryType && <p>{errors.deliveryType.message}</p>}
+                        </div>
 
-                        <div>
-                            <p>Delivery Type</p>
-
-                            {deliveryTypes.map((type) => (
-                                <label key={type} className="flex gap-2 items-center">
-                                    <input
-                                        type="radio"
-                                        value={type}
-                                        {...register("deliveryType")}
-                                    />
-                                    {type}
-                                </label>
-                            ))}
-
+                        {/* delivery order type */}
+                        <div className='w-full flex flex-col gap-1'>
+                            <label key="Home Delivery" className={`flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${deliveryType === "Home Delivery" ? "bg-secondary text-white" : "bg-slate-300/60"}`}>
+                                <input
+                                    type="radio"
+                                    value="Home Delivery"
+                                    {...register("deliveryType")}
+                                />
+                                <span className='flex items-center justify-between grow'>
+                                    <span className='grow'>{t("homeDelivery")}</span> <span>{locale == 'bn' ? `${deliveryCost.en}TK` : `৳${deliveryCost.bn}`}</span>
+                                </span>
+                            </label>
+                            <label key="Self Pickup" className={`flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${deliveryType === "Self Pickup" ? "bg-secondary text-white" : "bg-slate-300/60"}`}>
+                                <input
+                                    type="radio"
+                                    value="Self Pickup"
+                                    {...register("deliveryType")}
+                                />
+                                {t("selfPickup")}
+                            </label>
+                            <label key="Dine-In" className={`flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${deliveryType === "Dine-In" ? "bg-secondary text-white" : "bg-slate-300/60"}`}>
+                                <input
+                                    type="radio"
+                                    value="Dine-In"
+                                    {...register("deliveryType")}
+                                />
+                                {t("dineIn")}
+                            </label>
                             {errors.deliveryType && <p>{errors.deliveryType.message}</p>}
                         </div>
 

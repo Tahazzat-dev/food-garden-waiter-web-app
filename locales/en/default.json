@@ -16,7 +16,8 @@
     "removeAll": "Remove All",
     "remove": "Remove",
     "addedToFavourite": "Added to favourite",
-    "removedFromFavourite": "Removed from favourite"
+    "removedFromFavourite": "Removed from favourite",
+    "tk": "TK"
   },
 
   "mobileBottomActions": {
