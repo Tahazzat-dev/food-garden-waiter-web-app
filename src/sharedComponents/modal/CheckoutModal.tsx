@@ -96,7 +96,7 @@ export function CheckoutModal() {
 
         const subtotal = total + (deliveryType === "Home Delivery" ? deliveryCost.en : 0) - totalDiscount;
 
-        return { cartTotal: total, discount: totalDiscount, subTotal: subtotal };
+        return { cartTotal: Number(total.toFixed(2)), discount: Number(totalDiscount.toFixed(2)), subTotal: Number(subtotal.toFixed(2)) };
     }, [cartProducts, deliveryType, deliveryCost.en]);
 
     return (

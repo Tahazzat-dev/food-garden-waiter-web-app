@@ -38,7 +38,7 @@ export function CartSheet() {
         <div className="w-full h-full flex flex-col">
           <div className="w-full flex items-center gap-5 py-3 px-4 bg-primary">
             <h3 className="grow flex text-white">
-              <span className='fg_fs-lg'>Add To Cart ({cartProducts.length})</span>
+              <span className='fg_fs-lg'>{t('addToCart')} ({cartProducts.length})</span>
             </h3>
 
             <div className="w-full max-w-6">
