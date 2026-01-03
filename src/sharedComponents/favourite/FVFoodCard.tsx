@@ -28,7 +28,7 @@ export default function FVFoodCard({ item }: { item: TProduct }) {
     }
 
     return (
-        <div className='flex gap-3 pb-3'>
+        <div className='flex gap-3 pb-3 border-b border-slate-500 border-dashed'>
             <div className='bg-muted relative w-14 h-14 lg:w-16 lg:h-16 xl:w-[72px] xl:h-[72px] rounded-md overflow-hidden'>
                 <Image
                     src={item.img || '/images/placeholder/placeholder.jpg'}
