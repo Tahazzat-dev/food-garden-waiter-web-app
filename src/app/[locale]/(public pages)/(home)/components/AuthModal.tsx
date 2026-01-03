@@ -145,7 +145,6 @@ function LoginForm({ setFormType }: { setFormType: Dispatch<SetStateAction<TAuth
 
 
 // Register Form
-// schema
 const signUpSchema = z.object({
     name: z.string().min(2, "Name must be at least 2 characters"),
     email: z.email("Invalid email address").optional().or(z.literal("")),

@@ -705,3 +705,15 @@ body {
 .global-overlay {
   @apply bg-black/40 backdrop-blur-[1px];
 }
+
+/* checkout form */
+.label {
+  @apply min-w-[85px] font-semibold lg:min-w-[100px] flex items-center justify-between;
+}
+.input-box {
+  @apply w-full flex items-center justify-between gap-2 md:gap-4;
+}
+
+.checkout-input {
+  @apply grow py-1.5 px-2 rounded-[4px] outline-none border duration-200 border-slate-400/70 focus:border-slate-500/70 text-sm;
+}
