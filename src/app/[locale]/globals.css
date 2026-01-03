@@ -649,8 +649,10 @@ body {
 
 .checkout-modal {
   max-height: 80vh;
-  max-height: calc(100vh - 190px);
-  max-height: calc(100dvh - 190px);
+  max-height: calc(100vh - 146px);
+  max-height: calc(100dvh - 146px);
+}
+.checkout-modal-inner {
   box-shadow: 0px 4px 6px -3px rgb(150, 150, 150);
 }
 
@@ -658,6 +660,10 @@ body {
   max-height: 80vh;
   max-height: calc(100vh - 146px);
   max-height: calc(100dvh - 146px);
+}
+
+.dark .wishlist-overlay {
+  @apply bg-slate-800/50;
 }
 
 .cart-overlay {
@@ -672,7 +678,7 @@ body {
   }
 
   .checkout-modal {
-    max-height: calc(100vh - 200px);
+    max-height: calc(100vh - 81px);
   }
 
   .wishlist-overlay {
@@ -688,6 +694,10 @@ body {
   .wishlist-modal {
     /* max-height: calc(100vh - 93.53px); */
     max-height: calc(100vh - 93px);
+  }
+
+  .checkout-modal {
+    max-height: calc(100vh - 83.53px);
   }
 
   .wishlist-modal {
