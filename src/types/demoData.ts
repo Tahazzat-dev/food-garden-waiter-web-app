@@ -1,12 +1,3 @@
-// TODO: have to make this DB product type later
-export type TFoodItem = {
-    titleEn: string;
-    titleBn: string;
-    discountPrice: number;
-    price: number;
-    productImage: string;
-}
-
 type TLocal = {
     en: string;
     bn: string;
@@ -14,12 +5,26 @@ type TLocal = {
 
 
 // TODO: have to add necessary properties
+
+export type TFoodVariant = {
+    id: string;
+    name: TLocal;
+    price: number;
+    discount: number;
+};
+
 export interface TProduct {
     id: string;
     categoryId: string;
     title: TLocal;
     des: TLocal;
-    price: number;
-    discount: number;
     img: string;
+    variants: TFoodVariant[];
 }
+// export type TFoodItem = {
+//     id: string;
+//     titleEn: string;
+//     titleBn: string;
+//     productImage: string;
+//     variants: TFoodVariant[];
+// };

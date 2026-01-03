@@ -1,4 +1,5 @@
-import { foodItems } from "@/lib/demo-data";
+
+import { demoProducts } from "@/lib/demo-data";
 import { cn } from "@/lib/utils"
 export const VerticalDivider = ({ className = "" }: { className?: string; }) => {
     return (
@@ -23,9 +24,9 @@ export const fakeSearch = async (query: string) => {
 
     const bangla = isBangla(q);
 
-    return foodItems.filter(item =>
+    return demoProducts.filter(item =>
         bangla
-            ? item.titleBn.includes(q)
-            : item.titleEn.toLowerCase().includes(q)
+            ? item.title.bn.includes(q)
+            : item.title.en.toLowerCase().includes(q)
     );
 };

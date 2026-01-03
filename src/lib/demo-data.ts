@@ -1,125 +1,18 @@
-import { TFoodItem, TProduct } from "@/types/demoData";
+import { TProduct } from "@/types/demoData";
 import { TCategory } from "@/types/types";
 
 //  cart demo data
-export interface CartItem {
-    id: number;
-    productId: number;
-    name: string;
-    image: string;
+export type TCartItem = {
+    productId: string;
+    variantId: string;
+    titleEn: string;
+    titleBn: string;
+    variantNameEn: string;
+    variantNameBn: string;
     price: number;
     quantity: number;
-    vendor: string;
-    inStock: boolean;
-}
-
-export const cartDemoData: CartItem[] = [
-    {
-        id: 1,
-        productId: 1,
-        name: 'Adidas NMD R1 Heel',
-        image: '/lenovo-laptop-silver.jpg',
-        price: 59.0,
-        quantity: 1,
-        vendor: 'wolmart29 vendor5',
-        inStock: true,
-    },
-    {
-        id: 2,
-        productId: 14,
-        name: 'Wireless Mouse',
-        image: '/wireless-mouse.png',
-        price: 19.99,
-        quantity: 2,
-        vendor: 'TechStore Official',
-        inStock: true,
-    },
-    {
-        id: 3,
-        productId: 29,
-        name: 'Canon EOS R5',
-        image: '/dslr-camera-black.jpg',
-        price: 3899.0,
-        quantity: 1,
-        vendor: 'Camera World Pro',
-        inStock: true,
-    },
-];
-
-
-export const foodItems: TFoodItem[] = [
-    {
-        titleEn: "Chicken Burger",
-        titleBn: "চিকেন বার্গার",
-        discountPrice: 180,
-        price: 220,
-        productImage: "/images/home/demo-small-search-img.png",
-    },
-    {
-        titleEn: "Beef Burger",
-        titleBn: "বিফ বার্গার",
-        discountPrice: 250,
-        price: 300,
-        productImage: "/images/home/demo-small-search-img.png",
-    },
-    {
-        titleEn: "Cheese Pizza",
-        titleBn: "চিজ পিজা",
-        discountPrice: 650,
-        price: 750,
-        productImage: "/images/home/demo-small-search-img.png",
-    },
-    {
-        titleEn: "Chicken Fry",
-        titleBn: "চিকেন ফ্রাই",
-        discountPrice: 320,
-        price: 380,
-        productImage: "/images/home/demo-small-search-img.png",
-    },
-    {
-        titleEn: "French Fries",
-        titleBn: "ফ্রেঞ্চ ফ্রাই",
-        discountPrice: 120,
-        price: 150,
-        productImage: "/images/home/demo-small-search-img.png",
-    },
-    {
-        titleEn: "Chicken Shawarma",
-        titleBn: "চিকেন শাওয়ারমা",
-        discountPrice: 200,
-        price: 240,
-        productImage: "/images/home/demo-small-search-img.png",
-    },
-    {
-        titleEn: "Grilled Chicken",
-        titleBn: "গ্রিলড চিকেন",
-        discountPrice: 450,
-        price: 520,
-        productImage: "/images/home/demo-small-search-img.png",
-    },
-    {
-        titleEn: "Chicken Biryani",
-        titleBn: "চিকেন বিরিয়ানি",
-        discountPrice: 280,
-        price: 330,
-        productImage: "/images/home/demo-small-search-img.png",
-    },
-    {
-        titleEn: "Vegetable Pasta",
-        titleBn: "ভেজিটেবল পাস্তা",
-        discountPrice: 300,
-        price: 360,
-        productImage: "/images/home/demo-small-search-img.png",
-    },
-    {
-        titleEn: "Chocolate Milkshake",
-        titleBn: "চকলেট মিল্কশেক",
-        discountPrice: 180,
-        price: 220,
-        productImage: "/images/home/demo-small-search-img.png",
-    },
-];
-
+    productImage: string;
+};
 
 export const categoryItems: TCategory[] = [
     {
@@ -223,45 +116,55 @@ export const demoProducts: TProduct[] = [
         categoryId: "1",
         title: { en: "Margherita Pizza", bn: "মার্গারিটা পিজ্জা" },
         des: { en: "Classic pizza with mozzarella and basil", bn: "মোজারেলা চিজ ও তুলসি পাতা দিয়ে তৈরি ক্লাসিক পিজ্জা" },
-        price: 550,
-        discount: 10,
         img: "/images/demo-food/pizza.jpg",
+        variants: [
+            { id: "6-inch", name: { en: '6" Inch', bn: '৬" ইঞ্চি' }, price: 550, discount: 10 },
+            { id: "12-inch", name: { en: '12" Inch', bn: '১২" ইঞ্চি' }, price: 950, discount: 12 },
+        ],
     },
     {
         id: "p2",
         categoryId: "1",
         title: { en: "Pepperoni Pizza", bn: "পেপারোনি পিজ্জা" },
         des: { en: "Spicy pepperoni with cheese", bn: "ঝাল পেপারোনি ও চিজের মিশ্রণ" },
-        price: 650,
-        discount: 5,
         img: "/images/demo-food/pizza.jpg",
+        variants: [
+            { id: "6-inch", name: { en: '6" Inch', bn: '৬" ইঞ্চি' }, price: 650, discount: 5 },
+            { id: "12-inch", name: { en: '12" Inch', bn: '১২" ইঞ্চি' }, price: 1050, discount: 8 },
+        ],
     },
     {
         id: "p3",
         categoryId: "1",
         title: { en: "BBQ Chicken Pizza", bn: "বিবিকিউ চিকেন পিজ্জা" },
         des: { en: "Grilled chicken with BBQ sauce", bn: "বিবিকিউ সসের সাথে গ্রিল করা চিকেন" },
-        price: 700,
-        discount: 8,
         img: "/images/demo-food/pizza.jpg",
+        variants: [
+            { id: "6-inch", name: { en: '6" Inch', bn: '৬" ইঞ্চি' }, price: 700, discount: 8 },
+            { id: "12-inch", name: { en: '12" Inch', bn: '১২" ইঞ্চি' }, price: 1150, discount: 10 },
+        ],
     },
     {
         id: "p4",
         categoryId: "1",
         title: { en: "Veggie Supreme Pizza", bn: "ভেজি সুপ্রিম পিজ্জা" },
         des: { en: "Loaded with fresh vegetables", bn: "তাজা সবজিতে ভরপুর পিজ্জা" },
-        price: 600,
-        discount: 12,
         img: "/images/demo-food/pizza.jpg",
+        variants: [
+            { id: "6-inch", name: { en: '6" Inch', bn: '৬" ইঞ্চি' }, price: 600, discount: 12 },
+            { id: "12-inch", name: { en: '12" Inch', bn: '১২" ইঞ্চি' }, price: 980, discount: 15 },
+        ],
     },
     {
         id: "p5",
         categoryId: "1",
         title: { en: "Four Cheese Pizza", bn: "ফোর চিজ পিজ্জা" },
         des: { en: "Blend of four premium cheeses", bn: "চার ধরনের প্রিমিয়াম চিজের মিশ্রণ" },
-        price: 720,
-        discount: 9,
         img: "/images/demo-food/pizza.jpg",
+        variants: [
+            { id: "6-inch", name: { en: '6" Inch', bn: '৬" ইঞ্চি' }, price: 720, discount: 9 },
+            { id: "12-inch", name: { en: '12" Inch', bn: '১২" ইঞ্চি' }, price: 1180, discount: 12 },
+        ],
     },
 
     // 🍗 Appetizers
@@ -270,27 +173,33 @@ export const demoProducts: TProduct[] = [
         categoryId: "2",
         title: { en: "Chicken Wings", bn: "চিকেন উইংস" },
         des: { en: "Crispy fried wings", bn: "মচমচে ভাজা চিকেন উইংস" },
-        price: 350,
-        discount: 5,
         img: "/images/demo-food/Chicken.jpg",
+        variants: [
+            { id: "6-pcs", name: { en: "6 Pieces", bn: "৬ পিস" }, price: 350, discount: 5 },
+            { id: "12-pcs", name: { en: "12 Pieces", bn: "১২ পিস" }, price: 620, discount: 8 },
+        ],
     },
     {
         id: "a2",
         categoryId: "2",
         title: { en: "French Fries", bn: "ফ্রেঞ্চ ফ্রাই" },
         des: { en: "Golden crispy fries", bn: "সোনালি ও মচমচে ফ্রাই" },
-        price: 200,
-        discount: 0,
         img: "/images/demo-food/Chicken.jpg",
+        variants: [
+            { id: "small", name: { en: "Small", bn: "ছোট" }, price: 200, discount: 0 },
+            { id: "large", name: { en: "Large", bn: "বড়" }, price: 280, discount: 5 },
+        ],
     },
     {
         id: "a3",
         categoryId: "2",
         title: { en: "Garlic Bread", bn: "গার্লিক ব্রেড" },
         des: { en: "Toasted garlic bread", bn: "টোস্ট করা রসুনের ব্রেড" },
-        price: 180,
-        discount: 5,
         img: "/images/demo-food/Chicken.jpg",
+        variants: [
+            { id: "2-pcs", name: { en: "2 Pieces", bn: "২ পিস" }, price: 180, discount: 5 },
+            { id: "4-pcs", name: { en: "4 Pieces", bn: "৪ পিস" }, price: 320, discount: 8 },
+        ],
     },
 
     // ☕ Drinks
@@ -299,27 +208,33 @@ export const demoProducts: TProduct[] = [
         categoryId: "3",
         title: { en: "Cold Coffee", bn: "ঠান্ডা কফি" },
         des: { en: "Chilled creamy coffee", bn: "ঠান্ডা ও ক্রিমি কফি" },
-        price: 220,
-        discount: 5,
         img: "/images/demo-food/Coffee.jpg",
+        variants: [
+            { id: "regular", name: { en: "Regular", bn: "রেগুলার" }, price: 220, discount: 5 },
+            { id: "large", name: { en: "Large", bn: "বড়" }, price: 280, discount: 8 },
+        ],
     },
     {
         id: "c2",
         categoryId: "3",
         title: { en: "Chocolate Shake", bn: "চকলেট শেক" },
         des: { en: "Rich chocolate milkshake", bn: "ঘন চকলেট মিল্কশেক" },
-        price: 250,
-        discount: 6,
         img: "/images/demo-food/Coffee.jpg",
+        variants: [
+            { id: "regular", name: { en: "Regular", bn: "রেগুলার" }, price: 250, discount: 6 },
+            { id: "large", name: { en: "Large", bn: "বড়" }, price: 320, discount: 8 },
+        ],
     },
     {
         id: "c3",
         categoryId: "3",
         title: { en: "Mint Lemonade", bn: "মিন্ট লেমনেড" },
         des: { en: "Refreshing mint drink", bn: "তাজা মিন্টের পানীয়" },
-        price: 150,
-        discount: 0,
         img: "/images/demo-food/Coffee.jpg",
+        variants: [
+            { id: "regular", name: { en: "Regular", bn: "রেগুলার" }, price: 150, discount: 0 },
+            { id: "large", name: { en: "Large", bn: "বড়" }, price: 190, discount: 5 },
+        ],
     },
 
     // 🍜 Chow Mein
@@ -328,18 +243,22 @@ export const demoProducts: TProduct[] = [
         categoryId: "4",
         title: { en: "Chicken Chow Mein", bn: "চিকেন চাউমিন" },
         des: { en: "Stir fried noodles with chicken", bn: "চিকেন দিয়ে স্টার ফ্রাই করা নুডলস" },
-        price: 320,
-        discount: 5,
         img: "/images/demo-food/Chawmin.jpg",
+        variants: [
+            { id: "half", name: { en: "Half Plate", bn: "হাফ প্লেট" }, price: 320, discount: 5 },
+            { id: "full", name: { en: "Full Plate", bn: "ফুল প্লেট" }, price: 480, discount: 8 },
+        ],
     },
     {
         id: "ch2",
         categoryId: "4",
         title: { en: "Vegetable Chow Mein", bn: "ভেজিটেবল চাউমিন" },
         des: { en: "Mixed veggie noodles", bn: "মিশ্র সবজি দিয়ে তৈরি নুডলস" },
-        price: 280,
-        discount: 6,
         img: "/images/demo-food/Chawmin.jpg",
+        variants: [
+            { id: "half", name: { en: "Half Plate", bn: "হাফ প্লেট" }, price: 280, discount: 6 },
+            { id: "full", name: { en: "Full Plate", bn: "ফুল প্লেট" }, price: 420, discount: 8 },
+        ],
     },
 
     // 🍗 Chicken
@@ -348,18 +267,22 @@ export const demoProducts: TProduct[] = [
         categoryId: "5",
         title: { en: "Grilled Chicken", bn: "গ্রিলড চিকেন" },
         des: { en: "Charcoal grilled chicken", bn: "কয়লার আগুনে গ্রিল করা চিকেন" },
-        price: 450,
-        discount: 8,
         img: "/images/demo-food/Chicken.jpg",
+        variants: [
+            { id: "quarter", name: { en: "Quarter", bn: "কোয়ার্টার" }, price: 280, discount: 6 },
+            { id: "half", name: { en: "Half", bn: "হাফ" }, price: 450, discount: 8 },
+        ],
     },
     {
         id: "ck2",
         categoryId: "5",
         title: { en: "Fried Chicken", bn: "ফ্রাইড চিকেন" },
         des: { en: "Crispy fried chicken", bn: "মচমচে ভাজা চিকেন" },
-        price: 400,
-        discount: 5,
         img: "/images/demo-food/Chicken.jpg",
+        variants: [
+            { id: "2-pcs", name: { en: "2 Pieces", bn: "২ পিস" }, price: 400, discount: 5 },
+            { id: "4-pcs", name: { en: "4 Pieces", bn: "৪ পিস" }, price: 720, discount: 8 },
+        ],
     },
 
     // 🍚 Biryani
@@ -368,18 +291,22 @@ export const demoProducts: TProduct[] = [
         categoryId: "6",
         title: { en: "Chicken Biryani", bn: "চিকেন বিরিয়ানি" },
         des: { en: "Traditional spicy biryani", bn: "ঐতিহ্যবাহী ঝাল বিরিয়ানি" },
-        price: 380,
-        discount: 6,
         img: "/images/demo-food/biryani.jpg",
+        variants: [
+            { id: "half", name: { en: "Half Plate", bn: "হাফ প্লেট" }, price: 380, discount: 6 },
+            { id: "full", name: { en: "Full Plate", bn: "ফুল প্লেট" }, price: 550, discount: 8 },
+        ],
     },
     {
         id: "b2",
         categoryId: "6",
         title: { en: "Beef Biryani", bn: "বিফ বিরিয়ানি" },
         des: { en: "Slow cooked beef biryani", bn: "ধীরে রান্না করা বিফ বিরিয়ানি" },
-        price: 420,
-        discount: 7,
         img: "/images/demo-food/biryani.jpg",
+        variants: [
+            { id: "half", name: { en: "Half Plate", bn: "হাফ প্লেট" }, price: 420, discount: 7 },
+            { id: "full", name: { en: "Full Plate", bn: "ফুল প্লেট" }, price: 600, discount: 9 },
+        ],
     },
 
     // 🍲 Soup
@@ -388,18 +315,22 @@ export const demoProducts: TProduct[] = [
         categoryId: "7",
         title: { en: "Chicken Corn Soup", bn: "চিকেন কর্ন স্যুপ" },
         des: { en: "Warm chicken corn soup", bn: "গরম চিকেন কর্ন স্যুপ" },
-        price: 220,
-        discount: 5,
         img: "/images/demo-food/Sup.jpg",
+        variants: [
+            { id: "single", name: { en: "Single Bowl", bn: "এক বাটি" }, price: 220, discount: 5 },
+            { id: "family", name: { en: "Family Bowl", bn: "ফ্যামিলি বাটি" }, price: 380, discount: 8 },
+        ],
     },
     {
         id: "s2",
         categoryId: "7",
         title: { en: "Thai Soup", bn: "থাই স্যুপ" },
         des: { en: "Spicy Thai style soup", bn: "ঝাল থাই স্টাইল স্যুপ" },
-        price: 260,
-        discount: 6,
         img: "/images/demo-food/Sup.jpg",
+        variants: [
+            { id: "single", name: { en: "Single Bowl", bn: "এক বাটি" }, price: 260, discount: 6 },
+            { id: "family", name: { en: "Family Bowl", bn: "ফ্যামিলি বাটি" }, price: 420, discount: 8 },
+        ],
     },
 
     // 🦐 Sea Food
@@ -408,18 +339,22 @@ export const demoProducts: TProduct[] = [
         categoryId: "8",
         title: { en: "Grilled Prawn", bn: "গ্রিলড চিংড়ি" },
         des: { en: "Charcoal grilled prawns", bn: "কয়লার আগুনে গ্রিল করা চিংড়ি" },
-        price: 520,
-        discount: 8,
         img: "/images/demo-food/Sup.jpg",
+        variants: [
+            { id: "200g", name: { en: "200g", bn: "২০০ গ্রাম" }, price: 520, discount: 8 },
+            { id: "400g", name: { en: "400g", bn: "৪০০ গ্রাম" }, price: 880, discount: 10 },
+        ],
     },
     {
         id: "sf2",
         categoryId: "8",
         title: { en: "Fried Calamari", bn: "ফ্রাইড ক্যালামারি" },
         des: { en: "Crispy fried squid", bn: "মচমচে ভাজা স্কুইড" },
-        price: 480,
-        discount: 7,
         img: "/images/demo-food/Sea-food.jpg",
+        variants: [
+            { id: "regular", name: { en: "Regular", bn: "রেগুলার" }, price: 480, discount: 7 },
+            { id: "large", name: { en: "Large", bn: "বড়" }, price: 720, discount: 10 },
+        ],
     },
 
     // ☕ Coffee
@@ -428,18 +363,22 @@ export const demoProducts: TProduct[] = [
         categoryId: "9",
         title: { en: "Espresso", bn: "এসপ্রেসো" },
         des: { en: "Strong hot espresso", bn: "গাঢ় গরম কফি" },
-        price: 180,
-        discount: 0,
         img: "/images/demo-food/Sea-food.jpg",
+        variants: [
+            { id: "single", name: { en: "Single Shot", bn: "সিঙ্গেল শট" }, price: 180, discount: 0 },
+            { id: "double", name: { en: "Double Shot", bn: "ডাবল শট" }, price: 260, discount: 5 },
+        ],
     },
     {
         id: "cf2",
         categoryId: "9",
         title: { en: "Cappuccino", bn: "ক্যাপুচিনো" },
         des: { en: "Milk coffee with foam", bn: "ফেনাযুক্ত দুধ কফি" },
-        price: 240,
-        discount: 5,
         img: "/images/demo-food/Sea-food.jpg",
+        variants: [
+            { id: "regular", name: { en: "Regular", bn: "রেগুলার" }, price: 240, discount: 5 },
+            { id: "large", name: { en: "Large", bn: "বড়" }, price: 300, discount: 8 },
+        ],
     },
 
     // 🍝 Pasta
@@ -448,17 +387,21 @@ export const demoProducts: TProduct[] = [
         categoryId: "10",
         title: { en: "Chicken Alfredo Pasta", bn: "চিকেন আলফ্রেডো পাস্তা" },
         des: { en: "Creamy white sauce pasta", bn: "ক্রিমি হোয়াইট সস পাস্তা" },
-        price: 420,
-        discount: 7,
         img: "/images/demo-food/Pasta.jpg",
+        variants: [
+            { id: "regular", name: { en: "Regular", bn: "রেগুলার" }, price: 420, discount: 7 },
+            { id: "large", name: { en: "Large", bn: "বড়" }, price: 580, discount: 10 },
+        ],
     },
     {
         id: "ps2",
         categoryId: "10",
         title: { en: "Spaghetti Bolognese", bn: "স্প্যাগেটি বোলোনেজ" },
         des: { en: "Classic red sauce pasta", bn: "ক্লাসিক রেড সস পাস্তা" },
-        price: 400,
-        discount: 6,
         img: "/images/demo-food/Pasta.jpg",
+        variants: [
+            { id: "regular", name: { en: "Regular", bn: "রেগুলার" }, price: 400, discount: 6 },
+            { id: "large", name: { en: "Large", bn: "বড়" }, price: 560, discount: 9 },
+        ],
     },
 ];

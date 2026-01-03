@@ -94,7 +94,6 @@ export function CheckoutModal() {
     }, [cartProducts, deliveryType, deliveryCost.en]);
 
     return (
-
         <Dialog.Root open={openModal} onOpenChange={() => dispatch(SET_EXPAND(null))}>
             <Dialog.Portal>
                 <div className="fixed inset-0 global-overlay wishlist-overlay top-[81px] !border-none lg:top-[83.53px] z-[9999]" />

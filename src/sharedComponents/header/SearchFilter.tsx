@@ -4,10 +4,11 @@ import { Button } from '@/components/ui/button'
 import { useTranslations } from 'next-intl';
 import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'react';
-import { TFoodItem } from '@/types/demoData';
 import { fakeSearch } from '../utils/Utils';
 import SearchProductLoader from '../loading/searchingLoader';
 import Image from 'next/image';
+import { TProduct } from '@/types/demoData';
+import { getDiscountPrice } from '@/lib/utils';
 
 export default function SearchFilter({ className }: { className?: string }) {
     // translations functions
@@ -17,7 +18,7 @@ export default function SearchFilter({ className }: { className?: string }) {
 
     // hooks
     const [searchTxt, setSearchTxt] = useState('');
-    const [results, setResults] = useState<TFoodItem[]>([]);
+    const [results, setResults] = useState<TProduct[]>([]);
     const [loading, setLoading] = useState(false);
     const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -97,14 +98,14 @@ export default function SearchFilter({ className }: { className?: string }) {
                                 results.length === 0 ? <p className='fg_fs-sm text-center py-4'>No results found</p> :
                                     <div className="w-full mx-auto space-y-2">
                                         {
-                                            results.map((item) => <div
-                                                key={item.price + item.titleEn}
+                                            results.map((item, i) => <div
+                                                key={item.title.en + i}
                                                 className="flex gap-2 p-2 shadow rounded-lg bg-white dark:bg-slate-700 "
                                             >
-                                                <Image src={item.productImage} className='w-12 h-12' width={300} height={400} alt={item.titleEn} />
+                                                <Image src={item.img} className='w-12 h-12' width={300} height={400} alt={item.title.en} />
                                                 <div className="flex flex-col flex-1">
-                                                    <h5>{item.titleBn} | {item.titleEn}</h5>
-                                                    <p className='flex items-center gap-3'><span>৳{item.discountPrice}</span> <span className='line-through'>৳{item.price}</span></p>
+                                                    <h5>{item.title.bn} | {item.title.en}</h5>
+                                                    <p className='flex items-center gap-3'><span>৳{getDiscountPrice(item.variants[0]?.price, item.variants[0]?.discount || 0)}</span> <span className='line-through'>৳{item?.variants[0]?.price}</span></p>
                                                 </div>
                                             </div>)
                                         }

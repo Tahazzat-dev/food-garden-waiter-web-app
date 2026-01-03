@@ -49,3 +49,15 @@ export const getResponsiveRightStyle = (
   };
 
 };
+
+
+export const getDiscountPrice = (price: number, discount: number): number => {
+  const discountAmount = (price * discount) / 100;
+  const discountPrice = price - discountAmount
+  return Number(discountPrice.toFixed(2));
+}
+
+export const getDiscountAmount = (price: number, discount: number): number => {
+  const result = (price * discount) / 100;
+  return Number(result.toFixed(2));
+}

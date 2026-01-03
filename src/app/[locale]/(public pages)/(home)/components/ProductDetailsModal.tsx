@@ -40,7 +40,6 @@ export default function ProductDetailsModal() {
         dispatch(addCartProduct({ ...modalProduct, quantity }));
     }
 
-
     const handleQuantityChange = (newQuantity: number) => {
         if (newQuantity < 1) return;
         if (!modalProduct?.id) return;
@@ -65,7 +64,6 @@ export default function ProductDetailsModal() {
     useEffect(() => {
         setQuantity(1);
     }, [])
-
 
     if (!modalProduct) return null;
     const isAddedToCart = cartProducts.some(item => item.id === modalProduct.id);
