@@ -45,6 +45,7 @@ export default function TestPage() {
     // variables
     const KEY = "CHECKOUT_MODAL";
     const deliveryCost = { en: "150", bn: "১৫০" };
+    const discrountPrice = 100;
     // hooks
     const dispatch = useDispatch();
     const { EXPAND } = useSelector((state: RootState) => state.actions);
@@ -65,18 +66,21 @@ export default function TestPage() {
     const paymentType = watch("paymentType");
     const deliveryType = watch("deliveryType");
 
+    console.log(deliveryType, 'delivery type');
+
     const onSubmit = (data: OrderFormValues) => {
         console.log("Order Data:", data);
     };
 
     const t = useTranslations('checkout');
+    const sharedMsg = useTranslations("shared");
     const { locale } = useSelector((state: RootState) => state.locale)
     const openModal = EXPAND === KEY;
     return (
         <Container className=''
         >
             <div className="fixed inset-0 global-overlay wishlist-overlay top-[81px] !border-none lg:top-[83.53px] z-[9999]" />
-            <div className="checkout-modal fixed w-full h-full flex flex-col right-1/2 translate-x-1/2 bottom-[85px] md:bottom-5 !border-none !m-0 !p-0 max-w-[90vw] sm:max-w-[500px] md:max-w-[500px] !rounded-[6px] md:rounded-[8px] lg:!rounded-[10px] overflow-hidden bg-body z-[99999]">
+            <div className="checkout-modal fixed w-full flex flex-col right-1/2 translate-x-1/2 bottom-[85px] md:bottom-5 !border-none !m-0 !p-0 max-w-[90vw] sm:max-w-[500px] md:max-w-[500px] !rounded-[6px] md:rounded-[8px] lg:!rounded-[10px] overflow-hidden bg-body z-[99999]">
                 <div className="flex items-center justify-between bg-primary px-2.5 sm:px-4 py-3">
                     <div></div>
                     <h3 className="fg_fs-lg text-white">
@@ -90,119 +94,149 @@ export default function TestPage() {
                         }
                     </button>
                 </div>
-                <form onSubmit={handleSubmit(onSubmit)} className="px-2.5 md:px-3 my-2.5 overflow-y-auto grow flex flex-col gap-5">
-                    {/* Name and information */}
-                    <div className="w-full bg-slate-300/60 flex flex-col p-3 gap-3 rounded-md">
-                        <div className="input-box">
-                            <label htmlFor="name" className="label">
-                                <span>{t("yourName")}</span> <span>:</span>
-                            </label>
-                            <input
-                                {...register("name")}
-                                placeholder={t("yourNamePlaceholder")}
-                                className="checkout-input"
-                            />
-                            {errors.name && <p className="text-red-500">{t("yourNameError")}</p>}
-                        </div>
-                        <div className="input-box">
-                            <label htmlFor="phone" className="label">
-                                <span>{t("phoneNo")}</span> <span>:</span>
-                            </label>
-                            <input
-                                {...register("phone")}
-                                placeholder={t("phoneNoPlaceholder")}
-                                className="checkout-input"
-                            />
-                            {errors.phone && <p className="text-red-500">{t("phoneNoError")}</p>}
-                        </div>
-                        <div className="input-box">
-                            <label htmlFor="address" className="label">
-                                <span>{t("deliveryAddress")}</span> <span>:</span>
-                            </label>
-                            <input
-                                {...register("address")}
-                                placeholder={t("deliveryAddressPlaceholder")}
-                                className="checkout-input"
-                            />
-                            {errors.address && (
-                                <p className="text-red-500">{t("deliveryAddressError")}</p>
-                            )}
-                        </div>
-                        <div className="input-box">
-                            <label htmlFor="orderNote" className="label">
-                                <span>{t("orderNote")}</span> <span>:</span>
-                            </label>
-                            <input
-                                {...register("orderNote")}
-                                placeholder={t("orderNotePlaceholder")}
-                                className="checkout-input"
-                            />
-                        </div>
-                    </div>
+                {
+                    cartProducts.length === 0 ? <div className='p-4 grow flex items-center justify-center min-h-[400px]'>
+                        <p>{sharedMsg("emptyCart")}</p>
+                    </div> :
 
-                    {/* delivery order type */}
-                    <div className='w-full flex flex-col gap-1'>
-                        <label key="Home Delivery" className={`flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${deliveryType === "Home Delivery" ? "bg-secondary text-white" : "bg-slate-300/60"}`}>
-                            <input
-                                type="radio"
-                                value="Home Delivery"
-                                {...register("deliveryType")}
-                            />
-                            <span className='flex items-center justify-between grow'>
-                                <span className='grow'>{t("homeDelivery")}</span> <span>{locale == 'bn' ? `${deliveryCost.en}TK` : `৳${deliveryCost.bn}`}</span>
-                            </span>
-                        </label>
-                        <label key="Self Pickup" className={`flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${deliveryType === "Self Pickup" ? "bg-secondary text-white" : "bg-slate-300/60"}`}>
-                            <input
-                                type="radio"
-                                value="Self Pickup"
-                                {...register("deliveryType")}
-                            />
-                            {t("selfPickup")}
-                        </label>
-                        <label key="Dine-In" className={`flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${deliveryType === "Dine-In" ? "bg-secondary text-white" : "bg-slate-300/60"}`}>
-                            <input
-                                type="radio"
-                                value="Dine-In"
-                                {...register("deliveryType")}
-                            />
-                            {t("dineIn")}
-                        </label>
-                        {errors.deliveryType && <p>{errors.deliveryType.message}</p>}
-                    </div>
+                        <form onSubmit={handleSubmit(onSubmit)} className="px-2.5 md:px-3 my-2.5 overflow-y-auto grow flex flex-col gap-5">
+                            {/* Name and information */}
+                            <div className="w-full bg-slate-300/60 flex flex-col p-3 gap-3 rounded-md">
+                                <div className="w-full">
+                                    <div className="input-box">
+                                        <label htmlFor="name" className="label">
+                                            <span>{t("yourName")}</span> <span>:</span>
+                                        </label>
+                                        <input
+                                            {...register("name")}
+                                            placeholder={t("yourNamePlaceholder")}
+                                            className="checkout-input"
+                                        />
+                                    </div>
+                                    <div className="flex items-center grow gap-2 md:gap-4">
+                                        <span className="label"></span>
+                                        {errors.name && <p className="text-red-500 mt-0.5 lg:mt-1">{t("yourNameError")}</p>}
+                                    </div>
+                                </div>
+                                <div className="w-full">
+                                    <div className="input-box">
+                                        <label htmlFor="phone" className="label">
+                                            <span>{t("phoneNo")}</span> <span>:</span>
+                                        </label>
+                                        <input
+                                            {...register("phone")}
+                                            placeholder={t("phoneNoPlaceholder")}
+                                            className="checkout-input"
+                                        />
+                                    </div>
+                                    <div className="flex items-center grow gap-2 md:gap-4">
+                                        <span className="label"></span>
+                                        {errors.phone && <p className="text-red-500 mt-0.5 lg:mt-1">{t("phoneNoError")}</p>}
+                                    </div>
+                                </div>
+                                <div className="w-full">
+                                    <div className="input-box">
+                                        <label htmlFor="address" className="label">
+                                            <span>{t("deliveryAddress")}</span> <span>:</span>
+                                        </label>
+                                        <input
+                                            {...register("address")}
+                                            placeholder={t("deliveryAddressPlaceholder")}
+                                            className="checkout-input"
+                                        />
+                                    </div>
+                                    <div className="flex items-center grow gap-2 md:gap-4">
+                                        <span className="label"></span>
+                                        {errors.address && (
+                                            <p className="text-red-500 mt-0.5 lg:mt-1">{t("deliveryAddressError")}</p>
+                                        )}
 
-                    {/* payment type */}
-                    {
+                                    </div>
+                                </div>
+                                <div className="input-box">
+                                    <label htmlFor="orderNote" className="label">
+                                        <span>{t("orderNote")}</span> <span>:</span>
+                                    </label>
+                                    <input
+                                        {...register("orderNote")}
+                                        placeholder={t("orderNotePlaceholder")}
+                                        className="checkout-input"
+                                    />
+                                </div>
+                            </div>
 
-                    }
-                    <div className='w-full flex flex-col items-start gap-1'>
-                        <label key="Cash On Delivery" className={`min-w-[170px] inline-flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${paymentType === "Cash On Delivery" ? "bg-secondary text-white" : "bg-slate-300/60"}`}>
-                            <input
-                                type="radio"
-                                value="Cash On Delivery"
-                                {...register("paymentType")}
-                            />
-                            {t("cashOnDelivery")}
-                        </label>
-                        <div className="w-full flex items-center">
-                            <label key="Payment" className='flex items-center gap-2' >
-                                <div className={`min-w-[170px] flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${paymentType === "Payment" ? "bg-secondary text-white" : "bg-slate-300/60"}`}>
+                            {/* delivery order type */}
+                            <div className='w-full flex flex-col gap-1'>
+                                <label key="Home Delivery" className={`flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${deliveryType === "Home Delivery" ? "bg-secondary text-white" : "bg-slate-300/60"}`}>
                                     <input
                                         type="radio"
-                                        value="Payment"
-                                        {...register("paymentType")}
+                                        value="Home Delivery"
+                                        {...register("deliveryType")}
                                     />
-                                    {t("payment")}
-                                </div>
+                                    <span className='flex items-center justify-between grow'>
+                                        <span className='grow'>{t("homeDelivery")}</span> <span>{locale == 'bn' ? `${deliveryCost.en}TK` : `৳${deliveryCost.bn}`}</span>
+                                    </span>
+                                </label>
+                                <label key="Self Pickup" className={`flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${deliveryType === "Self Pickup" ? "bg-secondary text-white" : "bg-slate-300/60"}`}>
+                                    <input
+                                        type="radio"
+                                        value="Self Pickup"
+                                        {...register("deliveryType")}
+                                    />
+                                    {t("selfPickup")}
+                                </label>
+                                <label key="Dine-In" className={`flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${deliveryType === "Dine-In" ? "bg-secondary text-white" : "bg-slate-300/60"}`}>
+                                    <input
+                                        type="radio"
+                                        value="Dine-In"
+                                        {...register("deliveryType")}
+                                    />
+                                    {t("dineIn")}
+                                </label>
+                                {errors.deliveryType && <p>{errors.deliveryType.message}</p>}
+                            </div>
 
-                                <p className='py-1 lg:py-1.5 bg-[#e2136e] text-white px-2 rounded-[4px]'>{t("bkash")}</p>
-                                <p className='py-1 lg:py-1.5 bg-[#f37121] text-white px-2 rounded-[4px]'>{t("nagad")}</p>
-                            </label>
-                        </div>
-                        {errors.paymentType && <p>{errors.paymentType.message}</p>}
-                    </div>
-                    <button type="submit">Place Order</button>
-                </form>
+                            {/* payment type */}
+                            {deliveryType === "Home Delivery" ?
+
+                                <div className='w-full flex flex-col items-start gap-1'>
+                                    <label key="Cash On Delivery" className={`min-w-[170px] inline-flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${paymentType === "Cash On Delivery" ? "bg-secondary text-white" : "bg-slate-300/60"}`}>
+                                        <input
+                                            type="radio"
+                                            value="Cash On Delivery"
+                                            {...register("paymentType")}
+                                        />
+                                        {t("cashOnDelivery")}
+                                    </label>
+                                    <div className="w-full flex items-center">
+                                        <label key="Payment" className='flex items-center gap-2' >
+                                            <div className={`min-w-[170px] flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${paymentType === "Payment" ? "bg-secondary text-white" : "bg-slate-300/60"}`}>
+                                                <input
+                                                    type="radio"
+                                                    value="Payment"
+                                                    {...register("paymentType")}
+                                                />
+                                                {t("payment")}
+                                            </div>
+
+                                            <p className='py-1 lg:py-1.5 bg-[#e2136e] text-white px-2 rounded-[4px]'>{t("bkash")}</p>
+                                            <p className='py-1 lg:py-1.5 bg-[#f37121] text-white px-2 rounded-[4px]'>{t("nagad")}</p>
+                                        </label>
+                                    </div>
+                                    {errors.paymentType && <p>{errors.paymentType.message}</p>}
+                                </div> : <></>}
+
+                            <div className="min-h-10 border-t-black w-full mt-3 pt-3 border-t border-dashed">
+                                <p className='flex items-center justify-between'><span className='grow'>{t("totalOrderAmount")}</span> <span>{locale == 'bn' ? `1600TK` : `৳1600`}</span></p>
+                                {
+                                    deliveryType === "Home Delivery" && <p className='flex items-center justify-between'><span className='grow'>{t("deliveryCharge")}</span> <span>{locale == 'bn' ? `${deliveryCost.en}TK` : `৳${deliveryCost.en}`}</span></p>
+                                }
+                                <p className='flex items-center justify-between'><span className='grow'>{t("discountAmount")}</span> <span>-{locale == 'bn' ? `${discrountPrice}TK` : `৳${discrountPrice}`}</span></p>
+                            </div>
+
+                            <Button className='text-white font-semibold' type="submit"><span>Confirm Order</span> <span>{locale == 'bn' ? `1600TK` : `৳1600`}</span></Button>
+                        </form>}
+
             </div>
         </Container>
 

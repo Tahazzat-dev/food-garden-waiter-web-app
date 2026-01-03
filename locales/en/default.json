@@ -95,7 +95,7 @@
     "yourNameError": "Name is required",
     "phoneNo": "Phone No",
     "phoneNoPlaceholder": "Enter Your Phone No",
-    "phoneNoError": "Phone number is required",
+    "phoneNoError": "Phone number must be at least 11 digits",
     "deliveryAddress": "Address",
     "deliveryAddressPlaceholder": "Enter Your Address",
     "deliveryAddressError": "Delivery address is required",

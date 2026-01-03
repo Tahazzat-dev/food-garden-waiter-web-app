@@ -94,7 +94,7 @@
     "yourNameError": "নাম দেওয়া বাধ্যতামূলক",
     "phoneNo": "ফোন নম্বর",
     "phoneNoPlaceholder": "আপনার ফোন নম্বর লিখুন",
-    "phoneNoError": "ফোন নম্বর দেওয়া বাধ্যতামূলক",
+    "phoneNoError": "ফোন নম্বর অবশ্যই কমপক্ষে ১১ সংখ্যার হতে হবে",
     "deliveryAddress": "ঠিকানা",
     "deliveryAddressPlaceholder": "আপনার ঠিকানা লিখুন",
     "deliveryAddressError": "ডেলিভারি ঠিকানা দেওয়া বাধ্যতামূলক",
