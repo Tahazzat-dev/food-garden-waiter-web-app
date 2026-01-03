@@ -172,6 +172,9 @@ export default function TestPage() {
                     </div>
 
                     {/* payment type */}
+                    {
+
+                    }
                     <div className='w-full flex flex-col items-start gap-1'>
                         <label key="Cash On Delivery" className={`min-w-[170px] inline-flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${paymentType === "Cash On Delivery" ? "bg-secondary text-white" : "bg-slate-300/60"}`}>
                             <input
