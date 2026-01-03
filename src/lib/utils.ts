@@ -6,6 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 import type { CSSProperties, RefObject } from "react";
+import { Lang } from "@/types/types";
 
 export const getResponsiveRightStyle = (
   ref: RefObject<HTMLButtonElement | null>
@@ -61,3 +62,7 @@ export const getDiscountAmount = (price: number, discount: number): number => {
   const result = (price * discount) / 100;
   return Number(result.toFixed(2));
 }
+
+
+
+export const formatPrice = (locale: Lang = "bn", amount: number = 0) => locale !== "bn" ? `${amount}TK` : `৳${amount}`;

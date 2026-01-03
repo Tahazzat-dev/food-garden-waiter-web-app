@@ -9,14 +9,16 @@ import { RootState } from '@/redux/store'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { SET_EXPAND } from '@/redux/features/actions/actionSlice'
+import { getDiscountPrice } from '@/lib/utils'
+import useFormatPrice from '@/hooks/useFormatPrice'
 
 export default function FoodCart({ product }: { product: TProduct }) {
     // hooks
     const dispatch = useDispatch()
     const t = useTranslations('shared');
-    const discountedPrice = product.price - (product.price * product.discount) / 100;
     const { cartProducts, favouriteProducts } = useSelector((state: RootState) => state.productSlice)
     const { locale } = useSelector((state: RootState) => state.locale)
+    const { formatPrice } = useFormatPrice();
 
     // conditional variables
     const isAddedToCart = cartProducts.some(item => item.id === product.id);
@@ -39,6 +41,9 @@ export default function FoodCart({ product }: { product: TProduct }) {
         dispatch(addFavouriteProduct(product));
     }
 
+    const firstVariant = product.variants[0];
+    if (!firstVariant) return <></>
+
     return (
         <Link href={`/products/${product.id}`} className='custom-shadow-card flex flex-col overflow-hidden shadow-2xl !border-none group z-0'>
             <div className="w-full relative h-[150px] sm:h-[200px]">
@@ -52,8 +57,8 @@ export default function FoodCart({ product }: { product: TProduct }) {
                     <Eye className='w-5 h-5' />
                 </span>
                 {
-                    !!product?.discount && <span className='absolute fg_fs-xxs  top-0 right-0 bg-secondary text-white px-2 py-1 rounded-md'>
-                        {product?.discount}% Off
+                    !!product?.variants[0]?.discount && <span className='absolute fg_fs-xxs  top-0 right-0 bg-secondary text-white px-2 py-1 rounded-md'>
+                        {product?.variants[0].discount}% Off
                     </span>
                 }
             </div>
@@ -61,7 +66,7 @@ export default function FoodCart({ product }: { product: TProduct }) {
             <div className="w-full grow flex flex-col p-3 md:p-4 bg-slate-100 dark:bg-slate-700">
                 <div className="w-full flex flex-col grow">
                     <h6 className='mb-1'>{locale === "bn" ? product?.title.bn : product?.title.en}</h6>
-                    <p className='fg_fs-sm'>{product.discount < 1 ? <span className=''>{product?.price}TK</span> : <span className='flex items-center gap-3'> <span className='line-through fg_fs-xs'>{product?.price}TK</span> <span className='text-primary'>{discountedPrice}TK</span></span>}</p>
+                    <p className='fg_fs-sm'>{firstVariant.discount < 1 ? <span className=''>{formatPrice(firstVariant?.price)}</span> : <span className='flex items-center gap-3'> <span className='line-through fg_fs-xs'>{formatPrice(firstVariant?.price)}</span> <span className='text-primary'>{formatPrice(getDiscountPrice(firstVariant.price, firstVariant.discount))}</span></span>}</p>
                 </div>
                 <Button onClick={openDetailsModal} className={`mt-2 text-white w-full font-semibold  ${isAddedToCart ? ' bg-secondary hover:bg-secondary' : 'custom-shadow-md  bg-primary hover:bg-primary-500'}`} ><ShoppingCart /> <span>{t('addToCart')}</span></Button>
             </div>
