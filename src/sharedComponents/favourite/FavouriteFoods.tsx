@@ -1,15 +1,16 @@
 'use client';
 import { RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
-// import { FavouriteFoodsModal } from './FavouriteFoodsModal';
 import { CSSProperties, useEffect, useRef, useState } from 'react';
 import * as Dialog from "@radix-ui/react-dialog";
 import { ShoppingCart, Trash2, X, Heart } from "lucide-react"; // optional icon
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { addCartProduct, removeFavouriteProduct } from "@/redux/features/product/productSlice";
+import { removeFavouriteProduct, setModalProduct } from "@/redux/features/product/productSlice";
 import { useTranslations } from 'next-intl';
 import { getResponsiveRightStyle } from '@/lib/utils';
+import { SET_EXPAND } from '@/redux/features/actions/actionSlice';
+import { TProduct } from '@/types/demoData';
 
 export function FavouriteFoods() {
     // hooks
@@ -27,6 +28,12 @@ export function FavouriteFoods() {
         setIsModalOpen((prev) => !prev)
         const elStyle = getResponsiveRightStyle(cartRef)
         setStyle(elStyle)
+    }
+
+    const openFoodDetailsModal = (food: TProduct) => {
+        setIsModalOpen(false);
+        dispatch(setModalProduct(food));
+        dispatch(SET_EXPAND("OPEN_PRODUCT_DETAILS_MODAL"))
     }
 
     useEffect(() => {
@@ -94,7 +101,7 @@ export function FavouriteFoods() {
                                                     >
                                                         <Trash2 className='text-white  h-3 w-3' />
                                                     </Button>
-                                                    <Button onClick={() => { dispatch(addCartProduct({ ...food, quantity: 1 })) }} className={`mt-2 fg_fs-xxs text-white font-semibold  ${isAddedToCart ? ' bg-secondary hover:bg-secondary !cursor-not-allowed' : 'custom-shadow-md  bg-primary hover:bg-primary-500'}`} ><ShoppingCart /> <span>{t('addToCart')}</span></Button>
+                                                    <Button onClick={() => openFoodDetailsModal(food)} className={`mt-2 fg_fs-xxs text-white font-semibold  ${isAddedToCart ? ' bg-secondary hover:bg-secondary' : 'custom-shadow-md  bg-primary hover:bg-primary-500'}`} ><ShoppingCart /> <span>{t('addToCart')}</span></Button>
                                                 </div>
                                             </div>
                                         </div>
@@ -107,6 +114,9 @@ export function FavouriteFoods() {
                     </Dialog.Content>
                 </Dialog.Portal >
             </Dialog.Root >
+
+
+
         </>
     );
 }

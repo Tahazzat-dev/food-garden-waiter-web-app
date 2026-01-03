@@ -10,6 +10,7 @@ import { RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslations } from "next-intl";
 import { addCartProduct } from "@/redux/features/product/productSlice";
+import { SET_EXPAND } from "@/redux/features/actions/actionSlice";
 
 interface FoodModalProps {
     food: TProduct | null;
@@ -17,35 +18,39 @@ interface FoodModalProps {
     onOpenChange: () => void;
 }
 
-export function FoodModal({ food, open, onOpenChange }: FoodModalProps) {
+
+export default function ProductDetailsModal() {
+    // variables
+    const KEY = "OPEN_PRODUCT_DETAILS_MODAL";
+
+    // hooks
     const t = useTranslations('shared');
     const dispatch = useDispatch();
     const [variant, setVariant] = useState<string>("1");
     const [quantity, setQuantity] = useState(1);
-    const { cartProducts } = useSelector((state: RootState) => state.productSlice);
+    const { EXPAND } = useSelector((state: RootState) => state.actions);
+    const { cartProducts, modalProduct } = useSelector((state: RootState) => state.productSlice);
     const { locale } = useSelector((state: RootState) => state.locale)
 
     // handlers
     const handleAddToCart = (event: MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
         event.preventDefault();
-        if (!food) return;
-        dispatch(addCartProduct({ ...food, quantity }));
-        onOpenChange();
-
+        if (!modalProduct) return;
+        dispatch(addCartProduct({ ...modalProduct, quantity }));
     }
 
 
     const handleQuantityChange = (newQuantity: number) => {
         if (newQuantity < 1) return;
-        if (!food?.id) return;
+        if (!modalProduct?.id) return;
         setQuantity(newQuantity);
     }
 
-    const subtotal = food?.price ? food.price * quantity : 0;
+    const subtotal = modalProduct?.price ? modalProduct.price * quantity : 0;
 
     useEffect(() => {
-        if (open) {
+        if (KEY === EXPAND) {
             document.body.style.overflow = "hidden";
         } else {
             document.body.style.overflow = "";
@@ -54,34 +59,31 @@ export function FoodModal({ food, open, onOpenChange }: FoodModalProps) {
         return () => {
             document.body.style.overflow = "";
         };
-    }, [open]);
+    }, [EXPAND]);
 
 
     useEffect(() => {
         setQuantity(1);
-        return () => {
-            console.log("FoodModal unmounted");
-        }
     }, [])
 
 
-    if (!food) return null;
-    const isAddedToCart = cartProducts.some(item => item.id === food.id);
+    if (!modalProduct) return null;
+    const isAddedToCart = cartProducts.some(item => item.id === modalProduct.id);
     return (
-        <Dialog.Root open={open} onOpenChange={onOpenChange}>
+        <Dialog.Root open={KEY === EXPAND} onOpenChange={() => dispatch(SET_EXPAND(null))}>
             <Dialog.Portal>
                 <div className="fixed inset-0 global-overlay z-[9999]" />
-                <Dialog.Content className="fixed top-1/2 left-1/2  max-w-[93vw] md:max-w-[700px] !rounded-[10px] lg:!rounded-[12px] overflow-hidden w-full -translate-x-1/2 -translate-y-1/2 bg-body rounded-lg shadow-lg dark:shadow-slate-800 z-[99999]">
+                <Dialog.Content className="prevent-body-trigger fixed top-1/2 left-1/2  max-w-[93vw] md:max-w-[700px] !rounded-[10px] lg:!rounded-[12px] overflow-hidden w-full -translate-x-1/2 -translate-y-1/2 bg-body rounded-lg shadow-lg dark:shadow-slate-800 z-[99999]">
                     <div className="flex items-center justify-between bg-primary px-4 py-2">
                         <Dialog.Title className="fg_fs-md text-white">
                             {t('foodDetails')}
                         </Dialog.Title>
-                        <Button onClick={onOpenChange} className="rounded-full !px-2.5" variant="secondary"> <X className="!text-white w-5 md:w-6 md:h-6 h-5 lg:w-8 lg:h-8" /></Button>
+                        <Button onClick={() => dispatch(SET_EXPAND(null))} className="rounded-full !px-2.5" variant="secondary"> <X className="!text-white w-5 md:w-6 md:h-6 h-5 lg:w-8 lg:h-8" /></Button>
                     </div>
                     <div className="p-4">
-                        <h5 className="font-semibold text-lg text-primary">{locale === "bn" ? food.title.bn : food.title.en}</h5>
+                        <h5 className="font-semibold text-lg text-primary">{locale === "bn" ? modalProduct.title.bn : modalProduct.title.en}</h5>
                         <div className="flex gap-3 lg:gap-4 mt-4">
-                            <Image className="max-w-[120px] md:max-w-[180px] lg:max-w-[250px] max-h-[120px] md:max-h-[180px] lg:max-h-[250px] rounded-[8px]" src={food.img} width={300} height={400} alt="Food Image" />
+                            <Image className="max-w-[120px] md:max-w-[180px] lg:max-w-[250px] max-h-[120px] md:max-h-[180px] lg:max-h-[250px] rounded-[8px]" src={modalProduct.img} width={300} height={400} alt="Food Image" />
                             <div className="grow flex justify-between flex-col gap-2">
                                 <div className="flex flex-wrap items-center gap-2">
                                     <Button onClick={() => setVariant('1')} variant={variant === "1" ? "secondary" : "primary"} className="text-white custom-shadow-md !py-0.5">{locale === "bn" ? "বিকল্প 1" : "Variants 1"}</Button>
@@ -92,7 +94,7 @@ export function FoodModal({ food, open, onOpenChange }: FoodModalProps) {
                                 <div className="w-full hidden md:block">
                                     <p className="mb-3">{locale === "bn" ? "পণ্য নোটস:" : "Product Notes:"}</p>
                                     <div className='mt-auto flex items-center justify-between bg-slate-300/60 px-2 py-1 rounded-[4px]'>
-                                        <p className='fg_fs-xs font-semibold text-center grow dark:!text-black'>{food.price.toFixed(2)}/-</p>
+                                        <p className='fg_fs-xs font-semibold text-center grow dark:!text-black'>{modalProduct.price.toFixed(2)}/-</p>
                                         <div className='flex items-center gap-1 lg:gap-2 rounded-md py-0.5'>
                                             <Button
                                                 variant='primary'
@@ -121,7 +123,7 @@ export function FoodModal({ food, open, onOpenChange }: FoodModalProps) {
                         <div className="w-full block md:hidden mt-5">
                             <p className="mb-2">{locale === "bn" ? "পণ্য নোটস:" : "Product Notes:"}</p>
                             <div className='mt-auto bg-slate-300/60 flex items-center justify-between px-2 py-1 rounded-[4px]'>
-                                <p className='fg_fs-xs font-semibold text-center grow dark:!text-black'>{food.price.toFixed(2)}/-</p>
+                                <p className='fg_fs-xs font-semibold text-center grow dark:!text-black'>{modalProduct.price.toFixed(2)}/-</p>
                                 <div className='flex items-center gap-3 lg:gap-2 rounded-md py-0.5'>
                                     <Button
                                         variant='primary'
@@ -154,5 +156,5 @@ export function FoodModal({ food, open, onOpenChange }: FoodModalProps) {
                 </Dialog.Content>
             </Dialog.Portal>
         </Dialog.Root>
-    );
+    )
 }

@@ -5,11 +5,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface IInitialState {
     cartProducts: TCartProduct[];
     favouriteProducts: TProduct[];
+    modalProduct: TProduct | null;
 }
 
 const initialState: IInitialState = {
     cartProducts: [],
-    favouriteProducts: []
+    favouriteProducts: [],
+    modalProduct: null,
 };
 
 const productSlice = createSlice({
@@ -20,6 +22,9 @@ const productSlice = createSlice({
         // cart products reducers
         setCartProducts: (state, action: PayloadAction<TCartProduct[] | null>) => {
             state.cartProducts = action.payload || [];
+        },
+        setModalProduct: (state, action: PayloadAction<TProduct | null>) => {
+            state.modalProduct = action.payload;
         },
         updateCartProduct: (state, action: PayloadAction<{ product: TCartProduct, id: string }>) => {
             state.cartProducts = state.cartProducts.map(prod => {
@@ -55,6 +60,7 @@ const productSlice = createSlice({
 
 export const {
     setCartProducts,
+    setModalProduct,
     addCartProduct,
     removeCartProduct,
     updateCartProduct,
