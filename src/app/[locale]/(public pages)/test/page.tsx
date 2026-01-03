@@ -17,7 +17,6 @@ import Container from '@/sharedComponents/wrapper/Container';
 // schema/orderSchema.ts
 export const deliveryTypes = ["Home Delivery", "Self Pickup", "Dine-In"] as const;
 export const paymentTypes = ["Cash On Delivery", "Payment"] as const;
-export const paymentMethods = ["Bkash", "Nagad"] as const;
 
 export const orderSchema = z
     .object({
@@ -29,7 +28,15 @@ export const orderSchema = z
         orderNote: z.string().optional(),
 
         deliveryType: z.enum(deliveryTypes),
-        paymentType: z.enum(paymentTypes),
+        paymentType: z.enum(paymentTypes).optional(),
+    }).superRefine((data, ctx) => {
+        if (data.deliveryType === "Home Delivery" && !data.paymentType) {
+            ctx.addIssue({
+                path: ["paymentType"],
+                message: "Payment type is required for Home Delivery",
+                code: "custom",
+            });
+        }
     })
 
 export type OrderFormValues = z.infer<typeof orderSchema>;
