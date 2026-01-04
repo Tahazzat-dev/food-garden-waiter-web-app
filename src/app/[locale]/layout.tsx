@@ -48,7 +48,13 @@ export default async function RootLayout({
           <ThemeProvider>
             <NextIntlClientProvider>
               {children}
-              <ToastContainer className="z-[9999999]" />
+              <ToastContainer
+                hideProgressBar={true}
+                limit={3}
+                newestOnTop
+                autoClose={1300}
+                className="z-[9999999] hidden lg:block"
+              />
             </NextIntlClientProvider>
           </ThemeProvider>
           <BodyEventListeners />
