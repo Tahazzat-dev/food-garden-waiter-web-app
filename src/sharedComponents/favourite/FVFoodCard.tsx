@@ -48,15 +48,15 @@ export default function FVFoodCard({ item }: { item: TProduct }) {
             </div>
 
             <div className='flex gap-1 justify-between flex-grow'>
-                <div className="flex items-center flex-grow gap-2 justify-between">
-                    <div className="flex flex-col gap-1 justify-between">
+                {/* <div className="flex items-center flex-grow gap-2 justify-between">
+                    <div className="flex flex-col gap-1">
                         <div className="w-full grow">
                             <h6 className='line-clamp-2 text-primary leading-tight font-medium'>{locale === "bn" ? item?.title?.bn : item?.title?.en}</h6>
                         </div>
-                        {/* <p className='fg_fs-sm'>{food.discount < 1 ? <span className=''>{food?.price}TK</span> : <span className='flex items-center gap-3'> <span className='line-through fg_fs-xs'>{food?.price}TK</span> <span className='text-primary'>{discountedPrice}TK</span></span>}</p> */}
+                        <p className='fg_fs-sm'>{food.discount < 1 ? <span className=''>{food?.price}TK</span> : <span className='flex items-center gap-3'> <span className='line-through fg_fs-xs'>{food?.price}TK</span> <span className='text-primary'>{discountedPrice}TK</span></span>}</p>
                     </div>
-
-                </div>
+                </div> */}
+                <h6 className='line-clamp-2 text-primary leading-tight font-medium'>{locale === "bn" ? item?.title?.bn : item?.title?.en}</h6>
 
                 <div className='flex flex-col justify-between items-end'>
                     <Button
