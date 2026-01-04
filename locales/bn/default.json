@@ -21,7 +21,14 @@
     "addedToFavourite": "প্রিয় তালিকায় যোগ করা হয়েছে",
     "removedFromFavourite": "প্রিয় তালিকা থেকে মুছে ফেলা হয়েছে",
     "tk": "৳",
-    "price": "মূল্য"
+    "price": "মূল্য",
+    "noFoodFound": "কোনো খাবার পাওয়া যায়নি",
+    "specialDiscount": "বিশেষ ছাড়",
+    "category": "ক্যাটাগরি",
+    "selectVariants": "ভ্যারিয়েন্ট নির্বাচন করুন",
+    "description": "বিস্তারিত",
+    "buyNow": "এখনই কিনুন",
+    "whatsapp": "হোয়াটসঅ্যাপ"
   },
 
   "mobileBottomActions": {

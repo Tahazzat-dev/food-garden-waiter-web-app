@@ -21,7 +21,14 @@
     "addedToFavourite": "Added to favourite",
     "removedFromFavourite": "Removed from favourite",
     "tk": "TK",
-    "price": "Price"
+    "price": "Price",
+    "noFoodFound": "No food found",
+    "specialDiscount": "Special Discount",
+    "category": "Category",
+    "selectVariants": "Select Variants",
+    "description": "Description",
+    "buyNow": "BUY NOW",
+    "whatsapp": "Whats App"
   },
 
   "mobileBottomActions": {

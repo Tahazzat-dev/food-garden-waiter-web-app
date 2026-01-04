@@ -7,6 +7,7 @@ import CategoryName from './CategoryName'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { setCategories, setHomeActiveCategoryId } from '@/redux/features/category/categorySlice'
+import { cn } from '@/lib/utils'
 
 export default function CategorySection({ className }: { className?: string }) {
     const dispatch = useDispatch()
@@ -21,7 +22,7 @@ export default function CategorySection({ className }: { className?: string }) {
         dispatch(setHomeActiveCategoryId(categoryId))
     }
     return (
-        <section className={`bg-inherit ${className}`}>
+        <section className={cn("bg-inherit", className)}>
             <div className="w-full pb-1 mb-1">
                 <Container className='overflow-x-auto mt-4 lg:mt-1 lg:pt-3 pb-2'>
                     <div className="flex flex-nowrap gap-2">

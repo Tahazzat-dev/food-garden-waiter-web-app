@@ -5,7 +5,7 @@ export default async function ProductsPage({ params }: { params: Promise<{ id: s
     console.log(id)
     return (
         <main className='w-full pt-[80px]'>
-            {/* <CategorySection /> */}
+            <CategorySection />
             <div>
                 <h1>{id}Products Page</h1>
             </div>
