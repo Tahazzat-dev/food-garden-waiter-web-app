@@ -7,7 +7,7 @@ import { TFoodVariant, TProduct } from '@/types/types'
 import { ShoppingCart, Trash2 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 export default function FVFoodCard({ item }: { item: TProduct }) {
@@ -16,9 +16,7 @@ export default function FVFoodCard({ item }: { item: TProduct }) {
     const dispatch = useDispatch()
     const { locale } = useSelector((state: RootState) => state.locale)
     const { cartProducts } = useSelector((state: RootState) => state.productSlice);
-    const [variant, setVariant] = useState<TFoodVariant | null>(item.variants[0]);
-
-    const addedItem = cartProducts.find(item => item?.id === variant?.id);
+    const [addedVariants, setAddedVariants] = useState(0);
 
     // handlers
 
@@ -27,6 +25,16 @@ export default function FVFoodCard({ item }: { item: TProduct }) {
         dispatch(SET_EXPAND("OPEN_PRODUCT_DETAILS_MODAL"))
     }
 
+    useEffect(() => {
+        const count = item.variants.filter(variant =>
+            cartProducts.some(cartItem => cartItem.id === variant.id)
+        ).length;
+
+        setAddedVariants(count);
+    }, [cartProducts, item.variants]);
+
+
+    console.log(addedVariants, ' added variants', item.variants.length)
     return (
         <div className='flex gap-3 pb-3 border-b border-slate-300 dark:border-slate-600 border-dashed'>
             <div className='bg-muted relative w-14 h-14 lg:w-16 lg:h-16 xl:w-[72px] xl:h-[72px] rounded-md overflow-hidden'>
@@ -43,14 +51,7 @@ export default function FVFoodCard({ item }: { item: TProduct }) {
                 <div className="flex items-center flex-grow gap-2 justify-between">
                     <div className="flex flex-col gap-1 justify-between">
                         <div className="w-full grow">
-                            <h6 className='line-clamp-2 text-primary leading-tight font-medium'>{locale === "bn" ? item?.title?.bn : item?.title?.en}
-                                {variant ? " - " : ""}
-                                {variant ? locale === "bn" ? variant?.name?.bn || "" : variant?.name?.en || "" : ""}</h6>
-                        </div>
-                        <div className="w-full flex flex-wrap gap-2 items-center">
-                            {
-                                item.variants.map(item => <Button key={item.id} size="sm" onClick={() => setVariant(item)} variant={item.id === variant?.id ? "secondary" : "primary"} className="text-white custom-shadow-md !py-0.5">{locale === "bn" ? item?.name?.bn : item?.name.en}</Button>)
-                            }
+                            <h6 className='line-clamp-2 text-primary leading-tight font-medium'>{locale === "bn" ? item?.title?.bn : item?.title?.en}</h6>
                         </div>
                         {/* <p className='fg_fs-sm'>{food.discount < 1 ? <span className=''>{food?.price}TK</span> : <span className='flex items-center gap-3'> <span className='line-through fg_fs-xs'>{food?.price}TK</span> <span className='text-primary'>{discountedPrice}TK</span></span>}</p> */}
                     </div>
@@ -67,7 +68,7 @@ export default function FVFoodCard({ item }: { item: TProduct }) {
                         <Trash2 className='text-white  h-3 w-3' />
                     </Button>
 
-                    <Button onClick={openFoodDetailsModal} className={`mt-2 fg_fs-xxs text-white font-semibold  ${addedItem ? ' bg-secondary hover:bg-secondary' : 'custom-shadow-md  bg-primary hover:bg-primary-500'}`} ><ShoppingCart /> <span>{t('addToCart')}</span></Button>
+                    <Button onClick={openFoodDetailsModal} className={`mt-2 fg_fs-xxs text-white font-semibold  ${addedVariants === item.variants.length ? ' bg-secondary hover:bg-secondary' : 'custom-shadow-md  bg-primary hover:bg-primary-500'}`} ><ShoppingCart /> <span>{t('addToCart')}</span></Button>
                 </div>
             </div>
         </div>

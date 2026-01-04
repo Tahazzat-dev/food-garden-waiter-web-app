@@ -14,6 +14,7 @@ import useFormatPrice from "@/hooks/useFormatPrice";
 import { calculateSubtotal, getDiscountPrice, getSellingPrice } from "@/lib/utils";
 import { TCartProduct, TFoodVariant } from "@/types/types";
 import { toast } from "react-toastify";
+import useRenderText from "@/hooks/useRenderText";
 
 export default function ProductDetailsModal() {
     // variables
@@ -28,6 +29,7 @@ export default function ProductDetailsModal() {
     const [variant, setVariant] = useState<TFoodVariant | null>(null);
     const { locale } = useSelector((state: RootState) => state.locale)
     const { formatPrice } = useFormatPrice()
+    const { renderText } = useRenderText()
 
     const addedItem = cartProducts.find(item => item?.id === variant?.id);
 
@@ -58,6 +60,7 @@ export default function ProductDetailsModal() {
         }
         dispatch(addCartProduct(cartItem));
         toast.success(t('addedToCart'));
+        dispatch(SET_EXPAND(null));
     }
 
     const handleQuantityChange = (newQuantity: number) => {
@@ -97,16 +100,16 @@ export default function ProductDetailsModal() {
                         <Button onClick={() => dispatch(SET_EXPAND(null))} className="rounded-full !px-2.5" variant="secondary"> <X className="!text-white w-5 md:w-6 md:h-6 h-5 lg:w-8 lg:h-8" /></Button>
                     </div>
                     <div className="p-4">
-                        <h5 className="font-semibold text-lg text-primary">{locale === "bn" ? modalProduct?.title?.bn : modalProduct?.title?.en}
+                        <h5 className="font-semibold text-lg text-primary">{renderText(modalProduct?.title?.en, modalProduct?.title?.bn)}
                             {variant ? " - " : ""}
-                            {variant ? locale === "bn" ? variant?.name?.bn || "" : variant?.name?.en || "" : ""}</h5>
+                            {variant ? renderText(variant.name.en, variant.name.en) : ""}</h5>
                         <div className="flex gap-3 lg:gap-4 mt-4">
                             <Image className="max-w-[120px] md:max-w-[180px] lg:max-w-[250px] max-h-[120px] md:max-h-[180px] lg:max-h-[250px] rounded-[8px]" src={modalProduct.img} width={300} height={400} alt="Food Image" />
                             <div className="grow flex justify-between flex-col gap-2">
                                 <div className="flex flex-col gap-5">
                                     <div className="flex flex-wrap items-center gap-2">
                                         {
-                                            modalProduct.variants.map(item => <Button key={item.id} onClick={() => setVariant(item)} variant={item.id === variant?.id ? "secondary" : "primary"} className="text-white custom-shadow-md !py-0.5">{locale === "bn" ? item?.name?.bn : item?.name.en}</Button>)
+                                            modalProduct.variants.map(item => <Button key={item.id} onClick={() => setVariant(item)} variant={item.id === variant?.id ? "secondary" : "primary"} className="text-white custom-shadow-md !py-0.5">{renderText(item?.name?.en, item?.name?.bn)}</Button>)
                                         }
                                     </div>
                                     <p className='fg_fs-sm flex gap-2'>{t('price')} : {variant?.discount && variant?.discount < 1 ? <span className=''>{formatPrice(variant?.price)}</span> : <span className='flex items-center gap-3'> <span className='line-through fg_fs-xs'>{formatPrice(variant?.price)}</span> <span className='text-primary'>{formatPrice(getDiscountPrice(variant?.price || 0, variant?.discount || 0))}</span></span>}</p>
