@@ -79,8 +79,8 @@ export default function FoodContent({ item }: { item: TProduct }) {
                 {variant ? " - " : ""}
                 {variant ? renderText(variant.name.en, variant.name.bn) : ""}</h1>
             <div className="w-full">
-                <h3 className="fg_fs-md">{t("price")} : <span className="font-semibold">{formatPrice(variant?.price || 0)}</span></h3>
-                <h4 className="fg_fs-md mt-2 md:mt-3">{t("specialDiscount")} : <span className="text-secondary font-semibold">{variant?.discount}% ({formatPrice(getDiscountAmount(variant?.price || 0, variant?.discount || 0))})</span></h4>
+                {/* <h3 className="mb-2 md:mb-3 fg_fs-md">{t("price")} : <span className="font-semibold">{formatPrice(variant?.price || 0)}</span></h3> */}
+                <h4 className="fg_fs-md">{t("specialDiscount")} : <span className="text-secondary font-semibold">{variant?.discount}% ({formatPrice(getDiscountAmount(variant?.price || 0, variant?.discount || 0))})</span></h4>
                 <h5 className="mt-2 md:mt-3 fg_fs-md">{t("category")} : <span className="text-primary">{category && renderText(category.name.en, category.name.bn)}</span></h5>
             </div>
 
@@ -125,12 +125,14 @@ export default function FoodContent({ item }: { item: TProduct }) {
             <div className="w-full">
                 <div className=" w-full gap-2.5 md:gap-3.5 lg:gap-4 flex items-center">
                     <Button onClick={handleAddToCart} size="lg" className={`fg_fs-base font-semibold w-full ${addedItem && addedItem.quantity === quantity ? ' bg-secondary hover:bg-secondary' : 'custom-shadow-md  bg-primary hover:bg-primary-500'}`}>
-                        <ShoppingCart className="!w-10" /> <span>{t('addToCart')}</span>
+                        {/* <ShoppingCart className="!w-10" /> */}
+                        <span>{t('addToCart')}</span>
                     </Button>
                     <Button size="lg" className="fg_fs-base font-semibold w-full custom-shadow-md  bg-primary hover:bg-primary-500">
-                        <CreditCard /><span>{t("buyNow")}</span></Button>
+                        {/* <CreditCard /> */}
+                        <span>{t("buyNow")}</span></Button>
                 </div>
-                <div className="bg-primary fg_fs-base px-4 py-1.5 text-white justify-center mt-2.5 md:mt-3.5 lg:mt-4 xl:mt-5 flex gap-2.5 md:gap-3">
+                <div className="bg-primary fg_fs-base h-10 items-center px-4 py-1.5 text-white justify-center mt-2.5 md:mt-3.5 lg:mt-4 xl:mt-5 flex gap-2.5 md:gap-3">
                     <span className="">{t("whatsappNo")}</span><span>{t("whatsapp")}</span>
                 </div>
             </div>

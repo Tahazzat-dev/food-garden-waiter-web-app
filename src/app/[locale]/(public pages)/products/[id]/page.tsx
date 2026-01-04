@@ -34,23 +34,23 @@ export default async function SinglePage({ params }: { params: Promise<{ id: str
                 !product ? <NoFoodFound /> :
                     <div className="w-full">
                         <Container className="pt-10">
-                            <div className="w-full flex border lg:gap-5 border-slate-400 dark:border-slate-600 rounded-[6px]">
+                            <div className="w-full flex flex-col lg:flex-row border gap-5 md:gap-6 lg:gap-5 border-slate-400 dark:border-slate-600 rounded-[6px]">
                                 {/* == images ====  */}
                                 <div className=" w-full lg:w-6/12 flex lg:flex-col gap-2.5 md:gap-3.5 border-r border-slate-400 dark:border-slate-600 lg:gap-4 p-2.5 md:p-3.5 lg:p-4">
-                                    <div className="w-5/6 lg:w-full max-h-[400px] md:max-h-[450px] lg:max-h-[500px] overflow-hidden rounded-[6px]">
+                                    <div className="w-5/6 lg:w-full max-h-[450px] md:max-h-[500px] overflow-hidden rounded-[6px]">
                                         <Image className="w-full rounded-[6px]" src={product.img} width={300} height={400} alt={product.title.en} />
                                     </div>
                                     <div className="w-1/6 lg:w-full flex flex-col lg:flex-row gap-2.5 md:gap-3.5 lg:gap-4">
-                                        <button className="overflow-hidden max-h-[100px] rounded-[4px]">
+                                        <button className="overflow-hidden max-h-[110px] lg:max-h-[100px] rounded-[4px]">
                                             <Image className="w-full rounded-[6px]" src={product.img} width={300} height={400} alt={product.title.en} />
                                         </button>
-                                        <button className="overflow-hidden max-h-[100px] rounded-[4px]">
+                                        <button className="overflow-hidden max-h-[110px] lg:max-h-[100px] rounded-[4px]">
                                             <Image className="w-full rounded-[6px]" src={product.img} width={300} height={400} alt={product.title.en} />
                                         </button>
-                                        <button className="overflow-hidden max-h-[100px] rounded-[4px]">
+                                        <button className="overflow-hidden max-h-[110px] lg:max-h-[100px] rounded-[4px]">
                                             <Image className="w-full rounded-[6px]" src={product.img} width={300} height={400} alt={product.title.en} />
                                         </button>
-                                        <button className="overflow-hidden max-h-[100px] rounded-[4px]">
+                                        <button className="overflow-hidden max-h-[110px] lg:max-h-[100px] rounded-[4px]">
                                             <Image className="w-full rounded-[6px]" src={product.img} width={300} height={400} alt={product.title.en} />
                                         </button>
                                     </div>
