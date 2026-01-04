@@ -13,7 +13,6 @@ export default function layout({
         <>
             <PubliceHeader />
             {children}
-            {/* <ProductDetailsModal /> */}
             <MobileBottomButtons />
         </>
     );

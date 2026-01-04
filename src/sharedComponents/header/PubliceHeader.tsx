@@ -15,7 +15,7 @@ export default function PubliceHeader() {
   const tTracking = useTranslations('header');
   return (
     <>
-      <section className='z-[9998] w-full fixed top-0 left-0 py-2 bg-[var(--bg-header)]'>
+      <section className='z-[9999] w-full fixed top-0 left-0 py-2 bg-[var(--bg-header)]'>
         <Container className='flex items-center gap-3 lg:justify-between lg:gap-5'>
           <div className="grow lg:grow-0 flex items-center justify-between lg:justify-start gap-4 lg:gap-5">
             <PublicSidebar />
