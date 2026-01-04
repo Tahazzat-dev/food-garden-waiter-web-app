@@ -23,7 +23,6 @@ export default function FoodContent({ item }: { item: TProduct }) {
     const [quantity, setQuantity] = useState(1);
     const { cartProducts } = useSelector((state: RootState) => state.productSlice);
     const [variant, setVariant] = useState<TFoodVariant | null>(null);
-    const { locale } = useSelector((state: RootState) => state.locale)
     const { formatPrice } = useFormatPrice()
     const { renderText } = useRenderText()
 

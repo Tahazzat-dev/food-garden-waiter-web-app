@@ -6,6 +6,7 @@ import MobileSearch from "../../(home)/components/MobileSearch";
 import { useTranslations } from "next-intl";
 import NoFoodFound from "./components/NoFoodFound";
 import FoodContent from "./components/FoodContent";
+import ProductDescription from "./components/ProductDescription";
 
 // get product
 const getProductById = async (id: string) => {
@@ -59,6 +60,7 @@ export default async function SinglePage({ params }: { params: Promise<{ id: str
                                 <FoodContent item={product} />
 
                             </div>
+                            <ProductDescription des={product.des} />
                         </Container>
                     </div>
             }

@@ -16,7 +16,7 @@ export type Lang = "en" | "bn";
 export type TAuthFormType = "login" | "register" | "phone" | "otp" | "reset";
 
 
-type TLocal = {
+export type TLocal = {
     en: string;
     bn: string;
 }
