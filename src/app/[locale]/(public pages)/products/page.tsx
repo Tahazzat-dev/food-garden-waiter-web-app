@@ -2,7 +2,6 @@ import CategorySection from "../(home)/components/CategorySection";
 
 export default async function ProductsPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
-    console.log(id)
     return (
         <main className='w-full pt-[80px]'>
             <CategorySection />

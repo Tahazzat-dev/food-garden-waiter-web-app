@@ -24,10 +24,10 @@ export default function MobileBottomButtons() {
                     <Image src="/images/shared/home-icon.svg" width={22} height={40} alt="Home icon" />
                     <span className='text-white font-semibold text-sm sm:text-base'>{t("home")}</span>
                 </Link>
-                <button className='flex flex-col gap-1 items-center justify-between' >
+                <Link href="/offers" className='flex flex-col gap-1 items-center justify-between' >
                     <Image src="/images/shared/special.svg" width={25} height={40} alt="Offer icon" />
                     <span className='text-white font-semibold text-sm sm:text-base'>{t("offers")}</span>
-                </button>
+                </Link>
                 <button onClick={() => dispatch(SET_EXPAND(EXPAND === KEY ? null : KEY))} className='prevent-body-trigger relative flex flex-col gap-1 items-center justify-between' >
                     <div className='relative'>
                         <ShoppingCart fill='white' className='text-white h-6 w-6 cursor-pointer' />
