@@ -8,12 +8,14 @@ import { removeCartProduct, updateCartProduct } from '@/redux/features/product/p
 import { RootState } from '@/redux/store';
 import useFormatPrice from '@/hooks/useFormatPrice';
 import { calculateSubtotal, getDiscountPrice, getSellingPrice } from '@/lib/utils';
+import useRenderText from '@/hooks/useRenderText';
 
 export function CartCard({ item }: { item: TCartProduct }) {
   // hooks
   const { formatPrice } = useFormatPrice()
   const dispatch = useDispatch();
   const { locale } = useSelector((state: RootState) => state.locale);
+  const { renderText } = useRenderText()
 
   // handlers
   const handleQuantityChange = (newQuantity: number) => {
@@ -29,7 +31,7 @@ export function CartCard({ item }: { item: TCartProduct }) {
       <div className='bg-muted relative h-16 w-16 md:min-w-16 md:min-h-16 flex-shrink-0 overflow-hidden rounded-md'>
         <Image
           src={item.img || '/images/placeholder/placeholder.jpg'}
-          alt={locale === "bn" ? item?.name?.bn : item?.name?.en || 'Product Image'}
+          alt={renderText(item?.name?.en, item?.name?.bn) || 'Product Image'}
           width={72}
           height={72}
           className='object-cover w-full h-full'
@@ -39,10 +41,8 @@ export function CartCard({ item }: { item: TCartProduct }) {
       <div className='flex gap-1 flex-col flex-grow max-w-[300px]'>
         <div className="flex items-center gap-2 justify-between">
           <div className="flex flex-col items-start">
-            <h3 className='line-clamp-2 fg_fs-xs text-primary leading-tight font-medium'>{locale === "bn" ? item?.title?.bn : item?.title?.en}
-              {" - "}
-              {locale === "bn" ? item?.name?.bn || "" : item?.name?.en || ""}</h3>
-            <p className='text-muted-foreground px-2 my-1 rounded-[4px] fg_fs-xs font-medium bg-secondary text-white inline'>{locale === "bn" ? item.name.bn : item.name.en}</p>
+            <h3 className='line-clamp-2 fg_fs-xs text-primary leading-tight font-medium'>{renderText(item?.title?.en, item?.title?.bn)}</h3>
+            <p className='text-muted-foreground px-2 my-1 rounded-[4px] text-[13px] font-medium bg-secondary text-white inline'>{renderText(item?.name?.en, item?.name?.bn)}</p>
           </div>
           <Button
             variant='secondary'
