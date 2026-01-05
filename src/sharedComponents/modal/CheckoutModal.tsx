@@ -97,7 +97,7 @@ export default function CheckoutModal() {
     });
 
     // conditional variables
-    const openModal = EXPAND !== KEY;
+    const openModal = EXPAND === KEY;
     const paymentType = watch("paymentType");
     const deliveryType = watch("deliveryType");
 
@@ -111,8 +111,9 @@ export default function CheckoutModal() {
     };
 
 
-    // const formatPrice = (amount: number) => locale !== "bn" ? `${amount}TK` : `৳${amount}`;
-
+    const closeModal = () => {
+        dispatch(SET_EXPAND(null));
+    }
 
     const { cartTotal, discount, subTotal } = useMemo(() => {
         let total = 0;
@@ -159,9 +160,9 @@ export default function CheckoutModal() {
                 />
             )}
             <div
-                className={`fixed flex  flex-col rounded-r-[10px] overflow-hidden bg-background cartsheet-drawer prevent-body-trigger z-[99999] w-full max-w-[450px] right-0 top-[86px] sm:top-[84px] md:top-[81px] lg:top-[88px] dark:shadow-amber-50 h-full rounded-md lg:!rounded-r-none duration-200 ${openModal ? "translate-y-0" : "translate-y-full"}`}
+                className={`fixed flex border border-red-500 pb-5 md:pb-10 lg:pb-[5vh] bg-transparent justify-center items-end rounded-r-[10px] overflow-hidden cartsheet-drawer z-[99999] w-full right-0 top-[86px] sm:top-[84px] md:top-[81px] lg:top-[88px] h-full rounded-md lg:!rounded-r-none duration-300 ${openModal ? "translate-y-0" : "translate-y-full"}`}
             >
-                <div className="prevent-body-trigger checkout-modal-inner w-full flex flex-col h-auto !border-none !m-0 !p-0 max-w-[90vw] sm:max-w-[500px] md:max-w-[500px] !rounded-[6px] md:rounded-[8px] lg:!rounded-[10px] bg-body overflow-hidden">
+                <div className="prevent-body-trigger checkout-modal-inner w-full flex flex-col mx-auto h-auto !border-none !m-0 !p-0 max-w-[90vw] sm:max-w-[500px] md:max-w-[500px] !rounded-[6px] md:rounded-[8px] lg:!rounded-[10px] bg-body overflow-hidden">
                     <div className="flex items-center justify-between bg-primary px-2.5 sm:px-4 py-3">
                         <div></div>
                         <h3 className="fg_fs-lg text-white">
