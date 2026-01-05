@@ -4,6 +4,7 @@ import { demoProducts } from "@/lib/demo-data";
 import NoFoodFound from "./components/NoFoodFound";
 import FoodContent from "./components/FoodContent";
 import ProductDescription from "./components/ProductDescription";
+import SimilarItems from "./components/SimilarItems";
 
 // get product
 const getProductById = async (id: string) => {
@@ -15,14 +16,15 @@ const getProductById = async (id: string) => {
     // return result.product;
     console.log(id)
     // fake product search
-    return demoProducts.find(item => item.id === id) || null;
+    const product = demoProducts.find(item => item.id === id) || null;
+    const items = demoProducts.filter(item => item.categoryId === product?.categoryId && item.id !== product?.id);
+    return { product, similarProducts: items };
 }
-
 
 export default async function SinglePage({ params }: { params: Promise<{ id: string }> }) {
     // get the product
     const { id } = await params;
-    const product = await getProductById(id)
+    const { product, similarProducts } = await getProductById(id)
 
     // class variables
     const smallImageStyle = "overflow-hidden grow min-h-[57.5px] max-h-[58px] sm:min-h-[64.5px] sm:max-h-[65px] md:min-h-[80px] md:max-h-[80.5px] rounded-[4px]"
@@ -63,10 +65,7 @@ export default async function SinglePage({ params }: { params: Promise<{ id: str
                         </Container>
                     </div>
             }
-            {/* <h1>Some text</h1> */}
-            {/* <div className="w-full min-h-[200vh]">
-                </div> */}
-
+            <SimilarItems items={similarProducts} />
             <div className="w-full pb-[75px] md:pb-5"></div>
         </>
     )

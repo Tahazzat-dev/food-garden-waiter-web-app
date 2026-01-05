@@ -162,7 +162,7 @@ export default function CheckoutModal() {
                         </div> :
 
                             <form onSubmit={handleSubmit(onSubmit)} className="px-0.5 my-2.5 grow overflow-hidden flex flex-col">
-                                <div className="grow w-full flex flex-col px-2 md:2.5 gap-5 overflow-y-auto">
+                                <div className="grow w-full flex flex-col px-2 md:-2.5 lg:px gap-5 overflow-y-auto">
                                     {/* Name and information */}
                                     <div className="w-full bg-slate-300/60 flex flex-col p-3 gap-3 rounded-md">
                                         <div className="w-full">
@@ -290,7 +290,7 @@ export default function CheckoutModal() {
                                         </div> : <></>}
                                 </div>
 
-                                <div className="w-full flex flex-col px-2 md:2.5">
+                                <div className="w-full flex flex-col px-2 md:px-2.5">
                                     <div className="min-h-10 border-t-black w-full mt-3 pt-2.5 border-t border-dashed">
                                         <p className='flex items-center justify-between'><span className='grow'>{t("totalOrderAmount")}</span> <span>{formatPrice(cartTotal)}</span></p>
                                         {
@@ -299,7 +299,7 @@ export default function CheckoutModal() {
                                         <p className='flex items-center justify-between'><span className='grow'>{t("discountAmount")}</span> <span>-{formatPrice(discount)}</span></p>
                                     </div>
 
-                                    <Button size="lg" className='text-white mt-3 font-semibold' type="submit"><span>{t("confirmOrder")}</span> <span>{formatPrice(subTotal)}</span></Button>
+                                    <Button size="lg" className='text-white mt-3 font-semibold lg:text-[20px]' type="submit"><span>{t("confirmOrder")}</span> <span>{formatPrice(subTotal)}</span></Button>
                                 </div>
                             </form>}
                 </div>

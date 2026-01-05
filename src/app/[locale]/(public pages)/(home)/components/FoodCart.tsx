@@ -1,3 +1,4 @@
+"use client"
 import { Button } from '@/components/ui/button'
 import { Eye, HeartIcon, ShoppingCart } from 'lucide-react'
 import Image from 'next/image'

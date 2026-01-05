@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/provider/ThemeProvider";
 import ReduxProvider from "@/provider/ReduxProvider";
 import BodyEventListeners from "@/sharedComponents/DOM/BodyEventListener";
 import { ToastContainer } from 'react-toastify';
+import SharedModals from "@/sharedComponents/modal/SharedModals";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,6 +48,7 @@ export default async function RootLayout({
           <ThemeProvider>
             <NextIntlClientProvider>
               {children}
+              <SharedModals />
               <ToastContainer
                 hideProgressBar={true}
                 limit={3}

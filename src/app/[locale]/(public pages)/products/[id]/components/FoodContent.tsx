@@ -81,7 +81,9 @@ export default function FoodContent({ item }: { item: TProduct }) {
                 {variant ? renderText(variant.name.en, variant.name.bn) : ""}</h1>
             <div className="w-full">
                 {/* <h3 className="mb-2 md:mb-3 fg_fs-md">{t("price")} : <span className="font-semibold">{formatPrice(variant?.price || 0)}</span></h3> */}
-                <h4 className="fg_fs-base">{t("specialDiscount")} : <span className="text-secondary font-semibold">{variant?.discount}% ({formatPrice(getDiscountAmount(variant?.price || 0, variant?.discount || 0))})</span></h4>
+                {
+                    variant?.discount && variant?.discount > 0 ? <h4 className="fg_fs-base">{t("specialDiscount")} : <span className="text-secondary font-semibold">{variant?.discount}% ({formatPrice(getDiscountAmount(variant?.price || 0, variant?.discount || 0))})</span></h4> : <></>
+                }
                 <h5 className="mt-1 md:mt-3 fg_fs-base">{t("category")} : <span className="text-primary">{category && renderText(category.name.en, category.name.bn)}</span></h5>
             </div>
 
@@ -97,8 +99,8 @@ export default function FoodContent({ item }: { item: TProduct }) {
             <div className="w-full">
                 {/* <p className="mb-3">{locale === "bn" ? "পণ্য নোটস:" : "Product Notes:"}</p> */}
                 <p className="mb-0.5 md:mb-2 fg_fs-base">{t('quantity')}</p>
-                <div className='mt-auto flex items-center justify-between bg-slate-300/60 px-2 py-1 rounded-[4px]'>
-                    <p className='fg_fs-base font-semibold text-center grow dark:!text-black'>{!!variant && variant.discount < 1 ? formatPrice(variant?.price) : getDiscountPrice(variant?.price || 0, variant?.discount || 0)}/-</p>
+                <div className='mt-auto flex items-center justify-between bg-slate-300/60 dark:bg-slate-700 px-2 py-1 rounded-[4px]'>
+                    <p className='fg_fs-base font-semibold text-center grow '>{!!variant && variant.discount < 1 ? formatPrice(variant?.price) : getDiscountPrice(variant?.price || 0, variant?.discount || 0)}/-</p>
                     <div className='flex items-center gap-3 rounded-md py-0.5 lg:py-1'>
                         <Button
                             variant='primary'
@@ -119,7 +121,7 @@ export default function FoodContent({ item }: { item: TProduct }) {
                         </Button>
                     </div>
 
-                    <p className='fg_fs-base font-semibold text-center grow dark:!text-black'>{calculateSubtotal(getSellingPrice(variant?.price || 0, variant?.discount || 0), quantity)}/-</p>
+                    <p className='fg_fs-base font-semibold text-center grow '>{calculateSubtotal(getSellingPrice(variant?.price || 0, variant?.discount || 0), quantity)}/-</p>
                 </div>
             </div>
 

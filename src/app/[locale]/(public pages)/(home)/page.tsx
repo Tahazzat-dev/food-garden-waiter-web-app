@@ -3,7 +3,6 @@ import MobileSearch from "./components/MobileSearch";
 import AddsSection from "./components/AddsSection";
 import CategorySection from "./components/CategorySection";
 import FilterFood from "./components/FilterFood";
-import ProductDetailsModal from "./components/ProductDetailsModal";
 // import Image from "next/image";
 
 export default function HomePage() {
@@ -18,7 +17,6 @@ export default function HomePage() {
             <div className="w-full pb-[75px] md:pb-5"></div>
 
             {/* ==== modal to show product details ====== */}
-            <ProductDetailsModal />
         </>
     );
 }

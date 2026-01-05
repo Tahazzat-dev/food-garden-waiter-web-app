@@ -29,7 +29,8 @@
     "description": "Description",
     "buyNow": "BUY NOW",
     "whatsapp": "Whats App",
-    "whatsappNo": "01740-133050"
+    "whatsappNo": "01740-133050",
+    "similarItems": "Similar items"
   },
 
   "mobileBottomActions": {
