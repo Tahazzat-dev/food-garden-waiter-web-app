@@ -1,14 +1,14 @@
 import { Button } from '@/components/ui/button'
-import useFormatPrice from '@/hooks/useFormatPrice'
 import { SET_EXPAND } from '@/redux/features/actions/actionSlice'
 import { removeFavouriteProduct, setModalProduct } from '@/redux/features/product/productSlice'
 import { RootState } from '@/redux/store'
-import { TFoodVariant, TProduct } from '@/types/types'
+import { TProduct } from '@/types/types'
 import { ShoppingCart, Trash2 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import RenderText from '../utils/RenderText'
 
 export default function FVFoodCard({ item }: { item: TProduct }) {
     // hooks
@@ -56,7 +56,7 @@ export default function FVFoodCard({ item }: { item: TProduct }) {
                 </div> */}
                 <div className="w-full">
                     <h6 className='line-clamp-2 text-primary leading-tight font-medium'>{locale === "bn" ? item?.title?.bn : item?.title?.en}</h6>
-                    <p className='mt-1'>Product Note</p>
+                    <p className='mt-1'><RenderText group='shared' variable='productNote' key={`PRODUCT_NOTE_FOR_${item.id}`} /></p>
                 </div>
 
                 <div className='flex flex-col justify-between items-end'>

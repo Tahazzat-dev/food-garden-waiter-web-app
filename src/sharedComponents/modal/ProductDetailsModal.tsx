@@ -15,6 +15,7 @@ import { calculateSubtotal, getDiscountPrice, getSellingPrice } from "@/lib/util
 import { TCartProduct, TFoodVariant } from "@/types/types";
 import { toast } from "react-toastify";
 import useRenderText from "@/hooks/useRenderText";
+import RenderText from "../utils/RenderText";
 
 export default function ProductDetailsModal() {
     // variables
@@ -125,7 +126,7 @@ export default function ProductDetailsModal() {
                                 </div>
 
                                 <div className="w-full hidden md:block">
-                                    <p className="mb-3">{locale === "bn" ? "পণ্য নোটস:" : "Product Notes:"}</p>
+                                    <p className="mb-3"><RenderText key={`PRODUCT_NOTE_FOR_${variant?.id}`} group="shared" variable="productNote" /></p>
                                     <div className='mt-auto flex items-center justify-between bg-slate-300/60 px-2 py-1 rounded-[4px]'>
                                         <p className='fg_fs-xs font-semibold text-center grow dark:!text-black'>{!!variant && variant.discount < 1 ? formatPrice(variant?.price) : getDiscountPrice(variant?.price || 0, variant?.discount || 0)}/-</p>
                                         <div className='flex items-center gap-1 lg:gap-2 rounded-md py-0.5'>
@@ -154,7 +155,7 @@ export default function ProductDetailsModal() {
                             </div>
                         </div>
                         <div className="w-full block md:hidden mt-5">
-                            <p className="mb-2">{locale === "bn" ? "পণ্য নোটস:" : "Product Notes:"}</p>
+                            <p className="mb-2"><RenderText key={`PRODUCT_NOTE_FOR_${variant?.id}_2`} group="shared" variable="productNote" /></p>
                             <div className='mt-auto bg-slate-300/60 flex items-center justify-between px-2 py-1 rounded-[4px]'>
                                 <p className='fg_fs-xs font-semibold text-center grow dark:!text-black'>{!!variant && variant.discount < 1 ? formatPrice(variant?.price) : getDiscountPrice(variant?.price || 0, variant?.discount || 0)}/-</p>
                                 <div className='flex items-center gap-3 lg:gap-2 rounded-md py-0.5'>

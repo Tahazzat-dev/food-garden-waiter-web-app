@@ -41,7 +41,8 @@
     "unpaid": "অপরিশোধিত",
     "paid": "পরিশোধিত",
     "failed": "ব্যর্থ",
-    "refunded": "ফেরত দেওয়া হয়েছে"
+    "refunded": "ফেরত দেওয়া হয়েছে",
+    "productNote": "পণ্য নোটস"
   },
 
   "mobileBottomActions": {

@@ -40,7 +40,8 @@
     "unpaid": "Unpaid",
     "paid": "Paid",
     "failed": "Failed",
-    "refunded": "Refunded"
+    "refunded": "Refunded",
+    "productNote": "Product Note"
   },
 
   "mobileBottomActions": {
