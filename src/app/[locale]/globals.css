@@ -718,7 +718,7 @@ body {
 
 /* checkout form */
 .label {
-  @apply min-w-[85px] font-semibold lg:min-w-[100px] flex items-center justify-between;
+  @apply min-w-[55px] font-semibold flex items-center justify-between;
 }
 .input-box {
   @apply w-full flex items-center justify-between gap-2 md:gap-4;

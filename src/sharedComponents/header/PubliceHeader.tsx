@@ -8,8 +8,8 @@ import LocaleSwitcher from '../toggler/LocaleSwitcher';
 import { useTranslations } from 'next-intl';
 import ThemeSwitcher from '../toggler/ThemeSwitcher';
 import { FavouriteFoods } from '../favourite/FavouriteFoods';
-import AuthUser from './AuthUser';
-import { CheckoutModal } from '../modal/CheckoutModal';
+import AuthUser from './AuthUser'
+import CheckoutModal from '../modal/CheckoutModal';
 
 export default function PubliceHeader() {
   const tTracking = useTranslations('header');
