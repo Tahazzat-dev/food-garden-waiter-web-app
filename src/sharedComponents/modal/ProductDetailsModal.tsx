@@ -148,7 +148,6 @@ export default function ProductDetailsModal() {
                                                 <Plus className='h-3 w-3' />
                                             </Button>
                                         </div>
-
                                         <p className='fg_fs-sm font-semibold text-center grow dark:!text-black'>{calculateSubtotal(getSellingPrice(variant?.price || 0, variant?.discount || 0), quantity)}/-</p>
                                     </div>
                                 </div>
