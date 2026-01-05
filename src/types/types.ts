@@ -50,3 +50,50 @@ export interface TCartProduct {
     discount: number;
     quantity: number;
 }
+
+
+export type TOrderStatus =
+    | "pending"
+    | "confirmed"
+    | "preparing"
+    | "outForDelivery"
+    | "delivered"
+    | "cancelled";
+
+export type TPaymentStatus =
+    | "unpaid"
+    | "paid"
+    | "failed"
+    | "refunded";
+
+export type TPaymentMethod =
+    | "cashOnDelivery"
+    | "bkash"
+    | "nagad"
+
+
+export interface TOrderPriceSummary {
+    subtotal: number;
+    discountTotal: number;
+    deliveryFee: number;
+    total: number;
+}
+
+
+export interface TOrder {
+    id: string;
+    userId: string;
+
+    items: TCartProduct[];
+
+    priceSummary: TOrderPriceSummary;
+
+    status: TOrderStatus;
+    paymentStatus: TPaymentStatus;
+    paymentMethod: TPaymentMethod;
+
+    note?: string;
+
+    createdAt: string; // ISO date
+    updatedAt: string;
+}

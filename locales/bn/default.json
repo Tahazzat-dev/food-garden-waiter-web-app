@@ -30,7 +30,18 @@
     "buyNow": "এখনই কিনুন",
     "whatsapp": "হোয়াটসঅ্যাপ",
     "whatsappNo": "০১৭৪০-১৩৩০৫০",
-    "similarItems": "একই ধরণের খাবারসমূহ"
+    "similarItems": "একই ধরণের খাবারসমূহ",
+    "pending": "অপেক্ষমান",
+    "confirmed": "নিশ্চিত",
+    "preparing": "প্রস্তুত করা হচ্ছে",
+    "outForDelivery": "ডেলিভারির পথে",
+    "delivered": "ডেলিভারি সম্পন্ন",
+    "cancelled": "বাতিল",
+
+    "unpaid": "অপরিশোধিত",
+    "paid": "পরিশোধিত",
+    "failed": "ব্যর্থ",
+    "refunded": "ফেরত দেওয়া হয়েছে"
   },
 
   "mobileBottomActions": {
@@ -125,7 +136,8 @@
     "discountAmount": "ডিসকাউন্ট",
     "confirmOrder": "অর্ডার কনফার্ম করুন",
     "orderSuccess": "অর্ডার সফল হয়েছে",
-    "orderFail": "অর্ডার ব্যর্থ হয়েছে"
+    "orderFail": "অর্ডার ব্যর্থ হয়েছে",
+    "orderHistory": "অর্ডার হিস্ট্রি"
   },
   "home": {
     "title": "হ্যালো"

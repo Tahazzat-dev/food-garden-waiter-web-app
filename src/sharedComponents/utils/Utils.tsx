@@ -30,3 +30,5 @@ export const fakeSearch = async (query: string) => {
             : item.title.en.toLowerCase().includes(q)
     );
 };
+
+

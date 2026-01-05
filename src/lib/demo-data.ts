@@ -1,4 +1,4 @@
-import { TCategory, TProduct } from "@/types/types";
+import { TCategory, TOrder, TProduct } from "@/types/types";
 
 //  cart demo data
 export type TCartItem = {
@@ -402,5 +402,86 @@ export const demoProducts: TProduct[] = [
             { id: "ps2-regular", name: { en: "Regular", bn: "রেগুলার" }, price: 400, discount: 6 },
             { id: "ps2-large", name: { en: "Large", bn: "বড়" }, price: 560, discount: 9 },
         ],
+    },
+];
+
+
+
+export const demoOrders: TOrder[] = [
+    {
+        id: "ord-1002",
+        userId: "user-1",
+
+        items: [
+            {
+                id: "cp-3",
+                productId: "p3",
+                title: { en: "BBQ Chicken Pizza", bn: "বিবিকিউ চিকেন পিজ্জা" },
+                categoryId: "1",
+                img: "/images/demo-food/pizza.jpg",
+                name: { en: '6" Inch', bn: '৬" ইঞ্চি' },
+                price: 700,
+                discount: 8,
+                quantity: 1,
+            },
+        ],
+
+        priceSummary: {
+            subtotal: 700,
+            discountTotal: 56,
+            deliveryFee: 50,
+            total: 694,
+        },
+
+        status: "preparing",
+        paymentStatus: "paid",
+        paymentMethod: "bkash",
+
+        createdAt: "2026-01-05T08:15:00Z",
+        updatedAt: "2026-01-05T08:20:00Z",
+    },
+    {
+        id: "ord-1001",
+        userId: "user-1",
+
+        items: [
+            {
+                id: "cp-1",
+                productId: "p1",
+                title: { en: "Margherita Pizza", bn: "মার্গারিটা পিজ্জা" },
+                categoryId: "1",
+                img: "/images/demo-food/pizza.jpg",
+                name: { en: '12" Inch', bn: '১২" ইঞ্চি' },
+                price: 950,
+                discount: 12,
+                quantity: 1,
+            },
+            {
+                id: "cp-2",
+                productId: "a1",
+                title: { en: "Chicken Wings", bn: "চিকেন উইংস" },
+                categoryId: "2",
+                img: "/images/demo-food/Chicken.jpg",
+                name: { en: "6 Pieces", bn: "৬ পিস" },
+                price: 350,
+                discount: 5,
+                quantity: 2,
+            },
+        ],
+        priceSummary: {
+            subtotal: 1650,
+            discountTotal: 180,
+            deliveryFee: 60,
+            total: 1561,
+        },
+
+        status: "delivered",
+        paymentStatus: "paid",
+        paymentMethod: "cashOnDelivery",
+
+        note: "Please make it less spicy",
+
+        createdAt: "2026-01-02T10:30:00Z",
+        updatedAt: "2026-01-02T11:20:00Z",
     },
 ];

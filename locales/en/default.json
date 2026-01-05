@@ -30,7 +30,17 @@
     "buyNow": "BUY NOW",
     "whatsapp": "Whats App",
     "whatsappNo": "01740-133050",
-    "similarItems": "Similar items"
+    "similarItems": "Similar items",
+    "pending": "Pending",
+    "confirmed": "Confirmed",
+    "preparing": "Preparing",
+    "outForDelivery": "Out for delivery",
+    "delivered": "Delivered",
+    "cancelled": "Cancelled",
+    "unpaid": "Unpaid",
+    "paid": "Paid",
+    "failed": "Failed",
+    "refunded": "Refunded"
   },
 
   "mobileBottomActions": {
@@ -126,7 +136,8 @@
     "discountAmount": "Discount Amount",
     "confirmOrder": "Confirm Order",
     "orderSuccess": "Order success",
-    "orderFail": "Order failed"
+    "orderFail": "Order failed",
+    "orderHistory": "Order History"
   },
   "home": {
     "title": "Hello"
