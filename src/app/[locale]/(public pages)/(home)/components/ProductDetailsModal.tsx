@@ -19,12 +19,13 @@ import useRenderText from "@/hooks/useRenderText";
 export default function ProductDetailsModal() {
     // variables
     const KEY = "OPEN_PRODUCT_DETAILS_MODAL";
+    const FAV_FOOD_POPUP_KEY = "OPEN_FAVOURITE_FOOD_MODAL"
 
     // hooks
     const t = useTranslations('shared');
     const dispatch = useDispatch();
     const [quantity, setQuantity] = useState(1);
-    const { EXPAND } = useSelector((state: RootState) => state.actions);
+    const { EXPAND, prev_action } = useSelector((state: RootState) => state.actions);
     const { cartProducts, modalProduct } = useSelector((state: RootState) => state.productSlice);
     const [variant, setVariant] = useState<TFoodVariant | null>(null);
     const { locale } = useSelector((state: RootState) => state.locale)
@@ -42,12 +43,14 @@ export default function ProductDetailsModal() {
         if (addedItem) {
             if (addedItem.quantity === quantity) {
                 toast.error(t("alreadyExist"));
+                toggleModal()
                 return;
             }
 
             // update the quantity
             dispatch(updateCartProduct({ product: { ...addedItem, quantity }, id: addedItem.id }))
             toast.success(t("quantityUpdated"));
+            toggleModal()
             return;
         }
         const cartItem: TCartProduct = {
@@ -60,7 +63,7 @@ export default function ProductDetailsModal() {
         }
         dispatch(addCartProduct(cartItem));
         toast.success(t('addedToCart'));
-        dispatch(SET_EXPAND(null));
+        toggleModal()
     }
 
     const handleQuantityChange = (newQuantity: number) => {
@@ -68,6 +71,12 @@ export default function ProductDetailsModal() {
         if (!modalProduct?.id) return;
         setQuantity(newQuantity);
     }
+
+
+    const toggleModal = () => {
+        dispatch(SET_EXPAND(prev_action === FAV_FOOD_POPUP_KEY ? FAV_FOOD_POPUP_KEY : null));
+    }
+
     useEffect(() => {
         if (KEY === EXPAND) {
             document.body.style.overflow = "hidden";
@@ -89,7 +98,7 @@ export default function ProductDetailsModal() {
 
     if (!modalProduct) return null;
     return (
-        <Dialog.Root open={KEY === EXPAND} onOpenChange={() => dispatch(SET_EXPAND(null))}>
+        <Dialog.Root open={KEY === EXPAND} onOpenChange={toggleModal}>
             <Dialog.Portal>
                 <div className="fixed inset-0 global-overlay z-[9999]" />
                 <Dialog.Content className="prevent-body-trigger fixed top-1/2 left-1/2  max-w-[93vw] md:max-w-[700px] !rounded-[10px] lg:!rounded-[12px] overflow-hidden w-full -translate-x-1/2 -translate-y-1/2 bg-body rounded-lg shadow-lg dark:shadow-slate-800 z-[99999]">
@@ -97,7 +106,7 @@ export default function ProductDetailsModal() {
                         <Dialog.Title className="fg_fs-md text-white">
                             {t('foodDetails')}
                         </Dialog.Title>
-                        <Button onClick={() => dispatch(SET_EXPAND(null))} className="rounded-full !px-2.5" variant="secondary"> <X className="!text-white w-5 md:w-6 md:h-6 h-5 lg:w-8 lg:h-8" /></Button>
+                        <Button onClick={toggleModal} className="rounded-full !px-2.5" variant="secondary"> <X className="!text-white w-5 md:w-6 md:h-6 h-5 lg:w-8 lg:h-8" /></Button>
                     </div>
                     <div className="p-4">
                         <h5 className="font-semibold text-lg text-primary">{renderText(modalProduct?.title?.en, modalProduct?.title?.bn)}

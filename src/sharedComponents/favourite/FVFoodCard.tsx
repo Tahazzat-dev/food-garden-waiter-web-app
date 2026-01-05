@@ -33,8 +33,6 @@ export default function FVFoodCard({ item }: { item: TProduct }) {
         setAddedVariants(count);
     }, [cartProducts, item.variants]);
 
-
-    console.log(addedVariants, ' added variants', item.variants.length)
     return (
         <div className='flex gap-3 pb-3 border-b border-slate-300 dark:border-slate-600 border-dashed'>
             <div className='bg-muted relative w-14 h-14 lg:w-16 lg:h-16 xl:w-[72px] xl:h-[72px] rounded-md overflow-hidden'>
@@ -56,7 +54,10 @@ export default function FVFoodCard({ item }: { item: TProduct }) {
                         <p className='fg_fs-sm'>{food.discount < 1 ? <span className=''>{food?.price}TK</span> : <span className='flex items-center gap-3'> <span className='line-through fg_fs-xs'>{food?.price}TK</span> <span className='text-primary'>{discountedPrice}TK</span></span>}</p>
                     </div>
                 </div> */}
-                <h6 className='line-clamp-2 text-primary leading-tight font-medium'>{locale === "bn" ? item?.title?.bn : item?.title?.en}</h6>
+                <div className="w-full">
+                    <h6 className='line-clamp-2 text-primary leading-tight font-medium'>{locale === "bn" ? item?.title?.bn : item?.title?.en}</h6>
+                    <p className='mt-1'>Product Note</p>
+                </div>
 
                 <div className='flex flex-col justify-between items-end'>
                     <Button

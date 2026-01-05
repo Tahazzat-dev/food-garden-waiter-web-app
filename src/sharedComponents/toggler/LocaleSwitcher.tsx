@@ -7,6 +7,7 @@ import { Lang } from '@/types/types';
 import clsx from 'clsx';
 import { useLocale } from 'next-intl';
 import Image from 'next/image';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 const languages = [
@@ -32,8 +33,6 @@ export default function LocaleSwitcher({ className = "", type = "default" }: Pro
     const currentLocale = useLocale();
     const router = useRouter();
     const pathname = usePathname();
-    // const [selectedLocale, setSelectedLocale] = useState(locale);
-
     const switchLocale = (newLocale: Lang) => {
         if (newLocale !== currentLocale) {
             router.replace(pathname, { locale: newLocale });
@@ -42,6 +41,13 @@ export default function LocaleSwitcher({ className = "", type = "default" }: Pro
         }
         // setSelectedLocale(newLocale);
     };
+
+
+    useEffect(() => {
+        if (!currentLocale) return;
+        dispatch(setLocale(currentLocale as Lang));
+    }, [dispatch])
+
     return (
         <div className={clsx("ml-3", className)}>
             <Select defaultValue={currentLocale} onValueChange={switchLocale}>
@@ -51,7 +57,7 @@ export default function LocaleSwitcher({ className = "", type = "default" }: Pro
 
                 <SelectContent className='z-[9999] !bg-white text-black'>
                     {languages.map(lang => (
-                        <SelectItem key={lang.code} value={lang.code}>
+                        <SelectItem className='outline-none border border-transparent hover:border-slate-400 rounded-[6px]' key={lang.code} value={lang.code}>
                             <div className="flex items-center gap-2">
                                 <Image
                                     className='border border-slate-50/50'
