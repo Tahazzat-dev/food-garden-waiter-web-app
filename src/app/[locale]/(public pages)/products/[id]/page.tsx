@@ -33,13 +33,13 @@ export default async function SinglePage({ params }: { params: Promise<{ id: str
                 !product ? <NoFoodFound /> :
                     <div className="w-full mt-[91px] sm:mt-[100px] md:mt-[120px] lg:mt-[130px]">
                         <Container className="">
-                            <div className="w-full flex flex-col lg:flex-row border gap-1 md:gap-6 lg:gap-5 border-slate-400 dark:border-slate-600 rounded-[6px]">
+                            <div className="w-full flex flex-col lg:flex-row border gap-1 md:gap-3 lg:gap-4 border-slate-400 dark:border-slate-600 rounded-[6px]">
                                 {/* == images ====  */}
-                                <div className="w-full lg:w-6/12 flex max-h-[280px] sm:max-h-[320px] overflow-hidden md:max-h-[400px] lg:flex-col gap-2.5 sm:gap-4 border-r border-slate-400 dark:border-slate-600 lg:gap-4 p-2.5 sm:p-4">
-                                    <div className="w-[83%] sm:w-[85%] lg:w-full max-h-full overflow-hidden rounded-[6px]">
+                                <div className="w-full lg:w-6/12 flex max-h-[280px] sm:max-h-[320px] overflow-hidden md:max-h-[400px] lg:max-h-full gap-2.5 sm:gap-4 border-r border-slate-400 dark:border-slate-600 lg:gap-4 p-2.5 sm:p-4">
+                                    <div className="w-[83%] sm:w-[85%] lg:w-[83%] max-h-full lg:max-h-[450px] overflow-hidden rounded-[6px]">
                                         <Image className={imgStyle} src={product.img} width={300} height={400} alt={product.title.en} />
                                     </div>
-                                    <div className="w-[17%] sm:w-[15%] lg:w-full flex overflow-y-auto flex-col lg:flex-row gap-2.5 md:gap-4">
+                                    <div className="w-[17%] sm:w-[15%] lg:w-[17%] flex overflow-y-auto flex-col gap-2.5 md:gap-4">
                                         <button className={smallImageStyle}>
                                             <Image className={imgStyle} src={product.img} width={300} height={400} alt={product.title.en} />
                                         </button>

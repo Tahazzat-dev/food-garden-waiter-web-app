@@ -6,6 +6,7 @@ import { categoryItems } from "@/lib/demo-data"
 import { calculateSubtotal, getDiscountAmount, getDiscountPrice, getSellingPrice } from "@/lib/utils"
 import { addCartProduct, updateCartProduct } from "@/redux/features/product/productSlice"
 import { RootState } from "@/redux/store"
+import { WhatsAppIcon } from "@/sharedComponents/icons/Icons"
 import { TCartProduct, TCategory, TFoodVariant, TProduct } from "@/types/types"
 import { CreditCard, Minus, Plus, ShoppingCart } from "lucide-react"
 import { useTranslations } from "next-intl"
@@ -74,19 +75,19 @@ export default function FoodContent({ item }: { item: TProduct }) {
     const category = getCategory(item.categoryId);
 
     return (
-        <div className=" w-full lg:w-6/12 p-2.5 md:p-3.5 lg:p-4 flex flex-col gap-4 md:gap-5 lg:gap-7 xl:gap-8">
-            <h1 className="fg_fs-4xl text-primary font-semibold">{renderText(item?.title?.en, item?.title?.bn)}
+        <div className=" w-full lg:w-6/12 p-2.5 sm:p-4 flex flex-col gap-4 md:gap-5 lg:gap-7">
+            <h1 className="fg_fs-xl lg:text-[28px] xl:text-[32px] text-primary font-semibold">{renderText(item?.title?.en, item?.title?.bn)}
                 {variant ? " - " : ""}
                 {variant ? renderText(variant.name.en, variant.name.bn) : ""}</h1>
             <div className="w-full">
                 {/* <h3 className="mb-2 md:mb-3 fg_fs-md">{t("price")} : <span className="font-semibold">{formatPrice(variant?.price || 0)}</span></h3> */}
-                <h4 className="fg_fs-md">{t("specialDiscount")} : <span className="text-secondary font-semibold">{variant?.discount}% ({formatPrice(getDiscountAmount(variant?.price || 0, variant?.discount || 0))})</span></h4>
-                <h5 className="mt-2 md:mt-3 fg_fs-md">{t("category")} : <span className="text-primary">{category && renderText(category.name.en, category.name.bn)}</span></h5>
+                <h4 className="fg_fs-base">{t("specialDiscount")} : <span className="text-secondary font-semibold">{variant?.discount}% ({formatPrice(getDiscountAmount(variant?.price || 0, variant?.discount || 0))})</span></h4>
+                <h5 className="mt-1 md:mt-3 fg_fs-base">{t("category")} : <span className="text-primary">{category && renderText(category.name.en, category.name.bn)}</span></h5>
             </div>
 
             <div className="w-full">
-                <h6 className="">{t("selectVariants")}</h6>
-                <div className="mt-2 flex flex-wrap items-center gap-2">
+                <h6 className="fg_fs-base">{t("selectVariants")}</h6>
+                <div className="mt-1 md:mt-2 flex flex-wrap items-center gap-2">
                     {
                         item.variants.map(item => <Button key={item.id} onClick={() => setVariant(item)} variant={item.id === variant?.id ? "secondary" : "primary"} className="text-white custom-shadow-md !py-0.5">{renderText(item?.name?.en, item?.name?.bn)}</Button>)
                     }
@@ -95,10 +96,10 @@ export default function FoodContent({ item }: { item: TProduct }) {
 
             <div className="w-full">
                 {/* <p className="mb-3">{locale === "bn" ? "পণ্য নোটস:" : "Product Notes:"}</p> */}
-                <p className="mb-2 fg_fs-base">{t('quantity')}</p>
-                <div className='mt-auto flex items-center justify-between py-2 bg-slate-300/60 px-2 py-1 rounded-[4px]'>
+                <p className="mb-0.5 md:mb-2 fg_fs-base">{t('quantity')}</p>
+                <div className='mt-auto flex items-center justify-between bg-slate-300/60 px-2 py-1 rounded-[4px]'>
                     <p className='fg_fs-base font-semibold text-center grow dark:!text-black'>{!!variant && variant.discount < 1 ? formatPrice(variant?.price) : getDiscountPrice(variant?.price || 0, variant?.discount || 0)}/-</p>
-                    <div className='flex items-center gap-1 lg:gap-2 rounded-md py-0.5'>
+                    <div className='flex items-center gap-3 rounded-md py-0.5 lg:py-1'>
                         <Button
                             variant='primary'
                             size='icon'
@@ -123,17 +124,17 @@ export default function FoodContent({ item }: { item: TProduct }) {
             </div>
 
             <div className="w-full">
-                <div className=" w-full gap-2.5 md:gap-3.5 lg:gap-4 flex items-center">
-                    <Button onClick={handleAddToCart} size="lg" className={`fg_fs-base font-semibold w-full ${addedItem && addedItem.quantity === quantity ? ' bg-secondary hover:bg-secondary' : 'custom-shadow-md  bg-primary hover:bg-primary-500'}`}>
+                <div className=" w-full gap-2  md:gap-3.5 lg:gap-4 flex items-center">
+                    <Button onClick={handleAddToCart} size="lg" className={`!px-2 fg_fs-base font-semibold w-full ${addedItem && addedItem.quantity === quantity ? ' bg-secondary hover:bg-secondary' : 'custom-shadow-md  bg-primary hover:bg-primary-500'}`}>
                         {/* <ShoppingCart className="!w-10" /> */}
                         <span>{t('addToCart')}</span>
                     </Button>
-                    <Button size="lg" className="fg_fs-base font-semibold w-full custom-shadow-md  bg-primary hover:bg-primary-500">
+                    <Button size="lg" className="fg_fs-base !px-2 font-semibold w-full custom-shadow-md  bg-primary hover:bg-primary-500">
                         {/* <CreditCard /> */}
                         <span>{t("buyNow")}</span></Button>
                 </div>
-                <div className="bg-primary fg_fs-base h-10 items-center px-4 py-1.5 text-white justify-center mt-2.5 md:mt-3.5 lg:mt-4 xl:mt-5 flex gap-2.5 md:gap-3">
-                    <span className="">{t("whatsappNo")}</span><span>{t("whatsapp")}</span>
+                <div className="bg-[#37bd69] fg_fs-base overflow-hidden  h-10 items-center px-4 py-1.5 text-white justify-center mt-2.5 md:mt-3.5 lg:mt-4 xl:mt-5 flex gap-2.5 md:gap-3">
+                    <WhatsAppIcon className=" w-7 h-7" /><span className="">{t("whatsappNo")}</span>
                 </div>
             </div>
         </div>
