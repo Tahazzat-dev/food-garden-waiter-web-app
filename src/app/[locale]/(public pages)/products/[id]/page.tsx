@@ -1,9 +1,6 @@
 import Container from "@/sharedComponents/wrapper/Container";
-import CategorySection from "../../(home)/components/CategorySection";
 import Image from "next/image";
 import { demoProducts } from "@/lib/demo-data";
-import MobileSearch from "../../(home)/components/MobileSearch";
-import { useTranslations } from "next-intl";
 import NoFoodFound from "./components/NoFoodFound";
 import FoodContent from "./components/FoodContent";
 import ProductDescription from "./components/ProductDescription";
@@ -26,32 +23,34 @@ export default async function SinglePage({ params }: { params: Promise<{ id: str
     // get the product
     const { id } = await params;
     const product = await getProductById(id)
+
+    // class variables
+    const smallImageStyle = "overflow-hidden grow min-h-[57.5px] max-h-[58px] sm:min-h-[64.5px] sm:max-h-[65px] md:min-h-[80px] md:max-h-[80.5px] rounded-[4px]"
+    const imgStyle = "w-full h-full object-cover rounded-[6px]"
     return (
-        <main className="w-full mt-[62px] bg-inherit lg:mt-[83.5px]">
-            <MobileSearch className="my-0 md:my-0 lg:my-0 xl:my-0" />
-            <CategorySection className="sticky top-[133px] lg:top-[83.53px] left-0 z-[9998]" />
+        <>
             {
                 !product ? <NoFoodFound /> :
-                    <div className="w-full">
-                        <Container className="pt-10">
-                            <div className="w-full flex flex-col lg:flex-row border gap-5 md:gap-6 lg:gap-5 border-slate-400 dark:border-slate-600 rounded-[6px]">
+                    <div className="w-full mt-[91px] sm:mt-[100px] md:mt-[120px] lg:mt-[130px]">
+                        <Container className="">
+                            <div className="w-full flex flex-col lg:flex-row border gap-1 md:gap-6 lg:gap-5 border-slate-400 dark:border-slate-600 rounded-[6px]">
                                 {/* == images ====  */}
-                                <div className=" w-full lg:w-6/12 flex lg:flex-col gap-2.5 md:gap-3.5 border-r border-slate-400 dark:border-slate-600 lg:gap-4 p-2.5 md:p-3.5 lg:p-4">
-                                    <div className="w-5/6 lg:w-full max-h-[450px] md:max-h-[500px] overflow-hidden rounded-[6px]">
-                                        <Image className="w-full rounded-[6px]" src={product.img} width={300} height={400} alt={product.title.en} />
+                                <div className="w-full lg:w-6/12 flex max-h-[280px] sm:max-h-[320px] overflow-hidden md:max-h-[400px] lg:flex-col gap-2.5 sm:gap-4 border-r border-slate-400 dark:border-slate-600 lg:gap-4 p-2.5 sm:p-4">
+                                    <div className="w-[83%] sm:w-[85%] lg:w-full max-h-full overflow-hidden rounded-[6px]">
+                                        <Image className={imgStyle} src={product.img} width={300} height={400} alt={product.title.en} />
                                     </div>
-                                    <div className="w-1/6 lg:w-full flex flex-col lg:flex-row gap-2.5 md:gap-3.5 lg:gap-4">
-                                        <button className="overflow-hidden max-h-[110px] lg:max-h-[100px] rounded-[4px]">
-                                            <Image className="w-full rounded-[6px]" src={product.img} width={300} height={400} alt={product.title.en} />
+                                    <div className="w-[17%] sm:w-[15%] lg:w-full flex overflow-y-auto flex-col lg:flex-row gap-2.5 md:gap-4">
+                                        <button className={smallImageStyle}>
+                                            <Image className={imgStyle} src={product.img} width={300} height={400} alt={product.title.en} />
                                         </button>
-                                        <button className="overflow-hidden max-h-[110px] lg:max-h-[100px] rounded-[4px]">
-                                            <Image className="w-full rounded-[6px]" src={product.img} width={300} height={400} alt={product.title.en} />
+                                        <button className={smallImageStyle}>
+                                            <Image className={imgStyle} src={product.img} width={300} height={400} alt={product.title.en} />
                                         </button>
-                                        <button className="overflow-hidden max-h-[110px] lg:max-h-[100px] rounded-[4px]">
-                                            <Image className="w-full rounded-[6px]" src={product.img} width={300} height={400} alt={product.title.en} />
+                                        <button className={smallImageStyle}>
+                                            <Image className={imgStyle} src={product.img} width={300} height={400} alt={product.title.en} />
                                         </button>
-                                        <button className="overflow-hidden max-h-[110px] lg:max-h-[100px] rounded-[4px]">
-                                            <Image className="w-full rounded-[6px]" src={product.img} width={300} height={400} alt={product.title.en} />
+                                        <button className={smallImageStyle}>
+                                            <Image className={imgStyle} src={product.img} width={300} height={400} alt={product.title.en} />
                                         </button>
                                     </div>
                                 </div>
@@ -65,9 +64,10 @@ export default async function SinglePage({ params }: { params: Promise<{ id: str
                     </div>
             }
             {/* <h1>Some text</h1> */}
-            <div className="w-full min-h-[200vh]">
-            </div>
+            {/* <div className="w-full min-h-[200vh]">
+                </div> */}
 
-        </main>
+            <div className="w-full pb-[75px] md:pb-5"></div>
+        </>
     )
 }
