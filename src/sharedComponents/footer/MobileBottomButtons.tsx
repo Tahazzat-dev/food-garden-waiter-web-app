@@ -18,7 +18,7 @@ export default function MobileBottomButtons() {
     const { cartProducts } = useSelector((state: RootState) => state.productSlice);
     const { EXPAND } = useSelector((state: RootState) => state.actions);
     return (
-        <div className='w-full dark:border-t dark:border-slate-400 md:hidden bg-black fixed py-2 z-[9999] bottom-0 left-0'>
+        <div className='w-full dark:border-t dark:border-slate-400 md:hidden bg-black fixed py-2 z-[999999] bottom-0 left-0'>
             <Container className='flex justify-between'>
                 <Link className='flex flex-col gap-1 items-center justify-between' href="/" >
                     <Image src="/images/shared/home-icon.svg" width={22} height={40} alt="Home icon" />
