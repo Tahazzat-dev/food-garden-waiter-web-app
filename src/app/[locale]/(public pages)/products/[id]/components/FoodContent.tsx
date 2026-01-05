@@ -4,6 +4,7 @@ import useFormatPrice from "@/hooks/useFormatPrice"
 import useRenderText from "@/hooks/useRenderText"
 import { categoryItems } from "@/lib/demo-data"
 import { calculateSubtotal, getDiscountAmount, getDiscountPrice, getSellingPrice } from "@/lib/utils"
+import { SET_EXPAND } from "@/redux/features/actions/actionSlice"
 import { addCartProduct, updateCartProduct } from "@/redux/features/product/productSlice"
 import { RootState } from "@/redux/store"
 import { WhatsAppIcon } from "@/sharedComponents/icons/Icons"
@@ -33,17 +34,23 @@ export default function FoodContent({ item }: { item: TProduct }) {
     const handleAddToCart = (event: MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
         event.preventDefault();
-        if (!item || !variant) return;
+        addItemToCart(true);
+    }
 
+    const addItemToCart = (triggerAlert: boolean = false) => {
+        if (!item || !variant) return;
         if (addedItem) {
             if (addedItem.quantity === quantity) {
-                toast.error(t("alreadyExist"));
+                if (triggerAlert) {
+                    toast.error(t("alreadyExist"));
+                }
                 return;
             }
-
             // update the quantity
             dispatch(updateCartProduct({ product: { ...addedItem, quantity }, id: addedItem.id }))
-            toast.success(t("quantityUpdated"));
+            if (triggerAlert) {
+                toast.success(t("quantityUpdated"));
+            }
             return;
         }
         const cartItem: TCartProduct = {
@@ -55,13 +62,20 @@ export default function FoodContent({ item }: { item: TProduct }) {
             title: item.title
         }
         dispatch(addCartProduct(cartItem));
-        toast.success(t('addedToCart'));
+        if (triggerAlert) {
+            toast.success(t('addedToCart'));
+        }
     }
 
     const handleQuantityChange = (newQuantity: number) => {
         if (newQuantity < 1) return;
         if (!item?.id) return;
         setQuantity(newQuantity);
+    }
+
+    const handleBuyNow = () => {
+        addItemToCart();
+        dispatch(SET_EXPAND("CHECKOUT_MODAL"))
     }
 
     useEffect(() => {
@@ -131,7 +145,7 @@ export default function FoodContent({ item }: { item: TProduct }) {
                         {/* <ShoppingCart className="!w-10" /> */}
                         <span>{t('addToCart')}</span>
                     </Button>
-                    <Button size="lg" className="fg_fs-base !px-2 font-semibold w-full custom-shadow-md  bg-primary hover:bg-primary-500">
+                    <Button onClick={handleBuyNow} size="lg" className="fg_fs-base !px-2 font-semibold w-full custom-shadow-md  bg-primary hover:bg-primary-500">
                         {/* <CreditCard /> */}
                         <span>{t("buyNow")}</span></Button>
                 </div>

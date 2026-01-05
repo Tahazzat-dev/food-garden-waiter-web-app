@@ -296,7 +296,9 @@ export default function CheckoutModal() {
                                         {
                                             deliveryType === "Home Delivery" && <p className='flex items-center justify-between'><span className='grow'>{t("deliveryCharge")}</span> <span>{formatPrice(deliveryCost.en)}</span></p>
                                         }
-                                        <p className='flex items-center justify-between'><span className='grow'>{t("discountAmount")}</span> <span>-{formatPrice(discount)}</span></p>
+                                        {
+                                            discount > 0 && <p className='flex items-center justify-between'><span className='grow'>{t("discountAmount")}</span> <span>-{formatPrice(discount)}</span></p>
+                                        }
                                     </div>
 
                                     <Button size="lg" className='text-white mt-3 font-semibold lg:text-[20px]' type="submit"><span>{t("confirmOrder")}</span> <span>{formatPrice(subTotal)}</span></Button>
