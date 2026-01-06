@@ -42,7 +42,9 @@
     "paid": "পরিশোধিত",
     "failed": "ব্যর্থ",
     "refunded": "ফেরত দেওয়া হয়েছে",
-    "productNote": "পণ্য নোটস"
+    "productNote": "পণ্য নোটস",
+    "retry": "আবার চেষ্টা করুন",
+    "close": "বন্ধ করুন"
   },
 
   "mobileBottomActions": {
@@ -138,7 +140,10 @@
     "confirmOrder": "অর্ডার কনফার্ম করুন",
     "orderSuccess": "অর্ডার সফল হয়েছে",
     "orderFail": "অর্ডার ব্যর্থ হয়েছে",
-    "orderHistory": "অর্ডার হিস্ট্রি"
+    "orderHistory": "অর্ডার হিস্ট্রি",
+    "defaultOrderSuccessMessage": "আপনার অর্ডার সফলভাবে সম্পন্ন হয়েছে।",
+    "defaultOrderFailedMessage": "অর্ডার সম্পন্ন করার সময় কিছু সমস্যা হয়েছে।",
+    "orderId": "অর্ডার আইডি"
   },
   "home": {
     "title": "হ্যালো"

@@ -100,3 +100,16 @@ export const hasVisitedOffersToday = (): boolean => {
   return lastVisit === getToday();
 };
 
+export function generateOrderId(prefix = "order") {
+  const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+  const length = Math.random() < 0.5 ? 3 : 4;
+
+  let randomStr = "";
+  for (let i = 0; i < length; i++) {
+    randomStr += chars.charAt(
+      Math.floor(Math.random() * chars.length)
+    );
+  }
+
+  return `${prefix}_${randomStr}`;
+}

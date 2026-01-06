@@ -97,3 +97,12 @@ export interface TOrder {
     createdAt: string; // ISO date
     updatedAt: string;
 }
+
+
+export type CheckoutStatus = "success" | "error";
+
+export type TOrderResponse = {
+    orderId: string;
+    message: string;
+    status: CheckoutStatus;
+}

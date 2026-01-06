@@ -41,7 +41,9 @@
     "paid": "Paid",
     "failed": "Failed",
     "refunded": "Refunded",
-    "productNote": "Product Note"
+    "productNote": "Product Note",
+    "retry": "Retry",
+    "close": "Close"
   },
 
   "mobileBottomActions": {
@@ -138,7 +140,10 @@
     "confirmOrder": "Confirm Order",
     "orderSuccess": "Order success",
     "orderFail": "Order failed",
-    "orderHistory": "Order History"
+    "orderHistory": "Order History",
+    "orderId": "Order ID",
+    "defaultOrderSuccessMessage": "Your order has been placed successfully.",
+    "defaultOrderFailedMessage": "Something went wrong while placing your order."
   },
   "home": {
     "title": "Hello"
