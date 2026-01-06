@@ -424,6 +424,7 @@ const CheckoutResponse = ({ response, setShowCheckoutResult }: CheckoutResponseP
                 <Button
                     variant="secondary"
                     onClick={closeModal}
+                    className='text-white'
                 >
                     <RenderText group='shared' key="ORDER_MESSAGE_CLOSE_BTN" variable='close' />
                 </Button>
