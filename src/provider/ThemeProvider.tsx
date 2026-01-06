@@ -1,6 +1,5 @@
 "use client";
-
-import { getFromStorage, setToStorage } from "@/utils/localStorage";
+import { getFromStorage, setToStorage } from "@/lib/storage";
 import {
     createContext,
     useContext,

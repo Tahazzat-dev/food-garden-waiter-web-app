@@ -8,7 +8,7 @@ import Image from 'next/image'
 
 export default function OrdersPage() {
     return (
-        <section className="w-full mt-[91px] sm:mt-[100px] md:mt-[120px] pb-6 md:pb-7 lg:pb-10">
+        <section className="w-full mt-[91px] sm:mt-[100px] md:mt-[120px] pb-20 md:pb-7 lg:pb-10">
             <Container className="w-full">
                 <h1 className="mb-4 fg_fs-lg font-semibold"><RenderText group="checkout" key="similar_products_section_title" variable="orderHistory" /></h1>
                 <div className="w-full grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-start">
@@ -16,15 +16,15 @@ export default function OrdersPage() {
                     {demoOrders.map((order, index) => (
                         <div
                             key={order.id}
-                            className="rounded-xl border bg-white p-4 shadow-sm hover:shadow-md transition"
+                            className="rounded-xl border dark:border-slate-700 bg-white dark:bg-slate-900 p-4 shadow-sm hover:shadow-md transition"
                         >
                             {/* Header */}
                             <div className="flex items-center justify-between mb-3">
                                 <div className="flex items-center gap-2">
-                                    <span className="text-sm font-semibold text-gray-600">
+                                    <span className="text-sm font-semibold text-gray-700 dark:text-gray-400">
                                         #{index + 1}
                                     </span>
-                                    <span className="text-xs text-gray-400">
+                                    <span className="text-xs text-gray-700 dark:text-gray-400">
                                         {order.id}
                                     </span>
                                 </div>
@@ -60,7 +60,7 @@ export default function OrdersPage() {
                                             <p className="font-medium leading-tight">
                                                 <TranslateText key={`ITEM_TITLE_${order.id}`} text={item.title} />
                                             </p>
-                                            <p className="text-xs text-gray-500">
+                                            <p className="text-xs text-gray-500 dark:text-gray-300">
                                                 <TranslateText key={`ITEM_NAME_${order.id}`} text={item.name} /> × {item.quantity}
                                             </p>
                                         </div>
@@ -77,7 +77,7 @@ export default function OrdersPage() {
 
                             {/* Footer */}
                             <div className="border-t pt-3 flex items-center justify-between">
-                                <span className="text-xs text-gray-500">
+                                <span className="text-xs text-gray-500 dark:text-gray-400">
                                     {new Date(order.createdAt).toLocaleDateString()}
                                 </span>
 

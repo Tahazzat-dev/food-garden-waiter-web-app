@@ -7,6 +7,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/redux/store'
 import { SET_EXPAND } from '@/redux/features/actions/actionSlice'
 import { useTranslations } from 'next-intl'
+import { useEffect } from 'react'
+import { hasVisitedOffersToday } from '@/lib/utils'
+import { setShowOfferedMark } from '@/redux/features/product/productSlice'
 
 export default function MobileBottomButtons() {
     // variables
@@ -15,8 +18,20 @@ export default function MobileBottomButtons() {
     // hooks
     const dispatch = useDispatch();
     const t = useTranslations('mobileBottomActions');
-    const { cartProducts } = useSelector((state: RootState) => state.productSlice);
+    const { cartProducts, showOfferedMark, hasOfferedProducts, pendingOrders } = useSelector((state: RootState) => state.productSlice);
     const { EXPAND } = useSelector((state: RootState) => state.actions);
+
+    useEffect(() => {
+        if (!hasOfferedProducts) return;
+
+        const visited = hasVisitedOffersToday();
+
+        if (!visited) {
+            dispatch(setShowOfferedMark(true));
+        }
+
+    }, [dispatch, hasOfferedProducts]);
+
     return (
         <div className='w-full dark:border-t dark:border-slate-400 md:hidden bg-black fixed py-2 z-[999999] bottom-0 left-0'>
             <Container className='flex justify-between'>
@@ -25,7 +40,13 @@ export default function MobileBottomButtons() {
                     <span className='text-white font-semibold text-sm sm:text-base'>{t("home")}</span>
                 </Link>
                 <Link href="/offers" className='flex flex-col gap-1 items-center justify-between' >
-                    <Image src="/images/shared/special.svg" width={25} height={40} alt="Offer icon" />
+                    <div className='relative'>
+                        <Image src="/images/shared/special.svg" width={25} height={40} alt="Offer icon" />
+                        {
+                            !!showOfferedMark &&
+                            <span className='flex items-center justify-center text-xs px-0.5 min-w-[18px] min-h-4  absolute -top-[40%] left-[80%] translate-x-[-50%] bg-secondary text-white rounded-full p-[1px]'>!</span>
+                        }
+                    </div>
                     <span className='text-white font-semibold text-sm sm:text-base'>{t("offers")}</span>
                 </Link>
                 <button onClick={() => dispatch(SET_EXPAND(EXPAND === KEY ? null : KEY))} className='prevent-body-trigger relative flex flex-col gap-1 items-center justify-between' >
@@ -40,7 +61,13 @@ export default function MobileBottomButtons() {
                 </button>
 
                 <Link href="/orders" className='relative flex flex-col gap-1 items-center justify-between' >
-                    <Image src="/images/shared/my-order.svg" width={25} height={40} alt="Orders icon" />
+                    <div className='relative'>
+                        <Image src="/images/shared/my-order.svg" width={25} height={40} alt="Orders icon" />
+                        {
+                            pendingOrders.length > 0 &&
+                            <span className='flex items-center justify-center text-xs px-0.5 min-w-[18px] min-h-4  absolute -top-[40%] left-[80%] translate-x-[-50%] bg-secondary text-white rounded-full p-[1px]'>{pendingOrders.length}</span>
+                        }
+                    </div>
                     <span className='text-white font-semibold text-sm sm:text-base'>{t("orders")}</span>
                 </Link>
 

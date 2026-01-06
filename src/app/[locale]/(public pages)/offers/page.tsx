@@ -21,7 +21,7 @@ const getDiscountedProducts = async () => {
 export default async function OffersPage() {
     const { products } = await getDiscountedProducts()
     return (
-        <section className="w-full mt-[91px] sm:mt-[100px] md:mt-[120px] pb-6 md:pb-7 lg:pb-10">
+        <section className="w-full mt-[91px] sm:mt-[100px] md:mt-[120px] pb-20 md:pb-7 lg:pb-10">
             <Container className="w-full">
                 <h1 className="mb-4 fg_fs-lg font-semibold"><RenderText group="shared" key="similar_products_section_title" variable="specialDiscount" /></h1>
                 <div className="w-full grid gap-2.5 sm:gap-4 grid-cols-2 md:grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
