@@ -142,7 +142,7 @@ export default function CheckoutModal() {
             <div
                 className={`fixed flex pb-1 md:pb-5 lg:pb-[5vh] bg-transparent justify-center items-end rounded-r-[10px] overflow-hidden cartsheet-drawer z-[99999] w-full right-0 bottom-[65px]  md:bottom-0 h-full rounded-md lg:!rounded-r-none duration-300 ${openModal ? "translate-y-0" : "translate-y-[120%]"}`}
             >
-                <div className="prevent-body-trigger checkout-modal-inner w-full flex flex-col mx-auto max-h-[95%] h-auto !border-none !m-0 !p-0 max-w-[90vw] sm:max-w-[500px] md:max-w-[500px] !rounded-[6px] md:rounded-[8px] lg:!rounded-[10px] bg-body overflow-hidden">
+                <div className="prevent-body-trigger checkout-modal-inner w-full flex flex-col mx-auto max-h-[100%] h-auto !border-none !m-0 !p-0 max-w-[90vw] sm:max-w-[500px] md:max-w-[500px] !rounded-[6px] md:rounded-[8px] lg:!rounded-[10px] bg-body overflow-hidden">
                     <div className="flex items-center justify-between bg-primary px-2.5 sm:px-4 py-3 mb-1">
                         <div></div>
                         <h3 className="fg_fs-lg text-white">
