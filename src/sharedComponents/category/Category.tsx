@@ -16,7 +16,6 @@ type Props = {
 }
 
 export default function Category({ isIndex, item }: Props) {
-  console.log(item)
   // hooks
   const dispatch = useDispatch()
   const { renderText } = useRenderText()

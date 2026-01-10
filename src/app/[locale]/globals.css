@@ -736,7 +736,8 @@ body {
 
 /* The entire scrollbar (height for horizontal) */
 /* .category-container::-webkit-scrollbar {
-  height: 10px;
+  height: 6px;
+  background-color: gray;
 } */
 
 /* The track (background) */
@@ -746,13 +747,13 @@ body {
 /* } */
 
 /* The draggable handle (thumb) */
-/* .category-container::-webkit-scrollbar-thumb { */
-/* @apply bg-gray-500; */
-/* background: #888; */
-/* background: red; */
-/* border-radius: 10px; */
-/* border: 2px solid #f1f1f1; */
-/* } */
+/* .category-container::-webkit-scrollbar-thumb {
+  @apply bg-gray-900;
+  background: #888;
+  background: red;
+  border-radius: 10px;
+  border: 2px solid #f1f1f1;
+} */
 
 /* Handle on hover */
 /* .category-container::-webkit-scrollbar-thumb:hover {

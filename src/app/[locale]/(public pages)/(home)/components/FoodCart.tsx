@@ -9,9 +9,10 @@ import { RootState } from '@/redux/store'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { SET_EXPAND } from '@/redux/features/actions/actionSlice'
-import { getDiscountPrice } from '@/lib/utils'
+import { getTranslationReadyText } from '@/lib/utils'
 import useFormatPrice from '@/hooks/useFormatPrice'
 import { TProduct } from '@/types/types'
+import useRenderText from '@/hooks/useRenderText'
 
 export default function FoodCart({ product }: { product: TProduct }) {
     // hooks
@@ -20,9 +21,11 @@ export default function FoodCart({ product }: { product: TProduct }) {
     const { cartProducts, favouriteProducts } = useSelector((state: RootState) => state.productSlice)
     const { locale } = useSelector((state: RootState) => state.locale)
     const { formatPrice } = useFormatPrice();
+    const { renderText } = useRenderText()
 
     // conditional variables
-    const isAddedToCart = cartProducts.some(item => item.id === product.id);
+    // const isAddedToCart = cartProducts.some(item => item.id === product.id);
+    const isAddedToCart = false;
     const isFvourite = favouriteProducts.some(item => item.id === product.id);
 
 
@@ -42,8 +45,10 @@ export default function FoodCart({ product }: { product: TProduct }) {
         dispatch(addFavouriteProduct(product));
     }
 
-    const firstVariant = product.variants[0];
-    if (!firstVariant) return <></>
+    // const firstVariant = product.variants[0];
+    const { en, bn } = getTranslationReadyText(product.name)
+
+    console.log(product, ' product')
 
     return (
         <Link href={`/products/${product.id}`} className='custom-shadow-card flex flex-col overflow-hidden shadow-2xl !border-none group z-0'>
@@ -52,22 +57,23 @@ export default function FoodCart({ product }: { product: TProduct }) {
                     <HeartIcon fill={isFvourite ? "red" : 'white'} className={`w-8 h-8 ${isFvourite ? 'text-white' : 'text-secondary'}`} />
                 </button>
                 <div className="w-full h-full overflow-hidden">
-                    <Image src={product?.img} className='z-10 w-full duration-300 group-hover:scale-105 h-full' width={300} height={400} alt={locale === "bn" ? product?.title.bn : product?.title.en || 'Product Image'} />
+                    <Image src={product?.image || "/images/shared/food-placeholder.jpg"} className='z-10 w-full duration-300 group-hover:scale-105 h-full' width={300} height={400} alt={en} />
                 </div>
                 <span className='font-semibold p-1 px-[5.5px] rounded-md hover:bg-white bg-slate-100 text-black absolute bottom-1 right-1 z-20'>
                     <Eye className='w-5 h-5' />
                 </span>
                 {
-                    !!product?.variants[0]?.discount && <span className='absolute fg_fs-xxs  top-0 right-0 bg-secondary text-white px-2 py-1 rounded-md'>
-                        {product?.variants[0].discount}% Off
-                    </span>
+                    //  <span className='absolute fg_fs-xxs  top-0 right-0 bg-secondary text-white px-2 py-1 rounded-md'>
+                    //     5% Off
+                    // </span>
                 }
             </div>
 
             <div className="w-full grow flex flex-col p-3 md:p-4 bg-slate-100 dark:bg-slate-700">
                 <div className="w-full flex flex-col grow">
-                    <h6 className='mb-1'>{locale === "bn" ? product?.title.bn : product?.title.en}</h6>
-                    <p className='fg_fs-sm'>{firstVariant.discount < 1 ? <span className=''>{formatPrice(firstVariant?.price)}</span> : <span className='flex items-center gap-3'> <span className='line-through fg_fs-xs'>{formatPrice(firstVariant?.price)}</span> <span className='text-primary'>{formatPrice(getDiscountPrice(firstVariant.price, firstVariant.discount))}</span></span>}</p>
+                    <h6 className='mb-1'> {renderText(en, bn)}</h6>
+                    {/* <p className='fg_fs-sm'>{firstVariant.discount < 1 ? <span className=''>{formatPrice(firstVariant?.price)}</span> : <span className='flex items-center gap-3'> <span className='line-through fg_fs-xs'>{formatPrice(firstVariant?.price)}</span> <span className='text-primary'>{formatPrice(getDiscountPrice(firstVariant.price, firstVariant.discount))}</span></span>}</p> */}
+                    <p className='fg_fs-sm'><span className=''>{formatPrice(+product.price)}</span></p>
                 </div>
                 <Button onClick={openDetailsModal} className={`mt-2 text-white w-full font-semibold  ${isAddedToCart ? ' bg-secondary hover:bg-secondary' : 'custom-shadow-md  bg-primary hover:bg-primary-500'}`} ><ShoppingCart /> <span>{t('addToCart')}</span></Button>
             </div>

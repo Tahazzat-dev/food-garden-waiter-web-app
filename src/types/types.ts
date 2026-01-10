@@ -41,14 +41,59 @@ export type TFoodVariant = {
     discount: number;
 };
 
+// export interface TProduct {
+//     id: string;
+//     categoryId: string;
+//     title: TLocal;
+//     des: TLocal;
+//     img: string;
+//     variants: TFoodVariant[];
+// }
+
+
 export interface TProduct {
-    id: string;
-    categoryId: string;
-    title: TLocal;
-    des: TLocal;
-    img: string;
-    variants: TFoodVariant[];
+    id: number;
+
+    name: string;
+    code: string;
+
+    description: string | null;
+    details: string | null;
+    image: string | null;
+
+    brand_id: number;
+    category_id: number;
+
+    main_unit_id: number;
+    sub_unit_id: number | null;
+
+    price: string;          // comes as string from backend
+    cost: string;
+    damage_price: string;
+
+    price_editable: 0 | 1;
+
+    stock: number;
+    stock_count: number;
+    total_sold: number;
+
+    main_unit_stock: number;
+    sub_unit_stock: number;
+
+    stock_visible: 0 | 1;
+    stock_visible_ecom: 0 | 1;
+
+    pos_visible: 0 | 1;
+    ecom_visible: 0 | 1;
+
+    status: 0 | 1;
+
+    created_at: string | null;
+    updated_at: string | null;
 }
+
+
+
 export interface TCartProduct {
     id: string;
     productId: string;

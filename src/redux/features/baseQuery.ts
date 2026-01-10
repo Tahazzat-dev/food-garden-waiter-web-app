@@ -1,9 +1,11 @@
 // import { getToken } from "@/utils/token";
 import { fetchBaseQuery } from "@reduxjs/toolkit/query";
 
+const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+console.log(baseUrl, ' : baseurl')
+
 export const baseQuery = fetchBaseQuery({
-    // baseUrl: `http://localhost:5000/api`,
-    baseUrl: `https://api.bdchefchoice.com/api`,
+    baseUrl: `${baseUrl}/api`,
     credentials: "include",
     prepareHeaders: (headers) => {
         //   const token = getToken("accessToken");

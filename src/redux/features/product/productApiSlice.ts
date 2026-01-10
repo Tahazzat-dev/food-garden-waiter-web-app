@@ -18,5 +18,5 @@ export const productApiSlice = createApi({
 });
 
 // Auto-generated hooks based on the endpoints
-export const { useGetAllProductsQuery, useGetCategoryProductsQuery } = productApiSlice;
+export const { useGetAllProductsQuery, useGetCategoryProductsQuery, useLazyGetCategoryProductsQuery } = productApiSlice;
 export default productApiSlice;

@@ -129,7 +129,7 @@ export const getData = async (slug: string) => {
     const result = await res.json();
     return result;
   } catch (error) {
-    console.error(error);
+    console.error(error, ' custom error');
     return null;
   }
 }

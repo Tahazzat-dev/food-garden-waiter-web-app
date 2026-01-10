@@ -73,7 +73,7 @@ const productSlice = createSlice({
             state.favouriteProducts.push(action.payload);
         },
 
-        removeFavouriteProduct: (state, action: PayloadAction<string>) => {
+        removeFavouriteProduct: (state, action: PayloadAction<number>) => {
             state.favouriteProducts = state.favouriteProducts.filter(product => product.id !== action.payload);
         }
     },

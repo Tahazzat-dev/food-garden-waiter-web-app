@@ -8,7 +8,7 @@ export default async function CategorySection({ className }: { className?: strin
     const categories = result?.data || [];
     return (
         <section className={cn("bg-inherit", className)}>
-            <div className="w-full pb-1 mb-1">
+            <div className="w-full pb-1 mb-3">
                 <Container className=''>
                     <div className="w-full category-container overflow-x-auto mt-4 lg:mt-1 lg:pt-3 pb-2">
                         <div className=" flex flex-nowrap gap-2">
