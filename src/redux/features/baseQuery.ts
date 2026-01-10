@@ -3,7 +3,7 @@ import { fetchBaseQuery } from "@reduxjs/toolkit/query";
 
 export const baseQuery = fetchBaseQuery({
     // baseUrl: `http://localhost:5000/api`,
-    baseUrl: `https://expresscronjob.com/api/`,
+    baseUrl: `https://api.bdchefchoice.com/api`,
     credentials: "include",
     prepareHeaders: (headers) => {
         //   const token = getToken("accessToken");

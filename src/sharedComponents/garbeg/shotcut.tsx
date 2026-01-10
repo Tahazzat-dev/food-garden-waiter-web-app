@@ -208,3 +208,12 @@ export default function Shotcut() {
       //     onConfirm={() => console.log("Confirmed")}
       //   />
       // )}
+
+
+//       const getCategoryData = ()=>{
+//     try{
+
+//     }catch{
+        
+//     }
+// }

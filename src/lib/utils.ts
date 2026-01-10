@@ -113,3 +113,39 @@ export function generateOrderId(prefix = "order") {
 
   return `${prefix}_${randomStr}`;
 }
+
+
+
+// data fetching utility
+export const getData = async (slug: string) => {
+  try {
+    const baseUrl = process.env.API_URL;
+    if (!baseUrl) {
+      throw new Error(".env variable misconfiguration")
+    }
+
+    // proceed with data fetching
+    const res = await fetch(`${baseUrl}/api${slug}`);
+    const result = await res.json();
+    return result;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+
+// TODO: temp_
+export const getImage = (slug: string) => {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+  return `${baseUrl}/${slug}`
+}
+
+export const getTranslationReadyText = (text: string) => {
+  const parts = text.split("/");
+  const nameObject = {
+    bn: parts[0]?.trim() || '',
+    en: parts[1]?.trim() || ''
+  };
+  return nameObject;
+}

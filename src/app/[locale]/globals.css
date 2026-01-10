@@ -729,3 +729,32 @@ body {
 }
 
 /* ==== details product ===== */
+
+/* .category-container {
+  scrollbar-width: auto;
+} */
+
+/* The entire scrollbar (height for horizontal) */
+/* .category-container::-webkit-scrollbar {
+  height: 10px;
+} */
+
+/* The track (background) */
+/* .category-container::-webkit-scrollbar-track { */
+/* @apply bg-slate-100/40; */
+/* border-radius: 10px; */
+/* } */
+
+/* The draggable handle (thumb) */
+/* .category-container::-webkit-scrollbar-thumb { */
+/* @apply bg-gray-500; */
+/* background: #888; */
+/* background: red; */
+/* border-radius: 10px; */
+/* border: 2px solid #f1f1f1; */
+/* } */
+
+/* Handle on hover */
+/* .category-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+} */

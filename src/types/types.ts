@@ -1,11 +1,21 @@
 // types/lang.ts
+// export type TCategory = {
+//     id: string;
+//     name: {
+//         en: string;
+//         bn: string;
+//     };
+//     img: string;
+//     slug: string;
+// }
+
+// TODO: temp_
 export type TCategory = {
     id: string;
-    name: {
-        en: string;
-        bn: string;
+    name: string;
+    image: {
+        link: string;
     };
-    img: string;
     slug: string;
 }
 
