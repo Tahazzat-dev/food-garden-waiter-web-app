@@ -81,7 +81,7 @@ export default function FoodContent({ item }: { item: TProduct }) {
     useEffect(() => {
         if (!item) return;
         setQuantity(1);
-        setVariant(item?.variants[0]);
+        setVariant(item?.variations[0] || null);
     }, [item])
 
 
