@@ -48,8 +48,6 @@ export default function FoodCart({ product }: { product: TProduct }) {
     // const firstVariant = product.variants[0];
     const { en, bn } = getTranslationReadyText(product.name)
 
-    console.log(product, ' product')
-
     return (
         <Link href={`/products/${product.id}`} className='custom-shadow-card flex flex-col overflow-hidden shadow-2xl !border-none group z-0'>
             <div className="w-full relative h-[150px] sm:h-[200px]">

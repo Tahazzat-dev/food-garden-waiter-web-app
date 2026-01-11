@@ -11,7 +11,7 @@ import { useTranslations } from "next-intl";
 import { addCartProduct, updateCartProduct } from "@/redux/features/product/productSlice";
 import { SET_EXPAND } from "@/redux/features/actions/actionSlice";
 import useFormatPrice from "@/hooks/useFormatPrice";
-import { calculateSubtotal, getDiscountPrice, getSellingPrice } from "@/lib/utils";
+import { calculateSubtotal, getDiscountPrice, getSellingPrice, getTranslationReadyText } from "@/lib/utils";
 import { TCartProduct, TFoodVariant } from "@/types/types";
 import { toast } from "react-toastify";
 import useRenderText from "@/hooks/useRenderText";
@@ -29,7 +29,6 @@ export default function ProductDetailsModal() {
     const { EXPAND, prev_action } = useSelector((state: RootState) => state.actions);
     const { cartProducts, modalProduct } = useSelector((state: RootState) => state.productSlice);
     const [variant, setVariant] = useState<TFoodVariant | null>(null);
-    const { locale } = useSelector((state: RootState) => state.locale)
     const { formatPrice } = useFormatPrice()
     const { renderText } = useRenderText()
 
@@ -56,12 +55,16 @@ export default function ProductDetailsModal() {
         }
         const cartItem: TCartProduct = {
             quantity,
-            ...variant,
             productId: modalProduct.id,
-            categoryId: modalProduct.categoryId,
-            img: modalProduct.img,
-            title: modalProduct.title
+            categoryId: modalProduct.category_id,
+            img: modalProduct.image || "",
+            title: modalProduct.name,
+            discount: 0,
+            id: variant.id,
+            name: variant.variation,
+            price: +variant.price,
         }
+
         dispatch(addCartProduct(cartItem));
         toast.success(t('addedToCart'));
         toggleModal()
@@ -94,10 +97,12 @@ export default function ProductDetailsModal() {
     useEffect(() => {
         if (!modalProduct) return;
         setQuantity(1);
-        setVariant(modalProduct?.variants[0]);
+        setVariant(modalProduct?.variations[0] || null);
     }, [modalProduct])
 
     if (!modalProduct) return null;
+
+    const { en, bn } = getTranslationReadyText(modalProduct.name)
     return (
         <Dialog.Root open={KEY === EXPAND} onOpenChange={toggleModal}>
             <Dialog.Portal>
@@ -110,25 +115,25 @@ export default function ProductDetailsModal() {
                         <Button onClick={toggleModal} className="rounded-full !px-2.5" variant="secondary"> <X className="!text-white w-5 md:w-6 md:h-6 h-5 lg:w-8 lg:h-8" /></Button>
                     </div>
                     <div className="p-4">
-                        <h5 className="font-semibold text-lg text-primary">{renderText(modalProduct?.title?.en, modalProduct?.title?.bn)}
+                        <h5 className="font-semibold text-lg text-primary">{renderText(en, bn)}
                             {variant ? " - " : ""}
-                            {variant ? renderText(variant.name.en, variant.name.en) : ""}</h5>
+                            {variant ? variant.variation : ""}</h5>
                         <div className="flex gap-3 lg:gap-4 mt-4">
-                            <Image className="max-w-[120px] md:max-w-[180px] lg:max-w-[250px] max-h-[120px] md:max-h-[180px] lg:max-h-[250px] rounded-[8px]" src={modalProduct.img} width={300} height={400} alt="Food Image" />
+                            <Image className="max-w-[120px] md:max-w-[180px] lg:max-w-[250px] max-h-[120px] md:max-h-[180px] lg:max-h-[250px] rounded-[8px]" src={modalProduct?.image || "/images/shared/food-placeholder.jpg"} width={300} height={400} alt="Food Image" />
                             <div className="grow flex justify-between flex-col gap-2">
                                 <div className="flex flex-col gap-5">
                                     <div className="flex flex-wrap items-center gap-2">
                                         {
-                                            modalProduct.variants.map(item => <Button key={item.id} onClick={() => setVariant(item)} variant={item.id === variant?.id ? "secondary" : "primary"} className="text-white custom-shadow-md !py-0.5">{renderText(item?.name?.en, item?.name?.bn)}</Button>)
+                                            !!modalProduct?.variations && modalProduct?.variations?.map(item => <Button key={item.id} onClick={() => setVariant(item)} variant={item.id === variant?.id ? "secondary" : "primary"} className="text-white custom-shadow-md !py-0.5">{item.variation}</Button>)
                                         }
                                     </div>
-                                    <p className='fg_fs-sm flex gap-2'>{t('price')} : {variant?.discount && variant?.discount < 1 ? <span className=''>{formatPrice(variant?.price)}</span> : <span className='flex items-center gap-3'> <span className='line-through fg_fs-xs'>{formatPrice(variant?.price)}</span> <span className='text-primary'>{formatPrice(getDiscountPrice(variant?.price || 0, variant?.discount || 0))}</span></span>}</p>
+                                    <p className='fg_fs-sm flex gap-2'>{t('price')} : {formatPrice(variant?.price ? +variant.price : +modalProduct.price)}</p>
                                 </div>
 
                                 <div className="w-full hidden md:block">
                                     <p className="mb-3"><RenderText key={`PRODUCT_NOTE_FOR_${variant?.id}`} group="shared" variable="productNote" /></p>
                                     <div className='mt-auto flex items-center justify-between bg-slate-300/60 px-2 py-1 rounded-[4px]'>
-                                        <p className='fg_fs-xs font-semibold text-center grow dark:!text-black'>{!!variant && variant.discount < 1 ? formatPrice(variant?.price) : getDiscountPrice(variant?.price || 0, variant?.discount || 0)}/-</p>
+                                        <p className='fg_fs-xs font-semibold text-center grow dark:!text-black'>{formatPrice(variant?.price ? +variant.price : +modalProduct.price)}/-</p>
                                         <div className='flex items-center gap-1 lg:gap-2 rounded-md py-0.5'>
                                             <Button
                                                 variant='primary'
@@ -148,7 +153,7 @@ export default function ProductDetailsModal() {
                                                 <Plus className='h-3 w-3' />
                                             </Button>
                                         </div>
-                                        <p className='fg_fs-sm font-semibold text-center grow dark:!text-black'>{calculateSubtotal(getSellingPrice(variant?.price || 0, variant?.discount || 0), quantity)}/-</p>
+                                        <p className='fg_fs-sm font-semibold text-center grow dark:!text-black'>{calculateSubtotal(variant?.price ? +variant.price : +modalProduct.price, quantity)}/-</p>
                                     </div>
                                 </div>
                             </div>
@@ -156,7 +161,7 @@ export default function ProductDetailsModal() {
                         <div className="w-full block md:hidden mt-5">
                             <p className="mb-2"><RenderText key={`PRODUCT_NOTE_FOR_${variant?.id}_2`} group="shared" variable="productNote" /></p>
                             <div className='mt-auto bg-slate-300/60 flex items-center justify-between px-2 py-1 rounded-[4px]'>
-                                <p className='fg_fs-xs font-semibold text-center grow dark:!text-black'>{!!variant && variant.discount < 1 ? formatPrice(variant?.price) : getDiscountPrice(variant?.price || 0, variant?.discount || 0)}/-</p>
+                                <p className='fg_fs-xs font-semibold text-center grow dark:!text-black'>{formatPrice(variant?.price ? +variant.price : +modalProduct.price)}/-</p>
                                 <div className='flex items-center gap-3 lg:gap-2 rounded-md py-0.5'>
                                     <Button
                                         variant='primary'
@@ -177,7 +182,7 @@ export default function ProductDetailsModal() {
                                     </Button>
                                 </div>
 
-                                <p className='fg_fs-sm font-semibold text-center grow dark:!text-black'>{calculateSubtotal(getSellingPrice(variant?.price || 0, variant?.discount || 0), quantity)}/-</p>
+                                <p className='fg_fs-sm font-semibold text-center grow dark:!text-black'>{calculateSubtotal(variant?.price ? +variant.price : +modalProduct.price, quantity)}/-</p>
                             </div>
                         </div>
                     </div>

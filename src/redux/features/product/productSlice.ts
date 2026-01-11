@@ -44,7 +44,7 @@ const productSlice = createSlice({
             state.cartProducts = action.payload || [];
         },
 
-        updateCartProduct: (state, action: PayloadAction<{ product: TCartProduct, id: string }>) => {
+        updateCartProduct: (state, action: PayloadAction<{ product: TCartProduct, id: number }>) => {
             state.cartProducts = state.cartProducts.map(prod => {
                 if (prod.id === action.payload.id) {
                     return action.payload.product;
@@ -57,7 +57,7 @@ const productSlice = createSlice({
             state.cartProducts.push(action.payload);
         },
 
-        removeCartProduct: (state, action: PayloadAction<string>) => {
+        removeCartProduct: (state, action: PayloadAction<number>) => {
             state.cartProducts = state.cartProducts.filter(product => product.id !== action.payload);
         },
         clearCartProducts: (state) => {

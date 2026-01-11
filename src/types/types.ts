@@ -35,10 +35,19 @@ export type TLocal = {
 // TODO: have to add necessary properties
 
 export type TFoodVariant = {
-    id: string;
-    name: TLocal;
-    price: number;
-    discount: number;
+    id: number;
+    product_id: number;
+    variation: string;       // e.g. "1:03" (Main:Sub ratio)
+    cost: string;            // coming as string from API ("0.00")
+    price: string;           // "500.00"
+    image: string | null;
+    stock: number;
+    main_unit_stock: number;
+    sub_unit_stock: number;
+    total_sold: number;
+    created_at: string | null;
+    updated_at: string | null;
+
 };
 
 // export interface TProduct {
@@ -88,6 +97,8 @@ export interface TProduct {
 
     status: 0 | 1;
 
+    variations: TFoodVariant[];
+
     created_at: string | null;
     updated_at: string | null;
 }
@@ -95,12 +106,12 @@ export interface TProduct {
 
 
 export interface TCartProduct {
-    id: string;
-    productId: string;
-    title: TLocal,
-    categoryId: string;
+    id: number;
+    productId: number;
+    title: string,
+    categoryId: number;
     img: string;
-    name: TLocal;
+    name: string;
     price: number;
     discount: number;
     quantity: number;

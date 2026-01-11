@@ -3,18 +3,16 @@ import Image from 'next/image';
 import { Minus, Plus, Trash2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { TCartProduct } from '@/types/types';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { removeCartProduct, updateCartProduct } from '@/redux/features/product/productSlice';
-import { RootState } from '@/redux/store';
 import useFormatPrice from '@/hooks/useFormatPrice';
-import { calculateSubtotal, getDiscountPrice, getSellingPrice } from '@/lib/utils';
+import { calculateSubtotal, getDiscountPrice, getSellingPrice, getTranslationReadyText } from '@/lib/utils';
 import useRenderText from '@/hooks/useRenderText';
 
 export function CartCard({ item }: { item: TCartProduct }) {
   // hooks
   const { formatPrice } = useFormatPrice()
   const dispatch = useDispatch();
-  const { locale } = useSelector((state: RootState) => state.locale);
   const { renderText } = useRenderText()
 
   // handlers
@@ -26,12 +24,14 @@ export function CartCard({ item }: { item: TCartProduct }) {
     dispatch(updateCartProduct({ product: updateProduct, id: item.id }));
   };
 
+  const { en, bn } = getTranslationReadyText(item.title)
+
   return (
     <div className='flex gap-2.5 sm:gap-3 pb-3 border-b border-slate-300 dark:border-slate-600 border-dashed mb-5'>
       <div className='bg-muted relative h-16 w-16 md:min-w-16 md:min-h-16 flex-shrink-0 overflow-hidden rounded-md'>
         <Image
           src={item.img || '/images/placeholder/placeholder.jpg'}
-          alt={renderText(item?.name?.en, item?.name?.bn) || 'Product Image'}
+          alt={item?.name}
           width={72}
           height={72}
           className='object-cover w-full h-full'
@@ -41,8 +41,8 @@ export function CartCard({ item }: { item: TCartProduct }) {
       <div className='flex gap-1 flex-col flex-grow max-w-[300px]'>
         <div className="flex items-center gap-2 justify-between">
           <div className="flex flex-col items-start">
-            <h3 className='line-clamp-2 fg_fs-xs text-primary leading-tight font-medium'>{renderText(item?.title?.en, item?.title?.bn)}</h3>
-            <p className='text-muted-foreground px-2 my-1 rounded-[4px] text-[13px] font-medium bg-secondary text-white inline'>{renderText(item?.name?.en, item?.name?.bn)}</p>
+            <h3 className='line-clamp-2 fg_fs-xs text-primary leading-tight font-medium'>{renderText(en, bn)}</h3>
+            <p className='text-muted-foreground px-2 my-1 rounded-[4px] text-[13px] font-medium bg-secondary text-white inline'>{item?.name}</p>
           </div>
           <Button
             variant='secondary'

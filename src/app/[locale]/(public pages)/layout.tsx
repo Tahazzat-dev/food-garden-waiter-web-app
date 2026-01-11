@@ -1,5 +1,3 @@
-// import Footer from '@/sharedComponets/footer/Footer';
-// import ProductDetailsModal from '@/sharedComponets/modal/ProductDetailsModal';
 import MobileBottomButtons from '@/sharedComponents/footer/MobileBottomButtons';
 import PubliceHeader from '@/sharedComponents/header/PubliceHeader';
 import React from 'react';

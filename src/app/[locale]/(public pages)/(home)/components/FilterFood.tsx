@@ -19,6 +19,10 @@ export default function FilterFood({ className = '' }: { className?: string }) {
     const [loadProducts, { isLoading }] = useLazyGetCategoryProductsQuery()
     useEffect(() => {
         const loadData = async () => {
+            if (!homeActiveCategoryId) {
+                setProducts([]);
+                return;
+            }
             try {
                 const res = await loadProducts(homeActiveCategoryId).unwrap()
                 if (res.success) {
