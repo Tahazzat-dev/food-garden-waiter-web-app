@@ -44,7 +44,8 @@
     "refunded": "ফেরত দেওয়া হয়েছে",
     "productNote": "পণ্য নোটস",
     "retry": "আবার চেষ্টা করুন",
-    "close": "বন্ধ করুন"
+    "close": "বন্ধ করুন",
+    "free": "ফ্রি"
   },
 
   "mobileBottomActions": {
@@ -124,6 +125,7 @@
     "phoneNoError": "ফোন নম্বর অবশ্যই কমপক্ষে ১১ সংখ্যার হতে হবে",
     "deliveryAddress": "ঠিকানা",
     "searchAddress": "ঠিকানা খুঁজুন",
+    "noAddressFound": "কোনো ঠিকানা পাওয়া যায়নি",
     "deliveryAddressPlaceholder": "আপনার ঠিকানা লিখুন",
     "deliveryAddressError": "ডেলিভারি ঠিকানা দেওয়া বাধ্যতামূলক",
     "orderNote": "নোট",

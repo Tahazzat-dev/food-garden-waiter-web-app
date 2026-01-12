@@ -1,21 +1,18 @@
 'use client';
 import { RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
-import * as Dialog from "@radix-ui/react-dialog";
-import { Check, ShoppingCart, Trash2, X } from "lucide-react"; // optional icon
+import { ChevronDown } from "lucide-react"
+import { useRef } from "react"
+import { Check, ShoppingCart, X } from "lucide-react"; // optional icon
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import { addCartProduct, clearCartProducts, removeFavouriteProduct } from "@/redux/features/product/productSlice";
-import { useLocale, useTranslations } from 'next-intl';
+import { clearCartProducts } from "@/redux/features/product/productSlice";
+import { useTranslations } from 'next-intl';
 import { SET_EXPAND } from '@/redux/features/actions/actionSlice';
 import z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Dispatch, MouseEvent, MouseEventHandler, SetStateAction, useEffect, useMemo, useState } from 'react';
-import { calculateSubtotal, generateOrderId, getDiscountAmount, getDiscountPrice, getTranslationReadyText } from '@/lib/utils';
-import { toast } from 'react-toastify';
-
-
+import { Dispatch, MouseEvent, SetStateAction, useEffect, useMemo, useState } from 'react';
+import { calculateSubtotal, generateOrderId, getDiscountAmount, getTranslationReadyText } from '@/lib/utils';
 
 // schema/orderSchema.ts
 export const deliveryTypes = ["Home Delivery", "Self Pickup", "Dine-In"] as const;
@@ -62,28 +59,21 @@ import RenderText from '../utils/RenderText';
 import { useGetAddressesQuery } from '@/redux/features/address/addressApiSlice';
 import LoadingSpinner from '../loading/LoadingSpinner';
 import useRenderText from '@/hooks/useRenderText';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import SelectAddress from '../shared/SelectAddress';
+
 export default function CheckoutModal() {
     // variables
     const KEY = "CHECKOUT_MODAL";
-    const deliveryCost = { en: 150, bn: "১৫০" };
 
     // hooks
     const [mounted, setMounted] = useState(false);
     const dispatch = useDispatch();
     const t = useTranslations('checkout');
-    const sharedMsg = useTranslations("shared");
-    const { locale } = useSelector((state: RootState) => state.locale)
     const { EXPAND } = useSelector((state: RootState) => state.actions);
     const { cartProducts } = useSelector((state: RootState) => state.productSlice);
     const { formatPrice } = useFormatPrice()
     const [showCheckoutResult, setShowCheckoutResult] = useState(false)
     const [orderResponse, setOrderResponse] = useState<TOrderResponse | null>(null);
-    const { isLoading, data } = useGetAddressesQuery('');
     const [isOpen, setIsOpen] = useState(false);
-    const [addresses, setAddresses] = useState<TAddress[]>([])
-    const [selectedAddress, setSelectedAddress] = useState<TAddress | null>(null);
 
     // hook form
     const {
@@ -104,38 +94,13 @@ export default function CheckoutModal() {
     const openModal = EXPAND === KEY;
     const paymentType = watch("paymentType");
     const deliveryType = watch("deliveryType");
+    const deliveryAddress = watch("address");
+
 
 
     // handlers
     const onSubmit = (data: OrderFormValues) => {
         console.log("Order Data:", data);
-        // export interface TOrder {
-        //     id: string;
-        //     userId: string;
-
-        //     items: TCartProduct[];
-
-        //     priceSummary: TOrderPriceSummary;
-
-        //     status: TOrderStatus;
-        //     paymentStatus: TPaymentStatus;
-        //     paymentMethod: TPaymentMethod;
-
-        //     note?: string;
-
-        //     createdAt: string; // ISO date
-        //     updatedAt: string;
-        // }
-
-        // after response from server
-        const orderId = generateOrderId()
-
-        // const orderData:TOrder = {
-        //     id:orderId,
-        //     userId:""
-        // }
-
-        // toast.success(t("orderSuccess"));
         dispatch(clearCartProducts());
         setOrderResponse({
             message: t("defaultOrderSuccessMessage"),
@@ -154,10 +119,10 @@ export default function CheckoutModal() {
             totalDiscount += getDiscountAmount(item.price, item.discount) * item.quantity;
         });
 
-        const subtotal = total + (deliveryType === "Home Delivery" ? deliveryCost.en : 0) - totalDiscount;
+        const subtotal = total + (deliveryType === "Home Delivery" ? (+deliveryAddress?.delivery_charge || 0) : 0) - totalDiscount;
 
         return { cartTotal: Number(total.toFixed(2)), discount: Number(totalDiscount.toFixed(2)), subTotal: Number(subtotal.toFixed(2)) };
-    }, [cartProducts, deliveryType, deliveryCost.en]);
+    }, [cartProducts, deliveryType, deliveryAddress]);
 
     const handleModalClick = (event: MouseEvent<HTMLDivElement>) => {
 
@@ -170,14 +135,12 @@ export default function CheckoutModal() {
 
     //  ========== hidden overflow of body ========
     useEffect(() => {
-        if (mounted) return;
         setMounted(true)
     }, [])
 
-
     useEffect(() => {
-        setAddresses(data?.data);
-    }, [data?.data])
+        setIsOpen(false)
+    }, [EXPAND])
 
 
 
@@ -208,7 +171,7 @@ export default function CheckoutModal() {
                 />
             )}
             <div
-                className={`fixed flex pb-1 md:pb-5 lg:pb-[5vh] bg-transparent justify-center items-end rounded-r-[10px] overflow-hidden cartsheet-drawer z-[99999] w-full right-0 bottom-[65px]  md:bottom-0 h-full rounded-md lg:!rounded-r-none duration-300 ${!openModal ? "translate-y-0" : "translate-y-[120%]"}`}
+                className={`fixed flex pb-1 md:pb-5 lg:pb-[5vh] bg-transparent justify-center items-end rounded-r-[10px] overflow-hidden cartsheet-drawer z-[99999] w-full right-0 bottom-[65px]  md:bottom-0 h-full rounded-md lg:!rounded-r-none duration-300 ${openModal ? "translate-y-0" : "translate-y-[120%]"}`}
             >
                 {
                     !showCheckoutResult ?
@@ -268,73 +231,18 @@ export default function CheckoutModal() {
                                                 </div>
                                             </div>
                                             <div className="w-full">
-                                                <div className="input-box">
+                                                <div className="input-box prevent-body-trigger">
 
                                                     <label htmlFor="address" className="label">
                                                         <span>{t("deliveryAddress")}</span> <span>:</span>
                                                     </label>
-                                                    {
-                                                        isLoading ? <div className="grow flex items-center justify-center">
-                                                            <LoadingSpinner />
-                                                        </div> :
-
-                                                            <SelectAddress
-                                                                addresses={addresses}
-                                                                isOpen={isOpen}
-                                                                watch={watch}
-                                                                setIsOpen={setIsOpen}
-                                                                register={register}
-                                                                setValue={setValue}
-                                                                placeholder={t('deliveryAddress')}
-                                                                searchPlaceholder={t("searchAddress")}
-                                                            />
-                                                    }
-                                                    {/* {
-                                                        isLoading ? <div className="grow flex items-center justify-center">
-                                                            <LoadingSpinner />
-                                                        </div> :
-
-                                                            addresses?.length ?
-                                                                <Select
-                                                                    onValueChange={(value) => {
-                                                                        const addr = addresses.find(a => (a.id + '') === value) || null;
-                                                                        setSelectedAddress(addr);
-                                                                    }}
-                                                                    {...register("address")}
-                                                                >
-                                                                    <SelectTrigger className=" checkout-input !flex w-full outline-none bg-white text-black">
-                                                                        <SelectValue className='grow w-full bg-red-200' placeholder={t('deliveryAddress')}>
-                                                                            {selectedAddress ? (<span className='flex gap-5 items-center justify-between' ><AddressText name={selectedAddress?.name} />
-                                                                                <span>{formatPrice(+selectedAddress?.delivery_charge)}</span></span>) : <></>
-                                                                            }
-                                                                        </SelectValue>
-                                                                        {selectedAddress ? (
-                                                                            <div className="flex justify-between items-center">
-                                                                                <AddressText name={selectedAddress.name} />
-                                                                                <span>{formatPrice(+selectedAddress.delivery_charge)}</span>
-                                                                            </div>
-                                                                        ) : (
-                                                                            <span>{t("deliveryAddress")}</span>
-                                                                        )}
-                                                                    </SelectTrigger>
-                                                                    <SelectContent className='z-[999999] bg-white dark:text-black' >
-                                                                        {
-                                                                            addresses.map(address => (
-                                                                                <SelectItem value={address.id + ''} key={address.id} className='w-full flex gap-5 items-center justify-between hover:bg-slate-200 hover:outline-none'>
-                                                                                    <AddressText name={address.name} />
-                                                                                    <span className='ml-5'>{formatPrice(+address.delivery_charge)}</span>
-                                                                                </SelectItem>
-                                                                            ))
-                                                                        }
-                                                                    </SelectContent>
-                                                                </Select>
-                                                                :
-                                                                <input
-                                                                    {...register("address")}
-                                                                    placeholder={t("deliveryAddressPlaceholder")}
-                                                                    className="checkout-input"
-                                                                />
-                                                    } */}
+                                                    <SelectAddress
+                                                        isOpen={isOpen}
+                                                        watch={watch}
+                                                        setIsOpen={setIsOpen}
+                                                        register={register}
+                                                        setValue={setValue}
+                                                    />
                                                 </div>
                                                 <div className="flex items-center grow gap-2 md:gap-4">
                                                     <span className="label"></span>
@@ -365,7 +273,7 @@ export default function CheckoutModal() {
                                                     {...register("deliveryType")}
                                                 />
                                                 <span className='flex items-center justify-between grow'>
-                                                    <span className='grow'>{t("homeDelivery")}</span> <span>{locale !== 'bn' ? `${deliveryCost.en}TK` : `৳${deliveryCost.bn}`}</span>
+                                                    <span className='grow'>{t("homeDelivery")}</span> <span>{formatPrice(+deliveryAddress?.delivery_charge || 0)}</span>
                                                 </span>
                                             </label>
                                             <label key="Self Pickup" className={`flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${deliveryType === "Self Pickup" ? "bg-secondary text-white" : "bg-slate-300/60"}`}>
@@ -422,7 +330,7 @@ export default function CheckoutModal() {
                                         <div className="min-h-10 border-t-black w-full mt-3 pt-2.5 border-t border-dashed">
                                             <p className='flex items-center justify-between'><span className='grow'>{t("totalOrderAmount")}</span> <span>{formatPrice(cartTotal)}</span></p>
                                             {
-                                                deliveryType === "Home Delivery" && <p className='flex items-center justify-between'><span className='grow'>{t("deliveryCharge")}</span> <span>{formatPrice(deliveryCost.en)}</span></p>
+                                                deliveryType === "Home Delivery" && <p className='flex items-center justify-between'><span className='grow'>{t("deliveryCharge")}</span> <span>{formatPrice(+deliveryAddress?.delivery_charge || 0)}</span></p>
                                             }
                                             {
                                                 discount > 0 && <p className='flex items-center justify-between'><span className='grow'>{t("discountAmount")}</span> <span>-{formatPrice(discount)}</span></p>
@@ -526,8 +434,111 @@ const CheckoutResponse = ({ response, setShowCheckoutResult }: CheckoutResponseP
     </div>
 }
 
-const AddressText = ({ name }: { name: string }) => {
+
+
+export function SelectAddress({
+    register,
+    setValue,
+    watch,
+    isOpen,
+    setIsOpen,
+}) {
+    // hooks
+    const { isLoading, data } = useGetAddressesQuery('');
+    const [addresses, setAddresses] = useState<TAddress[]>([])
+    const dropdownRef = useRef(null)
+    const [search, setSearch] = useState("")
     const { renderText } = useRenderText()
-    const { en, bn } = getTranslationReadyText(name);
-    return <span>{renderText(bn, en)}</span>;
+    const t = useTranslations("checkout");
+    const selected = watch("address")
+
+    // Filtered addresses
+    const filtered = useMemo(() => {
+        return addresses?.filter(a =>
+            a.name.toLowerCase().includes(search.toLowerCase())
+        )
+    }, [addresses, search])
+
+    useEffect(() => {
+        if (data?.data && data.data?.length) {
+            setAddresses(data?.data);
+        }
+    }, [data?.data])
+
+    const handleSelect = (addr) => {
+        setValue("address", addr, { shouldValidate: true })
+        setIsOpen(false)
+        setSearch("")
+    }
+
+    const selectedAddress = addresses?.find(a => a.id === selected.id)
+    const { en, bn } = getTranslationReadyText(selectedAddress?.name || "");
+
+    if (isLoading) return <div className="grow flex items-center justify-center">
+        <LoadingSpinner />
+    </div>
+
+    return (
+        <div className="prevent-body-trigger custom-select-el relative w-full" ref={dropdownRef}>
+            {/* RHF hidden input */}
+            <input type="hidden" {...register("address")} />
+            <button
+                type="button"
+                onClick={() => setIsOpen(v => !v)}
+                className="checkout-input bg-white w-full flex justify-between gap-4 items-center px-3 py-2 rounded border"
+            >
+                {selectedAddress ? (
+
+                    <span>{renderText(bn, en)}</span>
+                ) : (
+                    <span className="text-gray-400 ">{t('deliveryAddress')}</span>
+                )}
+                <ChevronDown className='!w-5 !h-5' />
+            </button>
+
+            {/* Dropdown */}
+            {isOpen && (
+                <div className=" absolute z-[9999] top-0 w-full bg-white rounded shadow-lg border">
+
+                    {/* Search input */}
+                    <div className="p-1 border-b">
+                        <input
+                            type="text"
+                            placeholder={t("searchAddress")}
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            className="checkout-input"
+                        />
+                    </div>
+
+                    {/* Options */}
+                    <div className="max-h-[160px] lg:max-h-[170px] overflow-y-auto">
+                        {filtered.length > 0 ? (
+                            filtered.map(addr => {
+                                const { en: En, bn: Bn } = getTranslationReadyText(addr.name)
+                                return <button
+                                    key={addr.id}
+                                    type="button"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        handleSelect(addr);
+                                    }}
+                                    className="prevent-body-trigger w-full px-3 py-1 md:py-1.5 hover:bg-gray-100 text-left"
+                                >
+                                    {renderText(Bn, En)}
+                                </button>
+                            })
+
+                        ) : (
+                            <div className="px-3 py-2 text-gray-400 text-sm">
+                                <RenderText group='checkout' variable='noAddressFound' />
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
+        </div>
+    )
 }
+
+

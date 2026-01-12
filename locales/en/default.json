@@ -43,7 +43,8 @@
     "refunded": "Refunded",
     "productNote": "Product Note",
     "retry": "Retry",
-    "close": "Close"
+    "close": "Close",
+    "free": "Free"
   },
 
   "mobileBottomActions": {
@@ -124,6 +125,7 @@
     "phoneNoError": "Phone number must be at least 11 digits",
     "deliveryAddress": "Address",
     "searchAddress": "Search address",
+    "noAddressFound": "No address found",
     "deliveryAddressPlaceholder": "Enter Your Address",
     "deliveryAddressError": "Delivery address is required",
     "orderNote": "Note",
