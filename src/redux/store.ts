@@ -5,6 +5,8 @@ import productSlice from "./features/product/productSlice";
 import productApiSlice from "./features/product/productApiSlice";
 import categoryApiSlice from "./features/category/categoryApiSlice";
 import actionSlice from "./features/actions/actionSlice";
+import addressSlice from "./features/address/addressSlice";
+import addressApiSlice from "./features/address/addressApiSlice";
 export const store = configureStore({
   reducer: {
     // packages: packagesSlice,
@@ -12,12 +14,14 @@ export const store = configureStore({
     categorySlice: categorySlice,
     productSlice: productSlice,
     actions: actionSlice,
+    address: addressSlice,
 
     [productApiSlice.reducerPath]: productApiSlice.reducer,
     [categoryApiSlice.reducerPath]: categoryApiSlice.reducer,
+    [addressApiSlice.reducerPath]: addressApiSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(productApiSlice.middleware).concat(categoryApiSlice.middleware)
+    getDefaultMiddleware().concat(productApiSlice.middleware).concat(categoryApiSlice.middleware).concat(addressApiSlice.middleware)
 }
 );
 

@@ -172,3 +172,12 @@ export type TOrderResponse = {
     message: string;
     status: CheckoutStatus;
 }
+
+
+export type TAddress = {
+    id: number;
+    name: string;
+    delivery_charge: string;
+    created_at: string | null;
+    updated_at: string | null;
+}

@@ -123,6 +123,7 @@
     "phoneNoPlaceholder": "আপনার ফোন নম্বর লিখুন",
     "phoneNoError": "ফোন নম্বর অবশ্যই কমপক্ষে ১১ সংখ্যার হতে হবে",
     "deliveryAddress": "ঠিকানা",
+    "searchAddress": "ঠিকানা খুঁজুন",
     "deliveryAddressPlaceholder": "আপনার ঠিকানা লিখুন",
     "deliveryAddressError": "ডেলিভারি ঠিকানা দেওয়া বাধ্যতামূলক",
     "orderNote": "নোট",

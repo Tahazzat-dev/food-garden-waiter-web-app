@@ -123,6 +123,7 @@
     "phoneNoPlaceholder": "Enter Your Phone No",
     "phoneNoError": "Phone number must be at least 11 digits",
     "deliveryAddress": "Address",
+    "searchAddress": "Search address",
     "deliveryAddressPlaceholder": "Enter Your Address",
     "deliveryAddressError": "Delivery address is required",
     "orderNote": "Note",
