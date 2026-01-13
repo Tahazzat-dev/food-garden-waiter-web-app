@@ -14,7 +14,6 @@ import BoxSpace from '@/sharedComponents/shared/BoxSpace'
 export default function FilterFood({ className = '' }: { className?: string }) {
     // hooks
     const { homeActiveCategoryId } = useSelector((state: RootState) => state.categorySlice)
-    console.log(homeActiveCategoryId, ' home active category')
     const [products, setProducts] = useState<TProduct[]>([])
     const [loadProducts, { isLoading }] = useLazyGetCategoryProductsQuery()
     useEffect(() => {

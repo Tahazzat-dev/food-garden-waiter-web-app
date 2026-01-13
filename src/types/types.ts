@@ -11,7 +11,7 @@
 
 // TODO: temp_
 export type TCategory = {
-    id: string;
+    id: number;
     name: string;
     image: {
         link: string;

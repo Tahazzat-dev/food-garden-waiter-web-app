@@ -12,7 +12,7 @@ const initialState: IInitialState = {
 };
 
 const categorySlice = createSlice({
-    name: "locale",
+    name: "categories",
     initialState,
     reducers: {
         setHomeActiveCategoryId: (state, action: PayloadAction<string | null>) => {

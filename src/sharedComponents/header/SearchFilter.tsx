@@ -5,24 +5,31 @@ import { useTranslations } from 'next-intl';
 import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'react';
 import { fakeSearch } from '../utils/Utils';
-import SearchProductLoader from '../loading/searchingLoader';
+// import SearchProductLoader from '../loading/searchingLoader';
 import Image from 'next/image';
-import { getDiscountPrice } from '@/lib/utils';
+// import { getDiscountPrice } from '@/lib/utils';
 import { TProduct } from '@/types/types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import { getTranslationReadyText } from '@/lib/utils';
+import RenderText from '../utils/RenderText';
+import useRenderText from '@/hooks/useRenderText';
+import { setModalProduct } from '@/redux/features/product/productSlice';
+import { SET_EXPAND } from '@/redux/features/actions/actionSlice';
 
 export default function SearchFilter({ className }: { className?: string }) {
     // hooks
+    const dispatch = useDispatch();
     const tCategory = useTranslations('header.categories');
     const tSearch = useTranslations('header.search');
     const { allProducts } = useSelector((state: RootState) => state.productSlice);
-
-    // hooks
+    const { categories } = useSelector((state: RootState) => state.categorySlice);
+    const { renderText } = useRenderText();
     const [searchTxt, setSearchTxt] = useState('');
     const [results, setResults] = useState<TProduct[]>([]);
     const [loading, setLoading] = useState(true);
     const debounceRef = useRef<NodeJS.Timeout | null>(null);
+    const [selectCategory, setSelectedCategory] = useState<null | number>(null)
 
     useEffect(() => {
         if (!searchTxt.trim()) {
@@ -38,7 +45,7 @@ export default function SearchFilter({ className }: { className?: string }) {
 
         debounceRef.current = setTimeout(async () => {
             setLoading(true);
-            const matched = await fakeSearch(searchTxt, allProducts);
+            const matched = await fakeSearch(searchTxt, selectCategory, allProducts);
             setResults(matched);
             setLoading(false);
         }, 1);
@@ -48,7 +55,7 @@ export default function SearchFilter({ className }: { className?: string }) {
                 clearTimeout(debounceRef.current);
             }
         };
-    }, [searchTxt, allProducts]);
+    }, [searchTxt, allProducts, selectCategory]);
 
     // handlers
     const handleRefresh = () => {
@@ -56,30 +63,35 @@ export default function SearchFilter({ className }: { className?: string }) {
         setResults([]);
     }
 
+    const handleOpenProductModal = (product: TProduct) => {
+        dispatch(setModalProduct(product));
+        dispatch(SET_EXPAND("OPEN_PRODUCT_DETAILS_MODAL"))
+
+        // reset query
+        handleRefresh()
+    }
+    // const openDetailsModal = (event: MouseEvent<HTMLButtonElement>) => {
+
+    // }
+
+
     // 
     return (
         <>
             <div className='hidden lg:block'>
-                <Select>
+                <Select onValueChange={(val) => setSelectedCategory(+val)} >
                     <SelectTrigger className="border-none bg-primary hover:bg-primary-500 text-white shadow-sm">
                         <SelectValue placeholder={tCategory('all')} />
                     </SelectTrigger>
 
                     <SelectContent className='z-[9999] bg-white dark:bg-black' >
-
-                        {/* TODO: have to add */}
-                        <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="burger">{tCategory('burger')}</SelectItem>
-                        <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="pizza">{tCategory('pizza')}</SelectItem>
-                        <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="sushi">{tCategory('sushi')}</SelectItem>
-                        <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="pasta">{tCategory('pasta')}</SelectItem>
-                        <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="taco">{tCategory('taco')}</SelectItem>
-                        <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="salad">{tCategory('salad')}</SelectItem>
-                        <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="steak">{tCategory('steak')}</SelectItem>
-                        <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="soup">{tCategory('soup')}</SelectItem>
-                        <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="sandwich">{tCategory('sandwich')}</SelectItem>
-                        <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="dessert">{tCategory('dessert')}</SelectItem>
-                        <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="appetizer">{tCategory('appetizer')}</SelectItem>
-                        <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="drink">{tCategory('drink')}</SelectItem>
+                        <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value={'000'}>{tCategory('all')}</SelectItem>
+                        {
+                            !!categories.length && categories.map(cat => {
+                                const { en: catEn, bn: catBn } = getTranslationReadyText(cat.name)
+                                return <SelectItem key={cat?.id} className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value={cat.id.toString()}>{renderText(catEn, catBn)}</SelectItem>
+                            })
+                        }
                     </SelectContent>
                 </Select>
             </div>
@@ -103,13 +115,17 @@ export default function SearchFilter({ className }: { className?: string }) {
                                 <div className="w-full mx-auto space-y-2">
                                     {
                                         results.map((item, i) => <div
+                                            onClick={() => handleOpenProductModal(item)}
                                             key={item.name + i}
-                                            className="flex gap-2 p-2 shadow rounded-lg bg-white dark:bg-slate-700 "
+                                            title='Click for details'
+                                            className="flex gap-2 cursor-pointer mr-0.5 p-2 shadow rounded-lg bg-white dark:bg-slate-700 "
                                         >
                                             <Image src={item.image || "/images/shared/food-placeholder.jpg"} className='w-12 h-12' width={300} height={400} alt={item.name} />
                                             <div className="flex flex-col flex-1">
                                                 <h5>{item.name}</h5>
-                                                <p className='flex items-center gap-3'><span>৳{getDiscountPrice(+item.variations[0]?.price, +item.variations[0].price || 0)}</span> <span className='line-through'>৳{item?.variations[0]?.price || 0}</span></p>
+                                                <p className='flex items-center gap-3'><span>৳{item.variations[0]?.price || 0}</span>
+                                                    {/* <span className='line-through'>৳{item?.variations[0]?.price || 0}</span> */}
+                                                </p>
                                             </div>
                                         </div>)
                                     }

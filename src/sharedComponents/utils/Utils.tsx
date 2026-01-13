@@ -15,7 +15,7 @@ const isBangla = (query: string) => /[\u0980-\u09FF]/.test(query);
 const delay = (ms: number) =>
     new Promise(resolve => setTimeout(resolve, ms));
 
-export const fakeSearch = async (query: string, products: TProduct[]) => {
+export const fakeSearch = async (query: string, selectedCat: number | null, products: TProduct[]) => {
     const q = query.trim().toLowerCase();
     if (!q) return [];
 
@@ -26,6 +26,7 @@ export const fakeSearch = async (query: string, products: TProduct[]) => {
 
     return products.filter(item => {
         const { en, bn } = getTranslationReadyText(item.name);
+        if (selectedCat && selectedCat !== item.category_id) return false;
         return bangla
             ? bn.includes(q)
             : en.toLowerCase().includes(q)
