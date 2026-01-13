@@ -4,17 +4,19 @@ import { Button } from '@/components/ui/button'
 import { useTranslations } from 'next-intl';
 import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'react';
-// import { fakeSearch } from '../utils/Utils';
+import { fakeSearch } from '../utils/Utils';
 import SearchProductLoader from '../loading/searchingLoader';
 import Image from 'next/image';
 import { getDiscountPrice } from '@/lib/utils';
 import { TProduct } from '@/types/types';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 export default function SearchFilter({ className }: { className?: string }) {
-    // translations functions
+    // hooks
     const tCategory = useTranslations('header.categories');
     const tSearch = useTranslations('header.search');
-
+    const { allProducts } = useSelector((state: RootState) => state.productSlice);
 
     // hooks
     const [searchTxt, setSearchTxt] = useState('');
@@ -36,18 +38,21 @@ export default function SearchFilter({ className }: { className?: string }) {
 
         debounceRef.current = setTimeout(async () => {
             setLoading(true);
-            // const matched = await fakeSearch(searchTxt);
-            // setResults(matched);
+
+
+            console.log(allProducts, ' pd')
+            const matched = await fakeSearch(searchTxt, allProducts);
+            setResults(matched);
             setResults([]);
             setLoading(false);
-        }, 400);
+        }, 250);
 
         return () => {
             if (debounceRef.current) {
                 clearTimeout(debounceRef.current);
             }
         };
-    }, [searchTxt]);
+    }, [searchTxt, allProducts]);
 
     // handlers
     const handleRefresh = () => {
@@ -65,6 +70,8 @@ export default function SearchFilter({ className }: { className?: string }) {
                     </SelectTrigger>
 
                     <SelectContent className='z-[9999] bg-white dark:bg-black' >
+
+                        {/* TODO: have to add */}
                         <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="burger">{tCategory('burger')}</SelectItem>
                         <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="pizza">{tCategory('pizza')}</SelectItem>
                         <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="sushi">{tCategory('sushi')}</SelectItem>
@@ -99,16 +106,16 @@ export default function SearchFilter({ className }: { className?: string }) {
                                 results.length === 0 ? <p className='fg_fs-sm text-center py-4'>No results found</p> :
                                     <div className="w-full mx-auto space-y-2">
                                         {
-                                            // results.map((item, i) => <div
-                                            //     key={item.title.en + i}
-                                            //     className="flex gap-2 p-2 shadow rounded-lg bg-white dark:bg-slate-700 "
-                                            // >
-                                            //     <Image src={item.img} className='w-12 h-12' width={300} height={400} alt={item.title.en} />
-                                            //     <div className="flex flex-col flex-1">
-                                            //         <h5>{item.title.bn} | {item.title.en}</h5>
-                                            //         <p className='flex items-center gap-3'><span>৳{getDiscountPrice(item.variants[0]?.price, item.variants[0]?.discount || 0)}</span> <span className='line-through'>৳{item?.variants[0]?.price}</span></p>
-                                            //     </div>
-                                            // </div>)
+                                            results.map((item, i) => <div
+                                                key={item.name + i}
+                                                className="flex gap-2 p-2 shadow rounded-lg bg-white dark:bg-slate-700 "
+                                            >
+                                                <Image src={item.image || "/images/shared/food-placeholder.jpg"} className='w-12 h-12' width={300} height={400} alt={item.name} />
+                                                <div className="flex flex-col flex-1">
+                                                    <h5>{item.name}</h5>
+                                                    <p className='flex items-center gap-3'><span>৳{getDiscountPrice(+item.variations[0]?.price, +item.variations[0].price || 0)}</span> <span className='line-through'>৳{item?.variations[0]?.price || 0}</span></p>
+                                                </div>
+                                            </div>)
                                         }
                                     </div>
 
