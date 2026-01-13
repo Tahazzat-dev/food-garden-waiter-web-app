@@ -22,7 +22,7 @@ export default function Category({ isIndex, item }: Props) {
   const { homeActiveCategoryId } = useSelector((state: RootState) => state.categorySlice)
 
   // handlers
-  const handleSelectCategory = (categoryId: string) => {
+  const handleSelectCategory = (categoryId: number) => {
     dispatch(setHomeActiveCategoryId(categoryId))
   }
 
@@ -42,7 +42,7 @@ export default function Category({ isIndex, item }: Props) {
     >
       {/* <Image className='object-cover w-full duration-300 group-hover:scale-105 ' src={item.img} width={300} height={400} alt={item.name.en} /> */}
       {/* TODO: temp_ */}
-      <Image className='object-cover w-full h-full duration-300 group-hover:scale-105 ' src={getImage(item?.image?.link)} width={300} height={400} alt={en} />
+      <Image className='object-cover w-full h-full duration-300 group-hover:scale-105 ' src={item.id == 0 ? item.image.link : getImage(item?.image?.link)} width={300} height={400} alt={en} />
       <span className={clsx("fg_fs-xs duration-300 text-center font-semibold absolute bg-slate-800/30 py-1 backdrop-blur-sm block w-full text-white z-30 left-0 bottom-0",
         homeActiveCategoryId === item.id ? '!bg-secondary' : 'group-hover:bg-secondary '
       )}>

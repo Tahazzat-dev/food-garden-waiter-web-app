@@ -14,28 +14,28 @@ import BoxSpace from '@/sharedComponents/shared/BoxSpace'
 export default function FilterFood({ className = '' }: { className?: string }) {
     // hooks
     const { homeActiveCategoryId } = useSelector((state: RootState) => state.categorySlice)
+    const { allProducts } = useSelector((state: RootState) => state.productSlice)
     const [products, setProducts] = useState<TProduct[]>([])
     const [loadProducts, { isLoading }] = useLazyGetCategoryProductsQuery()
+
     useEffect(() => {
         const loadData = async () => {
-            if (!homeActiveCategoryId) {
+            if (!allProducts.length) {
                 setProducts([]);
                 return;
             }
-            try {
-                const res = await loadProducts(homeActiveCategoryId).unwrap()
-                if (res.success) {
-                    setProducts(res.data);
-                } else {
-                    setProducts([]);
-                }
-            } catch (error) {
-                setProducts([])
-                console.log(error)
+            const filteredData = homeActiveCategoryId == 0 ? allProducts.slice(0, 15) : allProducts.filter(item => item.category_id === homeActiveCategoryId)
+            if (filteredData?.length) {
+                setProducts(filteredData);
+            } else {
+                setProducts([]);
             }
         }
         loadData()
-    }, [homeActiveCategoryId, loadProducts])
+    }, [homeActiveCategoryId, loadProducts, allProducts])
+
+
+    console.log(homeActiveCategoryId, "homeActiveCategoryId")
     return (
         <section className={cn("mb-4", className)}>
             <Container>

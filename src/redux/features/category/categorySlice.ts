@@ -2,7 +2,7 @@ import { TCategory } from "@/types/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface IInitialState {
-    homeActiveCategoryId: string | null;
+    homeActiveCategoryId: number | null;
     categories: TCategory[]
 }
 
@@ -15,7 +15,7 @@ const categorySlice = createSlice({
     name: "categories",
     initialState,
     reducers: {
-        setHomeActiveCategoryId: (state, action: PayloadAction<string | null>) => {
+        setHomeActiveCategoryId: (state, action: PayloadAction<number | null>) => {
             state.homeActiveCategoryId = action.payload;
         },
         setCategories: (state, action: PayloadAction<TCategory[]>) => {
