@@ -12,7 +12,7 @@ export const productApiSlice = createApi({
             providesTags: ['Post'],
         }),
         getAllProducts: builder.query({
-            query: (category) => "/products",
+            query: () => `/products`,
         }),
 
         confirmOrder: builder.mutation({

@@ -7,7 +7,8 @@ interface IInitialState {
     modalProduct: TProduct | null;
     hasOfferedProducts: boolean;
     showOfferedMark: boolean;
-    pendingOrders: TOrder[]
+    pendingOrders: TOrder[];
+    allProducts: TProduct[];
 }
 
 const initialState: IInitialState = {
@@ -16,7 +17,8 @@ const initialState: IInitialState = {
     modalProduct: null,
     hasOfferedProducts: false,
     showOfferedMark: false,
-    pendingOrders: []
+    pendingOrders: [],
+    allProducts: []
 };
 
 const productSlice = createSlice({
@@ -25,6 +27,9 @@ const productSlice = createSlice({
     reducers: {
         setModalProduct: (state, action: PayloadAction<TProduct | null>) => {
             state.modalProduct = action.payload;
+        },
+        setAllProduct: (state, action: PayloadAction<TProduct[]>) => {
+            state.allProducts = action.payload;
         },
 
         setShowOfferedMark: (state, action: PayloadAction<boolean>) => {
@@ -89,6 +94,7 @@ export const {
     removeCartProduct,
     clearCartProducts,
     updateCartProduct,
+    setAllProduct,
     setFavouriteProducts,
     addFavouriteProduct,
     removeFavouriteProduct
