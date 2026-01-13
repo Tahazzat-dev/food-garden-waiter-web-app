@@ -26,7 +26,6 @@ export const fakeSearch = async (query: string, products: TProduct[]) => {
 
     return products.filter(item => {
         const { en, bn } = getTranslationReadyText(item.name);
-
         return bangla
             ? bn.includes(q)
             : en.toLowerCase().includes(q)

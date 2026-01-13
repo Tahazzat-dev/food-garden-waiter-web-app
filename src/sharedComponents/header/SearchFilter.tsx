@@ -21,7 +21,7 @@ export default function SearchFilter({ className }: { className?: string }) {
     // hooks
     const [searchTxt, setSearchTxt] = useState('');
     const [results, setResults] = useState<TProduct[]>([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
@@ -38,14 +38,10 @@ export default function SearchFilter({ className }: { className?: string }) {
 
         debounceRef.current = setTimeout(async () => {
             setLoading(true);
-
-
-            console.log(allProducts, ' pd')
             const matched = await fakeSearch(searchTxt, allProducts);
             setResults(matched);
-            setResults([]);
             setLoading(false);
-        }, 250);
+        }, 1);
 
         return () => {
             if (debounceRef.current) {
@@ -102,22 +98,22 @@ export default function SearchFilter({ className }: { className?: string }) {
                 !!searchTxt ? <div className="w-full absolute p-2 top-[110%] left-0 h-auto rounded-md lg:rounded-lg min-h-20 bg-body border border-slate-300 dark:border-slate-600 shadow-sm dark:shadow-slate-600">
                     <div className='max-h-[300px] lg:max-h-[350px] h-auto overflow-y-auto'>
                         {
-                            !!loading ? <SearchProductLoader /> :
-                                results.length === 0 ? <p className='fg_fs-sm text-center py-4'>No results found</p> :
-                                    <div className="w-full mx-auto space-y-2">
-                                        {
-                                            results.map((item, i) => <div
-                                                key={item.name + i}
-                                                className="flex gap-2 p-2 shadow rounded-lg bg-white dark:bg-slate-700 "
-                                            >
-                                                <Image src={item.image || "/images/shared/food-placeholder.jpg"} className='w-12 h-12' width={300} height={400} alt={item.name} />
-                                                <div className="flex flex-col flex-1">
-                                                    <h5>{item.name}</h5>
-                                                    <p className='flex items-center gap-3'><span>৳{getDiscountPrice(+item.variations[0]?.price, +item.variations[0].price || 0)}</span> <span className='line-through'>৳{item?.variations[0]?.price || 0}</span></p>
-                                                </div>
-                                            </div>)
-                                        }
-                                    </div>
+                            // !!loading ? <SearchProductLoader /> :
+                            results.length === 0 && !loading ? <p className='fg_fs-sm text-center py-4'>No results found</p> :
+                                <div className="w-full mx-auto space-y-2">
+                                    {
+                                        results.map((item, i) => <div
+                                            key={item.name + i}
+                                            className="flex gap-2 p-2 shadow rounded-lg bg-white dark:bg-slate-700 "
+                                        >
+                                            <Image src={item.image || "/images/shared/food-placeholder.jpg"} className='w-12 h-12' width={300} height={400} alt={item.name} />
+                                            <div className="flex flex-col flex-1">
+                                                <h5>{item.name}</h5>
+                                                <p className='flex items-center gap-3'><span>৳{getDiscountPrice(+item.variations[0]?.price, +item.variations[0].price || 0)}</span> <span className='line-through'>৳{item?.variations[0]?.price || 0}</span></p>
+                                            </div>
+                                        </div>)
+                                    }
+                                </div>
 
                         }
                     </div>
