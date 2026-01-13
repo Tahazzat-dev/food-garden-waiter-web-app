@@ -292,7 +292,7 @@ export default function CheckoutModal() {
                                                 </div>
                                                 <div className="input-box">
                                                     <label htmlFor="addressNote" className="label">
-                                                        <span>{t("addressNote")}</span> <span>:</span>
+                                                        <span>{t("deliveryAddress")}</span> <span>:</span>
                                                     </label>
                                                     <input
                                                         {...register("addressNote")}

@@ -130,7 +130,7 @@
     "deliveryAddressError": "Delivery address is required",
     "addressNote": "Note",
     "addressNoteError": "Address details is required",
-    "addressNotePlaceholder": "Your address details",
+    "addressNotePlaceholder": "Your full address",
     "homeDelivery": "Home Delivery",
     "selfPickup": "Self Pickup",
     "dineIn": "Dine-In",
