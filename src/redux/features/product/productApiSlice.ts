@@ -14,9 +14,17 @@ export const productApiSlice = createApi({
         getAllProducts: builder.query({
             query: (category) => "/products",
         }),
+
+        confirmOrder: builder.mutation({
+            query: (data) => ({
+                url: "/orders",
+                method: "POST",
+                body: data
+            })
+        }),
     }),
 });
 
 // Auto-generated hooks based on the endpoints
-export const { useGetAllProductsQuery, useGetCategoryProductsQuery, useLazyGetCategoryProductsQuery } = productApiSlice;
+export const { useGetAllProductsQuery, useConfirmOrderMutation, useGetCategoryProductsQuery, useLazyGetCategoryProductsQuery } = productApiSlice;
 export default productApiSlice;

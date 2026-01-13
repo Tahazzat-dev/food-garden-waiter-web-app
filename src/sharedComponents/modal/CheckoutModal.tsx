@@ -35,7 +35,7 @@ export const orderSchema = z
         address: AddressSchema.refine(v => v.id > 0, {
             message: "Address is required"
         }),
-        orderNote: z.string().optional(),
+        addressNote: z.string().min(3, "Details address is required"),
 
         deliveryType: z.enum(deliveryTypes),
         paymentType: z.enum(paymentTypes).optional(),
@@ -59,6 +59,7 @@ import RenderText from '../utils/RenderText';
 import { useGetAddressesQuery } from '@/redux/features/address/addressApiSlice';
 import LoadingSpinner from '../loading/LoadingSpinner';
 import useRenderText from '@/hooks/useRenderText';
+import { useConfirmOrderMutation } from '@/redux/features/product/productApiSlice';
 
 export default function CheckoutModal() {
     // variables
@@ -72,6 +73,7 @@ export default function CheckoutModal() {
     const { cartProducts } = useSelector((state: RootState) => state.productSlice);
     const { formatPrice } = useFormatPrice()
     const [showCheckoutResult, setShowCheckoutResult] = useState(false)
+    const [confirmOrder, { isLoading }] = useConfirmOrderMutation()
     const [orderResponse, setOrderResponse] = useState<TOrderResponse | null>(null);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -97,17 +99,38 @@ export default function CheckoutModal() {
     const deliveryAddress = watch("address");
 
 
-
     // handlers
-    const onSubmit = (data: OrderFormValues) => {
-        console.log("Order Data:", data);
-        dispatch(clearCartProducts());
-        setOrderResponse({
-            message: t("defaultOrderSuccessMessage"),
-            orderId: generateOrderId(),
-            status: "success",
-        })
-        setShowCheckoutResult(true);
+    const onSubmit = async (data: OrderFormValues) => {
+
+        const products = cartProducts.map(p => ({ product_id: p.productId, variant_id: p.id, quantity: p.quantity }));
+
+        const bodyData = {
+            name: data.name,
+            phone: data.phone,
+            address_id: data.address.id,
+            address_note: data.addressNote,
+            products
+        }
+
+        try {
+            const res = await confirmOrder(bodyData).unwrap();
+            if (res.success) {
+                dispatch(clearCartProducts());
+                setOrderResponse({
+                    message: t("defaultOrderSuccessMessage"),
+                    orderId: res.order_id,
+                    status: "success",
+                })
+                setShowCheckoutResult(true);
+            }
+        } catch (error) {
+            console.error(error);
+            setOrderResponse({
+                message: t("defaultOrderFailedMessage"),
+                orderId: '',
+                status: "error",
+            })
+        }
     };
 
     const { cartTotal, discount, subTotal } = useMemo(() => {
@@ -161,6 +184,21 @@ export default function CheckoutModal() {
         };
     }, [openModal]);
 
+
+    useEffect(() => {
+        if (isLoading) {
+            document.body.style.pointerEvents = "none";
+        } else {
+            document.body.style.pointerEvents = "auto";
+        }
+
+        // Cleanup function to reset style when component unmounts
+        return () => {
+            document.body.style.pointerEvents = "auto";
+        };
+    }, [isLoading])
+
+
     if (!mounted) return <></>;
 
     return createPortal(
@@ -190,113 +228,120 @@ export default function CheckoutModal() {
                                 </button>
                             </div>
                             {
-                                // cartProducts.length === 0 ? <div className='p-4 grow flex items-center justify-center min-h-[400px]'>
-                                //     <p>{sharedMsg("emptyCart")}</p>
-                                // </div> :
+                                cartProducts.length === 0 ? <div className='p-4 grow flex items-center justify-center min-h-[400px]'>
+                                    <p><RenderText group='shared' variable='emptyCart' /></p>
+                                </div> :
 
-                                <form onSubmit={handleSubmit(onSubmit)} className="px-0.5 my-2.5 grow overflow-hidden flex flex-col">
-                                    <div className="grow w-full flex flex-col px-2 md:-2.5 lg:px gap-5 overflow-y-auto">
-                                        {/* Name and information */}
-                                        <div className="w-full bg-slate-300/60 flex flex-col p-3 gap-3 rounded-md">
-                                            <div className="w-full">
+                                    <form onSubmit={handleSubmit(onSubmit)} className="px-0.5 my-2.5 grow overflow-hidden flex flex-col">
+                                        <div className="grow w-full flex flex-col px-2 md:-2.5 lg:px gap-5 overflow-y-auto">
+                                            {/* Name and information */}
+                                            <div className="w-full bg-slate-300/60 flex flex-col p-3 gap-3 rounded-md">
+                                                <div className="w-full">
+                                                    <div className="input-box">
+                                                        <label htmlFor="name" className="label">
+                                                            <span>{t("yourName")}</span> <span>:</span>
+                                                        </label>
+                                                        <input
+                                                            {...register("name")}
+                                                            placeholder={t("yourNamePlaceholder")}
+                                                            className="checkout-input"
+                                                        />
+                                                    </div>
+                                                    <div className="flex items-center grow gap-2 md:gap-4">
+                                                        <span className="label"></span>
+                                                        {errors.name && <p className="text-red-500 mt-0.5 lg:mt-1">{t("yourNameError")}</p>}
+                                                    </div>
+                                                </div>
+                                                <div className="w-full">
+                                                    <div className="input-box">
+                                                        <label htmlFor="phone" className="label">
+                                                            <span>{t("phoneNo")}</span> <span>:</span>
+                                                        </label>
+                                                        <input
+                                                            {...register("phone")}
+                                                            placeholder={t("phoneNoPlaceholder")}
+                                                            className="checkout-input"
+                                                        />
+                                                    </div>
+                                                    <div className="flex items-center grow gap-2 md:gap-4">
+                                                        <span className="label"></span>
+                                                        {errors.phone && <p className="text-red-500 mt-0.5 lg:mt-1">{t("phoneNoError")}</p>}
+                                                    </div>
+                                                </div>
+                                                <div className="w-full">
+                                                    <div className="input-box prevent-body-trigger">
+
+                                                        <label htmlFor="address" className="label">
+                                                            <span>{t("deliveryAddress")}</span> <span>:</span>
+                                                        </label>
+                                                        <SelectAddress
+                                                            isOpen={isOpen}
+                                                            watch={watch}
+                                                            setIsOpen={setIsOpen}
+                                                            register={register}
+                                                            setValue={setValue}
+                                                        />
+                                                    </div>
+                                                    <div className="flex items-center grow gap-2 md:gap-4">
+                                                        <span className="label"></span>
+                                                        {errors.address && (
+                                                            <p className="text-red-500 mt-0.5 lg:mt-1">{t("deliveryAddressError")}</p>
+                                                        )}
+
+                                                    </div>
+                                                </div>
                                                 <div className="input-box">
-                                                    <label htmlFor="name" className="label">
-                                                        <span>{t("yourName")}</span> <span>:</span>
+                                                    <label htmlFor="addressNote" className="label">
+                                                        <span>{t("addressNote")}</span> <span>:</span>
                                                     </label>
                                                     <input
-                                                        {...register("name")}
-                                                        placeholder={t("yourNamePlaceholder")}
+                                                        {...register("addressNote")}
+                                                        placeholder={t("addressNotePlaceholder")}
                                                         className="checkout-input"
                                                     />
                                                 </div>
-                                                <div className="flex items-center grow gap-2 md:gap-4">
-                                                    <span className="label"></span>
-                                                    {errors.name && <p className="text-red-500 mt-0.5 lg:mt-1">{t("yourNameError")}</p>}
-                                                </div>
+
+                                                {
+                                                    !!errors.addressNote && <div className="flex items-center grow gap-2 md:gap-4">
+                                                        <span className="label"></span>
+                                                        <p className="text-red-500 mt-0.5 lg:mt-1">{t("addressNoteError")}</p>
+                                                    </div>
+                                                }
                                             </div>
-                                            <div className="w-full">
-                                                <div className="input-box">
-                                                    <label htmlFor="phone" className="label">
-                                                        <span>{t("phoneNo")}</span> <span>:</span>
-                                                    </label>
+
+                                            {/* delivery order type */}
+                                            <div className='w-full flex flex-col gap-1'>
+                                                <label key="Home Delivery" className={`flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${deliveryType === "Home Delivery" ? "bg-secondary text-white" : "bg-slate-300/60"}`}>
                                                     <input
-                                                        {...register("phone")}
-                                                        placeholder={t("phoneNoPlaceholder")}
-                                                        className="checkout-input"
+                                                        type="radio"
+                                                        value="Home Delivery"
+                                                        {...register("deliveryType")}
                                                     />
-                                                </div>
-                                                <div className="flex items-center grow gap-2 md:gap-4">
-                                                    <span className="label"></span>
-                                                    {errors.phone && <p className="text-red-500 mt-0.5 lg:mt-1">{t("phoneNoError")}</p>}
-                                                </div>
-                                            </div>
-                                            <div className="w-full">
-                                                <div className="input-box prevent-body-trigger">
-
-                                                    <label htmlFor="address" className="label">
-                                                        <span>{t("deliveryAddress")}</span> <span>:</span>
-                                                    </label>
-                                                    <SelectAddress
-                                                        isOpen={isOpen}
-                                                        watch={watch}
-                                                        setIsOpen={setIsOpen}
-                                                        register={register}
-                                                        setValue={setValue}
-                                                    />
-                                                </div>
-                                                <div className="flex items-center grow gap-2 md:gap-4">
-                                                    <span className="label"></span>
-                                                    {errors.address && (
-                                                        <p className="text-red-500 mt-0.5 lg:mt-1">{t("deliveryAddressError")}</p>
-                                                    )}
-
-                                                </div>
-                                            </div>
-                                            <div className="input-box">
-                                                <label htmlFor="orderNote" className="label">
-                                                    <span>{t("orderNote")}</span> <span>:</span>
+                                                    <span className='flex items-center justify-between grow'>
+                                                        <span className='grow'>{t("homeDelivery")}</span> <span>{formatPrice(+deliveryAddress?.delivery_charge || 0)}</span>
+                                                    </span>
                                                 </label>
-                                                <input
-                                                    {...register("orderNote")}
-                                                    placeholder={t("orderNotePlaceholder")}
-                                                    className="checkout-input"
-                                                />
+                                                <label key="Self Pickup" className={`flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${deliveryType === "Self Pickup" ? "bg-secondary text-white" : "bg-slate-300/60"}`}>
+                                                    <input
+                                                        type="radio"
+                                                        value="Self Pickup"
+                                                        {...register("deliveryType")}
+                                                    />
+                                                    {t("selfPickup")}
+                                                </label>
+                                                <label key="Dine-In" className={`flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${deliveryType === "Dine-In" ? "bg-secondary text-white" : "bg-slate-300/60"}`}>
+                                                    <input
+                                                        type="radio"
+                                                        value="Dine-In"
+                                                        {...register("deliveryType")}
+                                                    />
+                                                    {t("dineIn")}
+                                                </label>
+                                                {errors.deliveryType && <p>{errors.deliveryType.message}</p>}
                                             </div>
-                                        </div>
 
-                                        {/* delivery order type */}
-                                        <div className='w-full flex flex-col gap-1'>
-                                            <label key="Home Delivery" className={`flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${deliveryType === "Home Delivery" ? "bg-secondary text-white" : "bg-slate-300/60"}`}>
-                                                <input
-                                                    type="radio"
-                                                    value="Home Delivery"
-                                                    {...register("deliveryType")}
-                                                />
-                                                <span className='flex items-center justify-between grow'>
-                                                    <span className='grow'>{t("homeDelivery")}</span> <span>{formatPrice(+deliveryAddress?.delivery_charge || 0)}</span>
-                                                </span>
-                                            </label>
-                                            <label key="Self Pickup" className={`flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${deliveryType === "Self Pickup" ? "bg-secondary text-white" : "bg-slate-300/60"}`}>
-                                                <input
-                                                    type="radio"
-                                                    value="Self Pickup"
-                                                    {...register("deliveryType")}
-                                                />
-                                                {t("selfPickup")}
-                                            </label>
-                                            <label key="Dine-In" className={`flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${deliveryType === "Dine-In" ? "bg-secondary text-white" : "bg-slate-300/60"}`}>
-                                                <input
-                                                    type="radio"
-                                                    value="Dine-In"
-                                                    {...register("deliveryType")}
-                                                />
-                                                {t("dineIn")}
-                                            </label>
-                                            {errors.deliveryType && <p>{errors.deliveryType.message}</p>}
-                                        </div>
-
-                                        {/* payment type */}
-                                        {deliveryType === "Home Delivery" ?
+                                            {/* payment type */}
+                                            {/* {deliveryType === "Home Delivery" ?
 
                                             <div className='w-full flex flex-col items-start gap-1'>
                                                 <label key="Cash On Delivery" className={`min-w-[170px] inline-flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${paymentType === "Cash On Delivery" ? "bg-secondary text-white" : "bg-slate-300/60"}`}>
@@ -323,23 +368,30 @@ export default function CheckoutModal() {
                                                     </label>
                                                 </div>
                                                 {errors.paymentType && <p>{errors.paymentType.message}</p>}
-                                            </div> : <></>}
-                                    </div>
-
-                                    <div className="w-full flex flex-col px-2 md:px-2.5">
-                                        <div className="min-h-10 border-t-black w-full mt-3 pt-2.5 border-t border-dashed">
-                                            <p className='flex items-center justify-between'><span className='grow'>{t("totalOrderAmount")}</span> <span>{formatPrice(cartTotal)}</span></p>
-                                            {
-                                                deliveryType === "Home Delivery" && <p className='flex items-center justify-between'><span className='grow'>{t("deliveryCharge")}</span> <span>{formatPrice(+deliveryAddress?.delivery_charge || 0)}</span></p>
-                                            }
-                                            {
-                                                discount > 0 && <p className='flex items-center justify-between'><span className='grow'>{t("discountAmount")}</span> <span>-{formatPrice(discount)}</span></p>
-                                            }
+                                            </div> : <></>} */}
                                         </div>
 
-                                        <Button size="lg" className='text-white mt-3 font-semibold lg:text-[20px]' type="submit"><span>{t("confirmOrder")}</span> <span>{formatPrice(subTotal)}</span></Button>
-                                    </div>
-                                </form>}
+                                        <div className="w-full flex flex-col px-2 md:px-2.5">
+                                            <div className="min-h-10 border-t-black w-full mt-3 pt-2.5 border-t border-dashed">
+                                                <p className='flex items-center justify-between'><span className='grow'>{t("totalOrderAmount")}</span> <span>{formatPrice(cartTotal)}</span></p>
+                                                {
+                                                    deliveryType === "Home Delivery" && <p className='flex items-center justify-between'><span className='grow'>{t("deliveryCharge")}</span> <span>{formatPrice(+deliveryAddress?.delivery_charge || 0)}</span></p>
+                                                }
+                                                {
+                                                    discount > 0 && <p className='flex items-center justify-between'><span className='grow'>{t("discountAmount")}</span> <span>-{formatPrice(discount)}</span></p>
+                                                }
+                                            </div>
+
+                                            {
+                                                isLoading ?
+                                                    <div className="w-full flex items-center min-h-10 justify-center">
+                                                        <LoadingSpinner />
+                                                    </div>
+                                                    :
+                                                    <Button size="lg" className='text-white mt-3 font-semibold lg:text-[20px]' type="submit"><span>{t("confirmOrder")}</span> <span>{formatPrice(subTotal)}</span></Button>
+                                            }
+                                        </div>
+                                    </form>}
                         </div>
                         :
                         <CheckoutResponse setShowCheckoutResult={setShowCheckoutResult} response={orderResponse} />

@@ -18,8 +18,7 @@ export default function FoodCart({ product }: { product: TProduct }) {
     // hooks
     const dispatch = useDispatch()
     const t = useTranslations('shared');
-    const { cartProducts, favouriteProducts } = useSelector((state: RootState) => state.productSlice)
-    const { locale } = useSelector((state: RootState) => state.locale)
+    const { favouriteProducts } = useSelector((state: RootState) => state.productSlice)
     const { formatPrice } = useFormatPrice();
     const { renderText } = useRenderText()
 

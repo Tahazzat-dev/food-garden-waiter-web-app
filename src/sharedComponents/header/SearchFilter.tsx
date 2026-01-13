@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { useTranslations } from 'next-intl';
 import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'react';
-import { fakeSearch } from '../utils/Utils';
+// import { fakeSearch } from '../utils/Utils';
 import SearchProductLoader from '../loading/searchingLoader';
 import Image from 'next/image';
 import { getDiscountPrice } from '@/lib/utils';
@@ -36,8 +36,9 @@ export default function SearchFilter({ className }: { className?: string }) {
 
         debounceRef.current = setTimeout(async () => {
             setLoading(true);
-            const matched = await fakeSearch(searchTxt);
-            setResults(matched);
+            // const matched = await fakeSearch(searchTxt);
+            // setResults(matched);
+            setResults([]);
             setLoading(false);
         }, 400);
 
@@ -98,16 +99,16 @@ export default function SearchFilter({ className }: { className?: string }) {
                                 results.length === 0 ? <p className='fg_fs-sm text-center py-4'>No results found</p> :
                                     <div className="w-full mx-auto space-y-2">
                                         {
-                                            results.map((item, i) => <div
-                                                key={item.title.en + i}
-                                                className="flex gap-2 p-2 shadow rounded-lg bg-white dark:bg-slate-700 "
-                                            >
-                                                <Image src={item.img} className='w-12 h-12' width={300} height={400} alt={item.title.en} />
-                                                <div className="flex flex-col flex-1">
-                                                    <h5>{item.title.bn} | {item.title.en}</h5>
-                                                    <p className='flex items-center gap-3'><span>৳{getDiscountPrice(item.variants[0]?.price, item.variants[0]?.discount || 0)}</span> <span className='line-through'>৳{item?.variants[0]?.price}</span></p>
-                                                </div>
-                                            </div>)
+                                            // results.map((item, i) => <div
+                                            //     key={item.title.en + i}
+                                            //     className="flex gap-2 p-2 shadow rounded-lg bg-white dark:bg-slate-700 "
+                                            // >
+                                            //     <Image src={item.img} className='w-12 h-12' width={300} height={400} alt={item.title.en} />
+                                            //     <div className="flex flex-col flex-1">
+                                            //         <h5>{item.title.bn} | {item.title.en}</h5>
+                                            //         <p className='flex items-center gap-3'><span>৳{getDiscountPrice(item.variants[0]?.price, item.variants[0]?.discount || 0)}</span> <span className='line-through'>৳{item?.variants[0]?.price}</span></p>
+                                            //     </div>
+                                            // </div>)
                                         }
                                     </div>
 
