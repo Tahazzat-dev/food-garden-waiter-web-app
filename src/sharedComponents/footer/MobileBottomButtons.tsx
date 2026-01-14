@@ -71,10 +71,10 @@ export default function MobileBottomButtons() {
                     <span className='text-white font-semibold text-sm sm:text-base'>{t("orders")}</span>
                 </Link>
 
-                <button className='flex flex-col gap-1 items-center justify-between' >
+                <Link target='_blank' href="https://wa.me/8801713619293" className='flex flex-col gap-1 items-center justify-between' >
                     <Image src="/images/shared/whatsapp.svg" width={25} height={40} alt="Whatsapp icon" />
                     <span className='text-white font-semibold text-sm sm:text-base'>{t("message")}</span>
-                </button>
+                </Link>
             </Container>
         </div>
     )
