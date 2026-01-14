@@ -10,6 +10,9 @@ interface IInitialState {
     showOfferedMark: boolean;
     pendingOrders: TOrder[];
     allProducts: TProduct[];
+
+    // temp
+    orders: TOrder[];
 }
 
 const initialState: IInitialState = {
@@ -19,7 +22,8 @@ const initialState: IInitialState = {
     hasOfferedProducts: false,
     showOfferedMark: false,
     pendingOrders: [],
-    allProducts: []
+    allProducts: [],
+    orders: []
 };
 
 const productSlice = createSlice({
@@ -86,7 +90,12 @@ const productSlice = createSlice({
         removeFavouriteProduct: (state, action: PayloadAction<number>) => {
             state.favouriteProducts = state.favouriteProducts.filter(product => product.id !== action.payload);
             setToStorage('fav_items', state.favouriteProducts.map(item => item.id));
-        }
+        },
+
+        // Temp
+        setOrders: (state, action: PayloadAction<TOrder[]>) => {
+            state.orders = action.payload
+        },
     },
 });
 
@@ -103,6 +112,7 @@ export const {
     setAllProduct,
     setFavouriteProducts,
     addFavouriteProduct,
-    removeFavouriteProduct
+    removeFavouriteProduct,
+    setOrders
 } = productSlice.actions;
 export default productSlice.reducer;

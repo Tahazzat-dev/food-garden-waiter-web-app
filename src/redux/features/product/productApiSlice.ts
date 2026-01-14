@@ -22,9 +22,13 @@ export const productApiSlice = createApi({
                 body: data
             })
         }),
+
+        getAllOrders: builder.query({
+            query: (q) => `/orders?${q}`
+        })
     }),
 });
 
 // Auto-generated hooks based on the endpoints
-export const { useGetAllProductsQuery, useConfirmOrderMutation, useGetCategoryProductsQuery, useLazyGetCategoryProductsQuery } = productApiSlice;
+export const { useLazyGetAllOrdersQuery, useGetAllProductsQuery, useConfirmOrderMutation, useGetCategoryProductsQuery, useLazyGetCategoryProductsQuery } = productApiSlice;
 export default productApiSlice;

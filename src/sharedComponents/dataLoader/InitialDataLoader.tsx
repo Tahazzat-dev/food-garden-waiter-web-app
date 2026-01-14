@@ -1,15 +1,19 @@
 "use client"
 import { getFromStorage } from '@/lib/storage'
+import { updateFetchOrders } from '@/redux/features/actions/actionSlice'
 import { setCategories } from '@/redux/features/category/categorySlice'
-import { useGetAllProductsQuery } from '@/redux/features/product/productApiSlice'
-import { setAllProduct, setCartProducts, setFavouriteProducts, setPendingOrders } from '@/redux/features/product/productSlice'
+import { useGetAllProductsQuery, useLazyGetAllOrdersQuery } from '@/redux/features/product/productApiSlice'
+import { setAllProduct, setCartProducts, setFavouriteProducts, setOrders, setPendingOrders } from '@/redux/features/product/productSlice'
+import { RootState } from '@/redux/store'
 import { TCartProduct, TCategory, TOrder, TProduct } from '@/types/types'
 import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 export default function InitialDataLoader() {
     const dispatch = useDispatch()
     const { data: productData } = useGetAllProductsQuery("");
+    const [loadOrders] = useLazyGetAllOrdersQuery();
+    const { fetchOrders } = useSelector((state: RootState) => state.actions);
     useEffect(() => {
         // set product data;
         if (productData && productData?.success) {
@@ -31,12 +35,33 @@ export default function InitialDataLoader() {
                 dispatch(setCartProducts(cart_items));
             }
         }
-
-        // dispatch(setAllProduct)
-        // TODO: have to midify this with the real data.
-        const orders = getFromStorage("orders") as TOrder[] || [];
-        dispatch(setPendingOrders(orders));
     }, [dispatch, productData])
+
+
+    useEffect(() => {
+
+        if (!fetchOrders) return;
+
+        (async () => {
+            try {
+                const address = getFromStorage('user_address') as { name: string; phone: string };
+                if (address && address?.name && address.phone) {
+                    const res = await loadOrders(`name=${address.name}&phone=${address.phone}`).unwrap();
+                    if (res.success) {
+                        dispatch(setOrders(res.data))
+                        if (fetchOrders) {
+                            dispatch(updateFetchOrders(false))
+                        }
+                    }
+
+                }
+            } catch (error) {
+                console.error('Error loading data', error)
+            }
+        })()
+
+    }, [loadOrders, fetchOrders, dispatch])
+
     return (
         <></>
     )

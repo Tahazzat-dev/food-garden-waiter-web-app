@@ -146,24 +146,43 @@ export interface TOrderPriceSummary {
 }
 
 
-export interface TOrder {
-    id: string;
-    userId: string;
-
-    items: TCartProduct[];
-
-    priceSummary: TOrderPriceSummary;
-
-    status: TOrderStatus;
-    paymentStatus: TPaymentStatus;
-    paymentMethod: TPaymentMethod;
-
-    note?: string;
-
-    createdAt: string; // ISO date
-    updatedAt: string;
+export interface Product {
+    id: number;
+    name: string;
+    image: string | null;
 }
 
+export interface Variation {
+    id: number;
+    variation: string;
+    price: string; // "180.00"
+}
+
+export interface OrderItem {
+    id: number;
+    order_activies_id: number;
+    product_id: number;
+    variation_id: number;
+    qty: number;
+    rate: string;     // Decimal string
+    sub_total: string; // Decimal string
+    product: Product;
+    variation: Variation;
+}
+
+export interface TOrder {
+    id: number;
+    customer_id: number;
+    order_id: number;
+    estimate_number: string;
+    order_status: string; // e.g., "First Order"
+    estimate_date: string; // "YYYY-MM-DD"
+    delivery_date: string; // "YYYY-MM-DD"
+    final_receivable: string;
+    note: string | null;
+    items: OrderItem[];
+    delivery_charge: string;
+}
 
 export type CheckoutStatus = "success" | "error";
 

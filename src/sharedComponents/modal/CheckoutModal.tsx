@@ -7,7 +7,7 @@ import { Check, ShoppingCart, X } from "lucide-react"; // optional icon
 import { Button } from "@/components/ui/button";
 import { clearCartProducts } from "@/redux/features/product/productSlice";
 import { useTranslations } from 'next-intl';
-import { SET_EXPAND } from '@/redux/features/actions/actionSlice';
+import { SET_EXPAND, updateFetchOrders } from '@/redux/features/actions/actionSlice';
 import z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -96,7 +96,7 @@ export default function CheckoutModal() {
 
     // conditional variables
     const openModal = EXPAND === KEY;
-    const paymentType = watch("paymentType");
+    // const paymentType = watch("paymentType");
     const deliveryType = watch("deliveryType");
     const deliveryAddress = watch("address");
 
@@ -124,6 +124,9 @@ export default function CheckoutModal() {
                     status: "success",
                 })
                 setShowCheckoutResult(true);
+
+                // save the order to localStorage
+                dispatch(updateFetchOrders(true))
             }
         } catch (error) {
             console.error(error);
