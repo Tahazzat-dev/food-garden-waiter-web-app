@@ -10,6 +10,7 @@ import { useTranslations } from 'next-intl'
 import { useEffect } from 'react'
 import { hasVisitedOffersToday } from '@/lib/utils'
 import { setShowOfferedMark } from '@/redux/features/product/productSlice'
+import RenderText from '../utils/RenderText'
 
 export default function MobileBottomButtons() {
     // variables
@@ -37,7 +38,7 @@ export default function MobileBottomButtons() {
             <Container className='flex justify-between'>
                 <Link className='flex flex-col gap-1 items-center justify-between' href="/" >
                     <Image src="/images/shared/home-icon.svg" width={22} height={40} alt="Home icon" />
-                    <span className='text-white font-semibold text-sm sm:text-base'>{t("home")}</span>
+                    <span className='text-white font-semibold text-sm sm:text-base'><RenderText group="mobileBottomActions" variable="home" /></span>
                 </Link>
                 <Link href="/offers" className='flex flex-col gap-1 items-center justify-between' >
                     <div className='relative'>
@@ -47,7 +48,7 @@ export default function MobileBottomButtons() {
                             <span className='flex items-center justify-center text-xs px-0.5 min-w-[18px] min-h-4  absolute -top-[40%] left-[80%] translate-x-[-50%] bg-secondary text-white rounded-full p-[1px]'>!</span>
                         }
                     </div>
-                    <span className='text-white font-semibold text-sm sm:text-base'>{t("offers")}</span>
+                    <span className='text-white font-semibold text-sm sm:text-base'><RenderText group="mobileBottomActions" variable="offers" /></span>
                 </Link>
                 <button onClick={() => dispatch(SET_EXPAND(EXPAND === KEY ? null : KEY))} className='prevent-body-trigger relative flex flex-col gap-1 items-center justify-between' >
                     <div className='relative'>
@@ -68,12 +69,12 @@ export default function MobileBottomButtons() {
                             <span className='flex items-center justify-center text-xs px-0.5 min-w-[18px] min-h-4  absolute -top-[40%] left-[80%] translate-x-[-50%] bg-secondary text-white rounded-full p-[1px]'>{pendingOrders.length}</span>
                         }
                     </div>
-                    <span className='text-white font-semibold text-sm sm:text-base'>{t("orders")}</span>
+                    <span className='text-white font-semibold text-sm sm:text-base'><RenderText group="mobileBottomActions" variable="orders" /></span>
                 </Link>
 
                 <Link target='_blank' href="https://wa.me/8801713619293" className='flex flex-col gap-1 items-center justify-between' >
                     <Image src="/images/shared/whatsapp.svg" width={25} height={40} alt="Whatsapp icon" />
-                    <span className='text-white font-semibold text-sm sm:text-base'>{t("message")}</span>
+                    <span className='text-white font-semibold text-sm sm:text-base'><RenderText group="mobileBottomActions" variable="message" /></span>
                 </Link>
             </Container>
         </div>

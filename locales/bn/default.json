@@ -45,7 +45,9 @@
     "productNote": "পণ্য নোটস",
     "retry": "আবার চেষ্টা করুন",
     "close": "বন্ধ করুন",
-    "free": "ফ্রি"
+    "free": "ফ্রি",
+    "language": "ভাষা",
+    "theme": "থিম"
   },
 
   "mobileBottomActions": {

@@ -16,7 +16,6 @@ export default function FVFoodCard({ item }: { item: TProduct }) {
     // hooks
     const t = useTranslations('shared');
     const dispatch = useDispatch()
-    const { locale } = useSelector((state: RootState) => state.locale)
     const { cartProducts } = useSelector((state: RootState) => state.productSlice);
     const [addedVariants, setAddedVariants] = useState(0);
     const { renderText } = useRenderText()
@@ -64,9 +63,10 @@ export default function FVFoodCard({ item }: { item: TProduct }) {
 
                 <div className='flex flex-col justify-between items-end'>
                     <Button
+
                         variant='secondary'
                         size='icon'
-                        className='p-1 h-6 w-6 rounded-full shadow-sm'
+                        className='prevent-body-trigger p-1 h-6 w-6 rounded-full shadow-sm'
                         onClick={() => dispatch(removeFavouriteProduct(item.id))}
                     >
                         <Trash2 className='text-white  h-3 w-3' />

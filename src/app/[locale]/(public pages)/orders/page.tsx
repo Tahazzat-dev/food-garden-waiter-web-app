@@ -55,7 +55,6 @@
 //                                             height={40}
 //                                             className="rounded-md object-cover"
 //                                         />
-
 //                                         <div className="flex-1 text-sm">
 //                                             <p className="font-medium leading-tight">
 //                                                 <TranslateText key={`ITEM_TITLE_${order.id}`} text={item.title} />

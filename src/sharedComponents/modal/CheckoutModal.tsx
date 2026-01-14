@@ -60,6 +60,7 @@ import { useGetAddressesQuery } from '@/redux/features/address/addressApiSlice';
 import LoadingSpinner from '../loading/LoadingSpinner';
 import useRenderText from '@/hooks/useRenderText';
 import { useConfirmOrderMutation } from '@/redux/features/product/productApiSlice';
+import { getFromStorage, setToStorage } from '@/lib/storage';
 
 export default function CheckoutModal() {
     // variables
@@ -82,6 +83,7 @@ export default function CheckoutModal() {
         register,
         handleSubmit,
         watch,
+        reset,
         setValue,
         formState: { errors },
     } = useForm<OrderFormValues>({
@@ -101,9 +103,7 @@ export default function CheckoutModal() {
 
     // handlers
     const onSubmit = async (data: OrderFormValues) => {
-
         const products = cartProducts.map(p => ({ product_id: p.productId, variant_id: p.id, quantity: p.quantity }));
-
         const bodyData = {
             name: data.name,
             phone: data.phone,
@@ -111,6 +111,8 @@ export default function CheckoutModal() {
             address_note: data.addressNote,
             products
         }
+
+        setToStorage('user_address', data);
 
         try {
             const res = await confirmOrder(bodyData).unwrap();
@@ -162,8 +164,13 @@ export default function CheckoutModal() {
     }, [])
 
     useEffect(() => {
-        setIsOpen(false)
-    }, [EXPAND])
+        setIsOpen(false);
+        // load user address from the localstorage
+        const address = getFromStorage('user_address') as OrderFormValues;
+        if (address && address?.name) {
+            reset(address)
+        }
+    }, [EXPAND, reset])
 
 
 

@@ -5,14 +5,13 @@ import PublicSidebar from './PublicSidebar';
 import { CartSheet } from '../cart/CartSheet';
 import SiteLogo from './SiteLogo';
 import LocaleSwitcher from '../toggler/LocaleSwitcher';
-import { useTranslations } from 'next-intl';
 import ThemeSwitcher from '../toggler/ThemeSwitcher';
 import { FavouriteFoods } from '../favourite/FavouriteFoods';
 import AuthUser from './AuthUser'
 import CheckoutModal from '../modal/CheckoutModal';
+import RenderText from '../utils/RenderText';
 
 export default function PubliceHeader() {
-  const tTracking = useTranslations('header');
   return (
     <>
       <section className='z-[9999] w-full fixed top-0 left-0 py-2 bg-[var(--bg-header)]'>
@@ -28,7 +27,7 @@ export default function PubliceHeader() {
           </div>
           <div className='flex grow items-center justify-end gap-3  lg:grow-0 lg:justify-between'>
             <div className='hidden text-white items-center gap-2 md:flex'>
-              <span className='fg_fs-xs '>{tTracking('trackingTxt')}</span>
+              <span className='fg_fs-xs '><RenderText group='header' variable='trackingTxt' /></span>
             </div>
             <FavouriteFoods />
             <CartSheet />

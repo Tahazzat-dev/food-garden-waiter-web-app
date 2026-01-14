@@ -44,7 +44,9 @@
     "productNote": "Product Note",
     "retry": "Retry",
     "close": "Close",
-    "free": "Free"
+    "free": "Free",
+    "language": "Language",
+    "theme": "Theme"
   },
 
   "mobileBottomActions": {

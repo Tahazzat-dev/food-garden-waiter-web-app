@@ -13,6 +13,7 @@ import { getTranslationReadyText } from '@/lib/utils'
 import useFormatPrice from '@/hooks/useFormatPrice'
 import { TProduct } from '@/types/types'
 import useRenderText from '@/hooks/useRenderText'
+import { setToStorage } from '@/lib/storage'
 
 export default function FoodCart({ product }: { product: TProduct }) {
     // hooks

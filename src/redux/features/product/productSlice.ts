@@ -1,3 +1,4 @@
+import { setToStorage } from "@/lib/storage";
 import { TCartProduct, TOrder, TProduct } from "@/types/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
@@ -60,13 +61,16 @@ const productSlice = createSlice({
 
         addCartProduct: (state, action: PayloadAction<TCartProduct>) => {
             state.cartProducts.push(action.payload);
+            setToStorage('cart_items', state.cartProducts);
         },
 
         removeCartProduct: (state, action: PayloadAction<number>) => {
             state.cartProducts = state.cartProducts.filter(product => product.id !== action.payload);
+            setToStorage('cart_items', state.cartProducts);
         },
         clearCartProducts: (state) => {
             state.cartProducts = [];
+            setToStorage('cart_items', []);
         },
 
         // favourite products reducers
@@ -76,10 +80,12 @@ const productSlice = createSlice({
 
         addFavouriteProduct: (state, action: PayloadAction<TProduct>) => {
             state.favouriteProducts.push(action.payload);
+            setToStorage('fav_items', state.favouriteProducts.map(item => item.id));
         },
 
         removeFavouriteProduct: (state, action: PayloadAction<number>) => {
             state.favouriteProducts = state.favouriteProducts.filter(product => product.id !== action.payload);
+            setToStorage('fav_items', state.favouriteProducts.map(item => item.id));
         }
     },
 });

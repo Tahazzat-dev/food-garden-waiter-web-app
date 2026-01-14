@@ -2,8 +2,8 @@
 import { getFromStorage } from '@/lib/storage'
 import { setCategories } from '@/redux/features/category/categorySlice'
 import { useGetAllProductsQuery } from '@/redux/features/product/productApiSlice'
-import { setAllProduct, setPendingOrders } from '@/redux/features/product/productSlice'
-import { TCategory, TOrder } from '@/types/types'
+import { setAllProduct, setCartProducts, setFavouriteProducts, setPendingOrders } from '@/redux/features/product/productSlice'
+import { TCartProduct, TCategory, TOrder, TProduct } from '@/types/types'
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 
@@ -14,7 +14,24 @@ export default function InitialDataLoader() {
         // set product data;
         if (productData && productData?.success) {
             dispatch(setAllProduct(productData?.data));
+
+            // set fav items
+            const fav_items: number[] = getFromStorage('fav_items') || [];
+            if (fav_items?.length) {
+                const favSet = new Set(fav_items);
+                const favoriteProducts = productData?.data
+                    .filter((p: TProduct) => favSet.has(p.id))
+                dispatch(setFavouriteProducts(favoriteProducts));
+            }
+
+
+            // set cart items
+            const cart_items: TCartProduct[] = getFromStorage('cart_items') || [];
+            if (cart_items?.length) {
+                dispatch(setCartProducts(cart_items));
+            }
         }
+
         // dispatch(setAllProduct)
         // TODO: have to midify this with the real data.
         const orders = getFromStorage("orders") as TOrder[] || [];
