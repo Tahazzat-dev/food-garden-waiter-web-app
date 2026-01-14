@@ -29,7 +29,7 @@
     "description": "Description",
     "buyNow": "BUY NOW",
     "whatsapp": "Whats App",
-    "whatsappNo": "01740-133050",
+    "whatsappNo": "01713-619293",
     "similarItems": "Similar items",
     "pending": "Pending",
     "confirmed": "Confirmed",
@@ -98,6 +98,7 @@
   "header": {
     "categories": {
       "all": "All Categories",
+      "top": "Top",
       "burger": "Burger",
       "pizza": "Pizza",
       "sushi": "Sushi",

@@ -1,6 +1,23 @@
+
+import {
+    Drawer,
+    DrawerClose,
+    DrawerContent,
+    DrawerTitle,
+    DrawerTrigger,
+} from "@/components/ui/drawer"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import Image from "next/image"
+import LocaleSwitcher from "../toggler/LocaleSwitcher"
+import ThemeSwitcher from "../toggler/ThemeSwitcher"
+import RenderText from "../utils/RenderText"
+
+
 import { MenuIcon, X } from "lucide-react"
 
 export function MenuTabSwitcher() {
+
     // const showOfferedMark = 5;
     // const orders = 5;
     return (
@@ -8,27 +25,32 @@ export function MenuTabSwitcher() {
             <ul className="flex flex-col">
                 <li className="border-b border-slate-200 py-2.5">
                     <Link href="/" className="hover:text-primary transition-colors">
-                        <RenderText group="mobileBottomActions" variable="home" />
+                        <DrawerClose>
+                            <RenderText group="mobileBottomActions" variable="home" />
+                        </DrawerClose>
                     </Link>
                 </li>
                 <li className="border-b border-slate-200 py-2.5">
                     <Link href="/offers" className="flex items-center justify-between hover:text-primary transition-colors">
-                        <RenderText group="mobileBottomActions" variable="offers" />
-                        {/* {
+                        <DrawerClose>
+                            <RenderText group="mobileBottomActions" variable="offers" />
+                            {/* {
                             !!showOfferedMark &&
                             <span className='flex items-center justify-center text-xs px-0.5 min-w-[18px] min-h-4 bg-secondary text-white rounded-full p-[1px]'>!</span>
                         } */}
+                        </DrawerClose>
                     </Link>
                 </li>
                 <li className="border-b border-slate-200 py-2.5">
                     <Link href="/orders" className="flex items-center justify-between hover:text-primary transition-colors">
-                        <RenderText group="mobileBottomActions" variable="orders" />
-                        {/* {
+                        <DrawerClose>
+                            <RenderText group="mobileBottomActions" variable="orders" />
+                            {/* {
                             !!orders &&
                             <span className='flex items-center justify-center text-xs px-0.5 min-w-[18px] min-h-4 bg-secondary text-white rounded-full p-[1px]'>{orders}</span>
                         } */}
+                        </DrawerClose>
                     </Link>
-
                 </li>
                 {/* <li className="border-b border-slate-200 py-2.5">
                     <Link href="/elements" className="hover:text-primary transition-colors">
@@ -47,19 +69,6 @@ export function MenuTabSwitcher() {
 }
 
 
-import {
-    Drawer,
-    DrawerClose,
-    DrawerContent,
-    DrawerTitle,
-    DrawerTrigger,
-} from "@/components/ui/drawer"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import Image from "next/image"
-import LocaleSwitcher from "../toggler/LocaleSwitcher"
-import ThemeSwitcher from "../toggler/ThemeSwitcher"
-import RenderText from "../utils/RenderText"
 export default function PublicSidebar() {
     return (
         <Drawer direction="left" >

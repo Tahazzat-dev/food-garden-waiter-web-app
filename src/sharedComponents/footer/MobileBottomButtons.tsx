@@ -36,11 +36,11 @@ export default function MobileBottomButtons() {
     return (
         <div className='w-full dark:border-t dark:border-slate-400 md:hidden bg-black fixed py-2 z-[999999] bottom-0 left-0'>
             <Container className='flex justify-between'>
-                <Link className='flex flex-col gap-1 items-center justify-between' href="/" >
+                <Link className='flex flex-col gap-1 items-center justify-between min-w-[70px]' href="/" >
                     <Image src="/images/shared/home-icon.svg" width={22} height={40} alt="Home icon" />
                     <span className='text-white font-semibold text-sm sm:text-base'><RenderText group="mobileBottomActions" variable="home" /></span>
                 </Link>
-                <Link href="/offers" className='flex flex-col gap-1 items-center justify-between' >
+                <Link href="/offers" className='flex flex-col gap-1 items-center justify-between min-w-[70px]' >
                     <div className='relative'>
                         <Image src="/images/shared/special.svg" width={25} height={40} alt="Offer icon" />
                         {
@@ -50,7 +50,7 @@ export default function MobileBottomButtons() {
                     </div>
                     <span className='text-white font-semibold text-sm sm:text-base'><RenderText group="mobileBottomActions" variable="offers" /></span>
                 </Link>
-                <button onClick={() => dispatch(SET_EXPAND(EXPAND === KEY ? null : KEY))} className='prevent-body-trigger relative flex flex-col gap-1 items-center justify-between' >
+                <button onClick={() => dispatch(SET_EXPAND(EXPAND === KEY ? null : KEY))} className='min-w-[70px] prevent-body-trigger relative flex flex-col gap-1 items-center justify-between' >
                     <div className='relative'>
                         <ShoppingCart fill='white' className='text-white h-6 w-6 cursor-pointer' />
                         {
@@ -61,7 +61,7 @@ export default function MobileBottomButtons() {
                     <span className='text-white font-semibold text-sm sm:text-base'>{t("cart")}</span>
                 </button>
 
-                <Link href="/orders" className='relative flex flex-col gap-1 items-center justify-between' >
+                <Link href="/orders" className='relative flex flex-col gap-1 items-center justify-between min-w-[70px]' >
                     <div className='relative'>
                         <Image src="/images/shared/my-order.svg" width={25} height={40} alt="Orders icon" />
                         {
@@ -72,9 +72,9 @@ export default function MobileBottomButtons() {
                     <span className='text-white font-semibold text-sm sm:text-base'><RenderText group="mobileBottomActions" variable="orders" /></span>
                 </Link>
 
-                <Link target='_blank' href="https://wa.me/8801713619293" className='flex flex-col gap-1 items-center justify-between' >
+                <Link target='_blank' href="https://wa.me/8801713619293" className='flex flex-col gap-1 items-center justify-between min-w-[70px]' >
                     <Image src="/images/shared/whatsapp.svg" width={25} height={40} alt="Whatsapp icon" />
-                    <span className='text-white font-semibold text-sm sm:text-base'><RenderText group="mobileBottomActions" variable="message" /></span>
+                    <span className='text-white font-semibold text-sm sm:text-base'><RenderText group="shared" variable="whatsapp" /></span>
                 </Link>
             </Container>
         </div>

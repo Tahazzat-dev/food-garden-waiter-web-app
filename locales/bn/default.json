@@ -29,7 +29,7 @@
     "description": "বিস্তারিত",
     "buyNow": "এখনই কিনুন",
     "whatsapp": "হোয়াটসঅ্যাপ",
-    "whatsappNo": "০১৭৪০-১৩৩০৫০",
+    "whatsappNo": "০১৭১৩-৬১৯২৯৩",
     "similarItems": "একই ধরণের খাবারসমূহ",
     "pending": "অপেক্ষমান",
     "confirmed": "নিশ্চিত",
@@ -98,6 +98,7 @@
   "header": {
     "categories": {
       "all": "সব ক্যাটাগরি",
+      "top": "সেরা",
       "burger": "বার্গার",
       "pizza": "পিজ্জা",
       "sushi": "সুশি",

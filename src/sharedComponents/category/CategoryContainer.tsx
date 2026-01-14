@@ -11,7 +11,7 @@ export default async function CategorySection({ className }: { className?: strin
     const allCategory: TCategory = {
         id: 0,
         image: { link: '/images/shared/all-category.png' },
-        name: "সব ক্যাটাগরি / All Categories",
+        name: "সেরা / Top",
         slug: "all-categories"
     }
     return (
