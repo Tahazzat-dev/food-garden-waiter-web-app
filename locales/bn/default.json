@@ -50,6 +50,10 @@
     "theme": "থিম"
   },
 
+  "pages": {
+    "noOrder": "কোনো অর্ডার পাওয়া যায়নি"
+  },
+
   "mobileBottomActions": {
     "home": "হোম",
     "offers": "অফার",

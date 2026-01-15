@@ -25,10 +25,14 @@ export const productApiSlice = createApi({
 
         getAllOrders: builder.query({
             query: (q) => `/orders?${q}`
+        }),
+        getCustomerInfo: builder.query({
+            query: (phone) => `/customers/${phone}`,
+            keepUnusedDataFor: 0,
         })
     }),
 });
 
 // Auto-generated hooks based on the endpoints
-export const { useLazyGetAllOrdersQuery, useGetAllProductsQuery, useConfirmOrderMutation, useGetCategoryProductsQuery, useLazyGetCategoryProductsQuery } = productApiSlice;
+export const { useLazyGetCustomerInfoQuery, useLazyGetAllOrdersQuery, useGetAllProductsQuery, useConfirmOrderMutation, useGetCategoryProductsQuery, useLazyGetCategoryProductsQuery } = productApiSlice;
 export default productApiSlice;

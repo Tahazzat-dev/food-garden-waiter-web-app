@@ -1,7 +1,7 @@
 'use client';
 import { RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { ChevronDown } from "lucide-react"
+import { ChevronDown, CloudSync } from "lucide-react"
 import { useRef } from "react"
 import { Check, ShoppingCart, X } from "lucide-react"; // optional icon
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,7 @@ import z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Dispatch, MouseEvent, SetStateAction, useEffect, useMemo, useState } from 'react';
-import { calculateSubtotal, generateOrderId, getDiscountAmount, getTranslationReadyText } from '@/lib/utils';
+import { calculateSubtotal, cn, generateOrderId, getDiscountAmount, getTranslationReadyText } from '@/lib/utils';
 
 // schema/orderSchema.ts
 export const deliveryTypes = ["Home Delivery", "Self Pickup", "Dine-In"] as const;
@@ -59,7 +59,7 @@ import RenderText from '../utils/RenderText';
 import { useGetAddressesQuery } from '@/redux/features/address/addressApiSlice';
 import LoadingSpinner from '../loading/LoadingSpinner';
 import useRenderText from '@/hooks/useRenderText';
-import { useConfirmOrderMutation } from '@/redux/features/product/productApiSlice';
+import { useConfirmOrderMutation, useLazyGetCustomerInfoQuery } from '@/redux/features/product/productApiSlice';
 import { getFromStorage, setToStorage } from '@/lib/storage';
 
 export default function CheckoutModal() {
@@ -76,6 +76,7 @@ export default function CheckoutModal() {
     const [showCheckoutResult, setShowCheckoutResult] = useState(false)
     const [confirmOrder, { isLoading }] = useConfirmOrderMutation()
     const [orderResponse, setOrderResponse] = useState<TOrderResponse | null>(null);
+    const [getCustomer, { isLoading: isCustomerInfoLoading }] = useLazyGetCustomerInfoQuery();
     const [isOpen, setIsOpen] = useState(false);
 
     // hook form
@@ -161,6 +162,31 @@ export default function CheckoutModal() {
         setIsOpen(false);
     }
 
+
+    const handleCustomerSearch = async () => {
+        try {
+            const phone = watch('phone');
+            const res = await getCustomer(phone).unwrap();
+            if (res?.success && res?.data && res?.data?.phone) {
+                const address: OrderFormValues = {
+                    address: res.data.address,
+                    addressNote: res.data.note,
+                    name: res.data.name,
+                    deliveryType: "Home Delivery",
+                    phone: res.data.phone,
+                    paymentType: "Cash On Delivery"
+                }
+                reset(address);
+            } else {
+                reset();
+
+            }
+        } catch (error) {
+            // TODO: have to log error to the error file.
+            console.error(error);
+        }
+    }
+
     //  ========== hidden overflow of body ========
     useEffect(() => {
         setMounted(true)
@@ -223,7 +249,7 @@ export default function CheckoutModal() {
             >
                 {
                     !showCheckoutResult ?
-                        <div onClick={handleModalClick} className="prevent-body-trigger checkout-modal-inner w-full flex flex-col mx-auto max-h-[100%] h-auto !border-none !m-0 !p-0 max-w-[90vw] sm:max-w-[500px] md:max-w-[500px] !rounded-[6px] md:rounded-[8px] lg:!rounded-[10px] bg-body overflow-hidden">
+                        <div onClick={handleModalClick} className={cn("prevent-body-trigger checkout-modal-inner w-full flex flex-col mx-auto max-h-[100%] h-auto !border-none !m-0 !p-0 max-w-[90vw] sm:max-w-[500px] md:max-w-[500px] !rounded-[6px] md:rounded-[8px] lg:!rounded-[10px] bg-body overflow-hidden", !!isCustomerInfoLoading && "pointer-events-none")} >
                             <div className="flex items-center justify-between bg-primary px-2.5 sm:px-4 py-3 mb-1">
                                 <div></div>
                                 <h3 className="fg_fs-lg text-white">
@@ -267,11 +293,23 @@ export default function CheckoutModal() {
                                                         <label htmlFor="phone" className="label">
                                                             <span>{t("phoneNo")}</span> <span>:</span>
                                                         </label>
-                                                        <input
-                                                            {...register("phone")}
-                                                            placeholder={t("phoneNoPlaceholder")}
-                                                            className="checkout-input"
-                                                        />
+                                                        <div className="grow relative">
+                                                            <input
+                                                                {...register("phone")}
+                                                                placeholder={t("phoneNoPlaceholder")}
+                                                                className="checkout-input"
+                                                            />
+                                                            {/* <button
+                                                                onClick={handleCustomerSearch}
+                                                                disabled={isCustomerInfoLoading}
+                                                                title='Get information'
+                                                                type='button' className='absolute top-[50%] right-2 -translate-y-[50%]' >
+                                                                {
+                                                                    isCustomerInfoLoading ? <LoadingSpinner className='w-5 h-5' /> : <CloudSync className='w-5 h-5' />
+                                                                }
+
+                                                            </button> */}
+                                                        </div>
                                                     </div>
                                                     <div className="flex items-center grow gap-2 md:gap-4">
                                                         <span className="label"></span>

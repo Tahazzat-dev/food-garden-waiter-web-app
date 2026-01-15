@@ -25,6 +25,7 @@ const BodyEventListeners = () => {
 
         // show message for back or quit 
         const handleBeforeUnload = (event) => {
+            return;
             event.preventDefault();
             event.returnValue = ""; // REQUIRED
         };

@@ -49,6 +49,10 @@
     "theme": "Theme"
   },
 
+  "pages": {
+    "noOrder": "No orders found"
+  },
+
   "mobileBottomActions": {
     "home": "Home",
     "offers": "Offers",
