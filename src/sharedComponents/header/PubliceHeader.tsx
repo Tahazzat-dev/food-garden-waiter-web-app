@@ -31,7 +31,7 @@ export default function PubliceHeader() {
             </Link>
             <FavouriteFoods />
             <CartSheet />
-            <AuthUser />
+            {/* <AuthUser /> */}
             <LocaleSwitcher type='ghost' className='hidden xl:block' />
             <ThemeSwitcher type='ghost' className='hidden xl:flex' />
           </div>

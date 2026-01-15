@@ -71,7 +71,7 @@ export default function FoodCart({ product }: { product: TProduct }) {
                 <div className="w-full flex flex-col grow">
                     <h6 className='mb-1'> {renderText(en, bn)}</h6>
                     {/* <p className='fg_fs-sm'>{firstVariant.discount < 1 ? <span className=''>{formatPrice(firstVariant?.price)}</span> : <span className='flex items-center gap-3'> <span className='line-through fg_fs-xs'>{formatPrice(firstVariant?.price)}</span> <span className='text-primary'>{formatPrice(getDiscountPrice(firstVariant.price, firstVariant.discount))}</span></span>}</p> */}
-                    <p className='fg_fs-sm'><span className=''>{formatPrice(+product.price)}</span></p>
+                    <p className='fg_fs-sm font-semibold'><span className=''>{formatPrice(+product.price)}</span></p>
                 </div>
                 <Button onClick={openDetailsModal} className={`mt-2 text-white w-full font-semibold  ${isAddedToCart ? ' bg-secondary hover:bg-secondary' : 'custom-shadow-md  bg-primary hover:bg-primary-500'}`} ><ShoppingCart /> <span>{t('addToCart')}</span></Button>
             </div>
