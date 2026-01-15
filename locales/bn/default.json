@@ -116,7 +116,7 @@
       "placeholder": "খুঁজুন",
       "btn": "রিফ্রেশ"
     },
-    "trackingTxt": "পার্সেল ট্র্যাকিং"
+    "myOrder": "আমার অর্ডার"
   },
   "checkout": {
     "makeConfirmOrder": "অর্ডার নিশ্চিত করুন",

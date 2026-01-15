@@ -26,9 +26,9 @@ export default function PubliceHeader() {
             <SearchFilter />
           </div>
           <div className='flex grow items-center justify-end gap-3  lg:grow-0 lg:justify-between'>
-            <div className='hidden text-white items-center gap-2 md:flex'>
-              <span className='fg_fs-xs '><RenderText group='header' variable='trackingTxt' /></span>
-            </div>
+            <Link href="/orders" className='hidden text-white items-center gap-2 md:flex'>
+              <span className='fg_fs-xs '><RenderText group='header' variable='myOrder' /></span>
+            </Link>
             <FavouriteFoods />
             <CartSheet />
             <AuthUser />

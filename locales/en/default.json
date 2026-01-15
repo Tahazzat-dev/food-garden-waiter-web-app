@@ -116,7 +116,7 @@
       "placeholder": "Search",
       "btn": "Refresh"
     },
-    "trackingTxt": "Tracking Parcel"
+    "myOrder": "My Order"
   },
   "checkout": {
     "makeConfirmOrder": "Make Confirm Order",

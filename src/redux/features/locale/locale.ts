@@ -6,7 +6,7 @@ interface LocaleState {
 }
 
 const initialState: LocaleState = {
-    locale: "en",
+    locale: "bn",
 };
 
 const localeSlice = createSlice({
