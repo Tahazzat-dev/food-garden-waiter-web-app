@@ -15,7 +15,7 @@
   /* --bg-header: #014919; */
   --bg-header: #003211;
 
-  --card: oklch(1 0 0);
+  --card-bg: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
 
   --popover: oklch(1 0 0);
@@ -126,7 +126,7 @@
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
 
-  --card: oklch(0.205 0 0);
+  --card-bg: #2c3b4e;
   --card-foreground: oklch(0.985 0 0);
 
   --popover: oklch(0.269 0 0);
@@ -602,11 +602,11 @@ body {
   }
 
   .dark .custom-shadow-card {
-    box-shadow: 4px 5px 10px #3d3d3d !important;
+    box-shadow: 3px 3px 5px #5e5e5e !important;
   }
 
   .dark .custom-shadow-card:hover {
-    box-shadow: 5px 7px 14px #4d4d4d !important;
+    box-shadow: 1px 2px 15px #cecece !important;
   }
 }
 

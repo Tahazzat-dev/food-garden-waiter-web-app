@@ -19,6 +19,7 @@ const config: Config = {
                 foreground: "var(--foreground)",
                 "clr-bg-body": "var(--clr-bg-body)",
                 "clr-text-body": "var(--clr-text-body)",
+                'clr-card': "var(--card-bg)",
             },
         },
     },

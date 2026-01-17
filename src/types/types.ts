@@ -182,6 +182,8 @@ export interface TOrder {
     note: string | null;
     items: OrderItem[];
     delivery_charge: string;
+    convert_status: number;
+    status: number;
 }
 
 export type CheckoutStatus = "success" | "error";

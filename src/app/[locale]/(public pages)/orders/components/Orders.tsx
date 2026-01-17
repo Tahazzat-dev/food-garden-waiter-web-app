@@ -30,15 +30,12 @@ export default function Orders() {
                                 </div>
 
                                 <span
-                                    className={`text-xs px-2 py-1 rounded-full font-medium capitalize
-                                        ${order.order_status === "delivered" && "bg-green-100 text-green-700"}
-                                        ${order.order_status === "preparing" && "bg-yellow-100 text-yellow-700"}
-                                        ${order.order_status === "pending" && "bg-gray-100 text-gray-700"}
-                                        ${order.order_status === "cancelled" && "bg-red-100 text-red-700"}
-                                    `}
+                                    className={`text-xs px-3 py-1 rounded-full font-medium capitalize
+                                        ${order.status === 2 ? "bg-red-100 text-red-700" :
+                                            order.convert_status === 1 ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-700"}`}
                                 >
                                     {/* <RenderText group='shared' variable={order.status} key={`ITEM_STATUS_${order.id}`} /> */}
-                                    <p className="capitalize">{order.order_status}</p>
+                                    <span className="capitalize text-xs">{order.status === 2 ? "Deleted" : order.convert_status === 1 ? "Delivered" : "Pending"}</span>
                                 </span>
                             </div>
 

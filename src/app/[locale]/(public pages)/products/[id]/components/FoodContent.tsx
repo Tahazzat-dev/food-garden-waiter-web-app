@@ -119,7 +119,7 @@ export default function FoodContent({ item }: { item: TProduct }) {
                 {/* <p className="mb-3">{locale === "bn" ? "পণ্য নোটস:" : "Product Notes:"}</p> */}
                 <p className="mb-0.5 md:mb-2 fg_fs-base">{t('quantity')}</p>
                 <div className='mt-auto flex items-center justify-between bg-slate-300/60 dark:bg-slate-700 px-2 py-1 rounded-[4px]'>
-                    <p className='fg_fs-xs font-semibold text-center grow dark:!text-black'>{formatPrice(variant?.price ? +variant.price : +item.price)}</p>
+                    <p className='fg_fs-xs font-semibold text-center grow '>{formatPrice(variant?.price ? +variant.price : +item.price)}</p>
                     <div className='flex items-center gap-3 rounded-md py-0.5 lg:py-1'>
                         <Button
                             variant='primary'
@@ -139,7 +139,7 @@ export default function FoodContent({ item }: { item: TProduct }) {
                             <Plus className='h-3 w-3' />
                         </Button>
                     </div>
-                    <p className='fg_fs-sm font-semibold text-center grow dark:!text-black'>{formatPrice(calculateSubtotal(variant?.price ? +variant.price : +item.price, quantity))}</p>
+                    <p className='fg_fs-sm font-semibold text-center grow'>{formatPrice(calculateSubtotal(variant?.price ? +variant.price : +item.price, quantity))}</p>
                 </div>
             </div>
 

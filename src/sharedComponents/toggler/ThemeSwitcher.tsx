@@ -39,8 +39,8 @@ export default function ThemeSwitcher({ className = "", type = "default" }: Prop
                         "flex items-center justify-center w-12 h-6 rounded-full  transition-transform duration-300", isDark ? "transform -translate-x-[50%]" : "transform translate-x-0"
                     )}
                 >
-                    <MoonIcon className="w-6 h-6 text-white" />
                     <SunIcon className="w-6 h-6 text-yellow-500" />
+                    <MoonIcon className="w-6 h-6 text-white" />
                 </span>
             </span>
         </button>

@@ -67,7 +67,7 @@ export default function FoodCart({ product }: { product: TProduct }) {
                 }
             </div>
 
-            <div className="w-full grow flex flex-col p-3 md:p-4 bg-slate-100 dark:bg-slate-700">
+            <div className="w-full grow flex flex-col p-3 md:p-4 bg-clr-card">
                 <div className="w-full flex flex-col grow">
                     <h6 className='mb-1'> {renderText(en, bn)}</h6>
                     {/* <p className='fg_fs-sm'>{firstVariant.discount < 1 ? <span className=''>{formatPrice(firstVariant?.price)}</span> : <span className='flex items-center gap-3'> <span className='line-through fg_fs-xs'>{formatPrice(firstVariant?.price)}</span> <span className='text-primary'>{formatPrice(getDiscountPrice(firstVariant.price, firstVariant.discount))}</span></span>}</p> */}
