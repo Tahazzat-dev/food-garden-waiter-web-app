@@ -70,8 +70,9 @@ export default function PublicSidebar() {
                 <div className="w-full h-full p-5 pt-2">
                     <div className="w-full flex items-center gap-5 mb-4">
                         <DrawerTitle className="grow flex">
-                            {/* <SiteLogo /> */}
-                            <Image className='w-full fill-black text-black min-w-[140px] lg:min-w-[160px] max-w-[160px] h-auto' width={190} height={42} src="/images/shared/site-logo-black.svg" alt="Site logo" />
+                            <div className='w-auto min-h-[65px] md:min-h-[67.53px] h-[65px] md:h-[67.53px] py-2.5'>
+                                <Image className='w-auto h-full' width={190} height={42} src="/images/shared/site-logo.svg" alt="Site logo" />
+                            </div>
                         </DrawerTitle>
                         {/* <div className="grow flex">
                         </div> */}

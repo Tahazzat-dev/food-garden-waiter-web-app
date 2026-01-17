@@ -21,9 +21,23 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Food Garden",
-  description: "An online food delivery platform bringing fresh and delicious meals to your doorstep.",
+
+// app/[locale]/layout.tsx
+export const metadata = {
+  metadataBase: new URL('https://foodgardencafe.com'),
+  title: {
+    default: 'Food Garden – Fresh & Delicious',
+    template: '%s | Food Garden'
+  },
+  description: 'An online food delivery platform bringing fresh and delicious meals to your doorstep.',
+  openGraph: {
+    type: 'website',
+    siteName: 'Food Garden',
+    locale: 'bn_BD'
+  },
+  twitter: {
+    card: 'summary_large_image'
+  }
 };
 
 export default async function RootLayout({

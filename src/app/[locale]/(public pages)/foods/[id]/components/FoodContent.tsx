@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button"
 import useFormatPrice from "@/hooks/useFormatPrice"
 import useRenderText from "@/hooks/useRenderText"
-import { calculateSubtotal, getDiscountAmount, getDiscountPrice, getSellingPrice, getTranslationReadyText } from "@/lib/utils"
+import { calculateSubtotal, getTranslationReadyText } from "@/lib/utils"
 import { SET_EXPAND } from "@/redux/features/actions/actionSlice"
 import { addCartProduct, updateCartProduct } from "@/redux/features/product/productSlice"
 import { RootState } from "@/redux/store"
