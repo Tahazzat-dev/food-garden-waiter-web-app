@@ -11,7 +11,7 @@ import { useTranslations } from "next-intl";
 import { addCartProduct, updateCartProduct } from "@/redux/features/product/productSlice";
 import { SET_EXPAND } from "@/redux/features/actions/actionSlice";
 import useFormatPrice from "@/hooks/useFormatPrice";
-import { calculateSubtotal, getDiscountPrice, getSellingPrice, getTranslationReadyText } from "@/lib/utils";
+import { calculateSubtotal, getDiscountPrice, getImage, getSellingPrice, getTranslationReadyText } from "@/lib/utils";
 import { TCartProduct, TFoodVariant } from "@/types/types";
 import { toast } from "react-toastify";
 import useRenderText from "@/hooks/useRenderText";
@@ -119,7 +119,7 @@ export default function ProductDetailsModal() {
                             {variant ? " - " : ""}
                             {variant ? variant.variation : ""}</h5>
                         <div className="flex gap-3 lg:gap-4 mt-4">
-                            <Image className="max-w-[120px] md:max-w-[180px] lg:max-w-[250px] max-h-[120px] md:max-h-[180px] lg:max-h-[250px] rounded-[8px]" src={modalProduct?.image || "/images/shared/food-placeholder.jpg"} width={300} height={400} alt="Food Image" />
+                            <Image className="max-w-[120px] md:max-w-[180px] lg:max-w-[250px] max-h-[120px] md:max-h-[180px] lg:max-h-[250px] rounded-[8px]" src={modalProduct?.image ? getImage(modalProduct?.image) : "/images/shared/food-placeholder.jpg"} width={300} height={400} alt="Food Image" />
                             <div className="grow flex justify-between flex-col gap-2">
                                 <div className="flex flex-col gap-5">
                                     <div className="flex flex-wrap items-center gap-2">

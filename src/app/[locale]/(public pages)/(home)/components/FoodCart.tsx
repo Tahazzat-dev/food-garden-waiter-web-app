@@ -9,7 +9,7 @@ import { RootState } from '@/redux/store'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { SET_EXPAND } from '@/redux/features/actions/actionSlice'
-import { getTranslationReadyText } from '@/lib/utils'
+import { getImage, getTranslationReadyText } from '@/lib/utils'
 import useFormatPrice from '@/hooks/useFormatPrice'
 import { TProduct } from '@/types/types'
 import useRenderText from '@/hooks/useRenderText'
@@ -55,7 +55,7 @@ export default function FoodCart({ product }: { product: TProduct }) {
                     <HeartIcon fill={isFvourite ? "red" : 'white'} className={`w-8 h-8 ${isFvourite ? 'text-white' : 'text-secondary'}`} />
                 </button>
                 <div className="w-full h-full overflow-hidden">
-                    <Image src={product?.image || "/images/shared/food-placeholder.jpg"} className='z-10 w-full duration-300 group-hover:scale-105 h-full' width={300} height={400} alt={en} />
+                    <Image src={product?.image ? getImage(product?.image) : "/images/shared/food-placeholder.jpg"} className='z-10 w-full duration-300 group-hover:scale-105 h-full' width={300} height={400} alt={en} />
                 </div>
                 <span className='font-semibold p-1 px-[5.5px] rounded-md hover:bg-white bg-slate-100 text-black absolute bottom-1 right-1 z-20'>
                     <Eye className='w-5 h-5' />

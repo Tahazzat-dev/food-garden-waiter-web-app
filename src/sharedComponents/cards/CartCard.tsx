@@ -6,7 +6,7 @@ import { TCartProduct } from '@/types/types';
 import { useDispatch } from 'react-redux';
 import { removeCartProduct, updateCartProduct } from '@/redux/features/product/productSlice';
 import useFormatPrice from '@/hooks/useFormatPrice';
-import { calculateSubtotal, getDiscountPrice, getSellingPrice, getTranslationReadyText } from '@/lib/utils';
+import { calculateSubtotal, getDiscountPrice, getImage, getSellingPrice, getTranslationReadyText } from '@/lib/utils';
 import useRenderText from '@/hooks/useRenderText';
 
 export function CartCard({ item }: { item: TCartProduct }) {
@@ -30,7 +30,7 @@ export function CartCard({ item }: { item: TCartProduct }) {
     <div className='flex gap-2.5 sm:gap-3 pb-3 border-b border-slate-300 dark:border-slate-600 border-dashed mb-5'>
       <div className='bg-muted relative h-16 w-16 md:min-w-16 md:min-h-16 flex-shrink-0 overflow-hidden rounded-md'>
         <Image
-          src={item.img || '/images/placeholder/placeholder.jpg'}
+          src={item.img ? getImage(item?.img) : '/images/placeholder/placeholder.jpg'}
           alt={item?.name}
           width={72}
           height={72}

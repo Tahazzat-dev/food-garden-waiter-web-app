@@ -9,7 +9,7 @@ import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import RenderText from '../utils/RenderText'
-import { getTranslationReadyText } from '@/lib/utils'
+import { getImage, getTranslationReadyText } from '@/lib/utils'
 import useRenderText from '@/hooks/useRenderText'
 
 export default function FVFoodCard({ item }: { item: TProduct }) {
@@ -39,7 +39,7 @@ export default function FVFoodCard({ item }: { item: TProduct }) {
         <div className='flex gap-3 pb-3 border-b border-slate-300 dark:border-slate-600 border-dashed'>
             <div className='bg-muted relative w-14 h-14 lg:w-16 lg:h-16 xl:w-[72px] xl:h-[72px] rounded-md overflow-hidden'>
                 <Image
-                    src={item.image || '/images/placeholder/placeholder.jpg'}
+                    src={item?.image ? getImage(item?.image) : '/images/placeholder/placeholder.jpg'}
                     alt={item.name || 'Product Image'}
                     width={72}
                     height={72}

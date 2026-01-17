@@ -39,7 +39,6 @@ export default function LocaleSwitcher({ className = "", type = "default" }: Pro
             router.refresh();
             dispatch(setLocale(newLocale));
         }
-        // setSelectedLocale(newLocale);
     };
 
 

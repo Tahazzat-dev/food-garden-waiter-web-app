@@ -1,5 +1,6 @@
 "use client"
 
+import { getImage } from "@/lib/utils";
 import { RootState } from "@/redux/store";
 import RenderFormatedPrice from "@/sharedComponents/utils/RenderFormatedPrice";
 import RenderText from "@/sharedComponents/utils/RenderText";
@@ -47,7 +48,7 @@ export default function Orders() {
                                         className="flex items-center gap-3"
                                     >
                                         <Image
-                                            src={item?.product?.image || '/images/shared/food-placeholder.jpg'}
+                                            src={item?.product.image ? getImage(item?.product.image) : '/images/shared/food-placeholder.jpg'}
                                             alt=""
                                             width={40}
                                             height={40}

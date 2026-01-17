@@ -15,7 +15,8 @@ export default async function SinglePage({ params }: { params: Promise<{ id: str
     // class variables
     const smallImageStyle = "overflow-hidden grow min-h-[57.5px] max-h-[58px] sm:min-h-[64.5px] sm:max-h-[65px] md:min-h-[80px] md:max-h-[80.5px] rounded-[4px]"
     const imgStyle = "w-full h-full object-cover rounded-[6px]"
-    const tempImgSrc = product.image || '/images/placeholder/placeholder.jpg';
+    // const tempImgSrc = "/" + product.image || '/images/placeholder/placeholder.jpg';
+    const tempImgSrc = '/images/placeholder/placeholder.jpg';
     return (
         <>
             {

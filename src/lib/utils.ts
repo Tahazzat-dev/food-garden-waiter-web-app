@@ -137,8 +137,9 @@ export const getData = async (slug: string) => {
 
 // TODO: temp_
 export const getImage = (slug: string) => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
-  return `${baseUrl}/${slug}`
+  // const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+  // return `${baseUrl}/${slug}`
+  return `https://test.bdchefchoice.com/${slug}`
 }
 
 export const getTranslationReadyText = (text: string) => {
