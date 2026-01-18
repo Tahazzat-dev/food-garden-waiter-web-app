@@ -11,7 +11,7 @@ import Image from 'next/image';
 import { TProduct } from '@/types/types';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { getTranslationReadyText } from '@/lib/utils';
+import { getImage, getTranslationReadyText } from '@/lib/utils';
 import useRenderText from '@/hooks/useRenderText';
 import { setModalProduct } from '@/redux/features/product/productSlice';
 import { SET_EXPAND } from '@/redux/features/actions/actionSlice';
@@ -119,10 +119,10 @@ export default function SearchFilter({ className }: { className?: string }) {
                                             title='Click for details'
                                             className="flex gap-2 cursor-pointer mr-0.5 p-2 shadow rounded-lg bg-white dark:bg-slate-700 "
                                         >
-                                            <Image src={"/" + item.image || "/images/shared/food-placeholder.jpg"} className='w-12 h-12' width={300} height={400} alt={item.name} />
+                                            <Image src={item?.image ? getImage(item?.image) : "/images/shared/food-placeholder.jpg"} className='w-12 h-12' width={300} height={400} alt={item.name} />
                                             <div className="flex flex-col flex-1">
                                                 <h5>{item.name}</h5>
-                                                <p className='flex items-center gap-3'><span>৳{item.variations[0]?.price || 0}</span>
+                                                <p className='flex items-center gap-3'><span>৳{item.variations[0]?.price ? Number(item.variations[0]?.price) : 0}</span>
                                                     {/* <span className='line-through'>৳{item?.variations[0]?.price || 0}</span> */}
                                                 </p>
                                             </div>
