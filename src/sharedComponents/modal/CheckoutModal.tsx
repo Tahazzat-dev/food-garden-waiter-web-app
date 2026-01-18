@@ -271,7 +271,7 @@ export default function CheckoutModal() {
                                     <form onSubmit={handleSubmit(onSubmit)} className="px-0.5 my-2.5 grow overflow-hidden flex flex-col">
                                         <div className="grow w-full flex flex-col px-2 md:-2.5 lg:px gap-5 overflow-y-auto">
                                             {/* Name and information */}
-                                            <div className="w-full bg-slate-300/60 flex flex-col p-3 gap-3 rounded-md">
+                                            <div className="w-full bg-clr-card flex flex-col p-3 gap-3 rounded-md">
                                                 <div className="w-full">
                                                     <div className="input-box">
                                                         <label htmlFor="name" className="label">
@@ -359,7 +359,7 @@ export default function CheckoutModal() {
 
                                             {/* delivery order type */}
                                             <div className='w-full flex flex-col gap-1'>
-                                                <label key="Home Delivery" className={`flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${deliveryType === "Home Delivery" ? "bg-secondary text-white" : "bg-slate-300/60"}`}>
+                                                <label key="Home Delivery" className={`flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${deliveryType === "Home Delivery" ? "bg-secondary text-white" : "bg-clr-card"}`}>
                                                     <input
                                                         type="radio"
                                                         value="Home Delivery"
@@ -369,7 +369,7 @@ export default function CheckoutModal() {
                                                         <span className='grow'>{t("homeDelivery")}</span> <span>{formatPrice(+deliveryAddress?.delivery_charge || 0)}</span>
                                                     </span>
                                                 </label>
-                                                <label key="Self Pickup" className={`flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${deliveryType === "Self Pickup" ? "bg-secondary text-white" : "bg-slate-300/60"}`}>
+                                                <label key="Self Pickup" className={`flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${deliveryType === "Self Pickup" ? "bg-secondary text-white" : "bg-clr-card"}`}>
                                                     <input
                                                         type="radio"
                                                         value="Self Pickup"
@@ -377,7 +377,7 @@ export default function CheckoutModal() {
                                                     />
                                                     {t("selfPickup")}
                                                 </label>
-                                                <label key="Dine-In" className={`flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${deliveryType === "Dine-In" ? "bg-secondary text-white" : "bg-slate-300/60"}`}>
+                                                <label key="Dine-In" className={`flex gap-2 items-center py-1 lg:py-1.5 rounded-[4px] px-3 ${deliveryType === "Dine-In" ? "bg-secondary text-white" : "bg-clr-card"}`}>
                                                     <input
                                                         type="radio"
                                                         value="Dine-In"
@@ -585,20 +585,20 @@ export function SelectAddress({
             <button
                 type="button"
                 onClick={() => setIsOpen(v => !v)}
-                className="checkout-input bg-white w-full flex justify-between gap-4 items-center px-3 py-2 rounded border"
+                className="checkout-input w-full flex justify-between gap-4 items-center px-3 py-2 rounded border"
             >
                 {selectedAddress ? (
 
-                    <span>{renderText(bn, en)}</span>
+                    <span className='text-gray-500 dark:text-gray-200'>{renderText(bn, en)}</span>
                 ) : (
-                    <span className="text-gray-400 ">{t('deliveryAddress')}</span>
+                    <span className="text-gray-400 dark:text-gray-300">{t('deliveryAddress')}</span>
                 )}
                 <ChevronDown className='!w-5 !h-5' />
             </button>
 
             {/* Dropdown */}
             {isOpen && (
-                <div className=" absolute z-[9999] top-0 w-full bg-white rounded shadow-lg border">
+                <div className=" absolute z-[9999] top-0 w-full bg-clr-card rounded shadow-lg border">
 
                     {/* Search input */}
                     <div className="p-1 border-b">
@@ -630,7 +630,7 @@ export function SelectAddress({
                             })
 
                         ) : (
-                            <div className="px-3 py-2 text-gray-400 text-sm">
+                            <div className="px-3 py-2 text-gray-400 dark:text-gray-200 text-sm">
                                 <RenderText group='checkout' variable='noAddressFound' />
                             </div>
                         )}

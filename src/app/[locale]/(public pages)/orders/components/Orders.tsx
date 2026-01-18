@@ -8,6 +8,22 @@ import { CreateTrnslateText } from "@/sharedComponents/utils/TranslateText";
 import Image from "next/image";
 import { useSelector } from "react-redux";
 
+
+/*
+
+                                    <td>
+                                        @if($estimate->status == '2')
+                                        <span style="padding: 5px 5px" class="badge badge-danger">Delete</span>
+                                        @else
+                                            @if ($estimate->convert_status == '1')
+                                                <span style="padding: 5px 5px" class="badge badge-success">Delivered</span>
+                                            @else
+                                                <span style="padding: 5px 5px" class="badge badge-warning">Pending</span>
+                                            @endif
+                                        @endif
+                                    </td>
+*/
+
 export default function Orders() {
     const { orders } = useSelector((state: RootState) => state.productSlice);
     return (
@@ -78,9 +94,9 @@ export default function Orders() {
 
                                 <div className="text-right">
                                     {
-                                        Number(order?.delivery_charge || '0') > 0 && <p className='text-sm flex gap-10 items-center justify-between'><span><RenderText key={`ORDER_DELIVERY_CHARGE_${order.id}`} group='checkout' variable='deliveryCharge' /></span><span><RenderFormatedPrice price={+order?.delivery_charge || 0} /></span></p>
+                                        Number(order?.delivery_charge || '0') > 0 && <p className='text-xs flex gap-10 items-center justify-between'><span><RenderText key={`ORDER_DELIVERY_CHARGE_${order.id}`} group='checkout' variable='deliveryCharge' /></span><span className="text-sm"><RenderFormatedPrice price={+order?.delivery_charge || 0} /></span></p>
                                     }
-                                    <p className='text-sm flex gap-10 items-center justify-between'><span></span><span className='text-base font-semibold'><RenderFormatedPrice price={+order.final_receivable} /></span></p>
+                                    <p className='text-sm flex gap-10 items-center justify-between'><span><RenderText group="shared" variable="totalBill" /></span><span className='text-base font-semibold'><RenderFormatedPrice price={+order.final_receivable} /></span></p>
                                 </div>
                             </div>
                         </div>
