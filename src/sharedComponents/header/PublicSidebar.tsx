@@ -6,7 +6,6 @@ import {
     DrawerTitle,
     DrawerTrigger,
 } from "@/components/ui/drawer"
-import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import LocaleSwitcher from "../toggler/LocaleSwitcher"
@@ -15,23 +14,23 @@ import RenderText from "../utils/RenderText"
 
 
 import { MenuIcon, X } from "lucide-react"
+import ClientLink from "./ClientLink";
 
 export function MenuTabSwitcher() {
-
     // const showOfferedMark = 5;
     // const orders = 5;
     return (
         <div className="flex w-full  flex-col gap-6">
             <ul className="flex flex-col">
                 <li className="border-b border-slate-200 py-2.5">
-                    <Link href="/" className="hover:text-primary transition-colors">
+                    <ClientLink href="/" className="hover:text-primary transition-colors" >
                         <DrawerClose>
                             <RenderText group="mobileBottomActions" variable="home" />
                         </DrawerClose>
-                    </Link>
+                    </ClientLink>
                 </li>
                 <li className="border-b border-slate-200 py-2.5">
-                    <Link href="/offers" className="flex items-center justify-between hover:text-primary transition-colors">
+                    <ClientLink href="/offers" className="flex items-center justify-between hover:text-primary transition-colors" >
                         <DrawerClose>
                             <RenderText group="mobileBottomActions" variable="offers" />
                             {/* {
@@ -39,7 +38,7 @@ export function MenuTabSwitcher() {
                             <span className='flex items-center justify-center text-xs px-0.5 min-w-[18px] min-h-4 bg-secondary text-white rounded-full p-[1px]'>!</span>
                         } */}
                         </DrawerClose>
-                    </Link>
+                    </ClientLink>
                 </li>
                 {/* <li className="border-b border-slate-200 py-2.5">
                     <Link href="/elements" className="hover:text-primary transition-colors">

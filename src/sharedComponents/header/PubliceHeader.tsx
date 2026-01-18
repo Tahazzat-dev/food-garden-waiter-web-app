@@ -1,5 +1,4 @@
 import Container from '../wrapper/Container';
-import { Link } from "@/i18n/navigation";;
 import SearchFilter from './SearchFilter';
 import PublicSidebar from './PublicSidebar';
 import { CartSheet } from '../cart/CartSheet';
@@ -7,9 +6,9 @@ import SiteLogo from './SiteLogo';
 import LocaleSwitcher from '../toggler/LocaleSwitcher';
 import ThemeSwitcher from '../toggler/ThemeSwitcher';
 import { FavouriteFoods } from '../favourite/FavouriteFoods';
-import AuthUser from './AuthUser'
 import CheckoutModal from '../modal/CheckoutModal';
 import RenderText from '../utils/RenderText';
+import ClientLink from './ClientLink';
 
 export default function PubliceHeader() {
   return (
@@ -18,17 +17,17 @@ export default function PubliceHeader() {
         <Container className='flex items-center gap-3 lg:justify-between lg:gap-5'>
           <div className="grow lg:grow-0 flex items-center justify-between lg:justify-start gap-4 lg:gap-5">
             <PublicSidebar />
-            <Link href="/" className=' inline-block'>
+            <ClientLink className='inline-block' href='/' >
               <SiteLogo />
-            </Link>
+            </ClientLink>
           </div>
           <div className='hidden relative lg:flex fg_rounded items-center  h-9 gap-2'>
             <SearchFilter />
           </div>
           <div className='flex grow items-center justify-end gap-3  lg:grow-0 lg:justify-between'>
-            <Link href="/orders" className='hidden text-white items-center gap-2 md:flex'>
+            <ClientLink className='hidden text-white items-center gap-2 md:flex' href='/orders' >
               <span className='fg_fs-xs '><RenderText group='header' variable='myOrder' /></span>
-            </Link>
+            </ClientLink>
             <FavouriteFoods />
             <CartSheet />
             {/* <AuthUser /> */}

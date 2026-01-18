@@ -158,5 +158,10 @@
   },
   "home": {
     "title": "Hello"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "Sorry, the page you are looking for does not exist.",
+    "btnTxt": "Back to Home"
   }
 }
