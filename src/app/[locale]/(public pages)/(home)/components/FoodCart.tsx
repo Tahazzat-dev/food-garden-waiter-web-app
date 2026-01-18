@@ -49,7 +49,7 @@ export default function FoodCart({ product }: { product: TProduct }) {
     const { en, bn } = getTranslationReadyText(product.name)
 
     return (
-        <Link href={`/products/${product.id}`} className='custom-shadow-card flex flex-col overflow-hidden shadow-2xl !border-none group z-0'>
+        <Link href={`/foods/${product.id}`} className='custom-shadow-card flex flex-col overflow-hidden shadow-2xl !border-none group z-0'>
             <div className="w-full relative h-[150px] sm:h-[200px]">
                 <button onClick={handleFavourite} className='hover:scale-105 absolute top-[1px] left-0.5 z-20'>
                     <HeartIcon fill={isFvourite ? "red" : 'white'} className={`w-8 h-8 ${isFvourite ? 'text-white' : 'text-secondary'}`} />

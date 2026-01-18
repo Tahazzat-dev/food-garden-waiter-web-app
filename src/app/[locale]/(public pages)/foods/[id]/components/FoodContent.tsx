@@ -83,15 +83,17 @@ export default function FoodContent({ item }: { item: TProduct }) {
     }
 
     useEffect(() => {
-        if (!item) return;
+        if (!item.id) return;
         setQuantity(1);
         setVariant(item?.variations[0] || null);
     }, [item])
 
+    if (!item?.id) return <></>
 
-    const category = getCategory(categories, item.category_id);
-    const { en, bn } = getTranslationReadyText(item.name)
+    const category = getCategory(categories, item?.category_id);
+    const { en, bn } = getTranslationReadyText(item?.name || "")
     const { en: catEn, bn: catBn } = getTranslationReadyText(category?.name || "")
+
     return (
         <div className=" w-full lg:w-6/12 p-2.5 sm:p-4 flex flex-col gap-4 md:gap-5 lg:gap-7">
             <h1 className="fg_fs-xl lg:text-[28px] xl:text-[32px] text-primary font-semibold">{renderText(en, bn)}

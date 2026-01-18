@@ -13,7 +13,7 @@ export default async function SinglePage({ params }: { params: Promise<{ id: str
     // get the product
     const { id } = await params;
     const result = await getData(`/foods/${id}`);
-    const product = (result.data || {}) as TProduct;
+    const product = (result?.data || {}) as TProduct;
 
     // class variables
     const smallImageStyle = "overflow-hidden grow min-h-[57.5px] max-h-[58px] sm:min-h-[64.5px] sm:max-h-[65px] md:min-h-[80px] md:max-h-[80.5px] rounded-[4px]"
