@@ -5,7 +5,7 @@ import FilterFood from "./components/FilterFood";
 import CategorySection from "@/sharedComponents/category/CategoryContainer";
 import { Metadata } from "next";
 
-export const revalidate = 600  // revalidate in every 5 minutes
+export const revalidate = 300  // revalidate in every 5 minutes
 
 // app/[locale]/layout.tsx
 export const metadata: Metadata = {

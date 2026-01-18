@@ -11,6 +11,8 @@ import { ToastContainer } from 'react-toastify';
 import SharedModals from "@/sharedComponents/modal/SharedModals";
 import InitialDataLoader from "@/sharedComponents/dataLoader/InitialDataLoader";
 
+import requestConfig from "@/i18n/request";
+
 export const dynamic = 'force-static';
 export const revalidate = 600  // revalidate in every 10 minutes
 
@@ -73,6 +75,10 @@ export default async function RootLayout({
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
+
+  // Load messages using your request.ts helper
+  const { messages } = await requestConfig({ requestLocale: Promise.resolve(locale) });
+
   return (
     <html lang={locale}>
       <body
@@ -80,7 +86,7 @@ export default async function RootLayout({
       >
         <ReduxProvider>
           <ThemeProvider>
-            <NextIntlClientProvider>
+            <NextIntlClientProvider locale={locale} messages={messages} >
               {children}
               <InitialDataLoader />
               <SharedModals />

@@ -14,8 +14,6 @@ export default async function CategorySection({ className }: { className?: strin
         name: "সেরা / Top",
         slug: "all-categories"
     }
-
-    console.log(categories, '  categories')
     return (
         <>
             <SaveCategory categories={categories} />
