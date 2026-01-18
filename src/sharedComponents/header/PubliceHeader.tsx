@@ -1,5 +1,5 @@
 import Container from '../wrapper/Container';
-import Link from 'next/link';
+import { Link } from "@/i18n/navigation";;
 import SearchFilter from './SearchFilter';
 import PublicSidebar from './PublicSidebar';
 import { CartSheet } from '../cart/CartSheet';

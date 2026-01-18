@@ -5,7 +5,7 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import Link from 'next/link';
+import { Link } from "@/i18n/navigation";;
 
 function BreadcrumbHeading({ currentPage }: { currentPage: string }) {
   return (

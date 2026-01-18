@@ -12,9 +12,13 @@ export const revalidate = 300; // 5 minutes
 export async function generateStaticParams() {
     const result = await getData("/products");
     if (!result?.data) return [];
-    return result.data.map((food: { id: number }) => ({
-        id: food.id.toString(),
-    }));
+    const locales = ['bn', 'en'];
+    return result.data.flatMap((food: { id: number }) =>
+        locales.map(locale => ({
+            id: food.id.toString(),
+            locale
+        }))
+    );
 }
 
 

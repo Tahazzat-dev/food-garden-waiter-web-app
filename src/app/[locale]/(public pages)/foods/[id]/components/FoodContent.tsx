@@ -10,7 +10,7 @@ import { WhatsAppIcon } from "@/sharedComponents/icons/Icons"
 import { TCartProduct, TCategory, TFoodVariant, TProduct } from "@/types/types"
 import { Minus, Plus } from "lucide-react"
 import { useTranslations } from "next-intl"
-import Link from "next/link"
+import { Link } from "@/i18n/navigation";
 import { MouseEvent, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from "react-toastify"

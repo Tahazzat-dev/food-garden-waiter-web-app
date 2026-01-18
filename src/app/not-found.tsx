@@ -1,8 +1,8 @@
-import Link from 'next/link'
 import "./globals.css";
 import Container from '@/sharedComponents/wrapper/Container';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
+import { Link } from "@/i18n/navigation";
 
 export default function NotFound() {
     return (

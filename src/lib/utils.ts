@@ -139,6 +139,7 @@ export const getData = async (
     const res = await fetch(url, {
       cache,
       next: { revalidate },
+      headers: { 'X-BUILD': 'true' }
     });
 
     // ❌ HTTP error (404, 500, etc)

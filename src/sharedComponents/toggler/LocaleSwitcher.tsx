@@ -28,26 +28,25 @@ type Props = {
     type?: 'ghost' | 'default';
 }
 
-const defaultLocale: Lang = 'bn';
-
 export default function LocaleSwitcher({ className = "", type = "default" }: Props) {
     const dispatch = useDispatch();
     const currentLocale = useLocale() as Lang;
     const router = useRouter();
-    const pathname = usePathname(); // includes current locale segment if any
-
-    // Sync Redux on mount or locale change
-    useEffect(() => {
-        if (currentLocale) dispatch(setLocale(currentLocale));
-        console.log(currentLocale, '  current locale')
-    }, [currentLocale, dispatch]);
+    const pathname = usePathname();
 
     const switchLocale = (newLocale: Lang) => {
-        if (newLocale === currentLocale) return;
-        const newPath = newLocale === defaultLocale ? pathname : `/en${pathname}`;
-        router.replace(newPath || '/');
-        dispatch(setLocale(newLocale));
+        if (newLocale !== currentLocale) {
+            router.replace(pathname, { locale: newLocale });
+            router.refresh();
+            dispatch(setLocale(newLocale));
+        }
     };
+
+
+    useEffect(() => {
+        if (!currentLocale) return;
+        dispatch(setLocale(currentLocale as Lang));
+    }, [dispatch, currentLocale])
 
     return (
         <div className={clsx("ml-3", className)}>

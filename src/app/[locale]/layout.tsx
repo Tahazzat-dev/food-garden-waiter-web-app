@@ -61,6 +61,13 @@ export const metadata: Metadata = {
   },
 };
 
+
+export async function generateStaticParams() {
+  // Pre-generate for both locales
+  const locales = ['bn', 'en'];
+  return locales.map(locale => ({ locale }));
+}
+
 export default async function RootLayout({
   children,
   params

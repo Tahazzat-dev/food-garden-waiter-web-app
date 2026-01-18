@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addFavouriteProduct, setModalProduct } from '@/redux/features/product/productSlice'
 import { RootState } from '@/redux/store'
 import { useTranslations } from 'next-intl'
-import Link from 'next/link'
+import { Link } from "@/i18n/navigation";
 import { SET_EXPAND } from '@/redux/features/actions/actionSlice'
 import { getImage, getTranslationReadyText } from '@/lib/utils'
 import useFormatPrice from '@/hooks/useFormatPrice'

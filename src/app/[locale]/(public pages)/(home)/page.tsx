@@ -7,6 +7,8 @@ import { Metadata } from "next";
 
 export const revalidate = 300  // revalidate in every 5 minutes
 
+
+
 // app/[locale]/layout.tsx
 export const metadata: Metadata = {
     metadataBase: new URL('https://foodgardencafe.com'),

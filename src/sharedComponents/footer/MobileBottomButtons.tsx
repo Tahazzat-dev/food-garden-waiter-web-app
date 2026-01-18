@@ -1,7 +1,7 @@
 "use client"
 import { ShoppingCart } from 'lucide-react'
 import Image from 'next/image'
-import Link from 'next/link'
+import { Link } from "@/i18n/navigation";
 import Container from '../wrapper/Container'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/redux/store'
