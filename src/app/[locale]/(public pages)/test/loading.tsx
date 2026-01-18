@@ -1,4 +1,5 @@
-export default function TestPage() {
+
+export default function Loading() {
     return (
         <div className="min-h-screen flex items-center justify-center">
             <div className="flex flex-col items-center gap-6">
@@ -7,8 +8,6 @@ export default function TestPage() {
                     <div className="absolute inset-0 rounded-full border-4 border-[#fe0103]/50"></div>
                     <div className="absolute inset-0 rounded-full border-4 border-secondary border-t-transparent animate-spin"></div>
                 </div>
-
-                {/* Text */}
                 <div className="text-center">
                     <p className="text-xl font-semibold text-gray-800 dark:text-gray-200">
                         Heating up the kitchen 🔥

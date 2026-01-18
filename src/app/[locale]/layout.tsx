@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
@@ -33,6 +33,9 @@ export const metadata: Metadata = {
     template: '%s | Food Garden'
   },
   description: 'An online food delivery platform bringing fresh and delicious meals to your doorstep.',
+  alternates: {
+    canonical: 'https://foodgardencafe.com',
+  },
   openGraph: {
     type: 'website',
     siteName: 'Food Garden',
@@ -41,7 +44,19 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image'
-  }
+  },
+
+  //  we will remove this once we get our final version
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+    googleBot: {
+      index: false,
+      follow: false,
+      noimageindex: true,
+    },
+  },
 };
 
 export default async function RootLayout({

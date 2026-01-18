@@ -5,15 +5,30 @@ import FoodContent from "./components/FoodContent";
 import ProductDescription from "./components/ProductDescription";
 import { getData, getImage } from "@/lib/utils";
 import { TProduct } from "@/types/types";
+import { notFound } from "next/navigation";
 
-// export const dynamic = 'force-static';
-// export const revalidate = 300
+export const revalidate = 300; // 5 minutes
 
-export default async function SinglePage({ params }: { params: Promise<{ id: string }> }) {
+export async function generateStaticParams() {
+    const result = await getData("/products");
+    if (!result?.data) return [];
+    return result.data.map((food: { id: number }) => ({
+        id: food.id.toString(),
+    }));
+}
+
+
+
+export default async function SinglePage(
+    { params }: { params: Promise<{ id: string }> }) {
     // get the product
     const { id } = await params;
-    const result = await getData(`/foods/${id}`);
+    const result = await getData(`/products/${id}`);
     const product = (result?.data || {}) as TProduct;
+
+    if (!product?.id) {
+        notFound();
+    }
 
     // class variables
     const smallImageStyle = "overflow-hidden grow min-h-[57.5px] max-h-[58px] sm:min-h-[64.5px] sm:max-h-[65px] md:min-h-[80px] md:max-h-[80.5px] rounded-[4px]"

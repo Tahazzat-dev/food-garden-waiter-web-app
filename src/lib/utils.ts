@@ -116,23 +116,69 @@ export function generateOrderId(prefix = "order") {
 
 
 
-// data fetching utility
-export const getData = async (slug: string) => {
+type GetDataOptions = {
+  revalidate?: number;
+  cache?: RequestCache;
+};
+
+export const getData = async (
+  slug: string,
+  options: GetDataOptions = {}
+) => {
+  const { revalidate = 300, cache = "force-cache" } = options;
+
   try {
     const baseUrl = process.env.API_URL;
+
     if (!baseUrl) {
-      throw new Error(".env variable misconfiguration")
+      throw new Error("API_URL is not defined in environment variables");
     }
 
-    // proceed with data fetching
-    const res = await fetch(`${baseUrl}/api${slug}`);
-    const result = await res.json();
-    return result;
+    const url = `${baseUrl}/api${slug}`;
+
+    const res = await fetch(url, {
+      cache,
+      next: { revalidate },
+    });
+
+    // ❌ HTTP error (404, 500, etc)
+    if (!res.ok) {
+      console.error("API request failed:", {
+        url,
+        status: res.status,
+        statusText: res.statusText,
+      });
+      return null;
+    }
+
+    // Read as text first (VERY IMPORTANT)
+    const text = await res.text();
+
+    // Empty response
+    if (!text) {
+      return null;
+    }
+
+    // Parse JSON safely
+    try {
+      return JSON.parse(text);
+    } catch (parseError) {
+      console.error("Invalid JSON response:", {
+        url,
+        response: text.slice(0, 200),
+      });
+      return null;
+    }
+
   } catch (error) {
-    console.error(error, ' custom error');
+    console.error("getData error:", {
+      slug,
+      error,
+    });
     return null;
   }
-}
+};
+
 
 
 // TODO: temp_
