@@ -6,8 +6,8 @@ import ProductDescription from "./components/ProductDescription";
 import { getData, getImage } from "@/lib/utils";
 import { TProduct } from "@/types/types";
 
-export const dynamic = 'force-static';
-export const revalidate = 300
+// export const dynamic = 'force-static';
+// export const revalidate = 300
 
 export default async function SinglePage({ params }: { params: Promise<{ id: string }> }) {
     // get the product

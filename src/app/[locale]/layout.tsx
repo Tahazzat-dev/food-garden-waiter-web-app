@@ -11,6 +11,9 @@ import { ToastContainer } from 'react-toastify';
 import SharedModals from "@/sharedComponents/modal/SharedModals";
 import InitialDataLoader from "@/sharedComponents/dataLoader/InitialDataLoader";
 
+export const dynamic = 'force-static';
+export const revalidate = 600  // revalidate in every 10 minutes
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -23,7 +26,7 @@ const geistMono = Geist_Mono({
 
 
 // app/[locale]/layout.tsx
-export const metadata = {
+export const metadata: Metadata = {
   metadataBase: new URL('https://foodgardencafe.com'),
   title: {
     default: 'Food Garden – Fresh & Delicious',
@@ -33,7 +36,8 @@ export const metadata = {
   openGraph: {
     type: 'website',
     siteName: 'Food Garden',
-    locale: 'bn_BD'
+    locale: 'bn_BD',
+    images: ['/og-layout.png']
   },
   twitter: {
     card: 'summary_large_image'
