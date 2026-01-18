@@ -15,6 +15,7 @@ import { getImage, getTranslationReadyText } from '@/lib/utils';
 import useRenderText from '@/hooks/useRenderText';
 import { setModalProduct } from '@/redux/features/product/productSlice';
 import { SET_EXPAND } from '@/redux/features/actions/actionSlice';
+import { setHomeActiveCategoryId } from '@/redux/features/category/categorySlice';
 
 export default function SearchFilter({ className }: { className?: string }) {
     // hooks
@@ -44,7 +45,7 @@ export default function SearchFilter({ className }: { className?: string }) {
 
         debounceRef.current = setTimeout(async () => {
             setLoading(true);
-            const matched = await fakeSearch(searchTxt, selectCategory, allProducts);
+            const matched = await fakeSearch(searchTxt, null, allProducts);
             setResults(matched);
             setLoading(false);
         }, 1);
@@ -69,22 +70,17 @@ export default function SearchFilter({ className }: { className?: string }) {
         // reset query
         handleRefresh()
     }
-    // const openDetailsModal = (event: MouseEvent<HTMLButtonElement>) => {
 
-    // }
-
-
-    // 
     return (
         <>
             <div className='hidden lg:block'>
-                <Select onValueChange={(val) => setSelectedCategory(+val)} >
+                <Select onValueChange={(val) => dispatch(setHomeActiveCategoryId(+val))} >
                     <SelectTrigger className="border-none bg-primary hover:bg-primary-500 text-white shadow-sm">
                         <SelectValue placeholder={tCategory('all')} />
                     </SelectTrigger>
 
                     <SelectContent className='z-[9999] bg-white dark:bg-black' >
-                        <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value={'000'}>{tCategory('all')}</SelectItem>
+                        <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="0">{tCategory('all')}</SelectItem>
                         {
                             !!categories.length && categories.map(cat => {
                                 const { en: catEn, bn: catBn } = getTranslationReadyText(cat.name)
@@ -121,7 +117,7 @@ export default function SearchFilter({ className }: { className?: string }) {
                                         >
                                             <Image src={item?.image ? getImage(item?.image) : "/images/shared/food-placeholder.jpg"} className='w-12 h-12' width={300} height={400} alt={item.name} />
                                             <div className="flex flex-col flex-1">
-                                                <h5>{item.name}</h5>
+                                                <h6>{item.name}</h6>
                                                 <p className='flex items-center gap-3'><span>৳{item.variations[0]?.price ? Number(item.variations[0]?.price) : 0}</span>
                                                     {/* <span className='line-through'>৳{item?.variations[0]?.price || 0}</span> */}
                                                 </p>
