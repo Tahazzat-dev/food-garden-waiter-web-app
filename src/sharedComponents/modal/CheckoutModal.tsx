@@ -110,8 +110,11 @@ export default function CheckoutModal() {
             phone: data.phone,
             address_id: data.address.id,
             address_note: data.addressNote,
-            products
+            products,
+            delivery_type: data.deliveryType
         }
+
+        // console.log(bodyData,' body data');
 
         setToStorage('user_address', data);
 
