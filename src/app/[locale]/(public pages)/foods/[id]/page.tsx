@@ -6,6 +6,7 @@ import ProductDescription from "./components/ProductDescription";
 import { getData, getImage } from "@/lib/utils";
 import { TProduct } from "@/types/types";
 import { notFound } from "next/navigation";
+import SimilarItems from "./components/SimilarItems";
 
 export const revalidate = 300; // 5 minutes
 
@@ -74,7 +75,7 @@ export default async function SinglePage(
                         </Container>
                     </div>
             }
-            {/* <SimilarItems items={similarProducts} /> */}
+            <SimilarItems productId={product.id} productCategoryId={product.category_id} />
             <div className="w-full pb-[75px] md:pb-5"></div>
         </>
     )

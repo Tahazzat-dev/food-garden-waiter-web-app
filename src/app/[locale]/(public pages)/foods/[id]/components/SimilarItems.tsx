@@ -1,8 +1,19 @@
+"use client"
 import Container from '@/sharedComponents/wrapper/Container'
 import FoodCart from '../../../(home)/components/FoodCart'
 import { TProduct } from '@/types/types'
 import RenderText from '@/sharedComponents/utils/RenderText'
-export default function SimilarItems({ items }: { items: TProduct[] }) {
+import { useSelector } from 'react-redux'
+import { RootState } from '@/redux/store'
+
+type Props = {
+    productId: number;
+    productCategoryId: number;
+}
+export default function SimilarItems({ productCategoryId, productId }: Props) {
+    // hooks
+    const { allProducts } = useSelector((state: RootState) => state.productSlice);
+    const items: TProduct[] = allProducts.filter(product => product.category_id === productCategoryId && product.id !== productId);
     return (
         <div className='mt-12 md:mt-14 lg:mt-16 '>
             <Container className="w-full">
