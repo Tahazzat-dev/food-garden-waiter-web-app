@@ -11,7 +11,7 @@ import { useTranslations } from "next-intl";
 import { addCartProduct, updateCartProduct } from "@/redux/features/product/productSlice";
 import { SET_EXPAND } from "@/redux/features/actions/actionSlice";
 import useFormatPrice from "@/hooks/useFormatPrice";
-import { calculateSubtotal, getDiscountPrice, getImage, getSellingPrice, getTranslationReadyText } from "@/lib/utils";
+import { calculateSubtotal, cn, getImage, getTranslationReadyText } from "@/lib/utils";
 import { TCartProduct, TFoodVariant } from "@/types/types";
 import { toast } from "react-toastify";
 import useRenderText from "@/hooks/useRenderText";
@@ -29,6 +29,7 @@ export default function ProductDetailsModal() {
     const { EXPAND, prev_action } = useSelector((state: RootState) => state.actions);
     const { cartProducts, modalProduct } = useSelector((state: RootState) => state.productSlice);
     const [variant, setVariant] = useState<TFoodVariant | null>(null);
+    const [showVariantWarning, setShowVariantWarning] = useState(false);
     const { formatPrice } = useFormatPrice()
     const { renderText } = useRenderText()
 
@@ -38,7 +39,12 @@ export default function ProductDetailsModal() {
     const handleAddToCart = (event: MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
         event.preventDefault();
-        if (!modalProduct || !variant) return;
+        if (!modalProduct) return;
+
+        if (!variant) {
+            setShowVariantWarning(true);
+            return;
+        }
 
         if (addedItem) {
             if (addedItem.quantity === quantity) {
@@ -96,8 +102,8 @@ export default function ProductDetailsModal() {
 
     useEffect(() => {
         if (!modalProduct) return;
-        setQuantity(1);
-        setVariant(modalProduct?.variations[0] || null);
+        // setQuantity(1);
+        // setVariant(modalProduct?.variations[0] || null);
     }, [modalProduct])
 
     if (!modalProduct) return null;
@@ -124,16 +130,24 @@ export default function ProductDetailsModal() {
                                 <div className="flex flex-col gap-5">
                                     <div className="flex flex-wrap items-center gap-2">
                                         {
-                                            !!modalProduct?.variations && modalProduct?.variations?.map(item => <Button key={item.id} onClick={() => setVariant(item)} variant={item.id === variant?.id ? "secondary" : "primary"} className="text-white custom-shadow-md !py-0.5">{item.variation}</Button>)
+                                            !!modalProduct?.variations && modalProduct?.variations?.map(item => <Button key={item.id}
+                                                onClick={() => {
+                                                    setVariant(item);
+                                                    setShowVariantWarning(false);
+                                                }}
+                                                variant={item.id === variant?.id ? "secondary" : "primary"} className="text-white custom-shadow-md !py-0.5">{item.variation}</Button>)
                                         }
                                     </div>
-                                    <p className='fg_fs-sm flex gap-2'>{t('price')} : {formatPrice(variant?.price ? +variant.price : +modalProduct.price)}</p>
+                                    {
+                                        variant?.price ? <p className='fg_fs-sm flex gap-2'>{t('price')} : {formatPrice(+variant.price)}</p> :
+                                            <p className={cn('fg_fs-sm flex gap-2', showVariantWarning && "text-red-500")}>{t('selectVariants')}</p>
+                                    }
                                 </div>
 
                                 <div className="w-full hidden md:block">
                                     <p className="mb-3"><RenderText key={`PRODUCT_NOTE_FOR_${variant?.id}`} group="shared" variable="productNote" /></p>
                                     <div className='mt-auto flex items-center justify-between bg-slate-300/60 px-2 py-1 rounded-[4px]'>
-                                        <p className='fg_fs-xs font-semibold text-center grow '>{formatPrice(variant?.price ? +variant.price : +modalProduct.price)}/-</p>
+                                        <p className='fg_fs-xs font-semibold text-center grow '>{formatPrice(variant?.price ? +variant.price : 0)}/-</p>
                                         <div className='flex items-center gap-1 lg:gap-2 rounded-md py-0.5'>
                                             <Button
                                                 variant='primary'
@@ -153,7 +167,7 @@ export default function ProductDetailsModal() {
                                                 <Plus className='h-3 w-3' />
                                             </Button>
                                         </div>
-                                        <p className='fg_fs-sm font-semibold text-center grow '>{calculateSubtotal(variant?.price ? +variant.price : +modalProduct.price, quantity)}/-</p>
+                                        <p className='fg_fs-sm font-semibold text-center grow '>{calculateSubtotal(variant?.price ? +variant.price : 0, quantity)}/-</p>
                                     </div>
                                 </div>
                             </div>
@@ -161,7 +175,7 @@ export default function ProductDetailsModal() {
                         <div className="w-full block md:hidden mt-5">
                             <p className="mb-2"><RenderText key={`PRODUCT_NOTE_FOR_${variant?.id}_2`} group="shared" variable="productNote" /></p>
                             <div className='mt-auto bg-slate-300/60 flex items-center justify-between px-2 py-1 rounded-[4px]'>
-                                <p className='fg_fs-xs font-semibold text-center grow '>{formatPrice(variant?.price ? +variant.price : +modalProduct.price)}/-</p>
+                                <p className='fg_fs-xs font-semibold text-center grow '>{formatPrice(variant?.price ? +variant.price : 0)}/-</p>
                                 <div className='flex items-center gap-3 lg:gap-2 rounded-md py-0.5'>
                                     <Button
                                         variant='primary'
@@ -182,13 +196,13 @@ export default function ProductDetailsModal() {
                                     </Button>
                                 </div>
 
-                                <p className='fg_fs-sm font-semibold text-center grow'>{calculateSubtotal(variant?.price ? +variant.price : +modalProduct.price, quantity)}/-</p>
+                                <p className='fg_fs-sm font-semibold text-center grow'>{calculateSubtotal(variant?.price ? +variant.price : 0, quantity)}/-</p>
                             </div>
                         </div>
                     </div>
                     <div className="w-full flex justify-end p-4">
                         <Dialog.Close className="" asChild >
-                            <Button onClick={handleAddToCart} className={`text-white mt-2 font-semibold  ${addedItem && addedItem.quantity === quantity ? ' bg-secondary hover:bg-secondary' : 'custom-shadow-md  bg-primary hover:bg-primary-500'}`} ><ShoppingCart /> <span>{t('addToCart')}</span></Button>
+                            <Button disabled={showVariantWarning} onClick={handleAddToCart} className={`text-white mt-2 font-semibold  ${addedItem && addedItem.quantity === quantity ? ' bg-secondary hover:bg-secondary' : 'custom-shadow-md  bg-primary hover:bg-primary-500'}`} ><ShoppingCart /> <span>{t('addToCart')}</span></Button>
                         </Dialog.Close>
                     </div>
                 </Dialog.Content>

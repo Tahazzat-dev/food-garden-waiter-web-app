@@ -359,7 +359,7 @@
 
 /*======= font sizes ======== */
 h1 {
-  font-size: var(--fs-big);
+  font-size: var(--fs-3xl);
   line-height: 120%;
 }
 
