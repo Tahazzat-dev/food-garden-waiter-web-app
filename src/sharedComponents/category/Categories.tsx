@@ -110,11 +110,11 @@ export default function Categories({ categories = [] }: { categories: TCategory[
     </Swiper>
 
     {/* Custom Navigation Buttons */}
-    <button disabled={isBeginning} className={cn("absolute top-1/2 text-secondary left-0 z-[10] -translate-y-1/2 bg-primary rounded-full p-0.5 !text-white swiper-button-prev-custom nav-btn", isBeginning && "opacity-30")}>
-      <ChevronLeft className="size-5 md:size-6 lg:size-7" />
+    <button disabled={isBeginning} className={cn("absolute top-1/2 text-secondary left-0 z-[10] -translate-y-1/2 bg-primary rounded-full p-0.5 lg:p-1 !text-white swiper-button-prev-custom nav-btn", isBeginning && "opacity-30")}>
+      <ChevronLeft className="size-5 lg:size-[22px]" />
     </button>
-    <button disabled={isEnd} className={cn("absolute top-1/2 right-0 z-[10] -translate-y-1/2 rounded-full p-0.5 bg-primary !text-white swiper-button-next-custom nav-btn", isEnd && "opacity-30")}>
-      <ChevronRight className="size-5 md:size-6 lg:size-7" />
+    <button disabled={isEnd} className={cn("absolute top-1/2 right-0 z-[10] -translate-y-1/2 rounded-full p-0.5 lg:p-1 bg-primary !text-white swiper-button-next-custom nav-btn", isEnd && "opacity-30")}>
+      <ChevronRight className="size-5 lg:size-[22px]" />
     </button>
   </div>
 }
