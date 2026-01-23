@@ -4,6 +4,7 @@ interface IInitialState {
     EXPAND: null | string;
     prev_action: null | string;
     preventScrolling: boolean;
+    // cartIcon:
 
     // temp
     fetchOrders: boolean;

@@ -8,6 +8,7 @@ import { CustomDrawer } from '../modal/CustomDrawer';
 import { useTranslations } from 'next-intl';
 import { calculateSubtotal, getSellingPrice } from '@/lib/utils';
 import useFormatPrice from '@/hooks/useFormatPrice';
+import { useEffect, useRef } from 'react';
 
 export function CartSheet() {
   // variables
@@ -15,6 +16,7 @@ export function CartSheet() {
 
   // hooks
   const t = useTranslations('shared')
+  const cartRef = useRef<HTMLButtonElement | null>(null);
   const dispatch = useDispatch();
   const { cartProducts } = useSelector((state: RootState) => state.productSlice);
   const { EXPAND } = useSelector((state: RootState) => state.actions);
@@ -22,11 +24,20 @@ export function CartSheet() {
   const { formatPrice } = useFormatPrice()
 
 
+  useEffect(() => {
+    if (!cartRef || !cartRef.current) return;
+
+    console.log("cartRef", cartRef.current.getClientRects)
+
+  }, [cartRef])
+
+
+
   // calculated cart total 
   const totalPrice = cartProducts.reduce((total, item) => total + (calculateSubtotal(getSellingPrice(item.price, item.discount), item.quantity)), 0)
   return (
     <>
-      <button onClick={() => dispatch(SET_EXPAND(EXPAND === KEY ? null : KEY))} className='prevent-body-trigger relative'>
+      <button ref={cartRef} onClick={() => dispatch(SET_EXPAND(EXPAND === KEY ? null : KEY))} className='prevent-body-trigger relative'>
         <ShoppingCart fill='white' className='text-white h-6 w-6 cursor-pointer' />
         {
           cartProducts.length > 0 ?
