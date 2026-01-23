@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button"
 import useFormatPrice from "@/hooks/useFormatPrice"
 import useRenderText from "@/hooks/useRenderText"
-import { calculateSubtotal, getTranslationReadyText } from "@/lib/utils"
+import { calculateSubtotal, cn, getTranslationReadyText } from "@/lib/utils"
 import { SET_EXPAND } from "@/redux/features/actions/actionSlice"
 import { addCartProduct, updateCartProduct } from "@/redux/features/product/productSlice"
 import { RootState } from "@/redux/store"
@@ -26,6 +26,7 @@ export default function FoodContent({ item }: { item: TProduct }) {
     const { cartProducts } = useSelector((state: RootState) => state.productSlice);
     const { categories } = useSelector((state: RootState) => state.categorySlice);
     const [variant, setVariant] = useState<TFoodVariant | null>(null);
+    const [showVariantWarning, setShowVariantWarning] = useState(false);
     const { formatPrice } = useFormatPrice()
     const { renderText } = useRenderText()
 
@@ -35,6 +36,12 @@ export default function FoodContent({ item }: { item: TProduct }) {
     const handleAddToCart = (event: MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
         event.preventDefault();
+
+        if (!variant) {
+            setShowVariantWarning(true);
+            return;
+        }
+
         addItemToCart(true);
     }
 
@@ -78,15 +85,20 @@ export default function FoodContent({ item }: { item: TProduct }) {
     }
 
     const handleBuyNow = () => {
+        if (!variant) {
+            setShowVariantWarning(true);
+            return;
+        }
+
         addItemToCart();
         dispatch(SET_EXPAND("CHECKOUT_MODAL"))
     }
 
-    useEffect(() => {
-        if (!item.id) return;
-        setQuantity(1);
-        setVariant(item?.variations[0] || null);
-    }, [item])
+    // useEffect(() => {
+    //     if (!item.id) return;
+    //     setQuantity(1);
+    //     setVariant(item?.variations[0] || null);
+    // }, [item])
 
     if (!item?.id) return <></>
 
@@ -109,10 +121,15 @@ export default function FoodContent({ item }: { item: TProduct }) {
             </div>
 
             <div className="w-full">
-                <h6 className="fg_fs-base">{t("selectVariants")}</h6>
+                <h6 className={cn("fg_fs-base", showVariantWarning && "text-red-500")}>{t("selectVariants")}</h6>
                 <div className="mt-1 md:mt-2 flex flex-wrap items-center gap-2">
                     {
-                        item.variations.map(item => <Button key={item.id} onClick={() => setVariant(item)} variant={item.id === variant?.id ? "secondary" : "primary"} className="text-white custom-shadow-md !py-0.5">{item.variation}</Button>)
+                        item.variations.map(item => <Button key={item.id}
+                            onClick={() => {
+                                setVariant(item);
+                                setShowVariantWarning(false);
+                            }}
+                            variant={item.id === variant?.id ? "secondary" : "primary"} className="text-white custom-shadow-md !py-0.5">{item.variation}</Button>)
                     }
                 </div>
             </div>
@@ -121,7 +138,7 @@ export default function FoodContent({ item }: { item: TProduct }) {
                 {/* <p className="mb-3">{locale === "bn" ? "পণ্য নোটস:" : "Product Notes:"}</p> */}
                 <p className="mb-0.5 md:mb-2 fg_fs-base">{t('quantity')}</p>
                 <div className='mt-auto flex items-center justify-between bg-slate-300/60 dark:bg-slate-700 px-2 py-1 rounded-[4px]'>
-                    <p className='fg_fs-xs font-semibold text-center grow '>{formatPrice(variant?.price ? +variant.price : +item.price)}</p>
+                    <p className='fg_fs-xs font-semibold text-center grow '>{formatPrice(variant?.price ? +variant.price : 0)}</p>
                     <div className='flex items-center gap-3 rounded-md py-0.5 lg:py-1'>
                         <Button
                             variant='primary'
@@ -141,17 +158,17 @@ export default function FoodContent({ item }: { item: TProduct }) {
                             <Plus className='h-3 w-3' />
                         </Button>
                     </div>
-                    <p className='fg_fs-sm font-semibold text-center grow'>{formatPrice(calculateSubtotal(variant?.price ? +variant.price : +item.price, quantity))}</p>
+                    <p className='fg_fs-sm font-semibold text-center grow'>{formatPrice(calculateSubtotal(variant?.price ? +variant.price : 0, quantity))}</p>
                 </div>
             </div>
 
             <div className="w-full">
                 <div className=" w-full gap-2  md:gap-3.5 lg:gap-4 flex items-center">
-                    <Button onClick={handleAddToCart} size="lg" className={`!px-2 fg_fs-base font-semibold w-full ${addedItem && addedItem.quantity === quantity ? ' bg-secondary hover:bg-secondary' : 'custom-shadow-md  bg-primary hover:bg-primary-500'}`}>
+                    <Button disabled={showVariantWarning} onClick={handleAddToCart} size="lg" className={`!px-2 fg_fs-base font-semibold w-full ${addedItem && addedItem.quantity === quantity ? ' bg-secondary hover:bg-secondary' : 'custom-shadow-md  bg-primary hover:bg-primary-500'}`}>
                         {/* <ShoppingCart className="!w-10" /> */}
                         <span>{t('addToCart')}</span>
                     </Button>
-                    <Button onClick={handleBuyNow} size="lg" className="fg_fs-base !px-2 font-semibold w-full custom-shadow-md  bg-primary hover:bg-primary-500">
+                    <Button disabled={showVariantWarning} onClick={handleBuyNow} size="lg" className="fg_fs-base !px-2 font-semibold w-full custom-shadow-md  bg-primary hover:bg-primary-500">
                         {/* <CreditCard /> */}
                         <span>{t("buyNow")}</span></Button>
                 </div>

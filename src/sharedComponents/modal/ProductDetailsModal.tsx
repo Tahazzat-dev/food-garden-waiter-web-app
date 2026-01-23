@@ -167,7 +167,7 @@ export default function ProductDetailsModal() {
                                                 <Plus className='h-3 w-3' />
                                             </Button>
                                         </div>
-                                        <p className='fg_fs-sm font-semibold text-center grow '>{calculateSubtotal(variant?.price ? +variant.price : 0, quantity)}/-</p>
+                                        <p className='fg_fs-sm font-semibold text-center grow '>{formatPrice(calculateSubtotal(variant?.price ? +variant.price : 0, quantity))}</p>
                                     </div>
                                 </div>
                             </div>
@@ -196,7 +196,7 @@ export default function ProductDetailsModal() {
                                     </Button>
                                 </div>
 
-                                <p className='fg_fs-sm font-semibold text-center grow'>{calculateSubtotal(variant?.price ? +variant.price : 0, quantity)}/-</p>
+                                <p className='fg_fs-sm font-semibold text-center grow'>{formatPrice(calculateSubtotal(variant?.price ? +variant.price : 0, quantity))}</p>
                             </div>
                         </div>
                     </div>
