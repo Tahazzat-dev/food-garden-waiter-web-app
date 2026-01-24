@@ -15,6 +15,7 @@ import { TCartIconposition, TCartProduct, TFoodVariant } from "@/types/types";
 import { toast } from "react-toastify";
 import useRenderText from "@/hooks/useRenderText";
 import RenderText from "../utils/RenderText";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function ProductDetailsModal() {
     // variables
@@ -34,6 +35,7 @@ export default function ProductDetailsModal() {
     const [showVariantWarning, setShowVariantWarning] = useState(false);
     const { formatPrice } = useFormatPrice()
     const { renderText } = useRenderText()
+    const isMobile = useIsMobile()
     const imageRef = useRef<HTMLDivElement | null>(null);
 
     const addedItem = cartProducts.find(item => item?.id === variant?.id);
@@ -59,7 +61,11 @@ export default function ProductDetailsModal() {
             // update the quantity
             dispatch(updateCartProduct({ product: { ...addedItem, quantity }, id: addedItem.id }))
             toast.success(t("quantityUpdated"));
-            setBeginAnimation(true);
+
+            if (isMobile) {
+                setBeginAnimation(true);
+            }
+
             toggleModal()
             return;
         }
@@ -75,7 +81,10 @@ export default function ProductDetailsModal() {
             price: +variant.price,
         }
         toast.success(t('addedToCart'));
-        setBeginAnimation(true);
+
+        if (isMobile) {
+            setBeginAnimation(true);
+        }
         toggleModal(cartItem)
     }
 
@@ -86,17 +95,28 @@ export default function ProductDetailsModal() {
     }
 
     const toggleModal = (cartItem?: TCartProduct) => {
-        const timeOutId = setTimeout(() => {
-            if (cartItem) {
-                dispatch(addCartProduct(cartItem));
-            }
-            dispatch(SET_EXPAND(prev_action === FAV_FOOD_POPUP_KEY ? FAV_FOOD_POPUP_KEY : null));
-            clearTimeout(timeOutId);
-        }, 650)
+        if (isMobile) {
+            const timeOutId = setTimeout(() => {
+                if (cartItem) {
+                    dispatch(addCartProduct(cartItem));
+                }
+                dispatch(SET_EXPAND(prev_action === FAV_FOOD_POPUP_KEY ? FAV_FOOD_POPUP_KEY : null));
+                clearTimeout(timeOutId);
+            }, 650)
+            return;
+        }
+
+        if (cartItem) {
+            dispatch(addCartProduct(cartItem));
+        }
+        dispatch(SET_EXPAND(prev_action === FAV_FOOD_POPUP_KEY ? FAV_FOOD_POPUP_KEY : null));
+
     }
 
     const closeModal = () => {
-        setShowAnimationModal(false);
+        if (isMobile) {
+            setShowAnimationModal(false);
+        }
         dispatch(SET_EXPAND(prev_action === FAV_FOOD_POPUP_KEY ? FAV_FOOD_POPUP_KEY : null));
     }
 
@@ -108,6 +128,8 @@ export default function ProductDetailsModal() {
         } else {
             document.body.style.overflow = "";
         }
+
+        if (!isMobile) return;
 
         // position setting condition
         const timeOutId = setTimeout(() => {
@@ -135,7 +157,7 @@ export default function ProductDetailsModal() {
             document.body.style.overflow = "";
             setShowVariantWarning(false);
         };
-    }, [EXPAND, modalProduct]);
+    }, [EXPAND, modalProduct, isMobile]);
 
     if (!modalProduct) return null;
 
@@ -322,7 +344,7 @@ const ImageTransitionModal = ({ showAnimationModal, setShowAnimationModal, posit
             src={modalProduct?.image ? getImage(modalProduct?.image) : "/images/shared/food-placeholder.jpg"}
             alt="transition"
             style={style ?? undefined}
-            className="rounded-[8px] z-[9999999]"
+            className="rounded-[8px] z-[9999999] md:!hidden"
         />
     );
 };

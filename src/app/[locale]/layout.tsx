@@ -102,7 +102,7 @@ export default async function RootLayout({
                 limit={3}
                 newestOnTop
                 autoClose={1300}
-                className="z-[9999999] hidden lg:block"
+                className="z-[9999999] hidden md:block"
               />
             </NextIntlClientProvider>
           </ThemeProvider>
