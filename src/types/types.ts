@@ -202,3 +202,13 @@ export type TAddress = {
     created_at: string | null;
     updated_at: string | null;
 }
+
+
+export type TCartIconposition = {
+    top: number;
+    right: number;
+    bottom: number;
+    left: number;
+    width: number;
+    height: number;
+}

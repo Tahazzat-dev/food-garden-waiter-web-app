@@ -3,7 +3,7 @@ import { ShoppingCart, X } from 'lucide-react';
 import { CartCard } from '../cards/CartCard';
 import { RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { SET_EXPAND } from '@/redux/features/actions/actionSlice';
+import { SET_EXPAND, updateCartIconPosition } from '@/redux/features/actions/actionSlice';
 import { CustomDrawer } from '../modal/CustomDrawer';
 import { useTranslations } from 'next-intl';
 import { calculateSubtotal, getSellingPrice } from '@/lib/utils';
@@ -27,22 +27,33 @@ export function CartSheet() {
   useEffect(() => {
     if (!cartRef || !cartRef.current) return;
 
-    console.log("cartRef", cartRef.current.getClientRects)
+    const rect = cartRef.current.getBoundingClientRect();
 
-  }, [cartRef])
+    const position = {
+      // top: rect.top,
+      right: rect.right,
+      bottom: rect.bottom,
+      // left: rect.left,
+      top: rect.top + window.scrollY,   // account for scroll
+      left: rect.left + window.scrollX,
+      width: rect.width,
+      height: rect.height,
+    };
 
+    dispatch(updateCartIconPosition(position));
+  }, [cartRef, dispatch])
 
 
   // calculated cart total 
   const totalPrice = cartProducts.reduce((total, item) => total + (calculateSubtotal(getSellingPrice(item.price, item.discount), item.quantity)), 0)
   return (
     <>
-      <button ref={cartRef} onClick={() => dispatch(SET_EXPAND(EXPAND === KEY ? null : KEY))} className='prevent-body-trigger relative'>
+      <button ref={cartRef} onClick={() => dispatch(SET_EXPAND(EXPAND === KEY ? null : KEY))} className='bg-secondary prevent-body-trigger relative'>
         <ShoppingCart fill='white' className='text-white h-6 w-6 cursor-pointer' />
-        {
+        {/* {
           cartProducts.length > 0 ?
             <span className='flex items-center justify-center text-xs px-0.5 min-w-[18px] min-h-4  absolute -top-[40%] left-[80%] translate-x-[-50%] bg-secondary text-white rounded-full p-[1px]'>{cartProducts.length}</span> : <></>
-        }
+        } */}
       </button>
 
       <CustomDrawer
