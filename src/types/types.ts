@@ -194,7 +194,6 @@ export type TOrderResponse = {
     status: CheckoutStatus;
 }
 
-
 export type TAddress = {
     id: number;
     name: string;
