@@ -74,11 +74,9 @@ export default function ProductDetailsModal() {
             name: variant.variation,
             price: +variant.price,
         }
-
-        dispatch(addCartProduct(cartItem));
         toast.success(t('addedToCart'));
         setBeginAnimation(true);
-        toggleModal()
+        toggleModal(cartItem)
     }
 
     const handleQuantityChange = (newQuantity: number) => {
@@ -87,12 +85,24 @@ export default function ProductDetailsModal() {
         setQuantity(newQuantity);
     }
 
-    const toggleModal = () => {
+    const toggleModal = (cartItem?: TCartProduct) => {
+        const timeOutId = setTimeout(() => {
+            if (cartItem) {
+                dispatch(addCartProduct(cartItem));
+            }
+            dispatch(SET_EXPAND(prev_action === FAV_FOOD_POPUP_KEY ? FAV_FOOD_POPUP_KEY : null));
+            clearTimeout(timeOutId);
+        }, 650)
+    }
+
+    const closeModal = () => {
+        setShowAnimationModal(false);
         dispatch(SET_EXPAND(prev_action === FAV_FOOD_POPUP_KEY ? FAV_FOOD_POPUP_KEY : null));
     }
 
     useEffect(() => {
         setShowVariantWarning(false);
+        setVariant(null);
         if (KEY === EXPAND) {
             document.body.style.overflow = "hidden";
         } else {
@@ -118,20 +128,21 @@ export default function ProductDetailsModal() {
             setPosition(containerPosition);
             setShowAnimationModal(true);
             clearTimeout(timeOutId);
-        }, 1000)
+        }, 300)
 
 
         return () => {
             document.body.style.overflow = "";
+            setShowVariantWarning(false);
         };
-    }, [EXPAND]);
+    }, [EXPAND, modalProduct]);
 
     if (!modalProduct) return null;
 
     const { en, bn } = getTranslationReadyText(modalProduct.name)
     return (
         <>
-            <Dialog.Root open={KEY === EXPAND} onOpenChange={toggleModal}>
+            <Dialog.Root open={KEY === EXPAND} onOpenChange={closeModal}>
                 <Dialog.Portal>
                     <div className="fixed inset-0 global-overlay z-[9999]" />
                     <Dialog.Content className="prevent-body-trigger fixed top-1/2 left-1/2  max-w-[93vw] md:max-w-[700px] !rounded-[10px] lg:!rounded-[12px] overflow-hidden w-full -translate-x-1/2 -translate-y-1/2 bg-body rounded-lg shadow-lg dark:shadow-slate-800 z-[99999]">
@@ -139,7 +150,7 @@ export default function ProductDetailsModal() {
                             <Dialog.Title className="fg_fs-md text-white">
                                 {t('foodDetails')}
                             </Dialog.Title>
-                            <Button onClick={toggleModal} className="rounded-full !px-2.5" variant="secondary"> <X className="!text-white w-5 md:w-6 md:h-6 h-5 lg:w-8 lg:h-8" /></Button>
+                            <Button onClick={closeModal} className="rounded-full !px-2.5" variant="secondary"> <X className="!text-white w-5 md:w-6 md:h-6 h-5 lg:w-8 lg:h-8" /></Button>
                         </div>
                         <div className="p-4">
                             <h5 className="font-semibold text-lg text-primary">{renderText(en, bn)}
@@ -273,10 +284,10 @@ const ImageTransitionModal = ({ showAnimationModal, setShowAnimationModal, posit
             setStyle({
                 position: "fixed",
                 top: cartIconPosition.top,
-                left: cartIconPosition.left,
-                width: cartIconPosition.width,
-                height: cartIconPosition.height,
-                transition: "all 1000ms ease-in-out",
+                left: (cartIconPosition.left + cartIconPosition.width / 2),
+                width: (cartIconPosition.width / 2),
+                height: (cartIconPosition.height / 2),
+                transition: "all 700ms ease-in-out",
                 zIndex: 9999999,
             });
         });
@@ -287,7 +298,7 @@ const ImageTransitionModal = ({ showAnimationModal, setShowAnimationModal, posit
             setShowAnimationModal(false);
             setBeginAnimation(false);
             setBeginAnimation(false);
-        }, 1000);
+        }, 680);
 
         return () => clearTimeout(timer);
     }, [position, cartIconPosition, setBeginAnimation, beginAnimation, setShowAnimationModal]);
@@ -313,7 +324,7 @@ const ImageTransitionModal = ({ showAnimationModal, setShowAnimationModal, posit
             src={modalProduct?.image ? getImage(modalProduct?.image) : "/images/shared/food-placeholder.jpg"}
             alt="transition"
             style={style ?? undefined}
-            className="border border-red-500 rounded-[8px] z-[9999999]"
+            className="rounded-[8px] z-[9999999]"
         />
     );
 };
