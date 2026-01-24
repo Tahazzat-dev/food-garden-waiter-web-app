@@ -278,8 +278,6 @@ const ImageTransitionModal = ({ showAnimationModal, setShowAnimationModal, posit
 
     useEffect(() => {
         if (!position || !cartIconPosition || !beginAnimation) return;
-
-        // Move to cart icon (next frame)
         requestAnimationFrame(() => {
             setStyle({
                 position: "fixed",
