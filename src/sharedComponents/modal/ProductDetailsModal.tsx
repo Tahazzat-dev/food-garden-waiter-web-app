@@ -1,10 +1,9 @@
 "use client";
-
 import * as Dialog from "@radix-ui/react-dialog";
-import { Minus, Plus, ShoppingCart, X } from "lucide-react"; // optional icon
+import { Key, Minus, Plus, ShoppingCart, X } from "lucide-react"; // optional icon
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { Dispatch, MouseEvent, SetStateAction, useEffect, useRef, useState } from "react";
+import React, { Dispatch, MouseEvent, SetStateAction, useEffect, useRef, useState } from "react";
 import { RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslations } from "next-intl";
@@ -30,7 +29,8 @@ export default function ProductDetailsModal() {
     const { cartProducts, modalProduct } = useSelector((state: RootState) => state.productSlice);
     const [variant, setVariant] = useState<TFoodVariant | null>(null);
     const [position, setPosition] = useState<TCartIconposition | null>(null);
-    const [openTransitionModal, setOpenTransitionModal] = useState(false);
+    const [beginAnimation, setBeginAnimation] = useState(false);
+    const [showAnimationModal, setShowAnimationModal] = useState(false);
     const [showVariantWarning, setShowVariantWarning] = useState(false);
     const { formatPrice } = useFormatPrice()
     const { renderText } = useRenderText()
@@ -59,6 +59,7 @@ export default function ProductDetailsModal() {
             // update the quantity
             dispatch(updateCartProduct({ product: { ...addedItem, quantity }, id: addedItem.id }))
             toast.success(t("quantityUpdated"));
+            setBeginAnimation(true);
             toggleModal()
             return;
         }
@@ -76,20 +77,8 @@ export default function ProductDetailsModal() {
 
         dispatch(addCartProduct(cartItem));
         toast.success(t('addedToCart'));
-
+        setBeginAnimation(true);
         toggleModal()
-        setOpenTransitionModal(true);
-        if (!imageRef.current) return;
-        const rect = imageRef.current.getBoundingClientRect();
-        const containerPosition = {
-            top: rect.top,
-            right: rect.right,
-            bottom: rect.bottom,
-            left: rect.left,
-            width: rect.width,
-            height: rect.height,
-        };
-        setPosition(containerPosition);
     }
 
     const handleQuantityChange = (newQuantity: number) => {
@@ -97,7 +86,6 @@ export default function ProductDetailsModal() {
         if (!modalProduct?.id) return;
         setQuantity(newQuantity);
     }
-
 
     const toggleModal = () => {
         dispatch(SET_EXPAND(prev_action === FAV_FOOD_POPUP_KEY ? FAV_FOOD_POPUP_KEY : null));
@@ -110,6 +98,27 @@ export default function ProductDetailsModal() {
         } else {
             document.body.style.overflow = "";
         }
+
+        // position setting condition
+        const timeOutId = setTimeout(() => {
+            if (!imageRef.current) {
+                clearTimeout(timeOutId);
+                return;
+            }
+
+            const rect = imageRef.current.getBoundingClientRect();
+            const containerPosition = {
+                top: rect.top,
+                right: rect.right,
+                bottom: rect.bottom,
+                left: rect.left,
+                width: rect.width,
+                height: rect.height,
+            };
+            setPosition(containerPosition);
+            setShowAnimationModal(true);
+            clearTimeout(timeOutId);
+        }, 1000)
 
 
         return () => {
@@ -224,9 +233,12 @@ export default function ProductDetailsModal() {
             </Dialog.Root>
 
             {
-                !!openTransitionModal && <ImageTransitionModal
-                    setOpenTransitionModal={setOpenTransitionModal}
+                <ImageTransitionModal
+                    beginAnimation={beginAnimation}
+                    showAnimationModal={showAnimationModal}
+                    setBeginAnimation={setBeginAnimation}
                     position={position}
+                    setShowAnimationModal={setShowAnimationModal}
                 />
             }
 
@@ -238,32 +250,23 @@ export default function ProductDetailsModal() {
 
 type ImageTransitionProps = {
     position: TCartIconposition | null;
-    setOpenTransitionModal: Dispatch<SetStateAction<boolean>>;
+    setBeginAnimation: Dispatch<SetStateAction<boolean>>;
+    setShowAnimationModal: Dispatch<SetStateAction<boolean>>;
+    beginAnimation: boolean;
+    showAnimationModal: boolean;
 }
 
 
-const ImageTransitionModal = ({ position, setOpenTransitionModal }: ImageTransitionProps) => {
+const ImageTransitionModal = ({ showAnimationModal, setShowAnimationModal, position, setBeginAnimation, beginAnimation }: ImageTransitionProps) => {
+    // hooks
     const { cartIconPosition } = useSelector((state: RootState) => state.actions);
     const { modalProduct } = useSelector((state: RootState) => state.productSlice);
 
     const [style, setStyle] = useState<React.CSSProperties | null>(null);
 
+
     useEffect(() => {
-        if (!position || !cartIconPosition) return;
-
-
-        // Initial position (image position)
-        setStyle({
-            position: "fixed",
-            top: position.top,
-            left: position.left,
-            // width: position.width,
-            width: 24,
-            // height: position.height,
-            height: 24,
-            transition: "all 1000ms ease-in-out",
-            zIndex: 99999,
-        });
+        if (!position || !cartIconPosition || !beginAnimation) return;
 
         // Move to cart icon (next frame)
         requestAnimationFrame(() => {
@@ -274,20 +277,34 @@ const ImageTransitionModal = ({ position, setOpenTransitionModal }: ImageTransit
                 width: cartIconPosition.width,
                 height: cartIconPosition.height,
                 transition: "all 1000ms ease-in-out",
-                zIndex: 99999,
+                zIndex: 9999999,
             });
         });
 
         // Cleanup
         const timer = setTimeout(() => {
-            // setOpenTransitionModal(false);
             setStyle(null)
+            setShowAnimationModal(false);
+            setBeginAnimation(false);
+            setBeginAnimation(false);
         }, 1000);
 
-        // return () => clearTimeout(timer);
-    }, [position, cartIconPosition, setOpenTransitionModal]);
+        return () => clearTimeout(timer);
+    }, [position, cartIconPosition, setBeginAnimation, beginAnimation, setShowAnimationModal]);
 
-    if (!modalProduct || !style) return null;
+    useEffect(() => {
+        if (!position) return;
+        setStyle({
+            position: "fixed",
+            top: position.top,
+            left: position.left,
+            width: position.width,
+            height: position.height,
+            zIndex: 9999999,
+        });
+    }, [position])
+    if (!showAnimationModal) return null;
+
 
     return (
         <Image
@@ -295,8 +312,8 @@ const ImageTransitionModal = ({ position, setOpenTransitionModal }: ImageTransit
             height={238}
             src={modalProduct?.image ? getImage(modalProduct?.image) : "/images/shared/food-placeholder.jpg"}
             alt="transition"
-            style={style}
-            className="rounded-[8px]"
+            style={style ?? undefined}
+            className="border border-red-500 rounded-[8px] z-[9999999]"
         />
     );
 };

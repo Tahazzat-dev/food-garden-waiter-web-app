@@ -5,9 +5,9 @@ import { Link } from "@/i18n/navigation";
 import Container from '../wrapper/Container'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/redux/store'
-import { SET_EXPAND } from '@/redux/features/actions/actionSlice'
+import { SET_EXPAND, updateCartIconPosition } from '@/redux/features/actions/actionSlice'
 import { useTranslations } from 'next-intl'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { hasVisitedOffersToday } from '@/lib/utils'
 import { setShowOfferedMark } from '@/redux/features/product/productSlice'
 import RenderText from '../utils/RenderText'
@@ -19,6 +19,7 @@ export default function MobileBottomButtons() {
     // hooks
     const dispatch = useDispatch();
     const t = useTranslations('mobileBottomActions');
+    const cartRef = useRef<SVGSVGElement | null>(null);
     const { cartProducts, showOfferedMark, hasOfferedProducts, pendingOrders } = useSelector((state: RootState) => state.productSlice);
     const { EXPAND } = useSelector((state: RootState) => state.actions);
 
@@ -32,6 +33,25 @@ export default function MobileBottomButtons() {
         }
 
     }, [dispatch, hasOfferedProducts]);
+
+
+
+    useEffect(() => {
+        if (!cartRef || !cartRef.current) return;
+
+        const rect = cartRef.current.getBoundingClientRect();
+
+        const position = {
+            top: rect.top,
+            right: rect.right,
+            bottom: rect.bottom,
+            left: rect.left,
+            width: rect.width,
+            height: rect.height,
+        };
+
+        dispatch(updateCartIconPosition(position));
+    }, [cartRef, dispatch])
 
     return (
         <div className='w-full dark:border-t dark:border-slate-400 md:hidden bg-black fixed py-2 z-[999999] bottom-0 left-0'>
@@ -52,7 +72,7 @@ export default function MobileBottomButtons() {
                 </Link>
                 <button onClick={() => dispatch(SET_EXPAND(EXPAND === KEY ? null : KEY))} className='min-w-[70px] prevent-body-trigger relative flex flex-col gap-1 items-center justify-between' >
                     <div className='relative'>
-                        <ShoppingCart fill='white' className='text-white h-6 w-6 cursor-pointer' />
+                        <ShoppingCart ref={cartRef} fill='white' className='text-white h-6 w-6 cursor-pointer' />
                         {
                             cartProducts.length > 0 ?
                                 <span className='flex items-center justify-center text-xs px-0.5 min-w-[18px] min-h-4  absolute -top-[40%] left-[80%] translate-x-[-50%] bg-secondary text-white rounded-full p-[1px]'>{cartProducts.length}</span> : <></>
