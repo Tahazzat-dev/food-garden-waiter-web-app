@@ -1,6 +1,6 @@
 "use client";
 import * as Dialog from "@radix-ui/react-dialog";
-import { Key, Minus, Plus, ShoppingCart, X } from "lucide-react"; // optional icon
+import { Minus, Plus, ShoppingCart, X } from "lucide-react"; // optional icon
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import React, { Dispatch, MouseEvent, SetStateAction, useEffect, useRef, useState } from "react";
