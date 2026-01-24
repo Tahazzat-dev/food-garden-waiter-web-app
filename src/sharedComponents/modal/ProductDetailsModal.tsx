@@ -54,7 +54,7 @@ export default function ProductDetailsModal() {
         if (addedItem) {
             if (addedItem.quantity === quantity) {
                 toast.error(t("alreadyExist"));
-                toggleModal()
+                closeModal()
                 return;
             }
 
@@ -162,6 +162,8 @@ export default function ProductDetailsModal() {
     if (!modalProduct) return null;
 
     const { en, bn } = getTranslationReadyText(modalProduct.name)
+
+    console.log(modalProduct?.image ? getImage(modalProduct?.image) : "/images/shared/food-placeholder.jpg", ' modal image')
     return (
         <>
             <Dialog.Root open={KEY === EXPAND} onOpenChange={closeModal}>
@@ -196,7 +198,7 @@ export default function ProductDetailsModal() {
                                         </div>
                                         {
                                             variant?.price ? <p className='fg_fs-sm flex gap-2'>{t('price')} : {formatPrice(+variant.price)}</p> :
-                                                <p className={cn('fg_fs-sm flex gap-2', showVariantWarning && "text-red-500")}>{t('selectVariants')}</p>
+                                                showVariantWarning ? <p className={cn('fg_fs-sm flex gap-2', showVariantWarning && "text-red-500")}>{t('selectVariants')}</p> : <></>
                                         }
                                     </div>
 
@@ -267,6 +269,7 @@ export default function ProductDetailsModal() {
 
             {
                 <ImageTransitionModal
+                    imgSource={modalProduct?.image ? getImage(modalProduct?.image) : "/images/shared/food-placeholder.jpg"}
                     beginAnimation={beginAnimation}
                     showAnimationModal={showAnimationModal}
                     setBeginAnimation={setBeginAnimation}
@@ -287,10 +290,11 @@ type ImageTransitionProps = {
     setShowAnimationModal: Dispatch<SetStateAction<boolean>>;
     beginAnimation: boolean;
     showAnimationModal: boolean;
+    imgSource: string;
 }
 
 
-const ImageTransitionModal = ({ showAnimationModal, setShowAnimationModal, position, setBeginAnimation, beginAnimation }: ImageTransitionProps) => {
+const ImageTransitionModal = ({ imgSource, showAnimationModal, setShowAnimationModal, position, setBeginAnimation, beginAnimation }: ImageTransitionProps) => {
     // hooks
     const { cartIconPosition } = useSelector((state: RootState) => state.actions);
     const { modalProduct } = useSelector((state: RootState) => state.productSlice);
@@ -336,12 +340,12 @@ const ImageTransitionModal = ({ showAnimationModal, setShowAnimationModal, posit
     }, [position])
     if (!showAnimationModal) return null;
 
-
+    console.log(imgSource, ' img source')
     return (
         <Image
             width={603}
             height={238}
-            src={modalProduct?.image ? getImage(modalProduct?.image) : "/images/shared/food-placeholder.jpg"}
+            src={imgSource}
             alt="transition"
             style={style ?? undefined}
             className="rounded-[8px] z-[9999999] md:!hidden"

@@ -18,8 +18,9 @@ const nextConfig: NextConfig = {
         hostname: '127.0.0.1'
       },
       {
-        protocol: 'https',
-        hostname: 'test.bdchefchoice.com'
+        protocol: "https",
+        hostname: "test.bdchefchoice.com",
+        pathname: "/dashboard/images/**",
       },
     ]
   },
