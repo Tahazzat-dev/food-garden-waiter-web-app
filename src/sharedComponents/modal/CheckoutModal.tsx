@@ -1,7 +1,7 @@
 'use client';
 import { RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { ChevronDown, CloudSync } from "lucide-react"
+import { ChevronDown } from "lucide-react"
 import { useRef } from "react"
 import { Check, ShoppingCart, X } from "lucide-react"; // optional icon
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,7 @@ import z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Dispatch, MouseEvent, SetStateAction, useEffect, useMemo, useState } from 'react';
-import { calculateSubtotal, cn, generateOrderId, getDiscountAmount, getTranslationReadyText } from '@/lib/utils';
+import { calculateSubtotal, cn, getDiscountAmount, getTranslationReadyText } from '@/lib/utils';
 
 // schema/orderSchema.ts
 export const deliveryTypes = ["Home Delivery", "Self Pickup", "Dine-In"] as const;
@@ -90,7 +90,6 @@ export default function CheckoutModal() {
     } = useForm<OrderFormValues>({
         resolver: zodResolver(orderSchema),
         defaultValues: {
-            deliveryType: "Home Delivery",
             paymentType: "Payment",
         },
     });

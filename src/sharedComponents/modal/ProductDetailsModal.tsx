@@ -298,7 +298,7 @@ const ImageTransitionModal = ({ imgSource, showAnimationModal, setShowAnimationM
     // hooks
     const { cartIconPosition } = useSelector((state: RootState) => state.actions);
     const { modalProduct } = useSelector((state: RootState) => state.productSlice);
-
+    console.log(modalProduct, "modal product");
     const [style, setStyle] = useState<React.CSSProperties | null>(null);
 
 
