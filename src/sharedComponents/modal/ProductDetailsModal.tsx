@@ -162,8 +162,6 @@ export default function ProductDetailsModal() {
     if (!modalProduct) return null;
 
     const { en, bn } = getTranslationReadyText(modalProduct.name)
-
-    console.log(modalProduct?.image ? getImage(modalProduct?.image) : "/images/shared/food-placeholder.jpg", ' modal image')
     return (
         <>
             <Dialog.Root open={KEY === EXPAND} onOpenChange={closeModal}>
@@ -297,8 +295,6 @@ type ImageTransitionProps = {
 const ImageTransitionModal = ({ imgSource, showAnimationModal, setShowAnimationModal, position, setBeginAnimation, beginAnimation }: ImageTransitionProps) => {
     // hooks
     const { cartIconPosition } = useSelector((state: RootState) => state.actions);
-    const { modalProduct } = useSelector((state: RootState) => state.productSlice);
-    console.log(modalProduct, "modal product");
     const [style, setStyle] = useState<React.CSSProperties | null>(null);
 
 
@@ -340,7 +336,6 @@ const ImageTransitionModal = ({ imgSource, showAnimationModal, setShowAnimationM
     }, [position])
     if (!showAnimationModal) return null;
 
-    console.log(imgSource, ' img source')
     return (
         <Image
             width={603}

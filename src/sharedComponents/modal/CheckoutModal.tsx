@@ -102,7 +102,6 @@ export default function CheckoutModal() {
     const deliveryType = watch("deliveryType");
     const deliveryAddress = watch("address");
 
-
     // handlers
     const onSubmit = async (data: OrderFormValues) => {
         const products = cartProducts.map(p => ({ product_id: p.productId, variant_id: p.id, quantity: p.quantity }));
@@ -542,14 +541,18 @@ export function SelectAddress({
             <button
                 type="button"
                 onClick={() => setIsOpen(v => !v)}
-                className="checkout-input w-full flex justify-between gap-4 items-center px-3 py-2 h-[38px] md:h-10 rounded border"
+                className="checkout-input w-full relative flex justify-between gap-4 items-center px-3 py-2 h-[38px] md:h-10 rounded border"
             >
-                {selectedAddress ? (
-
-                    <span className='text-base'>{renderText(bn, en)}</span>
-                ) : (
-                    <span className="text-gray-400 dark:text-gray-300">{t('deliveryAddress')}</span>
-                )}
+                {!!selectedAddress &&
+                    <span className="text-base">{renderText(bn, en)}</span>
+                }
+                <span
+                    className={cn(
+                        "pointer-events-none duration-200 m-0 p-0 absolute left-3 top-1/2 -translate-y-1/2",
+                        "peer-focus:top-0 bg-clr-card peer-focus:text-[11px] peer-focus:px-1 peer-focus:left-1.5",
+                        selectedAddress && "top-0 text-[11px] px-0.5 left-2"
+                    )}
+                >{t('deliveryAddress')}</span>
                 <ChevronDown className='!w-5 !h-5' />
             </button>
 
