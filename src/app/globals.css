@@ -735,6 +735,28 @@ body {
   @apply w-full py-1.5 px-2 rounded-[4px] bg-clr-card outline-none border duration-200 border-slate-400/70 focus:border-slate-500/70 text-sm;
 }
 
+@keyframes bounce-once {
+  0% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-15px);
+  }
+  60% {
+    transform: translateY(0);
+  }
+  80% {
+    transform: translateY(-4px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.animate-bounce-once {
+  animation: bounce-once 0.8s ease-out 1;
+}
+
 /* ==== details product ===== */
 
 /* .category-container {

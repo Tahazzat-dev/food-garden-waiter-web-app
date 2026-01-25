@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SET_EXPAND } from '@/redux/features/actions/actionSlice';
 import { CustomDrawer } from '../modal/CustomDrawer';
 import { useTranslations } from 'next-intl';
-import { calculateSubtotal, getSellingPrice } from '@/lib/utils';
+import { calculateSubtotal, cn, getSellingPrice } from '@/lib/utils';
 import useFormatPrice from '@/hooks/useFormatPrice';
 
 export function CartSheet() {
@@ -20,8 +20,6 @@ export function CartSheet() {
   const { EXPAND } = useSelector((state: RootState) => state.actions);
   const openCart = EXPAND === KEY;
   const { formatPrice } = useFormatPrice()
-
-
 
 
   // calculated cart total 
@@ -64,8 +62,15 @@ export function CartSheet() {
               <p>{t('totalBill')}</p>
               <p className='font-semibold'>{formatPrice(Number(totalPrice.toFixed(2)))}</p>
             </div>
-            <button onClick={() => dispatch(SET_EXPAND("CHECKOUT_MODAL"))} className="bg-primary fg_fs-md py-3 !text-white font-semibold !rounded-0 w-full">
-              {t("checkout")}
+            <button onClick={() => dispatch(SET_EXPAND("CHECKOUT_MODAL"))}
+              className={cn(
+                "bg-primary fg_fs-md py-3 !text-white font-semibold !rounded-0 w-full",
+                openCart && "animate-bounce-once"
+              )}
+            >
+              <span className=''>
+                {t("checkout")}
+              </span>
             </button>
           </div>
         </div>
