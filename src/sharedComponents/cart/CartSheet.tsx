@@ -8,6 +8,7 @@ import { CustomDrawer } from '../modal/CustomDrawer';
 import { useTranslations } from 'next-intl';
 import { calculateSubtotal, cn, getSellingPrice } from '@/lib/utils';
 import useFormatPrice from '@/hooks/useFormatPrice';
+import MovingBorder from '../shared/MovingBorder';
 
 export function CartSheet() {
   // variables
@@ -62,16 +63,17 @@ export function CartSheet() {
               <p>{t('totalBill')}</p>
               <p className='font-semibold'>{formatPrice(Number(totalPrice.toFixed(2)))}</p>
             </div>
-            <div className="w-full relative">
+
+
+            <MovingBorder>
               <button onClick={() => dispatch(SET_EXPAND("CHECKOUT_MODAL"))}
                 className={cn(
-                  "bg-primary  fg_fs-md py-3 !text-white font-semibold !rounded-0 w-full"
+                  "fg_fs-md rounded-md py-3 !text-white font-semibold !rounded-0 w-full"
                 )}
               >
                 {t("checkout")}
               </button>
-            </div>
-
+            </MovingBorder>
           </div>
         </div>
       </CustomDrawer>

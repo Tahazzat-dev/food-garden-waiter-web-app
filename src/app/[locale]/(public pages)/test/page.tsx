@@ -1,21 +1,27 @@
 export default function TestPage() {
     return (
         <div className="min-h-screen flex items-center justify-center">
-            <div className="flex flex-col items-center gap-6">
-                {/* Plate Loader */}
-                <div className="relative w-14 h-14">
-                    <div className="absolute inset-0 rounded-full border-4 border-[#fe0103]/50"></div>
-                    <div className="absolute inset-0 rounded-full border-4 border-secondary border-t-transparent animate-spin"></div>
-                </div>
+            <div className="flex flex-col items-center relative gap-6">
+                <div className="relative group">
+                    <div
+                        className="absolute inset-0 -m-[4px] rounded-[14px] opacity-70 blur-[1.5rem] animate-[spin_4s_linear_infinite]"
+                        style={{
+                            backgroundImage: 'conic-gradient(from var(--angle), transparent 70%, #3b82f6)',
+                        }}
+                    />
+                    <div
+                        className="absolute inset-0 -m-[4px] rounded-[14px] animate-[spin_4s_linear_infinite]"
+                        style={{
+                            backgroundImage: 'conic-gradient(from var(--angle), transparent 70%, #3b82f6)',
+                        }}
+                    />
 
-                {/* Text */}
-                <div className="text-center">
-                    <p className="text-xl font-semibold text-gray-800 dark:text-gray-200">
-                        Heating up the kitchen 🔥
-                    </p>
-                    <p className="text-gray-600 dark:text-gray-300 mt-1">
-                        Please wait a moment...
-                    </p>
+                    {/* Main Content Card */}
+                    <div className="relative w-[260px] aspect-[3/4] bg-[#1c1f2b] rounded-[10px] flex items-center justify-center p-8 text-center">
+                        <h1 className="text-white font-['Montserrat'] text-2xl font-bold tracking-tight">
+                            Just Border
+                        </h1>
+                    </div>
                 </div>
             </div>
         </div>

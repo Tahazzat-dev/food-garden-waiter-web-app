@@ -116,7 +116,6 @@ export default function CheckoutModal() {
         }
 
         setToStorage('user_address', data);
-
         try {
             const res = await confirmOrder(bodyData).unwrap();
             if (res.success) {
@@ -198,7 +197,8 @@ export default function CheckoutModal() {
         // load user address from the localstorage
         const address = getFromStorage('user_address') as OrderFormValues;
         if (address && address?.name) {
-            reset(address)
+            const { deliveryType, ...addressToLoad } = address;
+            reset(addressToLoad)
         }
     }, [EXPAND, reset])
 
