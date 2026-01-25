@@ -141,6 +141,7 @@
     "homeDelivery": "Home Delivery",
     "selfPickup": "Self Pickup",
     "dineIn": "Dine-In",
+    "deliveryError": "Please choose how you'd like to receive your order.",
     "cashOnDelivery": "Cash On Delivery",
     "payment": "Payment",
     "bkash": "Bkash",

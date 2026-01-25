@@ -61,6 +61,7 @@ import LoadingSpinner from '../loading/LoadingSpinner';
 import useRenderText from '@/hooks/useRenderText';
 import { useConfirmOrderMutation, useLazyGetCustomerInfoQuery } from '@/redux/features/product/productApiSlice';
 import { getFromStorage, setToStorage } from '@/lib/storage';
+import { Input } from '../shared/FormEl';
 
 export default function CheckoutModal() {
     // variables
@@ -86,6 +87,7 @@ export default function CheckoutModal() {
         watch,
         reset,
         setValue,
+        control,
         formState: { errors },
     } = useForm<OrderFormValues>({
         resolver: zodResolver(orderSchema),
@@ -112,8 +114,6 @@ export default function CheckoutModal() {
             products,
             delivery_type: data.deliveryType
         }
-
-        // console.log(bodyData,' body data');
 
         setToStorage('user_address', data);
 
@@ -181,7 +181,6 @@ export default function CheckoutModal() {
                 reset(address);
             } else {
                 reset();
-
             }
         } catch (error) {
             // TODO: have to log error to the error file.
@@ -273,90 +272,47 @@ export default function CheckoutModal() {
                                     <form onSubmit={handleSubmit(onSubmit)} className="px-0.5 my-2.5 grow overflow-hidden flex flex-col">
                                         <div className="grow w-full flex flex-col px-2 md:-2.5 lg:px gap-5 overflow-y-auto">
                                             {/* Name and information */}
-                                            <div className="w-full bg-clr-card flex flex-col p-3 gap-3 rounded-md">
-                                                <div className="w-full">
-                                                    <div className="input-box">
-                                                        <label htmlFor="name" className="label">
-                                                            <span>{t("yourName")}</span> <span>:</span>
-                                                        </label>
-                                                        <input
-                                                            {...register("name")}
-                                                            placeholder={t("yourNamePlaceholder")}
-                                                            className="checkout-input"
-                                                        />
-                                                    </div>
-                                                    <div className="flex items-center grow gap-2 md:gap-4">
-                                                        <span className="label"></span>
-                                                        {errors.name && <p className="text-red-500 mt-0.5 lg:mt-1">{t("yourNameError")}</p>}
-                                                    </div>
-                                                </div>
-                                                <div className="w-full">
-                                                    <div className="input-box">
-                                                        <label htmlFor="phone" className="label">
-                                                            <span>{t("phoneNo")}</span> <span>:</span>
-                                                        </label>
-                                                        <div className="grow relative">
-                                                            <input
-                                                                {...register("phone")}
-                                                                placeholder={t("phoneNoPlaceholder")}
-                                                                className="checkout-input"
-                                                            />
-                                                            {/* <button
-                                                                onClick={handleCustomerSearch}
-                                                                disabled={isCustomerInfoLoading}
-                                                                title='Get information'
-                                                                type='button' className='absolute top-[50%] right-2 -translate-y-[50%]' >
-                                                                {
-                                                                    isCustomerInfoLoading ? <LoadingSpinner className='w-5 h-5' /> : <CloudSync className='w-5 h-5' />
-                                                                }
-
-                                                            </button> */}
-                                                        </div>
-                                                    </div>
-                                                    <div className="flex items-center grow gap-2 md:gap-4">
-                                                        <span className="label"></span>
-                                                        {errors.phone && <p className="text-red-500 mt-0.5 lg:mt-1">{t("phoneNoError")}</p>}
-                                                    </div>
-                                                </div>
-                                                <div className="w-full">
-                                                    <div className="input-box prevent-body-trigger">
-
-                                                        <label htmlFor="address" className="label">
-                                                            <span>{t("deliveryAddress")}</span> <span>:</span>
-                                                        </label>
-                                                        <SelectAddress
-                                                            isOpen={isOpen}
-                                                            watch={watch}
-                                                            setIsOpen={setIsOpen}
-                                                            register={register}
-                                                            setValue={setValue}
-                                                        />
-                                                    </div>
-                                                    <div className="flex items-center grow gap-2 md:gap-4">
-                                                        <span className="label"></span>
-                                                        {errors.address && (
-                                                            <p className="text-red-500 mt-0.5 lg:mt-1">{t("deliveryAddressError")}</p>
-                                                        )}
-
-                                                    </div>
-                                                </div>
-                                                <div className="input-box">
-                                                    <label htmlFor="addressNote" className="label">
-                                                        <span>{t("deliveryAddress")}</span> <span>:</span>
-                                                    </label>
-                                                    <input
-                                                        {...register("addressNote")}
-                                                        placeholder={t("addressNotePlaceholder")}
-                                                        className="checkout-input"
+                                            <div className="w-full bg-clr-card flex flex-col p-3 gap-4 md:gap-5 rounded-md">
+                                                <Input
+                                                    showErrorBorder={false}
+                                                    control={control}
+                                                    label={t("yourName")}
+                                                    name='name'
+                                                    labelStyle='bg-clr-card'
+                                                    showErrorMessage={true}
+                                                    errorMessage={t("yourNameError")}
+                                                />
+                                                <Input
+                                                    showErrorBorder={false}
+                                                    control={control}
+                                                    label={t("phoneNo")}
+                                                    name='phone'
+                                                    labelStyle='bg-clr-card'
+                                                    showErrorMessage={true}
+                                                    errorMessage={t("phoneNoError")}
+                                                />
+                                                <div className="w-full prevent-body-trigger">
+                                                    <SelectAddress
+                                                        isOpen={isOpen}
+                                                        watch={watch}
+                                                        setIsOpen={setIsOpen}
+                                                        register={register}
+                                                        setValue={setValue}
                                                     />
+                                                    {errors.address && (
+                                                        <p className="mt-1 text-sm text-red-500">{t("deliveryAddressError")}</p>
+                                                    )}
                                                 </div>
 
-                                                {
-                                                    !!errors.addressNote && <div className="flex items-center grow gap-2 md:gap-4">
-                                                        <span className="label"></span>
-                                                        <p className="text-red-500 mt-0.5 lg:mt-1">{t("addressNoteError")}</p>
-                                                    </div>
-                                                }
+                                                <Input
+                                                    showErrorBorder={false}
+                                                    control={control}
+                                                    label={t("addressNotePlaceholder")}
+                                                    name='addressNote'
+                                                    labelStyle='bg-clr-card'
+                                                    showErrorMessage={true}
+                                                    errorMessage={t("addressNoteError")}
+                                                />
                                             </div>
 
                                             {/* delivery order type */}
@@ -387,9 +343,8 @@ export default function CheckoutModal() {
                                                     />
                                                     {t("dineIn")}
                                                 </label>
-                                                {errors.deliveryType && <p>{errors.deliveryType.message}</p>}
+                                                {errors.deliveryType && <p className="mt-1 text-sm text-red-500">{t("deliveryError")}</p>}
                                             </div>
-
                                             {/* payment type */}
                                             {/* {deliveryType === "Home Delivery" ?
 
@@ -587,11 +542,11 @@ export function SelectAddress({
             <button
                 type="button"
                 onClick={() => setIsOpen(v => !v)}
-                className="checkout-input w-full flex justify-between gap-4 items-center px-3 py-2 rounded border"
+                className="checkout-input w-full flex justify-between gap-4 items-center px-3 py-2 h-[38px] md:h-10 rounded border"
             >
                 {selectedAddress ? (
 
-                    <span className='text-gray-500 dark:text-gray-200'>{renderText(bn, en)}</span>
+                    <span className='text-base'>{renderText(bn, en)}</span>
                 ) : (
                     <span className="text-gray-400 dark:text-gray-300">{t('deliveryAddress')}</span>
                 )}

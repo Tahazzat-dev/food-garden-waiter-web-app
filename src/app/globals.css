@@ -395,6 +395,10 @@ p {
 
 /* utility */
 
+input:-webkit-autofill {
+  transition: background-color 5000s ease-in-out 0s;
+}
+
 button {
   cursor: pointer;
 }
