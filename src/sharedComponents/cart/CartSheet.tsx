@@ -62,7 +62,7 @@ export function CartSheet() {
               <p>{t('totalBill')}</p>
               <p className='font-semibold'>{formatPrice(Number(totalPrice.toFixed(2)))}</p>
             </div>
-            <div className="w-full relative m-1 bg-slate-900">
+            <div className="w-full relative">
               <button onClick={() => dispatch(SET_EXPAND("CHECKOUT_MODAL"))}
                 className={cn(
                   "bg-primary  fg_fs-md py-3 !text-white font-semibold !rounded-0 w-full"

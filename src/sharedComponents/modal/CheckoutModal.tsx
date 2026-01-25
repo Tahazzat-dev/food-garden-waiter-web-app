@@ -105,13 +105,14 @@ export default function CheckoutModal() {
     // handlers
     const onSubmit = async (data: OrderFormValues) => {
         const products = cartProducts.map(p => ({ product_id: p.productId, variant_id: p.id, quantity: p.quantity }));
+        const delivery_type = data.deliveryType === "Home Delivery" ? "Online" : data.deliveryType === "Self Pickup" ? "Take Way" : "Dine-In";
         const bodyData = {
             name: data.name,
             phone: data.phone,
             address_id: data.address.id,
             address_note: data.addressNote,
             products,
-            delivery_type: data.deliveryType
+            delivery_type,
         }
 
         setToStorage('user_address', data);
