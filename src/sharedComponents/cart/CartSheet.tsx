@@ -62,16 +62,16 @@ export function CartSheet() {
               <p>{t('totalBill')}</p>
               <p className='font-semibold'>{formatPrice(Number(totalPrice.toFixed(2)))}</p>
             </div>
-            <button onClick={() => dispatch(SET_EXPAND("CHECKOUT_MODAL"))}
-              className={cn(
-                "bg-primary fg_fs-md py-3 !text-white font-semibold !rounded-0 w-full",
-                openCart && "animate-bounce-once"
-              )}
-            >
-              <span className=''>
+            <div className="w-full relative m-1 bg-slate-900">
+              <button onClick={() => dispatch(SET_EXPAND("CHECKOUT_MODAL"))}
+                className={cn(
+                  "bg-primary  fg_fs-md py-3 !text-white font-semibold !rounded-0 w-full"
+                )}
+              >
                 {t("checkout")}
-              </span>
-            </button>
+              </button>
+            </div>
+
           </div>
         </div>
       </CustomDrawer>

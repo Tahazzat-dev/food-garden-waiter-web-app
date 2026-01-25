@@ -102,7 +102,7 @@ export default function ProductDetailsModal() {
                 }
                 dispatch(SET_EXPAND(prev_action === FAV_FOOD_POPUP_KEY ? FAV_FOOD_POPUP_KEY : null));
                 clearTimeout(timeOutId);
-            }, 700)
+            }, 680)
             return;
         }
 
