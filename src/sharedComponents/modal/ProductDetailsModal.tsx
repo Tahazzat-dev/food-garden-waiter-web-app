@@ -102,7 +102,7 @@ export default function ProductDetailsModal() {
                 }
                 dispatch(SET_EXPAND(prev_action === FAV_FOOD_POPUP_KEY ? FAV_FOOD_POPUP_KEY : null));
                 clearTimeout(timeOutId);
-            }, 650)
+            }, 700)
             return;
         }
 
@@ -318,7 +318,7 @@ const ImageTransitionModal = ({ imgSource, showAnimationModal, setShowAnimationM
             setShowAnimationModal(false);
             setBeginAnimation(false);
             setBeginAnimation(false);
-        }, 680);
+        }, 640);
 
         return () => clearTimeout(timer);
     }, [position, cartIconPosition, setBeginAnimation, beginAnimation, setShowAnimationModal]);
