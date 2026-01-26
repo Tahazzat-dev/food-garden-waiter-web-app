@@ -10,7 +10,7 @@ type Props = {
 export default function MovingBorder({
     width = 450,
     height = 65,
-    color = "#000000",
+    color = "red",
     children,
     duration = "8s" // Increased default from 4s to 8s for slower, more elegant movement
 }: Props) {
@@ -21,15 +21,9 @@ export default function MovingBorder({
 
     return (
         <div
-            className="relative group transition-transform duration-500 pb-3 p-1.5 overflow-hidden bg-secondary"
+            className="relative group transition-transform duration-500 pb-3 p-1.5 overflow-hidden bg-primary"
             style={{ width: `auto`, height: `${height}px` }}
         >
-            {/* Background Glow (Static/Soft) */}
-            <div
-                className="absolute inset-0 rounded-[12px] opacity-20"
-                style={{ backgroundColor: color }}
-            />
-
             {/* SVG Animation Layer */}
             <div className="absolute inset-0 -m-[2px] pointer-events-none">
                 <svg
@@ -68,24 +62,18 @@ export default function MovingBorder({
                 a ${borderRadius},${borderRadius} 0 0 1 ${borderRadius},-${borderRadius} 
                 z`}
                         stroke={color}
-                        strokeWidth="3"
-                        strokeLinecap="round"
+                        strokeWidth="4"
                         style={{
                             strokeDasharray: `${perimeter * 0.15} ${perimeter * 0.85}`,
                             strokeDashoffset: perimeter,
                             animation: `smoothTravel ${duration} linear infinite`,
-                            filter: `drop-shadow(0 0 4px ${color}) drop-shadow(0 0 12px ${color})`,
                         }}
                     />
                 </svg>
             </div>
-
-            {/* Main Content Card */}
             {
                 children
             }
-
-
             <style>{`
         @keyframes smoothTravel {
           from { stroke-dashoffset: ${perimeter * 2}; }

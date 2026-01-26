@@ -68,7 +68,7 @@ export function CartSheet() {
             <MovingBorder>
               <button onClick={() => dispatch(SET_EXPAND("CHECKOUT_MODAL"))}
                 className={cn(
-                  "fg_fs-md rounded-md py-3 !text-white font-semibold !rounded-0 w-full"
+                  "fg_fs-md rounded-0! py-3 !text-white font-semibold bg-primary w-full"
                 )}
               >
                 {t("checkout")}

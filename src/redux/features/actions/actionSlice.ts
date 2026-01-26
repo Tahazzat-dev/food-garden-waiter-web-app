@@ -6,9 +6,9 @@ interface IInitialState {
     prev_action: null | string;
     preventScrolling: boolean;
     cartIconPosition: TCartIconposition | null;
-    // openImageTransitionModal: boolean;
-    // transitionImage: ITransitionImage | null;
-    // temp
+    runExpandAnimation: boolean;
+
+    // temporary
     fetchOrders: boolean;
 }
 
@@ -16,10 +16,11 @@ const initialState: IInitialState = {
     EXPAND: null,
     prev_action: null,
     preventScrolling: false,
-    fetchOrders: true,
-    // transitionImage: null,
+    runExpandAnimation: false,
     cartIconPosition: null,
-    // openImageTransitionModal: true,
+
+    // temp
+    fetchOrders: true,
 };
 
 const actionsSlice = createSlice({
@@ -42,12 +43,9 @@ const actionsSlice = createSlice({
         updateCartIconPosition(state, action: { payload: TCartIconposition }) {
             state.cartIconPosition = action.payload
         },
-        // toggleOpenImageTransitionModal(state, action: { payload: boolean }) {
-        //     state.openImageTransitionModal = action.payload
-        // },
-        // updateTransitionImage(state, action: { payload: ITransitionImage }) {
-        //     state.transitionImage = action.payload
-        // },
+        toggleRunExpandAnimation(state, action: { payload: boolean }) {
+            state.runExpandAnimation = action.payload
+        },
     },
 });
 
@@ -56,8 +54,7 @@ export const {
     updatePreventScrolling,
     updateFetchOrders,
     updateCartIconPosition,
-    // toggleOpenImageTransitionModal,
-    // updateTransitionImage
+    toggleRunExpandAnimation
 } = actionsSlice.actions;
 export default actionsSlice.reducer;
 

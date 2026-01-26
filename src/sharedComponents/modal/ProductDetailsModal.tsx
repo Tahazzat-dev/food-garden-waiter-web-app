@@ -8,7 +8,7 @@ import { RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslations } from "next-intl";
 import { addCartProduct, updateCartProduct } from "@/redux/features/product/productSlice";
-import { SET_EXPAND } from "@/redux/features/actions/actionSlice";
+import { SET_EXPAND, toggleRunExpandAnimation } from "@/redux/features/actions/actionSlice";
 import useFormatPrice from "@/hooks/useFormatPrice";
 import { calculateSubtotal, cn, getImage, getTranslationReadyText } from "@/lib/utils";
 import { TCartIconposition, TCartProduct, TFoodVariant } from "@/types/types";
@@ -99,6 +99,7 @@ export default function ProductDetailsModal() {
             const timeOutId = setTimeout(() => {
                 if (cartItem) {
                     dispatch(addCartProduct(cartItem));
+                    dispatch(toggleRunExpandAnimation(true));
                 }
                 dispatch(SET_EXPAND(prev_action === FAV_FOOD_POPUP_KEY ? FAV_FOOD_POPUP_KEY : null));
                 clearTimeout(timeOutId);
