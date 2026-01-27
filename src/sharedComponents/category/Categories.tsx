@@ -1,43 +1,43 @@
 "use client"
 
+import useRenderText from "@/hooks/useRenderText"
+import { cn, getImage, getTranslationReadyText } from "@/lib/utils"
 import { setHomeActiveCategoryId } from "@/redux/features/category/categorySlice"
 import { RootState } from "@/redux/store"
 import { TCategory } from "@/types/types"
 import clsx from "clsx"
+import Image from "next/image"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import useRenderText from "@/hooks/useRenderText"
-import Image from "next/image"
-import { cn, getImage, getTranslationReadyText } from "@/lib/utils"
 import { Swiper, SwiperSlide } from "swiper/react"
 
-import "swiper/css";
-import "swiper/css/navigation";
-import { Autoplay, Navigation } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import { useRouter, useSearchParams } from "next/navigation"
+import "swiper/css"
+import "swiper/css/navigation"
+import { Autoplay, Navigation } from "swiper/modules"
 
 type Props = {
-  isIndex: boolean;
   item: TCategory;
 }
 
-function Category({ isIndex, item }: Props) {
+function Category({ item }: Props) {
   // hooks
+  const router = useRouter()
   const dispatch = useDispatch()
   const { renderText } = useRenderText()
   const { homeActiveCategoryId } = useSelector((state: RootState) => state.categorySlice)
 
   // handlers
   const handleSelectCategory = (categoryId: number) => {
+    router.push(
+      categoryId === 0
+        ? "/"
+        : `/?category=${categoryId}`,
+      { scroll: false }
+    )
     dispatch(setHomeActiveCategoryId(categoryId))
   }
-
-  // initial setup
-  useEffect(() => {
-    if (isIndex) {
-      dispatch(setHomeActiveCategoryId(item.id))
-    }
-  }, [dispatch, isIndex, item])
 
   // TODO: temp_
   const { en, bn } = getTranslationReadyText(item.name)
@@ -63,6 +63,8 @@ function Category({ isIndex, item }: Props) {
 
 
 export default function Categories({ categories = [] }: { categories: TCategory[] }) {
+  const dispatch = useDispatch()
+  const searchParams = useSearchParams()
   const [isBeginning, setIsBeginning] = useState(true)
   const [isEnd, setIsEnd] = useState(false)
 
@@ -72,6 +74,16 @@ export default function Categories({ categories = [] }: { categories: TCategory[
     name: "সেরা / Top",
     slug: "all-categories"
   }
+
+  useEffect(() => {
+    const categoryFromUrl = searchParams.get("category")
+    if (categoryFromUrl) {
+      dispatch(setHomeActiveCategoryId(Number(categoryFromUrl)))
+    } else {
+      dispatch(setHomeActiveCategoryId(0)) // default "All"
+    }
+  }, [dispatch, searchParams])
+
 
   return <div style={{ position: "relative", width: "100%" }}>
     <Swiper
@@ -97,14 +109,14 @@ export default function Categories({ categories = [] }: { categories: TCategory[
         key='00000'
         className="z-0 !w-[80px] !min-w-[80px] !h-[80px] lg:!w-[120px] lg:!min-w-[120px] lg:!h-[120px]"
       >
-        <Category isIndex={true} item={allCategory} key="ALL_CATEGORY_DEFAULT" />
+        <Category item={allCategory} key="ALL_CATEGORY_DEFAULT" />
       </SwiperSlide>
       {categories.map((category) => (
         <SwiperSlide
           className="z-0 !w-[80px] !min-w-[80px] !h-[80px] lg:!w-[120px] lg:!min-w-[120px] lg:!h-[120px]"
           key={category.id}
         >
-          <Category isIndex={false} item={category} key={category.id} />
+          <Category item={category} key={category.id} />
         </SwiperSlide>
       ))}
     </Swiper>
