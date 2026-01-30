@@ -1,15 +1,14 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "../globals.css";
-import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { routing } from "@/i18n/routing";
-import { notFound } from "next/navigation";
-import { ThemeProvider } from "@/provider/ThemeProvider";
 import ReduxProvider from "@/provider/ReduxProvider";
-import BodyEventListeners from "@/sharedComponents/DOM/BodyEventListener";
-import { ToastContainer } from 'react-toastify';
-import SharedModals from "@/sharedComponents/modal/SharedModals";
+import { ThemeProvider } from "@/provider/ThemeProvider";
 import InitialDataLoader from "@/sharedComponents/dataLoader/InitialDataLoader";
+import BodyEventListeners from "@/sharedComponents/DOM/BodyEventListener";
+import SharedModals from "@/sharedComponents/modal/SharedModals";
+import type { Metadata } from "next";
+import { hasLocale, NextIntlClientProvider } from "next-intl";
+import { Geist, Geist_Mono } from "next/font/google";
+import { notFound } from "next/navigation";
+import "../globals.css";
 
 import requestConfig from "@/i18n/request";
 
@@ -89,7 +88,7 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased max-w-[1023px] mx-auto`}
       >
         <ReduxProvider>
           <ThemeProvider>
@@ -97,13 +96,6 @@ export default async function RootLayout({
               {children}
               <InitialDataLoader />
               <SharedModals />
-              <ToastContainer
-                hideProgressBar={true}
-                limit={3}
-                newestOnTop
-                autoClose={1300}
-                className="z-[9999999] hidden md:block"
-              />
             </NextIntlClientProvider>
           </ThemeProvider>
           <BodyEventListeners />

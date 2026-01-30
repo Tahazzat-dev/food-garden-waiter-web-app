@@ -1,15 +1,15 @@
 "use client"
-import Container from '@/sharedComponents/wrapper/Container'
-import FoodCart from './FoodCart'
-import { useSelector } from 'react-redux'
-import { RootState } from '@/redux/store'
 import { cn } from '@/lib/utils'
-import { useEffect, useState } from 'react'
 import { useLazyGetCategoryProductsQuery } from '@/redux/features/product/productApiSlice'
-import { TProduct } from '@/types/types'
-import NoDataMsg from '@/sharedComponents/shared/NoDataMsg'
+import { RootState } from '@/redux/store'
 import LoadingSpinner from '@/sharedComponents/loading/LoadingSpinner'
 import BoxSpace from '@/sharedComponents/shared/BoxSpace'
+import NoDataMsg from '@/sharedComponents/shared/NoDataMsg'
+import Container from '@/sharedComponents/wrapper/Container'
+import { TProduct } from '@/types/types'
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import FoodCart from './FoodCart'
 
 // static variables
 const TOP_PROUDUCT_IDS: number[] = [41, 107, 138, 37, 36, 64, 67, 79, 96, 1, 19, 43, 44, 45, 75, 77];
@@ -74,7 +74,7 @@ export default function FilterFood({ className = '' }: { className?: string }) {
                         !products.length ?
                             <NoDataMsg group='shared' variable='noFoodFound' className='min-h-20 lg:min-h-40 xl:min-h-56' />
                             :
-                            <div className="grid gap-2.5 sm:gap-4 grid-cols-2 md:grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
+                            <div className="flex flex-col gap-3">
                                 {
                                     products.map(product => <FoodCart product={product} key={product?.id} />)
                                 }

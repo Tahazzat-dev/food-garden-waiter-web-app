@@ -1,5 +1,5 @@
 import MobileBottomButtons from '@/sharedComponents/footer/MobileBottomButtons';
-import PubliceHeader from '@/sharedComponents/header/PubliceHeader';
+import PublicHeader from '@/sharedComponents/header/PublicHeader';
 import React from 'react';
 
 export default function layout({
@@ -9,7 +9,7 @@ export default function layout({
 }>) {
     return (
         <>
-            <PubliceHeader />
+            <PublicHeader />
             {children}
             <MobileBottomButtons />
         </>

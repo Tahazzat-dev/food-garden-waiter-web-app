@@ -1,16 +1,15 @@
-import Container from '../wrapper/Container';
-import SearchFilter from './SearchFilter';
-import PublicSidebar from './PublicSidebar';
 import { CartSheet } from '../cart/CartSheet';
-import SiteLogo from './SiteLogo';
+import CheckoutModal from '../modal/CheckoutModal';
 import LocaleSwitcher from '../toggler/LocaleSwitcher';
 import ThemeSwitcher from '../toggler/ThemeSwitcher';
-import { FavouriteFoods } from '../favourite/FavouriteFoods';
-import CheckoutModal from '../modal/CheckoutModal';
-import RenderText from '../utils/RenderText';
+import Container from '../wrapper/Container';
+import AuthUser from './AuthUser';
 import ClientLink from './ClientLink';
+import PublicSidebar from './PublicSidebar';
+import SiteLogo from './SiteLogo';
+import TaskLists from './TaskLists';
 
-export default function PubliceHeader() {
+export default function PublicHeader() {
   return (
     <>
       <section className='z-[9999] w-full fixed top-0 left-0 py-2 bg-[var(--bg-header)]'>
@@ -21,16 +20,10 @@ export default function PubliceHeader() {
               <SiteLogo />
             </ClientLink>
           </div>
-          <div className='hidden relative lg:flex fg_rounded items-center  h-9 gap-2'>
-            <SearchFilter />
-          </div>
-          <div className='flex grow items-center justify-end gap-3  lg:grow-0 lg:justify-between'>
-            <ClientLink className='hidden text-white items-center gap-2 md:flex' href='/orders' >
-              <span className='fg_fs-xs '><RenderText group='header' variable='myOrder' /></span>
-            </ClientLink>
-            <FavouriteFoods />
+          <div className='flex grow items-center justify-end gap-4  lg:grow-0 lg:justify-between'>
+            <TaskLists />
             <CartSheet />
-            {/* <AuthUser /> */}
+            <AuthUser />
             <LocaleSwitcher type='ghost' className='hidden xl:block' />
             <ThemeSwitcher type='ghost' className='hidden xl:flex' />
           </div>

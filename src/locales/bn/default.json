@@ -47,7 +47,9 @@
     "close": "বন্ধ করুন",
     "free": "ফ্রি",
     "language": "ভাষা",
-    "theme": "থিম"
+    "theme": "থিম",
+    "off": "ছাড়",
+    "productDetails": "পণ্যের বিবরণ"
   },
 
   "pages": {

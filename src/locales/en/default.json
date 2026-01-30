@@ -46,7 +46,9 @@
     "close": "Close",
     "free": "Free",
     "language": "Language",
-    "theme": "Theme"
+    "theme": "Theme",
+    "off": "Off",
+    "productDetails": "Product Details"
   },
 
   "pages": {
