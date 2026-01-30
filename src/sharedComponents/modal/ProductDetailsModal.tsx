@@ -4,7 +4,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import useFormatPrice from "@/hooks/useFormatPrice";
 import useRenderText from "@/hooks/useRenderText";
 import { calculateSubtotal, cn, getImage, getTranslationReadyText } from "@/lib/utils";
-import { SET_EXPAND } from "@/redux/features/actions/actionSlice";
+import { SET_EXPAND, toggleRunExpandAnimation } from "@/redux/features/actions/actionSlice";
 import { addCartProduct, updateCartProduct } from "@/redux/features/product/productSlice";
 import { RootState } from "@/redux/store";
 import { TCartIconposition, TCartProduct, TFoodVariant } from "@/types/types";
@@ -12,7 +12,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { Minus, Plus, ShoppingCart, X } from "lucide-react"; // optional icon
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import React, { MouseEvent, useEffect, useRef, useState } from "react";
+import React, { Dispatch, MouseEvent, SetStateAction, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import RenderText from "../utils/RenderText";
@@ -25,17 +25,16 @@ export default function ProductDetailsModal() {
     // hooks
     const t = useTranslations('shared');
     const dispatch = useDispatch();
-    const { cartIconPosition } = useSelector((state: RootState) => state.actions);
     const [quantity, setQuantity] = useState(1);
     const { EXPAND, prev_action } = useSelector((state: RootState) => state.actions);
     const { cartProducts, modalProduct } = useSelector((state: RootState) => state.productSlice);
     const [variant, setVariant] = useState<TFoodVariant | null>(null);
     const [position, setPosition] = useState<TCartIconposition | null>(null);
+    const [beginAnimation, setBeginAnimation] = useState(false);
     const [showAnimationModal, setShowAnimationModal] = useState(false);
     const [showVariantWarning, setShowVariantWarning] = useState(false);
     const { formatPrice } = useFormatPrice()
     const { renderText } = useRenderText()
-    const [style, setStyle] = useState<React.CSSProperties | null>(null);
     const isMobile = useIsMobile()
     const imageRef = useRef<HTMLDivElement | null>(null);
 
@@ -64,13 +63,12 @@ export default function ProductDetailsModal() {
             toast.success(t("quantityUpdated"));
 
             if (isMobile) {
-                beginAnimation();
+                setBeginAnimation(true);
             }
 
             toggleModal()
             return;
         }
-
         const cartItem: TCartProduct = {
             quantity,
             productId: modalProduct.id,
@@ -85,31 +83,9 @@ export default function ProductDetailsModal() {
         toast.success(t('addedToCart'));
 
         if (isMobile) {
-            beginAnimation();
+            setBeginAnimation(true);
         }
-
         toggleModal(cartItem)
-    }
-
-    const beginAnimation = () => {
-        if (!cartIconPosition) return;
-        requestAnimationFrame(() => {
-            setStyle({
-                position: "fixed",
-                top: cartIconPosition.top,
-                left: (cartIconPosition.left + cartIconPosition.width / 2),
-                width: (cartIconPosition.width / 2),
-                height: (cartIconPosition.height / 2),
-                transition: "all 700ms ease-in-out",
-                zIndex: 9999999,
-            });
-        });
-
-        // Cleanup
-        const timer = setTimeout(() => {
-            setStyle(null)
-        }, 640);
-        return () => clearTimeout(timer);
     }
 
     const handleQuantityChange = (newQuantity: number) => {
@@ -123,6 +99,7 @@ export default function ProductDetailsModal() {
             const timeOutId = setTimeout(() => {
                 if (cartItem) {
                     dispatch(addCartProduct(cartItem));
+                    dispatch(toggleRunExpandAnimation(true));
                 }
                 dispatch(SET_EXPAND(prev_action === FAV_FOOD_POPUP_KEY ? FAV_FOOD_POPUP_KEY : null));
                 clearTimeout(timeOutId);
@@ -134,6 +111,7 @@ export default function ProductDetailsModal() {
             dispatch(addCartProduct(cartItem));
         }
         dispatch(SET_EXPAND(prev_action === FAV_FOOD_POPUP_KEY ? FAV_FOOD_POPUP_KEY : null));
+
     }
 
     const closeModal = () => {
@@ -190,7 +168,7 @@ export default function ProductDetailsModal() {
             <Dialog.Root open={KEY === EXPAND} onOpenChange={closeModal}>
                 <Dialog.Portal>
                     <div className="fixed inset-0 global-overlay z-[9999]" />
-                    <Dialog.Content style={style ?? undefined} className="scale-50 prevent-body-trigger fixed top-1/2 left-1/2  max-w-[93vw] md:max-w-[700px] !rounded-[10px] lg:!rounded-[12px] overflow-hidden w-full -translate-x-1/2 -translate-y-1/2 bg-body rounded-lg shadow-lg dark:shadow-slate-800 z-[99999]">
+                    <Dialog.Content className="prevent-body-trigger fixed top-1/2 left-1/2  max-w-[93vw] md:max-w-[700px] !rounded-[10px] lg:!rounded-[12px] overflow-hidden w-full -translate-x-1/2 -translate-y-1/2 bg-body rounded-lg shadow-lg dark:shadow-slate-800 z-[99999]">
                         <div className="flex items-center justify-between bg-primary px-4 py-2">
                             <Dialog.Title className="fg_fs-md text-white">
                                 {t('foodDetails')}
@@ -287,6 +265,86 @@ export default function ProductDetailsModal() {
                     </Dialog.Content>
                 </Dialog.Portal>
             </Dialog.Root>
+
+            {
+                <ImageTransitionModal
+                    imgSource={modalProduct?.image ? getImage(modalProduct?.image) : "/images/shared/food-placeholder.jpg"}
+                    beginAnimation={beginAnimation}
+                    showAnimationModal={showAnimationModal}
+                    setBeginAnimation={setBeginAnimation}
+                    position={position}
+                    setShowAnimationModal={setShowAnimationModal}
+                />
+            }
+
         </>
     )
 }
+
+
+
+type ImageTransitionProps = {
+    position: TCartIconposition | null;
+    setBeginAnimation: Dispatch<SetStateAction<boolean>>;
+    setShowAnimationModal: Dispatch<SetStateAction<boolean>>;
+    beginAnimation: boolean;
+    showAnimationModal: boolean;
+    imgSource: string;
+}
+
+
+const ImageTransitionModal = ({ imgSource, showAnimationModal, setShowAnimationModal, position, setBeginAnimation, beginAnimation }: ImageTransitionProps) => {
+    // hooks
+    const { cartIconPosition } = useSelector((state: RootState) => state.actions);
+    const [style, setStyle] = useState<React.CSSProperties | null>(null);
+
+
+    useEffect(() => {
+        if (!position || !cartIconPosition || !beginAnimation) return;
+        requestAnimationFrame(() => {
+            setStyle({
+                position: "fixed",
+                top: cartIconPosition.top,
+                left: (cartIconPosition.left + cartIconPosition.width / 2),
+                width: (cartIconPosition.width / 2),
+                height: (cartIconPosition.height / 2),
+                transition: "all 700ms ease-in-out",
+                zIndex: 9999999,
+            });
+        });
+
+        // Cleanup
+        const timer = setTimeout(() => {
+            setStyle(null)
+            setShowAnimationModal(false);
+            setBeginAnimation(false);
+            setBeginAnimation(false);
+        }, 640);
+
+        return () => clearTimeout(timer);
+    }, [position, cartIconPosition, setBeginAnimation, beginAnimation, setShowAnimationModal]);
+
+    useEffect(() => {
+        if (!position) return;
+        setStyle({
+            position: "fixed",
+            top: position.top,
+            left: position.left,
+            width: position.width,
+            height: position.height,
+            zIndex: 9999999,
+        });
+    }, [position])
+    if (!showAnimationModal) return null;
+
+    return (
+        <Image
+            width={603}
+            height={238}
+            src={imgSource}
+            alt="transition"
+            style={style ?? undefined}
+            className="rounded-[8px] z-[9999999] md:!hidden"
+        />
+    );
+};
