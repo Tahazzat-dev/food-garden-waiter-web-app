@@ -1,21 +1,21 @@
 "use client";
+import { Button } from "@/components/ui/button";
+import { useIsMobile } from "@/hooks/use-mobile";
+import useFormatPrice from "@/hooks/useFormatPrice";
+import useRenderText from "@/hooks/useRenderText";
+import { calculateSubtotal, cn, getImage, getTranslationReadyText } from "@/lib/utils";
+import { SET_EXPAND, toggleRunExpandAnimation } from "@/redux/features/actions/actionSlice";
+import { addCartProduct, updateCartProduct } from "@/redux/features/product/productSlice";
+import { RootState } from "@/redux/store";
+import { TCartIconposition, TCartProduct, TFoodVariant } from "@/types/types";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Minus, Plus, ShoppingCart, X } from "lucide-react"; // optional icon
-import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import React, { Dispatch, MouseEvent, SetStateAction, useEffect, useRef, useState } from "react";
-import { RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import { useTranslations } from "next-intl";
-import { addCartProduct, updateCartProduct } from "@/redux/features/product/productSlice";
-import { SET_EXPAND, toggleRunExpandAnimation } from "@/redux/features/actions/actionSlice";
-import useFormatPrice from "@/hooks/useFormatPrice";
-import { calculateSubtotal, cn, getImage, getTranslationReadyText } from "@/lib/utils";
-import { TCartIconposition, TCartProduct, TFoodVariant } from "@/types/types";
 import { toast } from "react-toastify";
-import useRenderText from "@/hooks/useRenderText";
 import RenderText from "../utils/RenderText";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function ProductDetailsModal() {
     // variables
@@ -168,7 +168,7 @@ export default function ProductDetailsModal() {
             <Dialog.Root open={KEY === EXPAND} onOpenChange={closeModal}>
                 <Dialog.Portal>
                     <div className="fixed inset-0 global-overlay z-[9999]" />
-                    <Dialog.Content className="prevent-body-trigger fixed top-1/2 left-1/2  max-w-[93vw] md:max-w-[700px] !rounded-[10px] lg:!rounded-[12px] overflow-hidden w-full -translate-x-1/2 -translate-y-1/2 bg-body rounded-lg shadow-lg dark:shadow-slate-800 z-[99999]">
+                    <Dialog.Content className="scale-50 prevent-body-trigger fixed top-1/2 left-1/2  max-w-[93vw] md:max-w-[700px] !rounded-[10px] lg:!rounded-[12px] overflow-hidden w-full -translate-x-1/2 -translate-y-1/2 bg-body rounded-lg shadow-lg dark:shadow-slate-800 z-[99999]">
                         <div className="flex items-center justify-between bg-primary px-4 py-2">
                             <Dialog.Title className="fg_fs-md text-white">
                                 {t('foodDetails')}
