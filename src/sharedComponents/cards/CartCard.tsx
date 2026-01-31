@@ -37,7 +37,7 @@ export function CartCard({ item }: { item: TCartProduct }) {
         <div className="flex items-center gap-2 justify-between">
           <div className="flex flex-col items-start">
             <h3 className='line-clamp-2 break-words fg_fs-sm text-primary leading-tight font-medium'>
-              {renderText(en, bn)} - <span className='px-2 py-1 rounded-[6px] text-[13px] font-medium text-secondary'>{item?.name}</span></h3>
+              {renderText(en, bn)} - <span className='px-2 rounded-[6px] font-medium text-secondary'>{item?.name}</span></h3>
           </div>
           <Button
             variant='secondary'

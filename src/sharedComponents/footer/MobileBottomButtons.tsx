@@ -82,7 +82,7 @@ export default function MobileBottomButtons() {
                     <span className={cn('font-semibold text-sm sm:text-base', isActive('/orders') ? "text-secondary" : "text-white")}><RenderText group="mobileBottomActions" variable="orders" /></span>
                 </Link>
                 <button onClick={() => dispatch(SET_EXPAND(EXPAND === KEY ? null : KEY))} className='relative w-[60px] h-[52px]' >
-                    <div className={cn("w-[70px] h-[70px] duration-300 absolute left-1/2 -translate-x-1/2 overflow-hidden rounded-full p-[3px]", cartOpen ? "top-0 -translate-y-[12.5%]" : "top-[25%] -translate-y-1/2")}>
+                    <div className={cn("w-[70px] h-[70px] duration-200 absolute left-1/2 -translate-x-1/2 overflow-hidden rounded-full p-[3px]", cartOpen ? "top-0 -translate-y-[12.5%]" : "top-[25%] -translate-y-1/2")}>
                         <div className="w-full bg-black h-full z-10 rounded-full prevent-body-trigger relative flex flex-col items-center justify-center">
                             <div className={cn('relative mx-2', runExpandAnimation && "cart-pop")}>
                                 <ShoppingCart ref={cartRef} fill='white' className='text-white h-6 w-6 cursor-pointer' />
