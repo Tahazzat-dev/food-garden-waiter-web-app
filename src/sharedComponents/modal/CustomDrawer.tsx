@@ -25,7 +25,7 @@ export function CustomDrawer({
     useEffect(() => {
         if (mounted) return;
         setMounted(true)
-    }, [])
+    }, [mounted])
 
     useEffect(() => {
         if (typeof window === "undefined") return;

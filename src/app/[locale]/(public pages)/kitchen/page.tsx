@@ -1,6 +1,5 @@
-import Container from "@/sharedComponents/wrapper/Container";
-import FoodCart from "../(home)/components/FoodCart";
 import RenderText from "@/sharedComponents/utils/RenderText";
+import Container from "@/sharedComponents/wrapper/Container";
 
 // get product
 const getDiscountedProducts = async () => {
@@ -17,7 +16,7 @@ const getDiscountedProducts = async () => {
     // return { products: discountedProducts };
 }
 
-export default async function OffersPage() {
+export default async function KitchenPage() {
     // const { products } = await getDiscountedProducts()
     return (
         <section className="w-full mt-[91px] sm:mt-[100px] md:mt-[120px] pb-20 md:pb-7 lg:pb-10">

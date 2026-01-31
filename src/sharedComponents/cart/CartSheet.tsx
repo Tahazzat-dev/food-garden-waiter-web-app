@@ -36,7 +36,8 @@ export function CartSheet() {
       </button>
 
       <CustomDrawer
-        className='h-[81%]'
+        overlayClassName="!top-0"
+        className='!top-0 !z-[9999999]'
         open={openCart}
       >
         <div className="w-full h-full flex flex-col">
@@ -61,6 +62,18 @@ export function CartSheet() {
             ))}
           </div>
           <div className="w-full">
+            <div className="w-full flex">
+
+            </div>
+            <div className="w-full flex max-w-full overflow-x-auto gap-3">
+              <div className="min-w-20 flex items-center justify-center w-20 h-10 bg-red-100">1</div>
+              <div className="min-w-20 flex items-center justify-center w-20 h-10 bg-red-100">2</div>
+              <div className="min-w-20 flex items-center justify-center w-20 h-10 bg-red-100">3</div>
+              <div className="min-w-20 flex items-center justify-center w-20 h-10 bg-red-100">4</div>
+              <div className="min-w-20 flex items-center justify-center w-20 h-10 bg-red-100">5</div>
+              <div className="min-w-20 flex items-center justify-center w-20 h-10 bg-red-100">6</div>
+              <div className="min-w-20 flex items-center justify-center w-20 h-10 bg-red-100">7</div>
+            </div>
             <button onClick={() => dispatch(SET_EXPAND("CHECKOUT_MODAL"))}
               className={cn(
                 "fg_fs-md rounded-0! py-3 !text-white font-semibold bg-primary w-full flex items-center gap-5 justify-center"

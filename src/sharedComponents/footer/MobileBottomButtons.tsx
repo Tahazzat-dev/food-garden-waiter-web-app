@@ -1,5 +1,5 @@
 "use client"
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 import { cn, hasVisitedOffersToday } from '@/lib/utils';
 import { SET_EXPAND, toggleRunExpandAnimation, updateCartIconPosition } from '@/redux/features/actions/actionSlice';
 import { setShowOfferedMark } from '@/redux/features/product/productSlice';
@@ -20,9 +20,13 @@ export default function MobileBottomButtons() {
     const dispatch = useDispatch();
     const t = useTranslations('mobileBottomActions');
     const cartRef = useRef<SVGSVGElement | null>(null);
+    const pathname = usePathname()
+
     const { cartProducts, showOfferedMark, hasOfferedProducts, pendingOrders } = useSelector((state: RootState) => state.productSlice);
 
     const { runExpandAnimation, EXPAND } = useSelector((state: RootState) => state.actions);
+
+    const isActive = (path: string) => pathname === path;
 
     useEffect(() => {
         if (!hasOfferedProducts) return;
@@ -64,19 +68,21 @@ export default function MobileBottomButtons() {
     }, [runExpandAnimation, dispatch])
 
 
+    const cartOpen = EXPAND === "CART_SHEET"
+
     return (
         <div className='w-full dark:border-t dark:border-slate-400 md:hidden bg-black fixed py-2 z-[999999] bottom-0 left-0'>
             <Container className='flex justify-between'>
                 <Link className='flex flex-col gap-1 items-center justify-between min-w-[70px]' href="/" >
                     <Image src="/images/shared/food-menu-icon.svg" width={22} height={40} alt="Menu icon" />
-                    <span className='text-white font-semibold text-sm sm:text-base'><RenderText group="mobileBottomActions" variable="menu" /></span>
+                    <span className={cn('font-semibold text-sm sm:text-base', isActive('/') ? "text-secondary" : "text-white")}><RenderText group="mobileBottomActions" variable="menu" /></span>
                 </Link>
-                <Link href="/offers" className='flex flex-col gap-1 items-center justify-between min-w-[70px]' >
+                <Link href="/orders" className='flex flex-col gap-1 items-center justify-between min-w-[70px]' >
                     <Image src="/images/shared/orders-icon.svg" width={25} height={40} alt="Orders icon" />
-                    <span className='text-white font-semibold text-sm sm:text-base'><RenderText group="mobileBottomActions" variable="orders" /></span>
+                    <span className={cn('font-semibold text-sm sm:text-base', isActive('/orders') ? "text-secondary" : "text-white")}><RenderText group="mobileBottomActions" variable="orders" /></span>
                 </Link>
                 <button onClick={() => dispatch(SET_EXPAND(EXPAND === KEY ? null : KEY))} className='relative w-[60px] h-[52px]' >
-                    <div className="w-[70px] h-[70px] absolute top-[20%] left-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full p-[3px]">
+                    <div className={cn("w-[70px] h-[70px] duration-300 absolute left-1/2 -translate-x-1/2 overflow-hidden rounded-full p-[3px]", cartOpen ? "top-0 -translate-y-[12.5%]" : "top-[25%] -translate-y-1/2")}>
                         <div className="w-full bg-black h-full z-10 rounded-full prevent-body-trigger relative flex flex-col items-center justify-center">
                             <div className={cn('relative mx-2', runExpandAnimation && "cart-pop")}>
                                 <ShoppingCart ref={cartRef} fill='white' className='text-white h-6 w-6 cursor-pointer' />
@@ -93,14 +99,14 @@ export default function MobileBottomButtons() {
                     </div>
                 </button>
 
-                <Link href="/orders" className='relative flex flex-col gap-1 items-center justify-between min-w-[70px]' >
-                    <Image src="/images/shared/cooking-icon.svg" width={25} height={40} alt="Orders icon" />
-                    <span className='text-white font-semibold text-sm sm:text-base'><RenderText group="mobileBottomActions" variable="kitchen" /></span>
+                <Link href="/kitchen" className='relative flex flex-col gap-1 items-center justify-between min-w-[70px]' >
+                    <Image src="/images/shared/cooking-icon.svg" width={25} height={40} alt="Kitchen Icon" />
+                    <span className={cn('font-semibold text-sm sm:text-base', isActive('/kitchen') ? "text-secondary" : "text-white")}><RenderText group="mobileBottomActions" variable="kitchen" /></span>
                 </Link>
 
-                <Link target='_blank' href="https://wa.me/8801713619293" className='flex flex-col gap-1 items-center justify-between min-w-[70px]' >
+                <Link href="/online-orders" className='flex flex-col gap-1 items-center justify-between min-w-[70px]' >
                     <Globe className='text-white h-6 w-6 cursor-pointer' />
-                    <span className='text-white font-semibold text-sm sm:text-base'><RenderText group="mobileBottomActions" variable="online" /></span>
+                    <span className={cn('font-semibold text-sm sm:text-base', isActive('/online-orders') ? "text-secondary" : "text-white")}><RenderText group="mobileBottomActions" variable="online" /></span>
                 </Link>
             </Container>
         </div>

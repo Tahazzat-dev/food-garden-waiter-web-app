@@ -29,7 +29,7 @@ export function CartCard({ item }: { item: TCartProduct }) {
   return (
     <div className='w-full flex gap-2 bg-clr-card overflow-hidden custom-shadow-md group mb-2'>
       <div className="relative p-1 flex items-center justify-center">
-        <div className="w-full h-full max-w-[70px] max-h-[50px] overflow-hidden rounded-md">
+        <div className="w-full h-full max-w-[70px] max-h-[60px] overflow-hidden rounded-md">
           <Image src={item?.img ? getImage(item?.img) : "/images/shared/food-placeholder.jpg"} className='z-10 w-full duration-300 group-hover:scale-105 h-full' width={300} height={400} alt={en} />
         </div>
       </div>
@@ -48,9 +48,9 @@ export function CartCard({ item }: { item: TCartProduct }) {
             <Trash2 className='text-white  h-3 w-3' />
           </Button>
         </div>
-        <div className='mt-auto flex items-center justify-between bg-slate-200 px-2 rounded-[4px]'>
-          <p className='fg_fs-xxs font-semibold text-center grow dark:!text-black'>{item.discount < 1 ? formatPrice(item?.price) : getDiscountPrice(item?.price || 0, item?.discount || 0)}</p>
-          <div className='flex items-center gap-2 rounded-md py-0.5'>
+        <div className='mt-auto py-0.5 flex items-center justify-between bg-slate-200 px-2.5 rounded-[4px]'>
+          <p className='fg_fs-xs font-semibold  text-left grow dark:!text-black'>{item.discount < 1 ? formatPrice(item?.price) : getDiscountPrice(item?.price || 0, item?.discount || 0)}</p>
+          <div className='flex items-center   gap-3 rounded-md py-0.5'>
             <Button
               variant='primary'
               size='icon'
@@ -59,7 +59,7 @@ export function CartCard({ item }: { item: TCartProduct }) {
             >
               <Minus className='' />
             </Button>
-            <span className='rounded-[4px] fg_fs-xxs py-0.5 bg-white dark:!text-black px-4 inline-block text-center text-xs'>{item.quantity}</span>
+            <span className='rounded-[4px] fg_fs-xs py-0.5 bg-white dark:!text-black px-4 inline-block text-center text-xs'>{item.quantity}</span>
             <Button
               variant='primary'
               size='icon'
@@ -69,7 +69,7 @@ export function CartCard({ item }: { item: TCartProduct }) {
               <Plus className='' />
             </Button>
           </div>
-          <p className='fg_fs-xxs font-semibold text-center grow dark:!text-black'>{formatPrice(calculateSubtotal(getSellingPrice(item?.price || 0, item?.discount || 0), item.quantity))}</p>
+          <p className='fg_fs-xs font-semibold text-right grow dark:!text-black'>{formatPrice(calculateSubtotal(getSellingPrice(item?.price || 0, item?.discount || 0), item.quantity))}</p>
         </div>
       </div>
     </div>
