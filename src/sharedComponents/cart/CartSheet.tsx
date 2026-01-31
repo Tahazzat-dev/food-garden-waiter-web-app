@@ -3,14 +3,28 @@ import useFormatPrice from '@/hooks/useFormatPrice';
 import { calculateSubtotal, cn, getSellingPrice } from '@/lib/utils';
 import { SET_EXPAND } from '@/redux/features/actions/actionSlice';
 import { RootState } from '@/redux/store';
+import { TAddress } from '@/types/types';
 import { ShoppingCart, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { CartCard } from '../cards/CartCard';
 import { CustomDrawer } from '../modal/CustomDrawer';
 import RenderText from '../utils/RenderText';
+import { CustomerSelect } from './CustomerSelect';
 import Tables from './Tables';
+
+
+export type OrderFormValues = {
+  customer: {
+    name: string;
+    phone: string;
+    address: TAddress;
+    detailsAddress: string;
+  }
+}
+
 
 export function CartSheet() {
   // variables
@@ -24,6 +38,8 @@ export function CartSheet() {
   const { EXPAND } = useSelector((state: RootState) => state.actions);
   const openCart = EXPAND === KEY;
   const { formatPrice } = useFormatPrice()
+
+  const { register, formState, watch } = useForm()
 
 
   // calculated cart total 
@@ -66,12 +82,12 @@ export function CartSheet() {
           </div>
           <div className="w-full">
             <div className="w-full flex">
-
+              <CustomerSelect register={register} watch={watch} />
             </div>
             <Tables selectedTable={selectedTable} setSelectedTable={setSelectedTable} />
             <button onClick={() => dispatch(SET_EXPAND("CHECKOUT_MODAL"))}
               className={cn(
-                "fg_fs-md rounded-0! py-3 !text-white font-semibold bg-primary w-full flex items-center gap-5 justify-center"
+                "fg_fs-md rounded-0! py-2 !text-white font-semibold bg-primary w-full flex items-center gap-5 justify-center"
               )}
             >
               <span>{t("checkout")}</span> <span>{formatPrice(Number(totalPrice.toFixed(2)))}</span>
