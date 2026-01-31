@@ -1,13 +1,13 @@
 'use client';
-import Image from 'next/image';
-import { Minus, Plus, Trash2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { TCartProduct } from '@/types/types';
-import { useDispatch } from 'react-redux';
-import { removeCartProduct, updateCartProduct } from '@/redux/features/product/productSlice';
 import useFormatPrice from '@/hooks/useFormatPrice';
-import { calculateSubtotal, getDiscountPrice, getImage, getSellingPrice, getTranslationReadyText } from '@/lib/utils';
 import useRenderText from '@/hooks/useRenderText';
+import { calculateSubtotal, getDiscountPrice, getImage, getSellingPrice, getTranslationReadyText } from '@/lib/utils';
+import { removeCartProduct, updateCartProduct } from '@/redux/features/product/productSlice';
+import { TCartProduct } from '@/types/types';
+import { Minus, Plus, Trash2 } from 'lucide-react';
+import Image from 'next/image';
+import { useDispatch } from 'react-redux';
 
 export function CartCard({ item }: { item: TCartProduct }) {
   // hooks
@@ -27,7 +27,7 @@ export function CartCard({ item }: { item: TCartProduct }) {
   const { en, bn } = getTranslationReadyText(item.title)
 
   return (
-    <div className='flex gap-2.5 sm:gap-3 pb-3 border-b border-slate-300 dark:border-slate-600 border-dashed mb-5'>
+    <div className='flex gap-2.5 sm:gap-3 pb-1.5 border-b border-slate-300 dark:border-slate-600 border-dashed mb-3'>
       <div className='bg-muted relative h-16 w-16 md:min-w-16 md:min-h-16 flex-shrink-0 overflow-hidden rounded-md'>
         <Image
           src={item.img ? getImage(item?.img) : '/images/placeholder/placeholder.jpg'}
@@ -38,11 +38,11 @@ export function CartCard({ item }: { item: TCartProduct }) {
         />
       </div>
 
-      <div className='flex gap-1 flex-col flex-grow max-w-[300px]'>
+      <div className='flex gap-1 flex-col flex-grow'>
         <div className="flex items-center gap-2 justify-between">
           <div className="flex flex-col items-start">
-            <h3 className='line-clamp-2 fg_fs-xs text-primary leading-tight font-medium'>{renderText(en, bn)}</h3>
-            <p className='text-muted-foreground px-2 my-1 rounded-[4px] text-[13px] font-medium bg-secondary text-white inline'>{item?.name}</p>
+            <h3 className='line-clamp-2 break-words fg_fs-sm text-primary leading-tight font-medium'>
+              {renderText(en, bn)} - <span className='px-2 py-1 rounded-[6px] text-[13px] font-medium bg-secondary text-white'>{item?.name}</span></h3>
           </div>
           <Button
             variant='secondary'

@@ -48,7 +48,10 @@
     "language": "Language",
     "theme": "Theme",
     "off": "Off",
-    "productDetails": "Product Details"
+    "productDetails": "Product Details",
+    "addCustomer": "Add customer",
+    "add": "Add",
+    "itemList": "Item Lists"
   },
 
   "pages": {

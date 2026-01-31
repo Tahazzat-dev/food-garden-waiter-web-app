@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CartCard } from '../cards/CartCard';
 import { CustomDrawer } from '../modal/CustomDrawer';
 import MovingBorder from '../shared/MovingBorder';
+import RenderText from '../utils/RenderText';
 
 export function CartSheet() {
   // variables
@@ -36,12 +37,14 @@ export function CartSheet() {
       </button>
 
       <CustomDrawer
+        className='h-[81%]'
         open={openCart}
       >
         <div className="w-full h-full flex flex-col">
           <div className="w-full flex items-center gap-5 py-3 px-4 bg-primary">
-            <h3 className="grow flex text-white">
-              <span className='fg_fs-lg'>{t('addToCart')} ({cartProducts.length})</span>
+            <h3 className="grow flex items-end gap-2 text-white">
+              <span className='fg_fs-lg'><RenderText group='shared' variable='itemList' /> ({cartProducts.length})</span>
+              <span className='text-sm text-[#5BFFFF]'>( Table - 5 )</span>
             </h3>
 
             <div className="w-full max-w-6">
@@ -50,7 +53,7 @@ export function CartSheet() {
               </button>
             </div>
           </div>
-          <div className="w-full h-full grow px-2.5 sm:px-4 overflow-y-auto py-4 dark:border-l dark:border-slate-700">
+          <div className="w-full h-full grow px-2.5 sm:px-4 overflow-y-auto py-3 dark:border-l dark:border-slate-700">
             {cartProducts.map((item) => (
               <CartCard
                 key={item.id}
@@ -59,19 +62,13 @@ export function CartSheet() {
             ))}
           </div>
           <div className="w-full">
-            <div className="w-full flex justify-between gap-4 flex-wrap px-4 bg-black dark:bg-white clr-opposite py-2 ">
-              <p>{t('totalBill')}</p>
-              <p className='font-semibold'>{formatPrice(Number(totalPrice.toFixed(2)))}</p>
-            </div>
-
-
             <MovingBorder>
               <button onClick={() => dispatch(SET_EXPAND("CHECKOUT_MODAL"))}
                 className={cn(
-                  "fg_fs-md rounded-0! py-3 !text-white font-semibold bg-primary w-full"
+                  "fg_fs-md rounded-0! py-3 !text-white font-semibold bg-primary w-full flex items-center gap-5 justify-center"
                 )}
               >
-                {t("checkout")}
+                <span>{t("checkout")}</span> <span>{formatPrice(Number(totalPrice.toFixed(2)))}</span>
               </button>
             </MovingBorder>
           </div>

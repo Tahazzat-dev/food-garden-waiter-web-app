@@ -49,7 +49,10 @@
     "language": "ভাষা",
     "theme": "থিম",
     "off": "ছাড়",
-    "productDetails": "পণ্যের বিবরণ"
+    "productDetails": "পণ্যের বিবরণ",
+    "addCustomer": "কাস্টমার এড করুন",
+    "add": "এড করুন",
+    "itemList": "আইটেমের তালিকা"
   },
 
   "pages": {
