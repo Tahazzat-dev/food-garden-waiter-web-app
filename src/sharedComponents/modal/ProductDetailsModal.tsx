@@ -123,7 +123,7 @@ export default function ProductDetailsModal() {
 
     useEffect(() => {
         setShowVariantWarning(false);
-        setVariant(null);
+        setVariant(modalProduct?.variations[0] || null);
         if (KEY === EXPAND) {
             document.body.style.overflow = "hidden";
         } else {
