@@ -27,54 +27,49 @@ export function CartCard({ item }: { item: TCartProduct }) {
   const { en, bn } = getTranslationReadyText(item.title)
 
   return (
-    <div className='flex gap-2.5 sm:gap-3 pb-1.5 border-b border-slate-300 dark:border-slate-600 border-dashed mb-3'>
-      <div className='bg-muted relative h-16 w-16 md:min-w-16 md:min-h-16 flex-shrink-0 overflow-hidden rounded-md'>
-        <Image
-          src={item.img ? getImage(item?.img) : '/images/placeholder/placeholder.jpg'}
-          alt={item?.name}
-          width={72}
-          height={72}
-          className='object-cover w-full h-full'
-        />
+    <div className='w-full flex gap-2 bg-clr-card overflow-hidden custom-shadow-md group mb-2'>
+      <div className="relative p-1 flex items-center justify-center">
+        <div className="w-full h-full max-w-[70px] max-h-[50px] overflow-hidden rounded-md">
+          <Image src={item?.img ? getImage(item?.img) : "/images/shared/food-placeholder.jpg"} className='z-10 w-full duration-300 group-hover:scale-105 h-full' width={300} height={400} alt={en} />
+        </div>
       </div>
-
-      <div className='flex gap-1 flex-col flex-grow'>
+      <div className='flex gap-1 flex-col grow p-1 pr-2 bg-clr-card'>
         <div className="flex items-center gap-2 justify-between">
           <div className="flex flex-col items-start">
             <h3 className='line-clamp-2 break-words fg_fs-sm text-primary leading-tight font-medium'>
-              {renderText(en, bn)} - <span className='px-2 py-1 rounded-[6px] text-[13px] font-medium bg-secondary text-white'>{item?.name}</span></h3>
+              {renderText(en, bn)} - <span className='px-2 py-1 rounded-[6px] text-[13px] font-medium text-secondary'>{item?.name}</span></h3>
           </div>
           <Button
             variant='secondary'
             size='icon'
-            className='prevent-body-trigger p-1 h-6 w-6 rounded-full shadow-sm'
+            className='prevent-body-trigger p-1 h-5.5 w-5.5 rounded-full shadow-sm'
             onClick={() => dispatch(removeCartProduct(item.id))}
           >
             <Trash2 className='text-white  h-3 w-3' />
           </Button>
         </div>
-        <div className='mt-auto flex items-center justify-between bg-slate-200 px-2 py-0.5 rounded-[4px]'>
-          <p className='fg_fs-xs font-semibold text-center grow dark:!text-black'>{item.discount < 1 ? formatPrice(item?.price) : getDiscountPrice(item?.price || 0, item?.discount || 0)}</p>
-          <div className='flex items-center gap-1 lg:gap-2 rounded-md py-0.5'>
+        <div className='mt-auto flex items-center justify-between bg-slate-200 px-2 rounded-[4px]'>
+          <p className='fg_fs-xxs font-semibold text-center grow dark:!text-black'>{item.discount < 1 ? formatPrice(item?.price) : getDiscountPrice(item?.price || 0, item?.discount || 0)}</p>
+          <div className='flex items-center gap-2 rounded-md py-0.5'>
             <Button
               variant='primary'
               size='icon'
-              className='h-6 w-6 !rounded-full'
+              className='h-5 w-5 !rounded-full'
               onClick={() => handleQuantityChange(item.quantity - 1)}
             >
-              <Minus className='h-3 w-3' />
+              <Minus className='' />
             </Button>
-            <span className='rounded-[4px] fg_fs-xs py-0.5 bg-white dark:!text-black px-4 inline-block text-center text-xs'>{item.quantity}</span>
+            <span className='rounded-[4px] fg_fs-xxs py-0.5 bg-white dark:!text-black px-4 inline-block text-center text-xs'>{item.quantity}</span>
             <Button
               variant='primary'
               size='icon'
-              className='h-6 w-6 !rounded-full'
+              className='h-5 w-5 !rounded-full'
               onClick={() => handleQuantityChange(item.quantity + 1)}
             >
-              <Plus className='h-3 w-3' />
+              <Plus className='' />
             </Button>
           </div>
-          <p className='fg_fs-sm font-semibold text-center grow dark:!text-black'>{formatPrice(calculateSubtotal(getSellingPrice(item?.price || 0, item?.discount || 0), item.quantity))}</p>
+          <p className='fg_fs-xxs font-semibold text-center grow dark:!text-black'>{formatPrice(calculateSubtotal(getSellingPrice(item?.price || 0, item?.discount || 0), item.quantity))}</p>
         </div>
       </div>
     </div>

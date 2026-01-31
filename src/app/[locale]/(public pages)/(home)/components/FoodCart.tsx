@@ -31,7 +31,7 @@ export default function FoodCart({ product }: { product: TProduct }) {
                 </div>
             </div>
 
-            <div className="w-8/12 grow flex text-left flex-col items-start py-1.5 bg-clr-card relative ">
+            <div className="grow flex text-left flex-col items-start py-1.5 bg-clr-card relative ">
                 {/* <span className='absolute top-0 text-[13px] right-0 px-2 bg-secondary text-white' >
                     10% <RenderText group='shared' variable='off' />
                 </span> */}

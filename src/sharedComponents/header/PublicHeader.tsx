@@ -7,7 +7,6 @@ import AuthUser from './AuthUser';
 import ClientLink from './ClientLink';
 import PublicSidebar from './PublicSidebar';
 import SiteLogo from './SiteLogo';
-import TaskLists from './TaskLists';
 
 export default function PublicHeader() {
   return (
@@ -21,7 +20,7 @@ export default function PublicHeader() {
             </ClientLink>
           </div>
           <div className='flex grow items-center justify-end gap-4  lg:grow-0 lg:justify-between'>
-            <TaskLists />
+            {/* <TaskLists /> */}
             <CartSheet />
             <AuthUser />
             <LocaleSwitcher type='ghost' className='hidden xl:block' />

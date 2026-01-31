@@ -8,7 +8,6 @@ import { useTranslations } from 'next-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import { CartCard } from '../cards/CartCard';
 import { CustomDrawer } from '../modal/CustomDrawer';
-import MovingBorder from '../shared/MovingBorder';
 import RenderText from '../utils/RenderText';
 
 export function CartSheet() {
@@ -62,15 +61,13 @@ export function CartSheet() {
             ))}
           </div>
           <div className="w-full">
-            <MovingBorder>
-              <button onClick={() => dispatch(SET_EXPAND("CHECKOUT_MODAL"))}
-                className={cn(
-                  "fg_fs-md rounded-0! py-3 !text-white font-semibold bg-primary w-full flex items-center gap-5 justify-center"
-                )}
-              >
-                <span>{t("checkout")}</span> <span>{formatPrice(Number(totalPrice.toFixed(2)))}</span>
-              </button>
-            </MovingBorder>
+            <button onClick={() => dispatch(SET_EXPAND("CHECKOUT_MODAL"))}
+              className={cn(
+                "fg_fs-md rounded-0! py-3 !text-white font-semibold bg-primary w-full flex items-center gap-5 justify-center"
+              )}
+            >
+              <span>{t("checkout")}</span> <span>{formatPrice(Number(totalPrice.toFixed(2)))}</span>
+            </button>
           </div>
         </div>
       </CustomDrawer>
