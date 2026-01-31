@@ -63,7 +63,7 @@ export default function FilterFood({ className = '' }: { className?: string }) {
     }, [allProducts]);
 
     return (
-        <section className={cn("mb-4", className)}>
+        <section className={cn("mb-4 mt-[75px]", className)}>
             <Container>
                 {
                     isLoading ?
