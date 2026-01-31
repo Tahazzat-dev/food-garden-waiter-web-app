@@ -1,5 +1,6 @@
+import { tableData } from "@/lib/demo-data";
 import { setToStorage } from "@/lib/storage";
-import { TCartProduct, TOrder, TProduct } from "@/types/types";
+import { ITable, TCartProduct, TOrder, TProduct } from "@/types/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface IInitialState {
@@ -13,6 +14,7 @@ interface IInitialState {
 
     // temp
     orders: TOrder[];
+    tables: ITable[];
 }
 
 const initialState: IInitialState = {
@@ -23,7 +25,8 @@ const initialState: IInitialState = {
     showOfferedMark: false,
     pendingOrders: [],
     allProducts: [],
-    orders: []
+    orders: [],
+    tables: tableData
 };
 
 const productSlice = createSlice({
@@ -92,6 +95,11 @@ const productSlice = createSlice({
             setToStorage('fav_items', state.favouriteProducts.map(item => item.id));
         },
 
+        // table
+        updateTable: (state, action: PayloadAction<{ id: number, bookingStatus: boolean }>) => {
+            state.tables = state.tables.map(table => table.id === action.payload.id ? { ...table, isBooked: action.payload.bookingStatus } : table)
+        },
+
         // Temp
         setOrders: (state, action: PayloadAction<TOrder[]>) => {
             state.orders = action.payload
@@ -110,6 +118,7 @@ export const {
     clearCartProducts,
     updateCartProduct,
     setAllProduct,
+    updateTable,
     setFavouriteProducts,
     addFavouriteProduct,
     removeFavouriteProduct,

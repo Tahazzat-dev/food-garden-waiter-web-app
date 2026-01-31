@@ -211,3 +211,10 @@ export type TCartIconposition = {
     width: number;
     height: number;
 }
+
+
+export interface ITable {
+    id: number;
+    tableNumber: number;
+    isBooked: boolean;
+}

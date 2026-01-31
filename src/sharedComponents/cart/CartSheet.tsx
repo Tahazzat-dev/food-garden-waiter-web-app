@@ -5,10 +5,12 @@ import { SET_EXPAND } from '@/redux/features/actions/actionSlice';
 import { RootState } from '@/redux/store';
 import { ShoppingCart, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CartCard } from '../cards/CartCard';
 import { CustomDrawer } from '../modal/CustomDrawer';
 import RenderText from '../utils/RenderText';
+import Tables from './Tables';
 
 export function CartSheet() {
   // variables
@@ -18,6 +20,7 @@ export function CartSheet() {
   const t = useTranslations('shared')
   const dispatch = useDispatch();
   const { cartProducts } = useSelector((state: RootState) => state.productSlice);
+  const [selectedTable, setSelectedTable] = useState(0)
   const { EXPAND } = useSelector((state: RootState) => state.actions);
   const openCart = EXPAND === KEY;
   const { formatPrice } = useFormatPrice()
@@ -65,15 +68,7 @@ export function CartSheet() {
             <div className="w-full flex">
 
             </div>
-            <div className="w-full flex max-w-full overflow-x-auto gap-3">
-              <div className="min-w-20 flex items-center justify-center w-20 h-10 bg-red-100">1</div>
-              <div className="min-w-20 flex items-center justify-center w-20 h-10 bg-red-100">2</div>
-              <div className="min-w-20 flex items-center justify-center w-20 h-10 bg-red-100">3</div>
-              <div className="min-w-20 flex items-center justify-center w-20 h-10 bg-red-100">4</div>
-              <div className="min-w-20 flex items-center justify-center w-20 h-10 bg-red-100">5</div>
-              <div className="min-w-20 flex items-center justify-center w-20 h-10 bg-red-100">6</div>
-              <div className="min-w-20 flex items-center justify-center w-20 h-10 bg-red-100">7</div>
-            </div>
+            <Tables selectedTable={selectedTable} setSelectedTable={setSelectedTable} />
             <button onClick={() => dispatch(SET_EXPAND("CHECKOUT_MODAL"))}
               className={cn(
                 "fg_fs-md rounded-0! py-3 !text-white font-semibold bg-primary w-full flex items-center gap-5 justify-center"
