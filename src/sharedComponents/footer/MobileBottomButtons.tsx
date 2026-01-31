@@ -76,17 +76,20 @@ export default function MobileBottomButtons() {
                     <span className='text-white font-semibold text-sm sm:text-base'><RenderText group="mobileBottomActions" variable="orders" /></span>
                 </Link>
                 <button onClick={() => dispatch(SET_EXPAND(EXPAND === KEY ? null : KEY))} className='relative w-[60px] h-[52px]' >
-                    <div className="w-[70px] h-[70px] absolute top-[20%] left-1/2 -translate-x-1/2 -translate-y-1/2">
-                        <div className="w-full border-[3px] bg-black h-full rounded-full  border-blue-500 prevent-body-trigger relative flex flex-col items-center justify-center">
+                    <div className="w-[70px] h-[70px] absolute top-[20%] left-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full p-[3px]">
+                        <div className="w-full bg-black h-full z-10 rounded-full prevent-body-trigger relative flex flex-col items-center justify-center">
                             <div className={cn('relative mx-2', runExpandAnimation && "cart-pop")}>
                                 <ShoppingCart ref={cartRef} fill='white' className='text-white h-6 w-6 cursor-pointer' />
                                 {
-                                    cartProducts.length === 0 ?
-                                        <span className='flex items-center justify-center text-xs px-0.5 min-w-[18px] min-h-4  absolute -top-[40%] left-[80%] translate-x-[-50%] bg-secondary text-white rounded-full p-[1px]'>1{cartProducts.length}</span> : <></>
+                                    cartProducts.length > 0 ?
+                                        <span className='flex items-center justify-center text-xs px-0.5 min-w-[18px] min-h-4  absolute -top-[40%] left-[80%] translate-x-[-50%] bg-secondary text-white rounded-full p-[1px]'>{cartProducts.length}</span> : <></>
                                 }
                             </div>
                             <span className='text-white font-semibold text-sm sm:text-base'>{t("cart")}</span>
                         </div>
+                        <div
+                            className="gradient-border-overlay absolute -top-1/2 -left-1/2 w-[200%] h-[200%] z-0"
+                        />
                     </div>
                 </button>
 

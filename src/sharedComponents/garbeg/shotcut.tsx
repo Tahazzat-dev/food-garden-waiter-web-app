@@ -1,7 +1,5 @@
-import { RootState } from '@/redux/store'
 import Image from 'next/image';
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux';
 // import bannerImg from "@/assets/"
 
 export default function Shotcut() {
@@ -21,6 +19,53 @@ export default function Shotcut() {
     </div>
   )
 }
+
+  <button
+                    onClick={() => dispatch(SET_EXPAND(EXPAND === KEY ? null : KEY))}
+                    className="relative w-[80px] h-[80px] focus:outline-none group"
+                >
+                    {/* Outer Glow Wrapper: 
+          - rounded-full & overflow-hidden clips the internal spinning square into a circle 
+        */}
+                    <div className="absolute inset-0 rounded-full overflow-hidden flex items-center justify-center shadow-[0_0_20px_rgba(168,85,247,0.4)] transition-shadow duration-300 group-hover:shadow-[0_0_30px_rgba(168,85,247,0.6)]">
+
+                        {/* The Spinning Gradient:
+            - A large square rotating behind the inner mask
+            - conic-gradient creates the rainbow spectrum
+          */}
+                        <div
+                            className="absolute w-[180%] h-[180%] animate-spin-slow"
+                            style={{
+                                background: 'conic-gradient(from 0deg, #ff0000, #ff00ff, #0000ff, #00ffff, #00ff00, #ffff00, #ff0000)',
+                                animation: 'spin-gradient 3s linear infinite'
+                            }}
+                        />
+
+                        {/* The Inner Mask:
+            - inset-[3px] determines the border thickness
+            - z-10 ensures it stays above the gradient
+          */}
+                        <div className="absolute inset-[3px] bg-black rounded-full z-10 flex flex-col items-center justify-center">
+                            <div className={`relative transition-transform duration-200 ${runExpandAnimation ? 'scale-125' : 'scale-100'}`}>
+                                <ShoppingCart
+                                    size={24}
+                                    className="text-white fill-white"
+                                />
+
+                                {/* Cart Badge */}
+                                {cartProducts.length > 0 && (
+                                    <span className="absolute -top-3 -right-3 flex items-center justify-center text-[10px] font-bold h-5 w-5 bg-pink-600 text-white rounded-full border border-black animate-bounce-short">
+                                        {cartProducts.length}
+                                    </span>
+                                )}
+                            </div>
+
+                            <span className="text-white font-bold text-[10px] mt-0.5 tracking-widest uppercase">
+                                CART
+                            </span>
+                        </div>
+                    </div>
+                </button>
 
 
 // alert("API integration in progress")
