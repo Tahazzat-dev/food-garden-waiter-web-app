@@ -56,11 +56,11 @@
   },
 
   "mobileBottomActions": {
-    "home": "Home",
-    "offers": "Offers",
+    "menu": "Menu",
+    "kitchen": "Kitchen",
     "cart": "Cart",
     "orders": "Orders",
-    "message": "Message"
+    "online": "Online"
   },
 
   "authentication": {

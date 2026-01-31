@@ -57,11 +57,11 @@
   },
 
   "mobileBottomActions": {
-    "home": "হোম",
-    "offers": "অফার",
+    "menu": "মেনু",
+    "kitchen": "রান্নাঘর",
     "cart": "কার্ট",
     "orders": "অর্ডার",
-    "message": "মেসেজ"
+    "online": "অনলাইন"
   },
   "authentication": {
     "login": "লগইন করুন",
