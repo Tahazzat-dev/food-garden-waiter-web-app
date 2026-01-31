@@ -74,7 +74,7 @@ export default function FilterFood({ className = '' }: { className?: string }) {
                         !products.length ?
                             <NoDataMsg group='shared' variable='noFoodFound' className='min-h-20 lg:min-h-40 xl:min-h-56' />
                             :
-                            <div className="flex flex-col gap-3">
+                            <div className="flex flex-col gap-2">
                                 {
                                     products.map(product => <FoodCart product={product} key={product?.id} />)
                                 }
