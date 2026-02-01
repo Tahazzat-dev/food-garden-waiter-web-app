@@ -91,6 +91,7 @@ export default function MobileBottomButtons() {
                                         <span className='flex items-center justify-center text-xs px-0.5 min-w-[18px] min-h-4  absolute -top-[40%] left-[80%] translate-x-[-50%] bg-secondary text-white rounded-full p-[1px]'>{cartProducts.length}</span> : <></>
                                 }
                             </div>
+
                             <span className='text-white font-semibold text-sm sm:text-base'>{t("cart")}</span>
                         </div>
                         <div
