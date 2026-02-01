@@ -69,7 +69,7 @@ export default function Timer({ showClock = true, date }: Props) {
     };
 
     return (
-        <div className="flex items-center gap-1.5 text-sm font-medium">
+        <div className="flex items-center gap-1 text-xs font-medium">
             {showClock && (
                 <>
                     <span className="">
