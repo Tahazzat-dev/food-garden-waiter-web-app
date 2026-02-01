@@ -170,6 +170,8 @@ export interface OrderItem {
     variation: Variation;
 }
 
+
+type TCustomerType = "Online" | "Dine-In" | "Self Pickup";
 export interface TOrder {
     id: number;
     customer_id: number;
@@ -184,6 +186,8 @@ export interface TOrder {
     delivery_charge: string;
     convert_status: number;
     status: number;
+    is_web?: number;
+    customer_type: TCustomerType
 }
 
 export type CheckoutStatus = "success" | "error";

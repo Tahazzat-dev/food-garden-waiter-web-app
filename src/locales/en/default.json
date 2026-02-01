@@ -174,5 +174,14 @@
     "title": "Page not found",
     "description": "Sorry, the page you are looking for does not exist.",
     "btnTxt": "Back to Home"
+  },
+  "orders": {
+    "myOrders": "My Orders",
+    "allOrders": "All Orders",
+    "addOrder": "Add Order",
+    "unsaveOrder": "You have an unsave order. Save or discard that order",
+    "orderSuccess": "Order success",
+    "orderError": "Error occur during order",
+    "itemSelectError": "Please select a item first"
   }
 }

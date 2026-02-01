@@ -1,110 +1,112 @@
 "use client"
-
-import { getImage } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import { RootState } from "@/redux/store";
-import RenderFormatedPrice from "@/sharedComponents/utils/RenderFormatedPrice";
 import RenderText from "@/sharedComponents/utils/RenderText";
-import { CreateTrnslateText } from "@/sharedComponents/utils/TranslateText";
+import { Plus } from "lucide-react";
 import Image from "next/image";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useSelector } from "react-redux";
 
-
-/*
-
-                                    <td>
-                                        @if($estimate->status == '2')
-                                        <span style="padding: 5px 5px" class="badge badge-danger">Delete</span>
-                                        @else
-                                            @if ($estimate->convert_status == '1')
-                                                <span style="padding: 5px 5px" class="badge badge-success">Delivered</span>
-                                            @else
-                                                <span style="padding: 5px 5px" class="badge badge-warning">Pending</span>
-                                            @endif
-                                        @endif
-                                    </td>
-*/
+export type TTabs = "myOrders" | "allOrders";
 
 export default function Orders() {
-    const { orders } = useSelector((state: RootState) => state.productSlice);
+    const [activeTab, setActiveTab] = useState<TTabs>("myOrders")
     return (
         <>
-            {orders?.length ?
-                <div className="w-full grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-start">
-                    {orders?.map((order, index) => (
-                        <div
-                            key={order.id}
-                            className="rounded-xl border dark:border-slate-700 bg-white dark:bg-slate-900 p-4 shadow-sm hover:shadow-md transition"
-                        >
-                            {/* Header */}
-                            <div className="flex items-center justify-between mb-3">
-                                <div className="flex items-center gap-2">
-                                    <span className="text-sm font-semibold text-gray-700 dark:text-gray-400">
-                                        #{index + 1}
-                                    </span>
-                                    <span className="text-xs text-gray-700 dark:text-gray-400">
-                                        {order.order_id}
-                                    </span>
-                                </div>
+            <OrdersTab activeTab={activeTab} setActiveTab={setActiveTab} />
+            <OrdersTabContent activeTab={activeTab} />
+        </>
+    )
+}
 
-                                <span
-                                    className={`text-xs px-3 py-1 rounded-full font-medium capitalize
-                                        ${order.status === 2 ? "bg-red-100 text-red-700" :
-                                            order.convert_status === 1 ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-700"}`}
-                                >
-                                    {/* <RenderText group='shared' variable={order.status} key={`ITEM_STATUS_${order.id}`} /> */}
-                                    <span className="capitalize text-xs">{order.status === 2 ? "Deleted" : order.convert_status === 1 ? "Delivered" : "Pending"}</span>
-                                </span>
-                            </div>
 
-                            {/* Items */}
-                            <div className="space-y-2 mb-3">
-                                {order?.items?.map(item => (
-                                    <div
-                                        key={item.id}
-                                        className="flex items-center gap-3"
-                                    >
-                                        <Image
-                                            src={item?.product.image ? getImage(item?.product.image) : '/images/shared/food-placeholder.jpg'}
-                                            alt=""
-                                            width={40}
-                                            height={40}
-                                            className="rounded-md object-cover"
-                                        />
-                                        <div className="flex-1 text-sm">
-                                            <p className="font-medium leading-tight">
-                                                <CreateTrnslateText text={item?.product?.name || ''} />
-                                            </p>
-                                            <p className="text-xs text-gray-500 dark:text-gray-300">
-                                                {item?.variation?.variation || ''} × {item.qty}
-                                            </p>
+type TabProps = {
+    activeTab: TTabs,
+    setActiveTab: Dispatch<SetStateAction<TTabs>>;
+}
+function OrdersTab({ activeTab, setActiveTab }: TabProps) {
+
+    const defaultBorder = "border border-slate-400 dark:border-slate-600";
+    return (
+        <div className="w-full sticky top-[81px] py-2 bg-clr-bg-body left-0 flex justify-between">
+            <div className="grow flex gap-2">
+                <Button onClick={() => setActiveTab("myOrders")} variant={activeTab === "myOrders" ? "primary" : "ghost"} className={activeTab !== "myOrders" ? defaultBorder : ""} >
+                    <RenderText group="orders" variable="myOrders" />
+                </Button>
+                <Button onClick={() => setActiveTab("allOrders")} variant={activeTab === "allOrders" ? "primary" : "ghost"} className={activeTab !== "allOrders" ? defaultBorder : ""} >
+                    <RenderText group="orders" variable="allOrders" />
+                </Button>
+            </div>
+            <Button className="!px-2 gap-1" >
+                <Plus />
+                <RenderText group="orders" variable="addOrder" />
+            </Button>
+        </div>
+    )
+}
+
+
+
+type OrdersTabContentProps = {
+    activeTab: TTabs,
+}
+function OrdersTabContent({ activeTab }: OrdersTabContentProps) {
+    // const [orders, setOrders] = useState<TOrder[]>([]);
+    const { orders } = useSelector((state: RootState) => state.productSlice);
+
+
+    // handlers
+    const handleEditOrder = (order) => {
+        console.log(order, ' ')
+    }
+    return (
+        <>
+            {
+                !!orders?.length && <div className="flex flex-col gap-2">
+                    {
+                        orders.map(order => <button key={order.id} onClick={() => handleEditOrder(order)} className='w-full flex gap-5 bg-clr-card overflow-hidden custom-shadow-md group z-0'>
+                            <div className="relative p-1 flex items-center justify-center">
+                                {order.customer_type === "Online" ?
+                                    <div className="w-full h-full max-w-[70px] max-h-[70px] overflow-hidden rounded-md">
+                                        <div className="bg-clr-bg-body p-2 w-full h-full" >
+                                            <Image src={"/images/shared/Delivery-icon-white.png"} className='hidden dark:block z-10 w-full duration-300 group-hover:scale-105 h-full' width={300} height={400} alt="Delivery Icon" />
+                                            <Image src={"/images/shared/Delivery-icon-black.png"} className='block dark:hidden z-10 w-full duration-300 group-hover:scale-105 h-full' width={300} height={400} alt="Delivery Icon" />
                                         </div>
-
-                                        <p className="text-sm font-semibold flex gap-2">
-                                            <RenderFormatedPrice price={+item.sub_total} key={`DISCOUNT_PRICE_CALCULATION_${order.id}`} />
-                                        </p>
                                     </div>
-                                ))}
+                                    :
+                                    order.customer_type === "Self Pickup" ?
+                                        <div className="w-full h-full max-w-[70px] max-h-[70px] overflow-hidden rounded-md">
+                                            <div className="bg-clr-bg-body p-2 w-full h-full" >
+                                                <Image src={"/images/shared/percel-icon-white.png"} className='hidden dark:block z-10 w-auto duration-300 group-hover:scale-105 h-full' width={300} height={400} alt="Table icon" />
+                                                <Image src={"/images/shared/percel-icon-black.png"} className='block dark:hidden z-10 w-auto duration-300 group-hover:scale-105 h-full' width={300} height={400} alt="Table icon" />
+                                            </div>
+                                        </div>
+                                        :
+                                        <div className="w-full p-2 gap-1 pb-0 bg-clr-bg-body  flex flex-col h-full max-w-[70px] max-h-[70px] overflow-hidden rounded-md">
+                                            <div className="w-full grow" >
+                                                <Image src={"/images/shared/table-white.svg"} className='hidden dark:block z-10 w-full duration-300 group-hover:scale-105 h-full' width={300} height={400} alt="Table icon" />
+                                                <Image src={"/images/shared/table.svg"} className='block dark:hidden z-10 w-full duration-300 group-hover:scale-105 h-full' width={300} height={400} alt="Table icon" />
+                                            </div>
+                                            <p>Table-5</p>
+                                        </div>
+                                }
                             </div>
 
-                            {/* Footer */}
-                            <div className="border-t pt-3 flex items-center justify-between">
-                                <span className="text-xs text-gray-500 dark:text-gray-400">
-                                    {new Date(order.estimate_date).toLocaleDateString()}
-                                </span>
-
-                                <div className="text-right">
-                                    {
-                                        Number(order?.delivery_charge || '0') > 0 && <p className='text-xs flex gap-10 items-center justify-between'><span><RenderText key={`ORDER_DELIVERY_CHARGE_${order.id}`} group='checkout' variable='deliveryCharge' /></span><span className="text-sm"><RenderFormatedPrice price={+order?.delivery_charge || 0} /></span></p>
-                                    }
-                                    <p className='text-sm flex gap-10 items-center justify-between'><span><RenderText group="shared" variable="totalBill" /></span><span className='text-base font-semibold'><RenderFormatedPrice price={+order.final_receivable} /></span></p>
+                            <div className="grow flex text-left flex-col items-start py-1.5 bg-clr-card relative ">
+                                {/* <span className='absolute top-0 text-[13px] right-0 px-2 bg-secondary text-white' >
+                                10% <RenderText group='shared' variable='off' />
+                            </span> */}
+                                {/* <h6 className='mb-1'> {renderText(en, bn)}</h6> */}
+                                <div className="w-full flex justify-end flex-col grow">
+                                    {/* <p className='fg_fs-xs' ><RenderText group='shared' variable='productDetails' /></p> */}
+                                    {/* <p className='fg_fs-xs font-semibold'><span className=''>{formatPrice(+product.price)}</span></p> */}
                                 </div>
                             </div>
-                        </div>
-                    ))}
-                </div> : <div className="w-full min-h-40 flex items-center  justify-center">
-                    <p><RenderText group="pages" variable="noOrder" /></p>
+                        </button>)
+                    }
                 </div>
             }
         </>
     )
 }
+
