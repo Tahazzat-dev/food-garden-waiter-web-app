@@ -70,27 +70,29 @@ function OrdersTabContent({ activeTab }: OrdersTabContentProps) {
                         orders.map(order => <button key={order.id} onClick={() => handleEditOrder(order)} className='w-full flex gap-3 bg-clr-card overflow-hidden custom-shadow-md group z-0'>
                             <div className="relative p-1 flex items-center justify-center">
                                 {order.customer_type === "Online" ?
-                                    <div className="w-[70px] h-[70px] overflow-hidden rounded-md">
-                                        <div className="bg-clr-bg-body p-2 w-full h-full" >
+                                    <div className="pt-1 gap-1 pb-0 bg-clr-bg-body  flex flex-col w-[70px] h-[70px] overflow-hidden rounded-md">
+                                        <div className="w-10/12 mx-auto grow overflow-hidden" >
                                             <Image src={"/images/shared/Delivery-icon-white.png"} className='hidden dark:block z-10 w-full duration-300 group-hover:scale-105 h-full' width={300} height={400} alt="Delivery Icon" />
                                             <Image src={"/images/shared/Delivery-icon-black.png"} className='block dark:hidden z-10 w-full duration-300 group-hover:scale-105 h-full' width={300} height={400} alt="Delivery Icon" />
                                         </div>
+                                        <p className="text-sm rounded-[3px] bg-primary px-0.5 text-white"><RenderText group="shared" variable="online" /></p>
                                     </div>
                                     :
                                     order.customer_type === "Self Pickup" ?
-                                        <div className="w-[70px] h-[70px] overflow-hidden rounded-md">
-                                            <div className="bg-clr-bg-body p-2 w-full h-full" >
+                                        <div className="pt-1 gap-1 pb-0 bg-clr-bg-body  flex flex-col w-[70px] h-[70px] overflow-hidden rounded-md">
+                                            <div className="grow overflow-hidden mx-auto w-auto" >
                                                 <Image src={"/images/shared/percel-icon-white.png"} className='hidden dark:block z-10 w-auto duration-300 group-hover:scale-105 h-full' width={300} height={400} alt="Table icon" />
                                                 <Image src={"/images/shared/percel-icon-black.png"} className='block dark:hidden z-10 w-auto duration-300 group-hover:scale-105 h-full' width={300} height={400} alt="Table icon" />
                                             </div>
+                                            <p className="text-sm bg-primary text-white rounded-[3px]"><RenderText group="shared" variable="percel" /></p>
                                         </div>
                                         :
-                                        <div className="p-2 gap-1 pb-0 bg-clr-bg-body  flex flex-col w-[70px] h-[70px] overflow-hidden rounded-md">
-                                            <div className="w-full grow" >
+                                        <div className="bg-clr-bg-body  flex flex-col w-[70px] h-[70px] overflow-hidden rounded-md">
+                                            <div className="px-1.5 w-auto overflow-hidden grow" >
                                                 <Image src={"/images/shared/table-white.svg"} className='hidden dark:block z-10 w-full duration-300 group-hover:scale-105 h-full' width={300} height={400} alt="Table icon" />
                                                 <Image src={"/images/shared/table.svg"} className='block dark:hidden z-10 w-full duration-300 group-hover:scale-105 h-full' width={300} height={400} alt="Table icon" />
                                             </div>
-                                            <p className=""><RenderText group="shared" variable="table" />-5</p>
+                                            <p className="text-sm bg-primary text-white rounded-[3px]"><RenderText group="shared" variable="table" />-5</p>
                                         </div>
                                 }
                             </div>

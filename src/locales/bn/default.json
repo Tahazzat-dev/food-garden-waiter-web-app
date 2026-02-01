@@ -57,7 +57,9 @@
     "table": "টেবিল",
     "ago": "পূর্বে",
     "waiter": "ওয়েটার",
-    "customerName": "কাস্টমার"
+    "customerName": "কাস্টমার",
+    "online": "অনলাইন",
+    "percel": "পার্সেল"
   },
 
   "pages": {

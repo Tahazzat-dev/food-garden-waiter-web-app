@@ -56,7 +56,9 @@
     "table": "Table",
     "ago": "Ago",
     "waiter": "Waiter",
-    "customerName": "Customer"
+    "customerName": "Customer",
+    "online": "Online",
+    "percel": "Percel"
   },
 
   "pages": {
