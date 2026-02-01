@@ -5,7 +5,6 @@ import {
     Clock7, Clock8, Clock9
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import RenderText from '../utils/RenderText';
 
 type Props = {
     showClock?: boolean;
@@ -69,19 +68,20 @@ export default function Timer({ showClock = true, date }: Props) {
     };
 
     return (
-        <div className="flex items-center gap-1 text-xs font-medium">
+        <div className="flex items-center gap-1 text-sm font-medium">
             {showClock && (
                 <>
                     <span className="">
                         {getOrderClockIcon()}
                     </span>
-                    <span className="">
+                    {/* <span className="">
                         {formattedTime}
-                    </span>
+                    </span> */}
                 </>
             )}
             <span className="">
-                ({getTimeLabel()} <RenderText group='shared' variable='ago' />)
+                {getTimeLabel()}
+                {/* <RenderText group='shared' variable='ago' /> */}
             </span>
         </div>
     );

@@ -67,7 +67,7 @@ function OrdersTabContent({ activeTab }: OrdersTabContentProps) {
             {
                 !!orders?.length && <div className="flex flex-col gap-2">
                     {
-                        orders.map(order => <button key={order.id} onClick={() => handleEditOrder(order)} className='w-full flex gap-2 bg-clr-card overflow-hidden custom-shadow-md group z-0'>
+                        orders.map(order => <button key={order.id} onClick={() => handleEditOrder(order)} className='w-full flex bg-clr-card overflow-hidden custom-shadow-md group z-0'>
                             <div className="relative p-1 flex items-center justify-center">
                                 {order.customer_type === "Online" ?
                                     <div className="pt-1 gap-1 pb-0 bg-clr-bg-body  flex flex-col w-[70px] h-[70px] overflow-hidden rounded-md">
@@ -75,7 +75,7 @@ function OrdersTabContent({ activeTab }: OrdersTabContentProps) {
                                             <Image src={"/images/shared/Delivery-icon-white.png"} className='hidden dark:block z-10 w-full duration-300 group-hover:scale-105 h-full' width={300} height={400} alt="Delivery Icon" />
                                             <Image src={"/images/shared/Delivery-icon-black.png"} className='block dark:hidden z-10 w-full duration-300 group-hover:scale-105 h-full' width={300} height={400} alt="Delivery Icon" />
                                         </div>
-                                        <p className="text-sm rounded-[3px] bg-primary px-0.5 text-white"><RenderText group="shared" variable="online" /></p>
+                                        <p className="text-sm rounded-[3px] bg-secondary px-0.5 font-bold text-white"><RenderText group="shared" variable="online" /></p>
                                     </div>
                                     :
                                     order.customer_type === "Self Pickup" ?
@@ -84,7 +84,7 @@ function OrdersTabContent({ activeTab }: OrdersTabContentProps) {
                                                 <Image src={"/images/shared/percel-icon-white.png"} className='hidden dark:block z-10 w-auto duration-300 group-hover:scale-105 h-full' width={300} height={400} alt="Table icon" />
                                                 <Image src={"/images/shared/percel-icon-black.png"} className='block dark:hidden z-10 w-auto duration-300 group-hover:scale-105 h-full' width={300} height={400} alt="Table icon" />
                                             </div>
-                                            <p className="text-sm bg-primary text-white rounded-[3px]"><RenderText group="shared" variable="percel" /></p>
+                                            <p className="text-sm bg-primary font-bold text-white rounded-[3px]"><RenderText group="shared" variable="percel" /></p>
                                         </div>
                                         :
                                         <div className="bg-clr-bg-body  flex flex-col w-[70px] h-[70px] overflow-hidden rounded-md">
@@ -92,25 +92,25 @@ function OrdersTabContent({ activeTab }: OrdersTabContentProps) {
                                                 <Image src={"/images/shared/table-white.svg"} className='hidden dark:block z-10 w-full duration-300 group-hover:scale-105 h-full' width={300} height={400} alt="Table icon" />
                                                 <Image src={"/images/shared/table.svg"} className='block dark:hidden z-10 w-full duration-300 group-hover:scale-105 h-full' width={300} height={400} alt="Table icon" />
                                             </div>
-                                            <p className="text-sm bg-primary text-white rounded-[3px]"><RenderText group="shared" variable="table" />-5</p>
+                                            <p className="text-sm font-bold bg-primary text-white rounded-[3px]"><RenderText group="shared" variable="table" />-5</p>
                                         </div>
                                 }
                             </div>
 
-                            <div className="grow flex text-left flex-col items-start py-1.5 bg-clr-card relative pr-2.5">
-                                <h5 className="w-full text-xs flex items-center gap-3 justify-between">
+                            <div className="grow flex text-left flex-col items-start pb-1.5 bg-clr-card relative">
+                                <h5 className="bg-slate-200 w-full text-sm px-2 py-0.5 flex items-center gap-3 justify-between">
                                     {/* <span className=""><RenderText group="shared" variable="waiter" />: <span className="font-semibold" >Akash</span></span> */}
-                                    <span className="w-5 h-5 text-xs flex items-center gap-1.5 rounded-full bg-secondary p-0.5" >
+                                    <span className="w-6 h-6 text-sm flex items-center gap-1.5 rounded-full bg-primary p-0.5" >
                                         <Image src={"/images/shared/waiter-icon.png"} className='z-10 w-full h-full' width={300} height={400} alt="Delivery Icon" /><span>Akash</span>
                                     </span>
                                     <Timer date={new Date(order.created_at)} />
                                 </h5>
-                                <div className="w-full mt-2 items-center flex justify-between">
+                                <div className="px-2 w-full mt-2 items-center flex justify-between">
                                     <h6 className="text-base flex flex-wrap leading-[130%]" >
                                         <span className="mr-1"><RenderText group="shared" variable="customerName" />:</span>
                                         <span>{order.customer.name}</span>
                                     </h6>
-                                    <p className="text-sm bg-secondary px-2 py-0.5 rounded-md font-semibold text-white" >
+                                    <p className="text-sm px-2 py-0.5 rounded-md font-bold text-primary" >
                                         <RenderFormatedPrice price={+order.final_receivable} />
                                     </p>
                                 </div>
