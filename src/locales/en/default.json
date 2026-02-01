@@ -51,6 +51,7 @@
     "productDetails": "Product Details",
     "addCustomer": "Add customer",
     "add": "Add",
+    "addShortText": "Add",
     "itemList": "Item Lists",
     "table": "Table"
   },
@@ -161,7 +162,10 @@
     "orderHistory": "Order History",
     "orderId": "Order ID",
     "defaultOrderSuccessMessage": "Your order has been placed successfully.",
-    "defaultOrderFailedMessage": "Something went wrong while placing your order."
+    "defaultOrderFailedMessage": "Something went wrong while placing your order.",
+    "tableError": "Please select a table",
+    "customer": "Select customer",
+    "customerError": "Please select a customer"
   },
   "home": {
     "title": "Hello"

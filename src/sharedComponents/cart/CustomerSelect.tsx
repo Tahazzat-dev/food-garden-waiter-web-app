@@ -56,7 +56,7 @@ export function CustomerSelect({
             <button
                 type="button"
                 onClick={() => setIsOpen(v => !v)}
-                className="checkout-input w-full relative flex justify-between gap-4 items-center px-3 py-2 h-[38px] md:h-10 rounded border"
+                className="checkout-input w-full relative flex justify-between gap-4 items-center px-3 py-1.5 h-[36px] rounded border"
             >
                 {!!selectedAddress &&
                     <span className="text-base">{renderText(bn, en)}</span>
@@ -67,7 +67,7 @@ export function CustomerSelect({
                         "peer-focus:top-0 bg-clr-card peer-focus:text-[11px] peer-focus:px-1 peer-focus:left-1.5",
                         selectedAddress && "top-0 text-[11px] px-0.5 left-2"
                     )}
-                >{t('deliveryAddress')}</span>
+                >{t('customer')}</span>
                 <ChevronDown className='!w-5 !h-5' />
             </button>
             {/* Dropdown */}
@@ -86,7 +86,7 @@ export function CustomerSelect({
                     </div>
 
                     {/* Options */}
-                    <div className="max-h-[160px] lg:max-h-[170px] overflow-y-auto">
+                    <div className="max-h-[110px] overflow-y-auto">
                         {filtered.length > 0 ? (
                             filtered.map(addr => {
                                 const { en: En, bn: Bn } = getTranslationReadyText(addr.name)
@@ -97,7 +97,7 @@ export function CustomerSelect({
                                         e.preventDefault();
                                         handleSelect(addr);
                                     }}
-                                    className="prevent-body-trigger w-full px-3 py-1 md:py-1.5 hover:bg-gray-100 text-left"
+                                    className="prevent-body-trigger w-full px-3 py-0.5 hover:bg-gray-100 text-left"
                                 >
                                     {renderText(Bn, En)}
                                 </button>

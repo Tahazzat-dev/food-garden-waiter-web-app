@@ -1,12 +1,13 @@
 'use client';
+import { Button } from '@/components/ui/button';
 import useFormatPrice from '@/hooks/useFormatPrice';
 import { calculateSubtotal, cn, getSellingPrice } from '@/lib/utils';
-import { SET_EXPAND } from '@/redux/features/actions/actionSlice';
+import { SET_EXPAND, updatePrevAction } from '@/redux/features/actions/actionSlice';
 import { RootState } from '@/redux/store';
-import { TAddress } from '@/types/types';
-import { ShoppingCart, X } from 'lucide-react';
+import { ITable, TAddress } from '@/types/types';
+import { Plus, ShoppingCart, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { CartCard } from '../cards/CartCard';
@@ -16,13 +17,9 @@ import { CustomerSelect } from './CustomerSelect';
 import Tables from './Tables';
 
 
-export type OrderFormValues = {
-  customer: {
-    name: string;
-    phone: string;
-    address: TAddress;
-    detailsAddress: string;
-  }
+export type CustomerFormValues = {
+  address: TAddress;
+  table: ITable;
 }
 
 
@@ -38,8 +35,31 @@ export function CartSheet() {
   const { EXPAND } = useSelector((state: RootState) => state.actions);
   const openCart = EXPAND === KEY;
   const { formatPrice } = useFormatPrice()
+  const [isOpen, setIsOpen] = useState(false);
 
-  const { register, formState, watch } = useForm()
+  const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<CustomerFormValues>()
+
+  // handlers
+  const handleModalClick = (event: MouseEvent<HTMLDivElement>) => {
+
+    if (!isOpen) return;
+
+    const targetElement = event.target as HTMLElement;
+    if (targetElement.closest(".custom-select-el")) return;
+    setIsOpen(false);
+  }
+
+
+  const onSubmit = async (data: CustomerFormValues) => {
+    console.log(data, ' data');
+  }
+
+
+  const handleOpenAddCustomerModal = () => {
+    dispatch(updatePrevAction("CART_SHEET"))
+    dispatch(SET_EXPAND("OPEN_ADD_CUSTOMER_MODAL"))
+  }
+
 
 
   // calculated cart total 
@@ -59,7 +79,7 @@ export function CartSheet() {
         className='!top-0 !z-[9999999]'
         open={openCart}
       >
-        <div className="w-full h-full flex flex-col">
+        <div onClick={handleModalClick} className="w-full h-full flex flex-col">
           <div className="w-full flex items-center gap-5 py-3 px-4 bg-primary">
             <h3 className="grow flex items-end gap-2 text-white">
               <span className='fg_fs-lg'><RenderText group='shared' variable='itemList' /> ({cartProducts.length})</span>
@@ -80,19 +100,28 @@ export function CartSheet() {
               />
             ))}
           </div>
-          <div className="w-full">
-            <div className="w-full flex">
-              <CustomerSelect register={register} watch={watch} />
+          <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+            <div className="w-full flex gap-2 px-2 mb-2">
+              <CustomerSelect isOpen={isOpen} setIsOpen={setIsOpen} setValue={setValue} register={register} watch={watch} />
+              <Button type='button' onClick={handleOpenAddCustomerModal} className='!px-2 gap-0.5' ><Plus /> <RenderText group='shared' variable='addShortText' /> </Button>
             </div>
-            <Tables selectedTable={selectedTable} setSelectedTable={setSelectedTable} />
-            <button onClick={() => dispatch(SET_EXPAND("CHECKOUT_MODAL"))}
+            {
+              errors?.address?.message || errors?.table?.message ? <div className="w-full py-2">
+                <p className='text-secondary px-2 text-sm'><RenderText group='checkout' variable={errors?.address ? 'addressError' : 'tableError'} /></p>
+              </div> : <></>
+            }
+            <div className="w-full bg-slate-300 rounded-md border border-slate-400 dark:border-slate-600 dark:bg-slate-700 px-1.5">
+              <Tables selectedTable={selectedTable} setSelectedTable={setSelectedTable} />
+            </div>
+            <button
+              type="submit"
               className={cn(
                 "fg_fs-md rounded-0! py-2 !text-white font-semibold bg-primary w-full flex items-center gap-5 justify-center"
               )}
             >
               <span>{t("checkout")}</span> <span>{formatPrice(Number(totalPrice.toFixed(2)))}</span>
             </button>
-          </div>
+          </form>
         </div>
       </CustomDrawer>
     </>

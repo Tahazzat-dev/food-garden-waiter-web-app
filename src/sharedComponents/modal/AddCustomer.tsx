@@ -108,7 +108,7 @@ export default function AddCustomerModal() {
     }
 
     const closeModal = () => {
-        dispatch(SET_EXPAND(null));
+        dispatch(SET_EXPAND("CART_SHEET"));
     }
 
     //  ========== hidden overflow of body ========

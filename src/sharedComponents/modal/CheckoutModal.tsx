@@ -1,18 +1,16 @@
 'use client';
-import { RootState } from '@/redux/store';
-import { useDispatch, useSelector } from 'react-redux';
-import { ChevronDown } from "lucide-react"
-import { useRef } from "react"
-import { Check, ShoppingCart, X } from "lucide-react"; // optional icon
 import { Button } from "@/components/ui/button";
-import { clearCartProducts } from "@/redux/features/product/productSlice";
-import { useTranslations } from 'next-intl';
-import { SET_EXPAND, updateFetchOrders } from '@/redux/features/actions/actionSlice';
-import z from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Dispatch, MouseEvent, SetStateAction, useEffect, useMemo, useState } from 'react';
 import { calculateSubtotal, cn, getDiscountAmount, getTranslationReadyText } from '@/lib/utils';
+import { SET_EXPAND, updateFetchOrders } from '@/redux/features/actions/actionSlice';
+import { clearCartProducts } from "@/redux/features/product/productSlice";
+import { RootState } from '@/redux/store';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Check, ChevronDown, ShoppingCart, X } from "lucide-react";
+import { useTranslations } from 'next-intl';
+import { Dispatch, MouseEvent, SetStateAction, useEffect, useMemo, useRef, useState } from "react";
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import z from 'zod';
 
 // schema/orderSchema.ts
 export const deliveryTypes = ["Home Delivery", "Self Pickup", "Dine-In"] as const;
@@ -52,16 +50,16 @@ export const orderSchema = z
 export type OrderFormValues = z.infer<typeof orderSchema>;
 
 
-import { createPortal } from "react-dom";
 import useFormatPrice from '@/hooks/useFormatPrice';
-import { CheckoutStatus, TAddress, TOrderResponse } from '@/types/types';
-import RenderText from '../utils/RenderText';
-import { useGetAddressesQuery } from '@/redux/features/address/addressApiSlice';
-import LoadingSpinner from '../loading/LoadingSpinner';
 import useRenderText from '@/hooks/useRenderText';
-import { useConfirmOrderMutation, useLazyGetCustomerInfoQuery } from '@/redux/features/product/productApiSlice';
 import { getFromStorage, setToStorage } from '@/lib/storage';
+import { useGetAddressesQuery } from '@/redux/features/address/addressApiSlice';
+import { useConfirmOrderMutation, useLazyGetCustomerInfoQuery } from '@/redux/features/product/productApiSlice';
+import { CheckoutStatus, TAddress, TOrderResponse } from '@/types/types';
+import { createPortal } from "react-dom";
+import LoadingSpinner from '../loading/LoadingSpinner';
 import { Input } from '../shared/FormEl';
+import RenderText from '../utils/RenderText';
 
 export default function CheckoutModal() {
     // variables
@@ -161,30 +159,6 @@ export default function CheckoutModal() {
         const targetElement = event.target as HTMLElement;
         if (targetElement.closest(".custom-select-el")) return;
         setIsOpen(false);
-    }
-
-
-    const handleCustomerSearch = async () => {
-        try {
-            const phone = watch('phone');
-            const res = await getCustomer(phone).unwrap();
-            if (res?.success && res?.data && res?.data?.phone) {
-                const address: OrderFormValues = {
-                    address: res.data.address,
-                    addressNote: res.data.note,
-                    name: res.data.name,
-                    deliveryType: "Home Delivery",
-                    phone: res.data.phone,
-                    paymentType: "Cash On Delivery"
-                }
-                reset(address);
-            } else {
-                reset();
-            }
-        } catch (error) {
-            // TODO: have to log error to the error file.
-            console.error(error);
-        }
     }
 
     //  ========== hidden overflow of body ========

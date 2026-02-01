@@ -28,9 +28,12 @@ const actionsSlice = createSlice({
     initialState,
     reducers: {
         SET_EXPAND(state, action: { payload: string | null }) {
-            state.prev_action = state.EXPAND;
             state.EXPAND = action.payload;
         },
+        updatePrevAction(state, action: { payload: string | null }) {
+            state.prev_action = action.payload;
+        },
+
         updatePreventScrolling(state, action: { payload: boolean }) {
             state.preventScrolling = action.payload;
         },
@@ -54,7 +57,8 @@ export const {
     updatePreventScrolling,
     updateFetchOrders,
     updateCartIconPosition,
-    toggleRunExpandAnimation
+    toggleRunExpandAnimation,
+    updatePrevAction
 } = actionsSlice.actions;
 export default actionsSlice.reducer;
 

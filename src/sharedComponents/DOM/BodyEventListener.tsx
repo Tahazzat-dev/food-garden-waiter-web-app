@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const BodyEventListeners = () => {
-    const EXPAND = useSelector((state: RootState) => state.actions.EXPAND);
+    const { EXPAND, prev_action } = useSelector((state: RootState) => state.actions);
     const dispatch = useDispatch();
     useEffect(() => {
         const handleListeners = (event: MouseEvent) => {
@@ -19,7 +19,7 @@ const BodyEventListeners = () => {
                 return;
             }
 
-            dispatch(SET_EXPAND(null));
+            dispatch(SET_EXPAND(prev_action ?? null));
         };
         document.body.addEventListener("click", handleListeners);
         return () => {

@@ -52,6 +52,7 @@
     "productDetails": "পণ্যের বিবরণ",
     "addCustomer": "কাস্টমার এড করুন",
     "add": "এড করুন",
+    "addShortText": "এড",
     "itemList": "আইটেমের তালিকা",
     "table": "টেবিল"
   },
@@ -161,7 +162,10 @@
     "orderHistory": "অর্ডার হিস্ট্রি",
     "defaultOrderSuccessMessage": "আপনার অর্ডার সফলভাবে সম্পন্ন হয়েছে।",
     "defaultOrderFailedMessage": "অর্ডার সম্পন্ন করার সময় কিছু সমস্যা হয়েছে।",
-    "orderId": "অর্ডার আইডি"
+    "orderId": "অর্ডার আইডি",
+    "tableError": "দয়া করে একটি টেবিল বেছে নিন",
+    "customerError": "দয়া করে একজন কাস্টমার সিলেক্ট করুন",
+    "customer": "Select customer"
   },
   "home": {
     "title": "হ্যালো"
