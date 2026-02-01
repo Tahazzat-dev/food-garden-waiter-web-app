@@ -3,7 +3,7 @@ import CheckoutModal from '../modal/CheckoutModal';
 import LocaleSwitcher from '../toggler/LocaleSwitcher';
 import ThemeSwitcher from '../toggler/ThemeSwitcher';
 import Container from '../wrapper/Container';
-import AuthUser from './AuthUser';
+import { AuthUser } from './AuthUser';
 import ClientLink from './ClientLink';
 import PublicSidebar from './PublicSidebar';
 import SiteLogo from './SiteLogo';
@@ -21,8 +21,8 @@ export default function PublicHeader() {
           </div>
           <div className='flex grow items-center justify-end gap-4  lg:grow-0 lg:justify-between'>
             {/* <TaskLists /> */}
-            <CartSheet />
             <AuthUser />
+            <CartSheet />
             <LocaleSwitcher type='ghost' className='hidden xl:block' />
             <ThemeSwitcher type='ghost' className='hidden xl:flex' />
           </div>

@@ -109,7 +109,9 @@
     "wrongOTP": "Invalid or expired OTP",
     "verify": "Verify",
     "rememberedPassword": "Remembered password?",
-    "success": "Success"
+    "success": "Success",
+    "profile": "Profile",
+    "logout": "Log Out"
   },
   "header": {
     "categories": {

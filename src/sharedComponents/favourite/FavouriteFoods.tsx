@@ -1,18 +1,18 @@
 'use client';
-import { RootState } from '@/redux/store';
-import { useDispatch, useSelector } from 'react-redux';
-import { CSSProperties, useEffect, useRef, useState } from 'react';
-import * as Dialog from "@radix-ui/react-dialog";
-import { X, Heart } from "lucide-react"; // optional icon
 import { Button } from "@/components/ui/button";
-import { useTranslations } from 'next-intl';
 import { getResponsiveRightStyle } from '@/lib/utils';
 import { SET_EXPAND } from '@/redux/features/actions/actionSlice';
+import { RootState } from '@/redux/store';
+import * as Dialog from "@radix-ui/react-dialog";
+import { Heart, X } from "lucide-react"; // optional icon
+import { useTranslations } from 'next-intl';
+import { CSSProperties, useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import FVFoodCard from './FVFoodCard';
 
 export function FavouriteFoods() {
     // variables
-    const KEY = "OPEN_FAVOURITE_FOOD_MODAL"
+    const KEY = "OPEN_PROFILE_MODAL"
     // hooks
     const dispatch = useDispatch();
     const { favouriteProducts } = useSelector((state: RootState) => state.productSlice);

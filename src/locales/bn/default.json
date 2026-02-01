@@ -109,7 +109,9 @@
     "wrongOTP": "ভুল অথবা মেয়াদোত্তীর্ণ ওটিপি",
     "verify": "যাচাই করুন",
     "rememberedPassword": "পাসওয়ার্ড মনে পড়েছে?",
-    "success": "সফল হয়েছে"
+    "success": "সফল হয়েছে",
+    "profile": "প্রোফাইল",
+    "logout": "লগ আউট"
   },
   "header": {
     "categories": {
