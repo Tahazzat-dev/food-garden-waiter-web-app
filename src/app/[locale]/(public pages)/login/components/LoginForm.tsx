@@ -45,7 +45,7 @@ export default function LoginForm() {
     };
     return (
         <>
-            <form onSubmit={handleSubmit(onSubmit)} className="bg-clr-card p-4 rounded-md prevent-body-trigger flex flex-col gap-4 w-full max-w-[500px]">
+            <form onSubmit={handleSubmit(onSubmit)} className="bg-clr-card p-4 rounded-xl prevent-body-trigger flex flex-col gap-4 w-full max-w-[500px]">
                 <div className="w-full flex justify-center">
                     <SiteLogo />
                 </div>
