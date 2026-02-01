@@ -53,7 +53,10 @@
     "add": "Add",
     "addShortText": "Add",
     "itemList": "Item Lists",
-    "table": "Table"
+    "table": "Table",
+    "ago": "Ago",
+    "waiter": "Waiter",
+    "customerName": "Customer"
   },
 
   "pages": {
@@ -75,7 +78,9 @@
     "nameError": "Name is required",
     "namePlaceholder": "Enter name",
     "email": "Email",
+    "userName": "User Name",
     "emailError": "Email is required",
+    "invalidEmailError": "Enter valid email",
     "emailPlaceholder": "Enter email",
     "phone": "Phone",
     "verifyPhone": "Verify Phone",

@@ -54,7 +54,10 @@
     "add": "এড করুন",
     "addShortText": "এড",
     "itemList": "আইটেমের তালিকা",
-    "table": "টেবিল"
+    "table": "টেবিল",
+    "ago": "পূর্বে",
+    "waiter": "ওয়েটার",
+    "customerName": "কাস্টমার"
   },
 
   "pages": {
@@ -72,11 +75,13 @@
     "login": "লগইন করুন",
     "register": "রেজিস্ট্রেশন করুন",
     "name": "নাম",
+    "userName": "User Name",
     "nameError": "নাম অবশ্যই দিতে হবে",
     "namePlaceholder": "নাম লিখুন",
     "email": "ইমেইল",
     "emailError": "ইমেইল অবশ্যই দিতে হবে",
     "emailPlaceholder": "ইমেইল লিখুন",
+    "invalidEmailError": "সঠিক ইমেইল ঠিকানা লিখুন",
     "phone": "ফোন নম্বর",
     "verifyPhone": "ফোন নম্বর যাচাই করুন",
     "phoneError": "ফোন নম্বর অবশ্যই কমপক্ষে ১১ সংখ্যার হতে হবে",

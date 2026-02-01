@@ -77,7 +77,7 @@ export default function MobileBottomButtons() {
                     <Image src="/images/shared/food-menu-icon.svg" width={22} height={40} alt="Menu icon" />
                     <span className={cn('font-semibold text-sm sm:text-base', isActive('/') ? "text-secondary" : "text-white")}><RenderText group="mobileBottomActions" variable="menu" /></span>
                 </Link>
-                <Link href="/orders" className='flex flex-col gap-1 items-center justify-between min-w-[70px]' >
+                <Link href="/orders" className='mr-3 flex flex-col gap-1 items-center justify-between min-w-[70px]' >
                     <Image src="/images/shared/orders-icon.svg" width={25} height={40} alt="Orders icon" />
                     <span className={cn('font-semibold text-sm sm:text-base', isActive('/orders') ? "text-secondary" : "text-white")}><RenderText group="mobileBottomActions" variable="orders" /></span>
                 </Link>
@@ -99,7 +99,7 @@ export default function MobileBottomButtons() {
                     </div>
                 </button>
 
-                <Link href="/kitchen" className='relative flex flex-col gap-1 items-center justify-between min-w-[70px]' >
+                <Link href="/kitchen" className='ml-3 relative flex flex-col gap-1 items-center justify-between min-w-[70px]' >
                     <Image src="/images/shared/cooking-icon.svg" width={25} height={40} alt="Kitchen Icon" />
                     <span className={cn('font-semibold text-sm sm:text-base', isActive('/kitchen') ? "text-secondary" : "text-white")}><RenderText group="mobileBottomActions" variable="kitchen" /></span>
                 </Link>

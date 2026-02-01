@@ -146,17 +146,17 @@ export interface TOrderPriceSummary {
 }
 
 
-export interface Product {
-    id: number;
-    name: string;
-    image: string | null;
-}
+// export interface Product {
+//     id: number;
+//     name: string;
+//     image: string | null;
+// }
 
-export interface Variation {
-    id: number;
-    variation: string;
-    price: string; // "180.00"
-}
+// export interface Variation {
+//     id: number;
+//     variation: string;
+//     price: string; // "180.00"
+// }
 
 export interface OrderItem {
     id: number;
@@ -172,23 +172,23 @@ export interface OrderItem {
 
 
 type TCustomerType = "Online" | "Dine-In" | "Self Pickup";
-export interface TOrder {
-    id: number;
-    customer_id: number;
-    order_id: number;
-    estimate_number: string;
-    order_status: string; // e.g., "First Order"
-    estimate_date: string; // "YYYY-MM-DD"
-    delivery_date: string; // "YYYY-MM-DD"
-    final_receivable: string;
-    note: string | null;
-    items: OrderItem[];
-    delivery_charge: string;
-    convert_status: number;
-    status: number;
-    is_web?: number;
-    customer_type: TCustomerType
-}
+// export interface TOrder {
+//     id: number;
+//     customer_id: number;
+//     order_id: number;
+//     estimate_number: string;
+//     order_status: string; // e.g., "First Order"
+//     estimate_date: string; // "YYYY-MM-DD"
+//     delivery_date: string; // "YYYY-MM-DD"
+//     final_receivable: string;
+//     note: string | null;
+//     items: OrderItem[];
+//     delivery_charge: string;
+//     convert_status: number;
+//     status: number;
+//     is_web?: number;
+//     customer_type: TCustomerType
+// }
 
 export type CheckoutStatus = "success" | "error";
 
@@ -221,4 +221,136 @@ export interface ITable {
     id: number;
     tableNumber: number;
     isBooked: boolean;
+}
+
+
+
+
+export interface TOrder {
+    id: number;
+    customer_id: number;
+    customer_type: TCustomerType;
+    brand_id: number;
+    waiter_id: number;
+    table_id: number | null;
+    estimate_date: string;
+    delivery_date: string;
+    estimate_by: string | null;
+    token_no: string;
+    estimate_number: string;
+    total: string;
+    receivable: string;
+    discount: string;
+    actual_discount: string;
+    delivery_charge: string;
+    final_receivable: string;
+    delivery_by: string | null;
+    note: string | null;
+    convert_status: number;
+    is_approved: number;
+    is_due_print: number;
+    update_count: number;
+    order_status: string;
+    created_by: string | null;
+    is_web: number;
+    is_online_app: number;
+    status: number;
+    created_at: string;
+    updated_at: string;
+    customer: Customer;
+    items: OrderItem[];
+}
+
+export interface Customer {
+    id: number;
+    name: string;
+    phone: string;
+    shop_name: string | null;
+    shop_name_bangla: string | null;
+    address_id: number;
+    sr_id: number | null;
+    business_cat_id: number | null;
+    opening_receivable: string;
+    opening_payable: string;
+    wallet_balance: string;
+    total_receivable: string;
+    total_payable: string;
+    note: string | null;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface OrderItem {
+    id: number;
+    estimate_id: number;
+    product_name: string;
+    product_id: number;
+    variation_id: number;
+    rate: string;
+    main_unit_qty: number;
+    sub_unit_qty: number;
+    ordered_qty: number;
+    returned: number;
+    returned_sub_unit: number;
+    returned_qty: number;
+    returned_value: string;
+    damage: number;
+    damaged_value: number;
+    discount_return: number;
+    qty: number;
+    discount_qty: number;
+    sub_total: string;
+    ordered_sub_total: string;
+    order_status: string;
+    is_edit: number;
+    created_by: string | null;
+    is_prepared: number;
+    created_at: string;
+    updated_at: string;
+    product: Product;
+    variation: Variation;
+}
+
+export interface Product {
+    id: number;
+    name: string;
+    code: string;
+    category_id: number;
+    brand_id: number;
+    cost: string;
+    price: string;
+    damage_price: string;
+    details: string | null;
+    image: string;
+    stock: number;
+    main_unit_stock: number;
+    sub_unit_stock: number;
+    total_sold: number;
+    price_editable: number;
+    ecom_visible: number;
+    pos_visible: number;
+    stock_count: number;
+    stock_visible: number;
+    stock_visible_ecom: number;
+    description: string | null;
+    status: number;
+    main_unit_id: number;
+    sub_unit_id: number | null;
+    created_at: string | null;
+    updated_at: string;
+}
+
+export interface Variation {
+    id: number;
+    product_id: number;
+    variation: string;
+    cost: string;
+    price: string;
+    image: string | null;
+    stock: number;
+    main_unit_stock: number;
+    sub_unit_stock: number;
+    total_sold: number;
+    created_at: string | null;
+    updated_at: string | null;
 }
