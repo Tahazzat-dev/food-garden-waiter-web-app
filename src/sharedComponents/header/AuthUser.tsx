@@ -71,7 +71,7 @@ export function AuthUser() {
                             </Dialog.Title>
                             <Button onClick={closeModal} className="rounded-full !px-2 max-h-8" variant="secondary"> <X className="!text-white w-5 md:w-6 md:h-6 h-5 lg:w-8 lg:h-8" /></Button>
                         </div>
-                        <div className="px-2.5 md:px-4 my-2.5 md:my-4 overflow-y-auto grow flex flex-col gap-1">
+                        <div className="px-3 md:px-4 my-2.5 md:my-4 overflow-y-auto grow flex flex-col gap-1">
                             <p><RenderText group="authentication" variable="name" />: Akash Rahman </p>
                             <p><RenderText group="authentication" variable="email" />: example@gmail.com</p>
                             <div className="w-full flex justify-end">
