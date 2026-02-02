@@ -52,6 +52,7 @@ export function CartSheet() {
 
   const onSubmit = async (data: CustomerFormValues) => {
     console.log(data, ' data');
+    dispatch(SET_EXPAND("OPEN_MAKE_SELL_CUSTOMER_MODAL"))
   }
 
 

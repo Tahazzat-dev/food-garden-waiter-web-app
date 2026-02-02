@@ -79,7 +79,7 @@ export default function MakeSellModal() {
     });
 
     // conditional variables
-    const openModal = EXPAND !== KEY;
+    const openModal = EXPAND === KEY;
 
     // handlers
     const onSubmit = async (data: OrderFormValues) => {
@@ -264,7 +264,7 @@ export default function MakeSellModal() {
                                     </div>
                                     :
                                     <div className="w-full flex items-center mt-3 gap-3">
-                                        <Button size="sm" variant="secondary" className='min-h-[32] w-full text-white font-semibold' type="submit"><span><RenderText group="shared" variable="cancel" /></span></Button>
+                                        <Button onClick={closeModal} size="sm" variant="secondary" className='min-h-[32] w-full text-white font-semibold' type="button"><span><RenderText group="shared" variable="cancel" /></span></Button>
                                         <Button size="sm" className='min-h-[32] w-full text-white font-semibold' type="submit"><span><RenderText group="checkout" variable="sale" /></span></Button>
                                     </div>
                             }
