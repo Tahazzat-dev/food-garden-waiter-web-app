@@ -107,7 +107,10 @@ function OrdersTabContent({ activeTab }: OrdersTabContentProps) {
                                 </h5>
                                 <div className="px-2 w-full mt-2 items-center flex justify-between">
                                     <h6 className="text-base flex flex-wrap leading-[130%]" >
-                                        <span className="mr-1"><RenderText group="shared" variable="customerName" />:</span>
+                                        <span className="mr-1">
+                                            <Image src={"/images/shared/customer-white-icon.png"} className='hidden dark:block z-10 w-6 h-auto' width={200} height={200} alt="Customer Icon" />
+                                            <Image src={"/images/shared/customer-black-icon.png"} className='dark:hidden z-10 w-6 h-auto' width={200} height={200} alt="Customer Icon" />
+                                        </span>
                                         <span>{order.customer.name}</span>
                                     </h6>
                                     <p className="text-sm px-2 py-0.5 rounded-md font-bold text-primary" >
