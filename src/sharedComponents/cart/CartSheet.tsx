@@ -115,9 +115,11 @@ export function CartSheet() {
               <Tables selectedTable={selectedTable} setSelectedTable={setSelectedTable} />
             </div>
             <button
+              disabled={!cartProducts.length}
               type="submit"
               className={cn(
-                "fg_fs-md rounded-0! py-2 !text-white font-semibold bg-primary w-full flex items-center gap-5 justify-center"
+                "fg_fs-md rounded-0! py-2 !text-white font-semibold bg-primary w-full flex items-center gap-5 justify-center",
+                !cartProducts.length && "pointer-events-none"
               )}
             >
               <span>{t("checkout")}</span> <span>{formatPrice(Number(totalPrice.toFixed(2)))}</span>
