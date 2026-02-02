@@ -7,6 +7,7 @@ import useRenderText from "@/hooks/useRenderText"
 import { cn, getTranslationReadyText } from "@/lib/utils"
 import { updateKitchenOrderItemStatus } from "@/redux/features/product/productSlice"
 import { RootState } from "@/redux/store"
+import Timer from "@/sharedComponents/shared/Timer"
 import RenderText from "@/sharedComponents/utils/RenderText"
 import { KitchenOrder, TKitchenOrderItem } from "@/types/types"
 import Image from "next/image"
@@ -39,6 +40,9 @@ const Table = ({ order }: { order: KitchenOrder }) => {
         {
             order.items.map(item => <TableItem orderId={order.id} key={item.id} item={item} />)
         }
+        <div className="w-full">
+            <Timer date={new Date(new Date().getTime() + (4 * 60 * 60 * 1000) + (10 * 60 * 1000))} />
+        </div>
     </div >
 }
 
