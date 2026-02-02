@@ -31,7 +31,6 @@ export function CartSheet() {
   const t = useTranslations('shared')
   const dispatch = useDispatch();
   const { cartProducts } = useSelector((state: RootState) => state.productSlice);
-  console.log(cartProducts, ' cart products')
   const [selectedTable, setSelectedTable] = useState(0)
   const { EXPAND } = useSelector((state: RootState) => state.actions);
   const openCart = EXPAND === KEY;
