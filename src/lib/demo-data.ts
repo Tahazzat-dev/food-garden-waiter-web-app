@@ -1,4 +1,4 @@
-import { ITable } from "@/types/types";
+import { ITable, TPaymentType } from "@/types/types";
 
 //  cart demo data
 export type TCartItem = {
@@ -13,6 +13,11 @@ export type TCartItem = {
     productImage: string;
 };
 
+export const paymentMethods: TPaymentType[] = [
+    { id: 1, provider: "cash", name: { en: "Cash", bn: "ক্যাশ" } },
+    { id: 2, provider: "bkash", name: { en: "Bkash", bn: "বিকাশ" } },
+    { id: 3, provider: "bank", name: { en: "Bank", bn: "ব্যাংক" } },
+]
 
 
 export const tableData: ITable[] = [

@@ -19,6 +19,12 @@ export type TCategory = {
     slug: string;
 }
 
+export type TPaymentType = {
+    id: number;
+    provider: string;
+    name: TLocal;
+}
+
 
 export type Lang = "en" | "bn";
 

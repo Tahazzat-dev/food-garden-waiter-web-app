@@ -5,6 +5,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface IInitialState {
     cartProducts: TCartProduct[];
+    cartTotal: number;
     favouriteProducts: TProduct[];
     modalProduct: TProduct | null;
     hasOfferedProducts: boolean;
@@ -19,6 +20,7 @@ interface IInitialState {
 
 const initialState: IInitialState = {
     cartProducts: [],
+    cartTotal: 0,
     favouriteProducts: [],
     modalProduct: null,
     hasOfferedProducts: false,
@@ -27,6 +29,11 @@ const initialState: IInitialState = {
     allProducts: [],
     orders: [],
     tables: tableData
+};
+
+
+const calculateTotal = (products: TCartProduct[]): number => {
+    return products.reduce((total, item) => total + (item.price * (item.quantity || 1)), 0);
 };
 
 const productSlice = createSlice({
@@ -55,28 +62,32 @@ const productSlice = createSlice({
         // cart products reducers
         setCartProducts: (state, action: PayloadAction<TCartProduct[] | null>) => {
             state.cartProducts = action.payload || [];
+            state.cartTotal = calculateTotal(state.cartProducts);
         },
 
         updateCartProduct: (state, action: PayloadAction<{ product: TCartProduct, id: number }>) => {
-            state.cartProducts = state.cartProducts.map(prod => {
-                if (prod.id === action.payload.id) {
-                    return action.payload.product;
-                }
-                return prod;
-            });
+            state.cartProducts = state.cartProducts.map(prod =>
+                prod.id === action.payload.id ? action.payload.product : prod
+            );
+            state.cartTotal = calculateTotal(state.cartProducts);
+            setToStorage('cart_items', state.cartProducts);
         },
 
         addCartProduct: (state, action: PayloadAction<TCartProduct>) => {
             state.cartProducts.push(action.payload);
+            state.cartTotal = calculateTotal(state.cartProducts);
             setToStorage('cart_items', state.cartProducts);
         },
 
         removeCartProduct: (state, action: PayloadAction<number>) => {
             state.cartProducts = state.cartProducts.filter(product => product.id !== action.payload);
+            state.cartTotal = calculateTotal(state.cartProducts);
             setToStorage('cart_items', state.cartProducts);
         },
+
         clearCartProducts: (state) => {
             state.cartProducts = [];
+            state.cartTotal = 0;
             setToStorage('cart_items', []);
         },
 

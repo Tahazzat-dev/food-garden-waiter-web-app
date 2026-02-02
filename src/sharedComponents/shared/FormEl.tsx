@@ -14,6 +14,7 @@ type FloatingInputProps<T extends FieldValues> = {
     errorMessage?: string;
     showErrorMessage?: boolean;
     control: Control<T>;
+    inputStyle?: string;
     labelStyle?: string;
     className?: string;
     children?: ReactNode;
@@ -25,8 +26,10 @@ export const Input = <T extends FieldValues>({
     control,
     showErrorBorder = true,
     errorMessage = '',
+    showErrorMessage = false,
     type = "text",
     labelStyle = "",
+    inputStyle = "",
     className,
     children = <></>
 }: FloatingInputProps<T>) => {
@@ -35,7 +38,7 @@ export const Input = <T extends FieldValues>({
         fieldState: { error },
     } = useController({ name, control });
 
-    const hasValue = field.value?.length > 0;
+    const hasValue = field.value !== undefined && field.value !== null && field.value !== "";
     return (
         <div className={cn("relative w-full", className)}>
             <div className={cn("relative w-full")}>
@@ -46,6 +49,7 @@ export const Input = <T extends FieldValues>({
                     className={cn(
                         "peer bg-clr-card border-[1.5px] transition-colors duration-200 py-1.5 px-2 md:p-2 lg:px-4 md:px-3 rounded-[5px] border-slate-400/70 focus:border-slate-800 outline-0! focus:outline-none w-full md:h-10",
                         error && showErrorBorder && "border-secondary",
+                        inputStyle
                         // hasValue && "border-2 border-ring"
                     )}
                 />
@@ -65,7 +69,7 @@ export const Input = <T extends FieldValues>({
                 </label>
             </div>
 
-            {error && errorMessage && (
+            {error && showErrorMessage && errorMessage && (
                 <p className="mt-1 text-sm text-red-500">{errorMessage}</p>
             )}
         </div>

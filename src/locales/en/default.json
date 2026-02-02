@@ -58,7 +58,8 @@
     "waiter": "Waiter",
     "customerName": "Customer",
     "online": "Online",
-    "percel": "Percel"
+    "percel": "Percel",
+    "cancel": "Cancel"
   },
 
   "pages": {
@@ -174,7 +175,17 @@
     "defaultOrderFailedMessage": "Something went wrong while placing your order.",
     "tableError": "Please select a table",
     "customer": "Select customer",
-    "customerError": "Please select a customer"
+    "customerError": "Please select a customer",
+    "makeSell": "Make Sell",
+    "grandTotal": "Grand Total",
+    "selectPaymentMethod": "Select Payment Method",
+    "selectPaymentMethodError": "Select a payment method",
+    "payAmountError": "Please insert pay amount",
+    "payAmount": "Pay Amount",
+    "dewAmount": "Dew Amount",
+    "sale": "Sale",
+    "enterDeliveryCharge": "Enter Delivery Charge",
+    "discountExceedError": "Discount is too high"
   },
   "home": {
     "title": "Hello"

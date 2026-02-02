@@ -7,7 +7,7 @@ export default function TestPage() {
     const dispatch = useDispatch();
     return (
         <div className="flex flex-col items-center justify-center h-full w-full min-h-screen">
-            <button onClick={() => dispatch(SET_EXPAND("OPEN_ADD_CUSTOMER_MODAL"))} >Add Customer </button>
+            <button onClick={() => dispatch(SET_EXPAND("OPEN_MAKE_SELL_CUSTOMER_MODAL"))} >Make Sell </button>
         </div>
     )
 }
