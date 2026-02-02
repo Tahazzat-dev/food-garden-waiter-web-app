@@ -1,5 +1,6 @@
 import AddCustomerModal from "./AddCustomer";
 import MakeSellModal from "./MakeSellModal";
+import OrderDetailsModal from "./OrderDetails";
 import ProductDetailsModal from "./ProductDetailsModal";
 
 export default function SharedModals() {
@@ -8,6 +9,7 @@ export default function SharedModals() {
             <ProductDetailsModal />
             <AddCustomerModal />
             <MakeSellModal />
+            <OrderDetailsModal />
         </>
     )
 }

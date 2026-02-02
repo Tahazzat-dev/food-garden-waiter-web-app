@@ -1,18 +1,18 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { SET_EXPAND } from "@/redux/features/actions/actionSlice";
+import { RootState } from "@/redux/store";
+import LoadingSpinner from "@/sharedComponents/loading/LoadingSpinner";
+import { TAuthFormType } from "@/types/types";
+import { zodResolver } from '@hookform/resolvers/zod';
 import * as Dialog from "@radix-ui/react-dialog";
 import { Eye, EyeOff, X } from "lucide-react"; // optional icon
-import { Button } from "@/components/ui/button";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { RootState } from "@/redux/store";
-import { useDispatch, useSelector } from "react-redux";
 import { useTranslations } from "next-intl";
-import { SET_EXPAND } from "@/redux/features/actions/actionSlice";
-import { z } from "zod";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from '@hookform/resolvers/zod';
-import { TAuthFormType } from "@/types/types";
-import LoadingSpinner from "@/sharedComponents/loading/LoadingSpinner";
+import { useDispatch, useSelector } from "react-redux";
+import { z } from "zod";
 
 
 
@@ -41,8 +41,6 @@ export default function AuthModal() {
             document.body.style.overflow = "";
         };
     }, [EXPAND]);
-
-
 
 
     return (

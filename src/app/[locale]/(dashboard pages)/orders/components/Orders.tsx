@@ -1,6 +1,8 @@
 "use client"
 import { Button } from "@/components/ui/button";
 import { orders as fakeOrders } from "@/lib/demo-data";
+import { SET_EXPAND } from "@/redux/features/actions/actionSlice";
+import { updateDetailsOrder } from "@/redux/features/product/productSlice";
 import Timer from "@/sharedComponents/shared/Timer";
 import RenderFormatedPrice from "@/sharedComponents/utils/RenderFormatedPrice";
 import RenderText from "@/sharedComponents/utils/RenderText";
@@ -8,6 +10,7 @@ import { TOrder } from "@/types/types";
 import { Plus } from "lucide-react";
 import Image from "next/image";
 import { Dispatch, SetStateAction, useState } from "react";
+import { useDispatch } from "react-redux";
 
 export type TTabs = "myOrders" | "allOrders";
 
@@ -53,14 +56,16 @@ type OrdersTabContentProps = {
     activeTab: TTabs,
 }
 function OrdersTabContent({ activeTab }: OrdersTabContentProps) {
+    const dispatch = useDispatch()
     // const [orders, setOrders] = useState<TOrder[]>([]);
     // const { orders } = useSelector((state: RootState) => state.productSlice);
     // console.log(orders)
     const orders = fakeOrders as TOrder[];
 
     // handlers
-    const handleEditOrder = (order) => {
-        console.log(order, ' ')
+    const handleEditOrder = (order: TOrder) => {
+        dispatch(updateDetailsOrder(order));
+        dispatch(SET_EXPAND("ORDER_DETAILS_MODAL"));
     }
     return (
         <>
@@ -84,7 +89,7 @@ function OrdersTabContent({ activeTab }: OrdersTabContentProps) {
                                                 <Image src={"/images/shared/percel-icon-white.png"} className='hidden dark:block z-10 w-auto duration-300 group-hover:scale-105 h-full' width={300} height={400} alt="Table icon" />
                                                 <Image src={"/images/shared/percel-icon-black.png"} className='block dark:hidden z-10 w-auto duration-300 group-hover:scale-105 h-full' width={300} height={400} alt="Table icon" />
                                             </div>
-                                            <p className="text-sm bg-primary font-bold text-white rounded-[3px]"><RenderText group="shared" variable="percel" /></p>
+                                            <p className="text-sm bg-blue-500 font-bold text-white rounded-[3px]"><RenderText group="shared" variable="percel" /></p>
                                         </div>
                                         :
                                         <div className="bg-clr-bg-body  flex flex-col w-[70px] h-[70px] overflow-hidden rounded-md">
@@ -98,15 +103,15 @@ function OrdersTabContent({ activeTab }: OrdersTabContentProps) {
                             </div>
 
                             <div className="grow flex text-left flex-col items-start pb-1.5 bg-clr-card relative">
-                                <h5 className="bg-slate-200 w-full text-sm px-2 py-0.5 flex items-center gap-3 justify-between">
+                                <h5 className="bg-slate-200 dark:bg-slate-800 w-full text-sm px-2 py-1 flex items-center gap-3 justify-between">
                                     {/* <span className=""><RenderText group="shared" variable="waiter" />: <span className="font-semibold" >Akash</span></span> */}
                                     <span className="w-6 h-6 text-sm flex items-center gap-1.5 rounded-full bg-primary p-0.5" >
-                                        <Image src={"/images/shared/waiter-icon.png"} className='z-10 w-full h-full' width={300} height={400} alt="Delivery Icon" /><span>Akash</span>
+                                        <Image src={"/images/shared/waiter-icon.png"} className='mr-1 z-10 w-full h-full' width={300} height={400} alt="Delivery Icon" /><span>Akash</span>
                                     </span>
                                     <Timer date={new Date(order.created_at)} />
                                 </h5>
                                 <div className="px-2 w-full mt-2 items-center flex justify-between">
-                                    <h6 className="text-base flex flex-wrap leading-[130%]" >
+                                    <h6 className="text-base items-center gap-1 flex flex-wrap leading-[130%]" >
                                         <span className="mr-1">
                                             <Image src={"/images/shared/customer-white-icon.png"} className='hidden dark:block z-10 w-6 h-auto' width={200} height={200} alt="Customer Icon" />
                                             <Image src={"/images/shared/customer-black-icon.png"} className='dark:hidden z-10 w-6 h-auto' width={200} height={200} alt="Customer Icon" />

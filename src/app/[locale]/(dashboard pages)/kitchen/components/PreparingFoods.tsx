@@ -9,6 +9,7 @@ import { updateKitchenOrderItemStatus } from "@/redux/features/product/productSl
 import { RootState } from "@/redux/store"
 import RenderText from "@/sharedComponents/utils/RenderText"
 import { KitchenOrder, TKitchenOrderItem } from "@/types/types"
+import Image from "next/image"
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
@@ -30,12 +31,15 @@ const Table = ({ order }: { order: KitchenOrder }) => {
         <div className={cn("flex py-2 items-center justify-between text-white px-2.5", isAllFinished ? "bg-primary" : "bg-secondary")} >
             <h6 className="fg_fs-md"><RenderText group="shared" variable="table" /> - {translateNumber(1)}</h6>
             <p><RenderText group="checkout" variable="orderId" /> : {translateNumber(34235)}</p>
-            <p><span className=""><RenderText group="shared" variable="waiter" />: <span className="font-semibold" >Akash</span></span></p>
+            <p className="flex items-center gap-0.5" >
+                <span className="w-5 text-sm flex items-center gap-1.5 rounded-full" >
+                    <Image src={"/images/shared/waiter-icon.png"} className='z-10 w-full h-auto' width={300} height={400} alt="Delivery Icon" />
+                </span> <span>:</span> <span className="text-xs font-semibold" >Akash</span></p>
         </div>
         {
             order.items.map(item => <TableItem orderId={order.id} key={item.id} item={item} />)
         }
-    </div>
+    </div >
 }
 
 

@@ -61,7 +61,11 @@
     "percel": "Percel",
     "cancel": "Cancel",
     "piece": "Piece",
-    "updateConfirmMsg": "Are your sure you want to update?"
+    "updateConfirmMsg": "Are your sure you want to update?",
+    "invPrint": "Inv-Print",
+    "kot": "KOT",
+    "edit": "Edit",
+    "sale": "Sale"
   },
 
   "pages": {
@@ -204,6 +208,7 @@
     "unsaveOrder": "You have an unsave order. Save or discard that order",
     "orderSuccess": "Order success",
     "orderError": "Error occur during order",
-    "itemSelectError": "Please select a item first"
+    "itemSelectError": "Please select a item first",
+    "orderDetails": "Order Details"
   }
 }

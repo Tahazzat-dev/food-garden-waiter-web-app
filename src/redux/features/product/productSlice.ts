@@ -13,6 +13,7 @@ interface IInitialState {
     pendingOrders: TOrder[];
     allProducts: TProduct[];
     kitchenOrders: KitchenOrder[];
+    detailsOrder: TOrder | null;
 
     // temp
     orders: TOrder[];
@@ -29,6 +30,7 @@ const initialState: IInitialState = {
     pendingOrders: [],
     allProducts: [],
     kitchenOrders: kitchenOrders,
+    detailsOrder: null,
     orders: [],
     tables: tableData
 };
@@ -123,6 +125,9 @@ const productSlice = createSlice({
                 item.status = item.status === "pending" ? "success" : "pending";
             }
         },
+        updateDetailsOrder: (state, action: PayloadAction<TOrder | null>) => {
+            state.detailsOrder = action.payload;
+        },
 
         // Temp
         setOrders: (state, action: PayloadAction<TOrder[]>) => {
@@ -147,6 +152,7 @@ export const {
     setFavouriteProducts,
     addFavouriteProduct,
     removeFavouriteProduct,
+    updateDetailsOrder,
     setOrders
 } = productSlice.actions;
 export default productSlice.reducer;

@@ -1,17 +1,20 @@
 "use client"
 import { getFromStorage } from '@/lib/storage'
 import { updateFetchOrders } from '@/redux/features/actions/actionSlice'
+import { useGetAddressesQuery } from '@/redux/features/address/addressApiSlice'
+import { setAddress } from '@/redux/features/address/addressSlice'
 import { setCategories } from '@/redux/features/category/categorySlice'
 import { useGetAllProductsQuery, useLazyGetAllOrdersQuery } from '@/redux/features/product/productApiSlice'
-import { setAllProduct, setCartProducts, setFavouriteProducts, setOrders, setPendingOrders } from '@/redux/features/product/productSlice'
+import { setAllProduct, setCartProducts, setFavouriteProducts, setOrders } from '@/redux/features/product/productSlice'
 import { RootState } from '@/redux/store'
-import { TCartProduct, TCategory, TOrder, TProduct } from '@/types/types'
-import React, { useEffect } from 'react'
+import { TCartProduct, TCategory, TProduct } from '@/types/types'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 export default function InitialDataLoader() {
     const dispatch = useDispatch()
     const { data: productData } = useGetAllProductsQuery("");
+    const { data: addressData } = useGetAddressesQuery('');
     const [loadOrders] = useLazyGetAllOrdersQuery();
     const { fetchOrders } = useSelector((state: RootState) => state.actions);
     useEffect(() => {
@@ -36,6 +39,13 @@ export default function InitialDataLoader() {
             }
         }
     }, [dispatch, productData])
+
+    useEffect(() => {
+        // set product data;
+        if (addressData && addressData?.success) {
+            dispatch(setAddress(addressData?.data));
+        }
+    }, [dispatch, addressData])
 
 
     useEffect(() => {
