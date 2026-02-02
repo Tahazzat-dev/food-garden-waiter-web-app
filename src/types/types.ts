@@ -230,8 +230,6 @@ export interface ITable {
 }
 
 
-
-
 export interface TOrder {
     id: number;
     customer_id: number;
@@ -359,4 +357,27 @@ export interface Variation {
     total_sold: number;
     created_at: string | null;
     updated_at: string | null;
+}
+
+type TWaiter = {
+    id: number;
+    name: string;
+}
+
+export type TKitchenOrderItem = {
+    id: number;
+    title: string;
+    variation: string;
+    img: string;
+    price: number;
+    discount: number;
+    quantity: number;
+    status: "pending" | "success";
+}
+export interface KitchenOrder {
+    id: number;
+    orderFor: TCustomerType;
+    tableId?: number | null;
+    items: TKitchenOrderItem[];
+    waiter: TWaiter
 }

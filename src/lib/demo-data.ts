@@ -1,4 +1,4 @@
-import { ITable, TPaymentType } from "@/types/types";
+import { ITable, KitchenOrder, TPaymentType } from "@/types/types";
 
 //  cart demo data
 export type TCartItem = {
@@ -30,6 +30,166 @@ export const tableData: ITable[] = [
     { id: 7, isBooked: true, tableNumber: 7 },
     { id: 8, isBooked: true, tableNumber: 8 },
     { id: 9, isBooked: false, tableNumber: 9 },
+]
+
+
+export const kitchenOrders: KitchenOrder[] = [
+    {
+        id: 233,
+        waiter: { id: 1, name: "Akash" },
+        orderFor: "Dine-In",
+        tableId: 2,
+        items: [
+            {
+                "img": "dashboard/images/products/1768561033.jpg",
+                "title": "কাঁকড়া মাসালা / Kakra Masala",
+                "discount": 0,
+                "id": 48,
+                "quantity": 1,
+                "status": "pending",
+                "variation": "1 পিস ছোট",
+                "price": 250
+            },
+            {
+                "quantity": 1,
+                "img": "dashboard/images/products/1768562267.jpg",
+                "title": "চিকেন বিরিয়ানি / Chicken Beriany",
+                "discount": 0,
+                "id": 44,
+                "status": "pending",
+                "variation": "1:01",
+                "price": 220
+            },
+            {
+                "quantity": 1,
+                "img": "dashboard/images/products/1768499606.jpg",
+                "title": "এগ্‌ চাউমিন / Egg Chawmin",
+                "discount": 0,
+                "id": 110,
+                "status": "pending",
+                "variation": "1:01",
+                "price": 130
+            },
+            {
+                "quantity": 1,
+                "img": "",
+                "title": "সেট মিল-১ / Set Mill-1",
+                "discount": 0,
+                "id": 1,
+                "status": "pending",
+                "variation": "1:1",
+                "price": 180
+            },
+            {
+                "quantity": 1,
+                "img": "dashboard/images/products/1768560988.jpg",
+                "title": "অক্টোপাস / Octopas",
+                "discount": 0,
+                "id": 54,
+                "status": "pending",
+                "variation": "Grilled",
+                "price": 590
+            },
+            {
+                "quantity": 1,
+                "img": "dashboard/images/products/1768500200.jpg",
+                "title": "মোমো / MoMo",
+                "discount": 0,
+                "id": 99,
+                "status": "pending",
+                "variation": "8 পিস ফ্রাই",
+                "price": 320
+            },
+            {
+                "quantity": 1,
+                "img": "dashboard/images/products/1768561002.jpg",
+                "title": "লবিস্টার মাসালা / Lobister",
+                "discount": 0,
+                "id": 52,
+                "status": "pending",
+                "variation": "1 পিস ছোট",
+                "price": 880
+            }
+        ]
+    },
+    {
+        id: 244,
+        waiter: { id: 1, name: "Akash" },
+        orderFor: "Online",
+        tableId: null,
+        items: [
+            {
+                "img": "dashboard/images/products/1768561033.jpg",
+                "title": "কাঁকড়া মাসালা / Kakra Masala",
+                "discount": 0,
+                "id": 48,
+                "quantity": 1,
+                "status": "pending",
+                "variation": "1 পিস ছোট",
+                "price": 250
+            },
+            {
+                "quantity": 1,
+                "img": "dashboard/images/products/1768562267.jpg",
+                "title": "চিকেন বিরিয়ানি / Chicken Beriany",
+                "discount": 0,
+                "id": 44,
+                "status": "pending",
+                "variation": "1:01",
+                "price": 220
+            },
+            {
+                "quantity": 1,
+                "img": "dashboard/images/products/1768499606.jpg",
+                "title": "এগ্‌ চাউমিন / Egg Chawmin",
+                "discount": 0,
+                "id": 110,
+                "status": "pending",
+                "variation": "1:01",
+                "price": 130
+            },
+            {
+                "quantity": 1,
+                "img": "",
+                "title": "সেট মিল-১ / Set Mill-1",
+                "discount": 0,
+                "id": 1,
+                "status": "pending",
+                "variation": "1:1",
+                "price": 180
+            },
+            {
+                "quantity": 1,
+                "img": "dashboard/images/products/1768560988.jpg",
+                "title": "অক্টোপাস / Octopas",
+                "discount": 0,
+                "id": 54,
+                "status": "pending",
+                "variation": "Grilled",
+                "price": 590
+            },
+            {
+                "quantity": 1,
+                "img": "dashboard/images/products/1768500200.jpg",
+                "title": "মোমো / MoMo",
+                "discount": 0,
+                "id": 99,
+                "status": "pending",
+                "variation": "8 পিস ফ্রাই",
+                "price": 320
+            },
+            {
+                "quantity": 1,
+                "img": "dashboard/images/products/1768561002.jpg",
+                "title": "লবিস্টার মাসালা / Lobister",
+                "discount": 0,
+                "id": 52,
+                "status": "pending",
+                "variation": "1 পিস ছোট",
+                "price": 880
+            }
+        ]
+    },
 ]
 
 

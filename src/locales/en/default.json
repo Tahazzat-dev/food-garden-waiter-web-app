@@ -59,7 +59,9 @@
     "customerName": "Customer",
     "online": "Online",
     "percel": "Percel",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "piece": "Piece",
+    "updateConfirmMsg": "Are your sure you want to update?"
   },
 
   "pages": {

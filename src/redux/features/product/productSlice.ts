@@ -1,6 +1,6 @@
-import { tableData } from "@/lib/demo-data";
+import { kitchenOrders, tableData } from "@/lib/demo-data";
 import { setToStorage } from "@/lib/storage";
-import { ITable, TCartProduct, TOrder, TProduct } from "@/types/types";
+import { ITable, KitchenOrder, TCartProduct, TOrder, TProduct } from "@/types/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface IInitialState {
@@ -12,6 +12,7 @@ interface IInitialState {
     showOfferedMark: boolean;
     pendingOrders: TOrder[];
     allProducts: TProduct[];
+    kitchenOrders: KitchenOrder[];
 
     // temp
     orders: TOrder[];
@@ -27,6 +28,7 @@ const initialState: IInitialState = {
     showOfferedMark: false,
     pendingOrders: [],
     allProducts: [],
+    kitchenOrders: kitchenOrders,
     orders: [],
     tables: tableData
 };
@@ -111,6 +113,17 @@ const productSlice = createSlice({
             state.tables = state.tables.map(table => table.id === action.payload.id ? { ...table, isBooked: action.payload.bookingStatus } : table)
         },
 
+        updateKitchenOrderItemStatus: (state, action: PayloadAction<{ id: number, itemId: number }>) => {
+            const { id, itemId } = action.payload;
+            const order = state.kitchenOrders.find(o => o.id === id);
+            if (!order) return;
+
+            const item = order.items.find(item => item.id === itemId);
+            if (item) {
+                item.status = item.status === "pending" ? "success" : "pending";
+            }
+        },
+
         // Temp
         setOrders: (state, action: PayloadAction<TOrder[]>) => {
             state.orders = action.payload
@@ -130,6 +143,7 @@ export const {
     updateCartProduct,
     setAllProduct,
     updateTable,
+    updateKitchenOrderItemStatus,
     setFavouriteProducts,
     addFavouriteProduct,
     removeFavouriteProduct,

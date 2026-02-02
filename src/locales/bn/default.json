@@ -60,7 +60,9 @@
     "customerName": "কাস্টমার",
     "online": "অনলাইন",
     "percel": "পার্সেল",
-    "cancel": "বাতিল"
+    "cancel": "বাতিল",
+    "piece": "পিস",
+    "updateConfirmMsg": "আপনি কি নিশ্চিত যে আপনি আপডেট করতে চান?"
   },
 
   "pages": {
