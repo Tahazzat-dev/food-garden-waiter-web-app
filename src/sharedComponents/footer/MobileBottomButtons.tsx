@@ -74,11 +74,13 @@ export default function MobileBottomButtons() {
         <div className='w-full dark:border-t dark:border-slate-400 md:hidden bg-black fixed py-2 z-[999999] bottom-0 left-0'>
             <Container className='flex justify-between'>
                 <Link className='flex flex-col gap-1 items-center justify-between min-w-[70px]' href="/" >
-                    <Image src="/images/shared/food-menu-icon.svg" width={22} height={40} alt="Menu icon" />
+                    <Image src="/images/shared/menu-white.png" className={isActive('/') ? "hidden" : "block"} width={22} height={40} alt="Menu icon" />
+                    <Image src="/images/shared/menu-active.png" className={isActive('/') ? "block" : "hidden"} width={22} height={40} alt="Menu icon" />
                     <span className={cn('font-semibold text-sm sm:text-base', isActive('/') ? "text-[#00f9ff]" : "text-white")}><RenderText group="mobileBottomActions" variable="menu" /></span>
                 </Link>
                 <Link href="/orders" className='mr-3 flex flex-col gap-1 items-center justify-between min-w-[70px]' >
-                    <Image src="/images/shared/orders-icon.svg" width={25} height={40} alt="Orders icon" />
+                    <Image src="/images/shared/order-white.png" className={isActive('/orders') ? "hidden" : "block"} width={25} height={40} alt="Orders icon" />
+                    <Image src="/images/shared/order-active.png" className={isActive('/orders') ? "block" : "hidden"} width={25} height={40} alt="Orders icon" />
                     <span className={cn('font-semibold text-sm sm:text-base', isActive('/orders') ? "text-[#00f9ff]" : "text-white")}><RenderText group="mobileBottomActions" variable="orders" /></span>
                 </Link>
                 <button onClick={() => dispatch(SET_EXPAND(EXPAND === KEY ? null : KEY))} className='relative w-[60px] h-[52px]' >
@@ -101,12 +103,13 @@ export default function MobileBottomButtons() {
                 </button>
 
                 <Link href="/kitchen" className='ml-3 relative flex flex-col gap-1 items-center justify-between min-w-[70px]' >
-                    <Image src="/images/shared/cooking-icon.svg" width={25} height={40} alt="Kitchen Icon" />
+                    <Image src="/images/shared/cooking-white.png" className={isActive('/kitchen') ? "hidden" : "block"} width={25} height={40} alt="Kitchen Icon" />
+                    <Image src="/images/shared/cooking-active.png" className={isActive('/kitchen') ? "block" : "hidden"} width={25} height={40} alt="Kitchen Icon" />
                     <span className={cn('font-semibold text-sm sm:text-base', isActive('/kitchen') ? "text-[#00f9ff]" : "text-white")}><RenderText group="mobileBottomActions" variable="kitchen" /></span>
                 </Link>
 
                 <Link href="/online-orders" className='flex flex-col gap-1 items-center justify-between min-w-[70px]' >
-                    <Globe className='text-white h-6 w-6 cursor-pointer' />
+                    <Globe className={cn("h-6 w-6 cursor-pointer", isActive("/online-orders") ? "text-[#00f9ff]" : "text-white ")} />
                     <span className={cn('font-semibold text-sm sm:text-base', isActive('/online-orders') ? "text-[#00f9ff]" : "text-white")}><RenderText group="mobileBottomActions" variable="online" /></span>
                 </Link>
             </Container>
