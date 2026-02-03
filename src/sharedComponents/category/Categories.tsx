@@ -15,7 +15,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
 import "swiper/css"
 import "swiper/css/navigation"
-import { Autoplay, Navigation } from "swiper/modules"
+import { Navigation } from "swiper/modules"
 
 type Props = {
   item: TCategory;
@@ -87,7 +87,7 @@ export default function Categories({ categories = [] }: { categories: TCategory[
 
   return <div style={{ position: "relative", width: "100%" }}>
     <Swiper
-      modules={[Navigation, Autoplay]}
+      modules={[Navigation]}
       spaceBetween={12}
       slidesPerView="auto"
       navigation={{
@@ -102,7 +102,6 @@ export default function Categories({ categories = [] }: { categories: TCategory[
         setIsBeginning(swiper.isBeginning)
         setIsEnd(swiper.isEnd)
       }}
-      autoplay={true}
       grabCursor={true}
     >
       <SwiperSlide

@@ -1,21 +1,19 @@
 "use client"
 import { orders as fakeOrders } from "@/lib/demo-data";
-import { cn } from "@/lib/utils";
 import { SET_EXPAND } from "@/redux/features/actions/actionSlice";
 import { updateDetailsOrder } from "@/redux/features/product/productSlice";
 import Timer from "@/sharedComponents/shared/Timer";
+import { OrdersTab, TOrderTabs } from "@/sharedComponents/tab/Tab";
 import RenderFormatedPrice from "@/sharedComponents/utils/RenderFormatedPrice";
 import RenderText from "@/sharedComponents/utils/RenderText";
 import { TOrder } from "@/types/types";
-import { ArrowDownNarrowWide, ArrowUpNarrowWide } from "lucide-react";
 import Image from "next/image";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-export type TTabs = "myOrders" | "allOrders";
 
 export default function Orders() {
-    const [activeTab, setActiveTab] = useState<TTabs>("myOrders")
+    const [activeTab, setActiveTab] = useState<TOrderTabs>("myOrders")
     return (
         <>
             <OrdersTab activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -25,33 +23,11 @@ export default function Orders() {
 }
 
 
-type TabProps = {
-    activeTab: TTabs,
-    setActiveTab: Dispatch<SetStateAction<TTabs>>;
-}
-function OrdersTab({ activeTab, setActiveTab }: TabProps) {
-
-    const defaultBorder = "border-green-600  text-primary dark:text-primary dark:border-primary";
-    return (
-        <div className="w-full sticky z-[999] top-[81px] pb-3 pt-3 bg-clr-bg-body left-0 flex justify-between">
-            <div className="grow flex justify-between">
-                <button onClick={() => setActiveTab("myOrders")} className={cn("flex items-center justify-center gap-2 w-full duration-200 border-b-2 border-slate-300 dark:border-slate-600 pb-1 text-slate-400 dark:text-slate-500", activeTab === "myOrders" ? defaultBorder : "")} >
-                    <ArrowUpNarrowWide className="size-[18px]" />
-                    <RenderText group="orders" variable="myOrders" />
-                </button>
-                <button onClick={() => setActiveTab("allOrders")} className={cn("flex items-center justify-center gap-2 w-full duration-200 border-b-2 border-slate-300 dark:border-slate-600 pb-1 text-slate-400 dark:text-slate-500", activeTab === "allOrders" ? defaultBorder : "")} >
-                    <ArrowDownNarrowWide className="size-[18px]" />
-                    <RenderText group="orders" variable="allOrders" />
-                </button>
-            </div>
-        </div>
-    )
-}
 
 
 
 type OrdersTabContentProps = {
-    activeTab: TTabs,
+    activeTab: TOrderTabs,
 }
 function OrdersTabContent({ activeTab }: OrdersTabContentProps) {
     const dispatch = useDispatch()
@@ -91,7 +67,7 @@ function OrdersTabContent({ activeTab }: OrdersTabContentProps) {
                                         </div>
                                         :
                                         <div className="bg-black flex flex-col w-[70px] h-[70px] overflow-hidden rounded-md">
-                                            <div className="px-1.5 flex items-center justify-center w-[50px] mx-auto overflow-hidden grow" >
+                                            <div className=" px-1.5 flex items-center justify-center w-[55px] mx-auto overflow-hidden grow" >
                                                 {/* <Image src={"/images/shared/table-white.svg"} className='hidden dark:block z-10 w-full duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Table icon" /> */}
                                                 <Image src={"/images/shared/table-white.svg"} className='z-10 w-full duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Table icon" />
                                                 {/* <Image src={"/images/shared/table.svg"} className='block dark:hidden z-10 w-full duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Table icon" /> */}
@@ -101,7 +77,7 @@ function OrdersTabContent({ activeTab }: OrdersTabContentProps) {
                                 }
                             </div>
 
-                            <div className="grow flex text-left flex-col items-start pb-1.5 bg-clr-card relative">
+                            <div className="grow flex text-left flex-col items-start bg-clr-card relative">
                                 <h5 className="bg-slate-200 dark:bg-slate-800 w-full text-sm px-2 py-1 flex items-center gap-3 justify-between">
                                     {/* <span className=""><RenderText group="shared" variable="waiter" />: <span className="font-semibold" >Akash</span></span> */}
                                     <span className="w-5 h-5 text-sm flex items-center gap-1.5 rounded-full bg-primary p-0.5" >

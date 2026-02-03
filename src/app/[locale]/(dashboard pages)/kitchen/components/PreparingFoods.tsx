@@ -8,6 +8,7 @@ import { cn, getTranslationReadyText } from "@/lib/utils"
 import { updateKitchenOrderItemStatus } from "@/redux/features/product/productSlice"
 import { RootState } from "@/redux/store"
 import Timer from "@/sharedComponents/shared/Timer"
+import { OrdersTab, TOrderTabs } from "@/sharedComponents/tab/Tab"
 import RenderText from "@/sharedComponents/utils/RenderText"
 import { KitchenOrder, TKitchenOrderItem } from "@/types/types"
 import Image from "next/image"
@@ -15,15 +16,29 @@ import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 export default function PreparingFoods() {
-    const { kitchenOrders } = useSelector((state: RootState) => state.productSlice)
+    const [activeTab, setActiveTab] = useState<TOrderTabs>("myOrders")
     return (
-        <div className="w-full flex py-3 flex-col gap-4 sm:gap-5">
-            {
-                kitchenOrders.map(order => <Table key={order.id} order={order} />)
-            }
-        </div>
+        <>
+            <OrdersTab activeTab={activeTab} setActiveTab={setActiveTab} />
+            <OrdersTabContent activeTab={activeTab} />
+        </>
     )
 }
+
+
+
+type OrdersTabContentProps = {
+    activeTab: TOrderTabs,
+}
+function OrdersTabContent({ activeTab }: OrdersTabContentProps) {
+    const { kitchenOrders } = useSelector((state: RootState) => state.productSlice)
+    return <div className="w-full flex py-3 flex-col gap-4 sm:gap-5">
+        {
+            kitchenOrders.map(order => <Table key={order.id} order={order} />)
+        }
+    </div>
+}
+
 
 const Table = ({ order }: { order: KitchenOrder }) => {
     const { translateNumber } = useFormatPrice();
@@ -40,7 +55,7 @@ const Table = ({ order }: { order: KitchenOrder }) => {
         {
             order.items.map(item => <TableItem orderId={order.id} key={item.id} item={item} />)
         }
-        <div className="w-full">
+        <div className="w-full flex items-center justify-end px-2.5 py-1">
             <Timer date={new Date(new Date().getTime() + (4 * 60 * 60 * 1000) + (10 * 60 * 1000))} />
         </div>
     </div >

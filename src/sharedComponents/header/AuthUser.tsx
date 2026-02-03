@@ -57,14 +57,14 @@ export function AuthUser() {
                     favouriteProducts.length > 0 ?
                         <span className='flex items-center justify-center text-xs px-0.5 min-w-4 min-h-4  absolute -top-[40%] left-[80%] translate-x-[-50%] bg-secondary text-white rounded-full p-[1px]'>{favouriteProducts.length}</span> : <></>
                 }
-                {EXPAND === KEY && <span className='w-5 h-5 rotate-45 bg-primary absolute pointer-events-none top-[190%] left-1/2 -translate-x-1/2'></span>}
+                {/* {EXPAND === KEY && <span className='w-5 h-5 rotate-45 bg-primary absolute pointer-events-none top-[190%] left-1/2 -translate-x-1/2'></span>} */}
             </button>
 
 
             <Dialog.Root open={EXPAND === KEY} onOpenChange={closeModal}>
                 <Dialog.Portal>
                     <div className="fixed inset-0 global-overlay wishlist-overlay top-[81px] !border-none lg:top-[83.53px] z-[9999]" />
-                    <Dialog.Content style={style} className="prevent-body-trigger wishlist-modal fixed w-full flex flex-col top-[81px] !border-none !m-0 !p-0 lg:top-[83.53px] max-w-[90vw] sm:max-w-[600px] md:max-w-[600px] !rounded-[6px] md:rounded-[8px] lg:!rounded-[10px] overflow-hidden bg-body z-[99999]">
+                    <Dialog.Content style={style} className="prevent-body-trigger wishlist-modal fixed w-full flex flex-col top-[81px] !border-none !m-0 !p-0 lg:top-[83.53px] max-w-[95vw] sm:max-w-[600px] md:max-w-[600px] !rounded-[6px] md:rounded-[8px] lg:!rounded-[10px] overflow-hidden bg-body z-[99999]">
                         <div className="flex items-center justify-between bg-primary px-2.5 sm:px-4 py-2">
                             <Dialog.Title className="fg_fs-md text-white">
                                 <RenderText group="authentication" variable="profile" />

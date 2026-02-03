@@ -5,7 +5,7 @@ import { calculateSubtotal, cn, getSellingPrice } from '@/lib/utils';
 import { SET_EXPAND, updatePrevAction } from '@/redux/features/actions/actionSlice';
 import { RootState } from '@/redux/store';
 import { ITable, TAddress } from '@/types/types';
-import { Plus, ShoppingCart, X } from 'lucide-react';
+import { Plus, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { MouseEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -67,14 +67,6 @@ export function CartSheet() {
   const totalPrice = cartProducts.reduce((total, item) => total + (calculateSubtotal(getSellingPrice(item.price, item.discount), item.quantity)), 0)
   return (
     <>
-      <button onClick={() => dispatch(SET_EXPAND(EXPAND === KEY ? null : KEY))} className='prevent-body-trigger relative'>
-        <ShoppingCart fill='white' className='text-white h-6 w-6 cursor-pointer' />
-        {
-          cartProducts.length > 0 ?
-            <span className='flex items-center justify-center text-xs px-0.5 min-w-[18px] min-h-4  absolute -top-[40%] left-[80%] translate-x-[-50%] bg-secondary text-white rounded-full p-[1px]'>{cartProducts.length}</span> : <></>
-        }
-      </button>
-
       <CustomDrawer
         overlayClassName="!top-0"
         className='!top-0 !z-[9999999]'
