@@ -11,6 +11,7 @@ import Timer from "@/sharedComponents/shared/Timer"
 import { OrdersTab, TOrderTabs } from "@/sharedComponents/tab/Tab"
 import RenderText from "@/sharedComponents/utils/RenderText"
 import { KitchenOrder, TKitchenOrderItem } from "@/types/types"
+import { ClipboardList } from "lucide-react"
 import Image from "next/image"
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
@@ -43,10 +44,15 @@ function OrdersTabContent({ activeTab }: OrdersTabContentProps) {
 const Table = ({ order }: { order: KitchenOrder }) => {
     const { translateNumber } = useFormatPrice();
     const isAllFinished = order.items.every(item => item.status === "success");
-    return <div key={order.id} className={cn("w-full bg-slate-300/70 dark:bg-slate-800/70 custom-shadow-card-sm border border-slate-400 dark:border-slate-600  rounded-[4px] overflow-hidden")}>
+    return <div key={order.id} className={cn("w-full bg-white dark:bg-black custom-shadow-card-sm border border-slate-400 dark:border-slate-600  rounded-[4px] overflow-hidden")}>
         <div className={cn("flex py-2 items-center justify-between text-white px-2.5", isAllFinished ? "bg-primary" : "bg-secondary")} >
             <h6 className="fg_fs-md"><RenderText group="shared" variable="table" /> - {translateNumber(1)}</h6>
-            <p><RenderText group="checkout" variable="orderId" /> : {translateNumber(34235)}</p>
+            <p className="flex text-[13px] items-center gap-0.5">
+                {/* <RenderText group="checkout" variable="orderId" /> */}
+                <ClipboardList className="w-5" />
+                <span>:</span>
+                <span className="">{translateNumber(34235)}</span>
+            </p>
             <p className="flex items-center gap-0.5" >
                 <span className="w-5 text-sm flex items-center gap-1.5 rounded-full" >
                     <Image src={"/images/shared/waiter-icon.png"} className='z-10 w-full h-auto' width={300} height={400} alt="Delivery Icon" />
