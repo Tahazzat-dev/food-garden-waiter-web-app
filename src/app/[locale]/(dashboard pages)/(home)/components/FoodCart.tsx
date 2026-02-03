@@ -24,7 +24,7 @@ export default function FoodCart({ product }: { product: TProduct }) {
     }
     const { en, bn } = getTranslationReadyText(product.name)
     return (
-        <button onClick={openDetailsModal} className='w-full flex gap-5 bg-clr-card overflow-hidden rounded-md border-slate-300 border  group z-0'>
+        <button onClick={openDetailsModal} className='w-full flex gap-5 bg-clr-card overflow-hidden rounded-md border-slate-300 dark:border-slate-600 border  group z-0'>
             <div className="relative p-1 flex items-center justify-center">
                 <div className="w-full h-full max-w-[70px] max-h-[60px] overflow-hidden rounded-md">
                     <Image src={product?.image ? getImage(product?.image) : "/images/shared/food-placeholder.jpg"} className='z-10 w-full duration-300 group-hover:scale-105 h-full' width={300} height={400} alt={en} />

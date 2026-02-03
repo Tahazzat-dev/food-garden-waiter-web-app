@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils';
 import {
     Clock, Clock1,
     Clock10, Clock11, Clock12,
@@ -9,9 +10,10 @@ import React, { useEffect, useState } from 'react';
 type Props = {
     showClock?: boolean;
     date: Date;
+    className?: string;
 };
 
-export default function Timer({ showClock = true, date }: Props) {
+export default function Timer({ showClock = true, className = '', date }: Props) {
     const [now, setNow] = useState(new Date());
 
     useEffect(() => {
@@ -27,10 +29,10 @@ export default function Timer({ showClock = true, date }: Props) {
         const orderHour = date.getHours() % 12 || 12;
 
         const icons: Record<number, React.ReactNode> = {
-            1: <Clock1 size={16} />, 2: <Clock2 size={16} />, 3: <Clock3 size={16} />,
-            4: <Clock4 size={16} />, 5: <Clock5 size={16} />, 6: <Clock6 size={16} />,
-            7: <Clock7 size={16} />, 8: <Clock8 size={16} />, 9: <Clock9 size={16} />,
-            10: <Clock10 size={16} />, 11: <Clock11 size={16} />, 12: <Clock12 size={16} />
+            1: <Clock1 size={13} />, 2: <Clock2 size={13} />, 3: <Clock3 size={13} />,
+            4: <Clock4 size={13} />, 5: <Clock5 size={13} />, 6: <Clock6 size={13} />,
+            7: <Clock7 size={13} />, 8: <Clock8 size={13} />, 9: <Clock9 size={13} />,
+            10: <Clock10 size={13} />, 11: <Clock11 size={13} />, 12: <Clock12 size={13} />
         };
 
         return icons[orderHour] || <Clock size={16} />;
@@ -68,7 +70,7 @@ export default function Timer({ showClock = true, date }: Props) {
     };
 
     return (
-        <div className="flex items-center gap-1 text-sm font-medium">
+        <div className={cn("flex items-center gap-1 font-medium", className)}>
             {showClock && (
                 <>
                     <span className="">
@@ -79,7 +81,7 @@ export default function Timer({ showClock = true, date }: Props) {
                     </span> */}
                 </>
             )}
-            <span className="">
+            <span className="leading-[100%] mt-1">
                 {getTimeLabel()}
                 {/* <RenderText group='shared' variable='ago' /> */}
             </span>
