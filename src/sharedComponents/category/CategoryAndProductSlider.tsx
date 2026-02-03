@@ -146,6 +146,7 @@ export default function CategoryAndProductSlider({ className = "", categories = 
                         </div>
                     </Container>
                 </div>
+
             </section>
             <section className={cn("mb-4 z-10 mt-[75px]")}>
                 <Container>
