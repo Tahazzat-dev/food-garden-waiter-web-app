@@ -51,7 +51,7 @@ export function CustomDrawer({
             )}
             <div
                 ref={drawerRef}
-                className={`fixed flex  flex-col rounded-r-[10px] overflow-hidden bg-background cartsheet-drawer prevent-body-trigger z-[99999] w-[90vw] max-w-[450px] right-0 top-[86px] sm:top-[84px] md:top-[81px] lg:top-[88px] dark:shadow-amber-50 h-full rounded-md lg:!rounded-r-none duration-200 ${open ? "translate-x-0" : "translate-x-full"} ${className}`}
+                className={`fixed flex  flex-col rounded-r-[10px] overflow-hidden bg-background cartsheet-drawer prevent-body-trigger z-[99999] w-[100vw] max-w-[450px] right-0 top-[86px] sm:top-[84px] md:top-[81px] lg:top-[88px] dark:shadow-amber-50 h-full rounded-md lg:!rounded-r-none duration-200 ${open ? "translate-x-0" : "translate-x-full"} ${className}`}
             >
                 {children}
             </div>

@@ -48,7 +48,7 @@ function OrdersTabContent({ activeTab }: OrdersTabContentProps) {
             {
                 !!orders?.length && <div className="flex flex-col gap-2">
                     {
-                        orders.map(order => <button key={order.id} onClick={() => handleEditOrder(order)} className='relative w-full flex bg-clr-card overflow-hidden overflow-hidden rounded-md border-slate-300 dark:border-slate-600 border group z-0'>
+                        orders.map(order => <button key={order.id} onClick={() => handleEditOrder(order)} className='relative w-full flex bg-clr-card  overflow-hidden rounded-md border-slate-300 dark:border-slate-600 border group z-0'>
 
                             {/* demo overlay */}
                             {/* <div className="w-full flex items-center justify-center h-full z-20  absolute top-0 left-0 bg-slate-700/70">
@@ -103,7 +103,7 @@ function OrdersTabContent({ activeTab }: OrdersTabContentProps) {
                                             <span className="text-[12px]" >{order.customer.name.length > 25 ? `${order.customer.name.slice(0, 25)}...` : order.customer.name}</span>
 
                                         </h6>
-                                        <p className="text-sm ">
+                                        <p className="text-[12px] ">
                                             {order.customer_type === "Dine-In" ?
                                                 <span className="text-primary" ><RenderText group="shared" variable="onlineHomeDelivery" /></span> :
                                                 order.customer_type === "Online" ? <span className="text-secondary" ><RenderText group="shared" variable="onlineHomeDelivery" /></span> :
