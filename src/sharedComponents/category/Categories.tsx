@@ -68,19 +68,13 @@ export default function Categories({ categories = [] }: { categories: TCategory[
   const [isBeginning, setIsBeginning] = useState(true)
   const [isEnd, setIsEnd] = useState(false)
 
-  const allCategory: TCategory = {
-    id: 0,
-    image: { link: '/images/shared/all-category.png' },
-    name: "সেরা / Top",
-    slug: "all-categories"
-  }
-
   useEffect(() => {
     const categoryFromUrl = searchParams.get("category")
     if (categoryFromUrl) {
       dispatch(setHomeActiveCategoryId(Number(categoryFromUrl)))
     } else {
-      dispatch(setHomeActiveCategoryId(0)) // default "All"
+      const firstCategory = categories[0];
+      dispatch(setHomeActiveCategoryId(firstCategory.id || 1))
     }
   }, [dispatch, searchParams])
 
@@ -104,12 +98,6 @@ export default function Categories({ categories = [] }: { categories: TCategory[
       }}
       grabCursor={true}
     >
-      <SwiperSlide
-        key='00000'
-        className="z-0 !w-[80px] !min-w-[80px] !h-[80px] lg:!w-[120px] lg:!min-w-[120px] lg:!h-[120px]"
-      >
-        <Category item={allCategory} key="ALL_CATEGORY_DEFAULT" />
-      </SwiperSlide>
       {categories.map((category) => (
         <SwiperSlide
           className="z-0 !w-[80px] !min-w-[80px] !h-[80px] lg:!w-[120px] lg:!min-w-[120px] lg:!h-[120px]"
