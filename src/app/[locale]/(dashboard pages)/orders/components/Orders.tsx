@@ -1,13 +1,13 @@
 "use client"
-import { Button } from "@/components/ui/button";
 import { orders as fakeOrders } from "@/lib/demo-data";
+import { cn } from "@/lib/utils";
 import { SET_EXPAND } from "@/redux/features/actions/actionSlice";
 import { updateDetailsOrder } from "@/redux/features/product/productSlice";
 import Timer from "@/sharedComponents/shared/Timer";
 import RenderFormatedPrice from "@/sharedComponents/utils/RenderFormatedPrice";
 import RenderText from "@/sharedComponents/utils/RenderText";
 import { TOrder } from "@/types/types";
-import { Plus } from "lucide-react";
+import { ArrowDownNarrowWide, ArrowUpNarrowWide } from "lucide-react";
 import Image from "next/image";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -31,21 +31,19 @@ type TabProps = {
 }
 function OrdersTab({ activeTab, setActiveTab }: TabProps) {
 
-    const defaultBorder = "border border-slate-400 dark:border-slate-600";
+    const defaultBorder = "border-green-600  text-primary dark:text-primary dark:border-primary";
     return (
-        <div className="w-full sticky z-[999] top-[81px] py-2 bg-clr-bg-body left-0 flex justify-between">
-            <div className="grow flex gap-2">
-                <Button onClick={() => setActiveTab("myOrders")} variant={activeTab === "myOrders" ? "primary" : "ghost"} className={activeTab !== "myOrders" ? defaultBorder : ""} >
+        <div className="w-full sticky z-[999] top-[81px] pb-3 pt-3 bg-clr-bg-body left-0 flex justify-between">
+            <div className="grow flex justify-between">
+                <button onClick={() => setActiveTab("myOrders")} className={cn("flex items-center justify-center gap-2 w-full duration-200 border-b-2 border-slate-300 dark:border-slate-600 pb-1 text-slate-400 dark:text-slate-500", activeTab === "myOrders" ? defaultBorder : "")} >
+                    <ArrowUpNarrowWide className="size-[18px]" />
                     <RenderText group="orders" variable="myOrders" />
-                </Button>
-                <Button onClick={() => setActiveTab("allOrders")} variant={activeTab === "allOrders" ? "primary" : "ghost"} className={activeTab !== "allOrders" ? defaultBorder : ""} >
+                </button>
+                <button onClick={() => setActiveTab("allOrders")} className={cn("flex items-center justify-center gap-2 w-full duration-200 border-b-2 border-slate-300 dark:border-slate-600 pb-1 text-slate-400 dark:text-slate-500", activeTab === "allOrders" ? defaultBorder : "")} >
+                    <ArrowDownNarrowWide className="size-[18px]" />
                     <RenderText group="orders" variable="allOrders" />
-                </Button>
+                </button>
             </div>
-            <Button className="!px-2 gap-1" >
-                <Plus />
-                <RenderText group="orders" variable="addOrder" />
-            </Button>
         </div>
     )
 }

@@ -59,18 +59,16 @@ export default function OnlineOrders() {
                             </div>
 
                             <div className="grow flex text-left flex-col items-start pb-1.5 bg-clr-card relative">
-                                <h5 className="bg-slate-200 dark:bg-slate-800 w-full text-sm px-2 py-1 flex items-center gap-3 justify-between">
+                                <h5 className="bg-slate-200 dark:bg-slate-800 w-full text-xs px-2 py-0.5 flex items-center gap-3 justify-end">
                                     {/* <span className=""><RenderText group="shared" variable="waiter" />: <span className="font-semibold" >Akash</span></span> */}
-                                    <span className="w-6 h-6 text-sm flex items-center gap-1.5 rounded-full" >
-                                        <Image src={"/images/shared/customer-white-icon.png"} className='hidden dark:block z-10 w-6 h-auto' width={200} height={200} alt="Customer Icon" />
-                                        <Image src={"/images/shared/customer-black-icon.png"} className='dark:hidden z-10 w-6 h-auto' width={200} height={200} alt="Customer Icon" />
-                                    </span>
-                                    <Timer date={new Date(order.created_at)} />
-                                </h5>
-                                <div className="px-2 w-full mt-2 items-center flex justify-between">
-                                    <h6 className="text-base items-center gap-1 flex flex-wrap leading-[130%]" >
-                                        <span className="mr-1">
 
+                                    <span className="text-xs"><Timer date={new Date(order.created_at)} /></span>
+                                </h5>
+                                <div className="px-2 w-full mt-1 items-center flex justify-between">
+                                    <h6 className="text-base items-center gap-1 flex flex-wrap leading-[130%]" >
+                                        <span className="w-6 h-6 text-sm flex items-center gap-1.5 rounded-full" >
+                                            <Image src={"/images/shared/customer-white-icon.png"} className='hidden dark:block z-10 w-6 h-auto' width={200} height={200} alt="Customer Icon" />
+                                            <Image src={"/images/shared/customer-black-icon.png"} className='dark:hidden z-10 w-6 h-auto' width={200} height={200} alt="Customer Icon" />
                                         </span>
                                         <span>{order.customer.name}</span>
                                     </h6>
