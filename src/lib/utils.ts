@@ -1,12 +1,12 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-import type { CSSProperties, RefObject } from "react";
 import { Lang } from "@/types/types";
+import type { CSSProperties, RefObject } from "react";
 
 export const getResponsiveRightStyle = (
   ref: RefObject<HTMLButtonElement | null>

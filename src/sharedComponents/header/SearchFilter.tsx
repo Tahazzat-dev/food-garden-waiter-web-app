@@ -13,6 +13,8 @@ import { setModalProduct } from '@/redux/features/product/productSlice';
 import { RootState } from '@/redux/store';
 import { TProduct } from '@/types/types';
 import { useDispatch, useSelector } from 'react-redux';
+import RenderText from '../utils/RenderText';
+import { CreateTrnslateText } from '../utils/TranslateText';
 
 export default function SearchFilter({ className }: { className?: string }) {
     // hooks
@@ -82,7 +84,7 @@ export default function SearchFilter({ className }: { className?: string }) {
                     <div className='max-h-[300px] lg:max-h-[350px] h-auto overflow-y-auto'>
                         {
                             // !!loading ? <SearchProductLoader /> :
-                            results.length === 0 && !loading ? <p className='fg_fs-sm text-center py-4'>No results found</p> :
+                            results.length === 0 && !loading ? <p className='fg_fs-sm text-center py-4'><RenderText group='shared' variable='noFoodFound' /></p> :
                                 <div className="w-full mx-auto space-y-2">
                                     {
                                         results.map((item, i) => <div
@@ -93,7 +95,9 @@ export default function SearchFilter({ className }: { className?: string }) {
                                         >
                                             <Image src={item?.image ? getImage(item?.image) : "/images/shared/food-placeholder.jpg"} className='w-12 h-12' width={300} height={400} alt={item.name} />
                                             <div className="flex flex-col flex-1">
-                                                <h6>{item.name}</h6>
+                                                <h6>
+                                                    <CreateTrnslateText text={item.name} />
+                                                </h6>
                                                 <p className='flex items-center gap-3'><span>৳{item.variations[0]?.price ? Number(item.variations[0]?.price) : 0}</span>
                                                     {/* <span className='line-through'>৳{item?.variations[0]?.price || 0}</span> */}
                                                 </p>
