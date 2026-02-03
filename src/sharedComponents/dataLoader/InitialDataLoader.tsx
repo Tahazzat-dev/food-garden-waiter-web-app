@@ -3,11 +3,10 @@ import { getFromStorage } from '@/lib/storage'
 import { updateFetchOrders } from '@/redux/features/actions/actionSlice'
 import { useGetAddressesQuery } from '@/redux/features/address/addressApiSlice'
 import { setAddress } from '@/redux/features/address/addressSlice'
-import { setCategories } from '@/redux/features/category/categorySlice'
 import { useGetAllProductsQuery, useLazyGetAllOrdersQuery } from '@/redux/features/product/productApiSlice'
 import { setAllProduct, setCartProducts, setFavouriteProducts, setOrders } from '@/redux/features/product/productSlice'
 import { RootState } from '@/redux/store'
-import { TCartProduct, TCategory, TProduct } from '@/types/types'
+import { TCartProduct, TProduct } from '@/types/types'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -75,18 +74,4 @@ export default function InitialDataLoader() {
     return (
         <></>
     )
-}
-
-
-
-
-
-
-export const SaveCategory = ({ categories = [] }: { categories: TCategory[] }) => {
-    // hooks
-    const dispatch = useDispatch()
-    useEffect(() => {
-        dispatch(setCategories(categories));
-    }, [categories, dispatch])
-    return <></>
 }

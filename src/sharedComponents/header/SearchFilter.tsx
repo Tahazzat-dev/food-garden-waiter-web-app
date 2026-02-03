@@ -1,35 +1,28 @@
 "use client";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Button } from '@/components/ui/button'
-import { useTranslations } from 'next-intl';
+import { Button } from '@/components/ui/button';
 import clsx from 'clsx';
+import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 import { fakeSearch } from '../utils/Utils';
 // import SearchProductLoader from '../loading/searchingLoader';
 import Image from 'next/image';
 // import { getDiscountPrice } from '@/lib/utils';
+import { getImage } from '@/lib/utils';
+import { SET_EXPAND } from '@/redux/features/actions/actionSlice';
+import { setModalProduct } from '@/redux/features/product/productSlice';
+import { RootState } from '@/redux/store';
 import { TProduct } from '@/types/types';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
-import { getImage, getTranslationReadyText } from '@/lib/utils';
-import useRenderText from '@/hooks/useRenderText';
-import { setModalProduct } from '@/redux/features/product/productSlice';
-import { SET_EXPAND } from '@/redux/features/actions/actionSlice';
-import { setHomeActiveCategoryId } from '@/redux/features/category/categorySlice';
 
 export default function SearchFilter({ className }: { className?: string }) {
     // hooks
     const dispatch = useDispatch();
-    const tCategory = useTranslations('header.categories');
     const tSearch = useTranslations('header.search');
     const { allProducts } = useSelector((state: RootState) => state.productSlice);
-    const { categories } = useSelector((state: RootState) => state.categorySlice);
-    const { renderText } = useRenderText();
     const [searchTxt, setSearchTxt] = useState('');
     const [results, setResults] = useState<TProduct[]>([]);
     const [loading, setLoading] = useState(true);
     const debounceRef = useRef<NodeJS.Timeout | null>(null);
-    const [selectCategory, setSelectedCategory] = useState<null | number>(null)
 
     useEffect(() => {
         if (!searchTxt.trim()) {
@@ -55,7 +48,7 @@ export default function SearchFilter({ className }: { className?: string }) {
                 clearTimeout(debounceRef.current);
             }
         };
-    }, [searchTxt, allProducts, selectCategory]);
+    }, [searchTxt, allProducts]);
 
     // handlers
     const handleRefresh = () => {
@@ -73,23 +66,6 @@ export default function SearchFilter({ className }: { className?: string }) {
 
     return (
         <>
-            <div className='hidden lg:block'>
-                <Select onValueChange={(val) => dispatch(setHomeActiveCategoryId(+val))} >
-                    <SelectTrigger className="border-none bg-primary hover:bg-primary-500 text-white shadow-sm">
-                        <SelectValue placeholder={tCategory('all')} />
-                    </SelectTrigger>
-
-                    <SelectContent className='z-[9999] bg-white dark:bg-black' >
-                        <SelectItem className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value="0">{tCategory('all')}</SelectItem>
-                        {
-                            !!categories.length && categories.map(cat => {
-                                const { en: catEn, bn: catBn } = getTranslationReadyText(cat.name)
-                                return <SelectItem key={cat?.id} className='hover:bg-slate-300 dark:hover:bg-slate-700 outline-none' value={cat.id.toString()}>{renderText(catEn, catBn)}</SelectItem>
-                            })
-                        }
-                    </SelectContent>
-                </Select>
-            </div>
             <div className="grow flex gap-2">
                 <input
                     value={searchTxt} onChange={(e) => setSearchTxt(e.target.value)}

@@ -9,6 +9,7 @@ interface IInitialState {
     favouriteProducts: TProduct[];
     modalProduct: TProduct | null;
     hasOfferedProducts: boolean;
+    categoryActiveSlide: number | null;
     showOfferedMark: boolean;
     pendingOrders: TOrder[];
     allProducts: TProduct[];
@@ -24,6 +25,7 @@ const initialState: IInitialState = {
     cartProducts: [],
     cartTotal: 0,
     favouriteProducts: [],
+    categoryActiveSlide: null,
     modalProduct: null,
     hasOfferedProducts: false,
     showOfferedMark: false,
@@ -95,6 +97,10 @@ const productSlice = createSlice({
             setToStorage('cart_items', []);
         },
 
+        updateCategoryActiveSlide: (state, action: PayloadAction<number>) => {
+            state.categoryActiveSlide = action.payload;
+        },
+
         // favourite products reducers
         setFavouriteProducts: (state, action: PayloadAction<TProduct[] | null>) => {
             state.favouriteProducts = action.payload || [];
@@ -148,6 +154,7 @@ export const {
     updateCartProduct,
     setAllProduct,
     updateTable,
+    updateCategoryActiveSlide,
     updateKitchenOrderItemStatus,
     setFavouriteProducts,
     addFavouriteProduct,
