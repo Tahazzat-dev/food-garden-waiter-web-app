@@ -48,24 +48,31 @@ function OrdersTabContent({ activeTab }: OrdersTabContentProps) {
             {
                 !!orders?.length && <div className="flex flex-col gap-2">
                     {
-                        orders.map(order => <button key={order.id} onClick={() => handleEditOrder(order)} className='w-full flex bg-clr-card overflow-hidden overflow-hidden rounded-md border-slate-300 dark:border-slate-600 border group z-0'>
-                            <div className="relative p-1 flex items-center justify-center">
+                        orders.map(order => <button key={order.id} onClick={() => handleEditOrder(order)} className='relative w-full flex bg-clr-card overflow-hidden overflow-hidden rounded-md border-slate-300 dark:border-slate-600 border group z-0'>
+
+                            {/* demo overlay */}
+                            {/* <div className="w-full flex items-center justify-center h-full z-20  absolute top-0 left-0 bg-slate-700/70">
+                                <p className="text-white">Pending for approval</p>
+                            </div> */}
+                            {/* demo overlay */}
+
+                            <div className="relative z-10 p-1 flex items-center justify-center">
                                 {order.customer_type === "Online" ?
                                     <div className="gap-1 bg-secondary pb-0 flex flex-col w-[70px] h-[70px] overflow-hidden rounded-md">
                                         <div className="w-[35px] pt-1 flex items-center justify-center mx-auto grow overflow-hidden" >
-                                            <Image src={"/images/shared/Delivery-icon-white.png"} className='hidden dark:block z-10 w-full duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Delivery Icon" />
-                                            <Image src={"/images/shared/Delivery-icon-black.png"} className='block dark:hidden z-10 w-full duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Delivery Icon" />
+                                            <Image src={"/images/shared/Delivery-icon-white.png"} className='z-10 w-full duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Delivery Icon" />
+                                            {/* <Image src={"/images/shared/Delivery-icon-black.png"} className='block dark:hidden z-10 w-full duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Delivery Icon" /> */}
                                         </div>
-                                        <p className="text-[13px] rounded-[3px] bg-secondary px-0.5 font-bold text-white"><RenderText group="shared" variable="online" /></p>
+                                        <p className="text-[13px] pb-0.5 rounded-[3px] bg-secondary px-0.5 font-bold text-white"><RenderText group="shared" variable="percel" /></p>
                                     </div>
                                     :
                                     order.customer_type === "Self Pickup" ?
                                         <div className="pt-1 bg-blue-500 gap-1 pb-0 flex flex-col w-[70px] h-[70px] overflow-hidden rounded-md">
                                             <div className="grow overflow-hidden mx-auto w-6 flex items-center justify-center" >
-                                                <Image src={"/images/shared/percel-icon-white.png"} className='hidden dark:block z-10 w-auto duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Table icon" />
-                                                <Image src={"/images/shared/percel-icon-black.png"} className='block dark:hidden z-10 w-auto duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Table icon" />
+                                                <Image src={"/images/shared/percel-icon-white.png"} className='z-10 w-auto duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Table icon" />
+                                                {/* <Image src={"/images/shared/percel-icon-black.png"} className='block dark:hidden z-10 w-auto duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Table icon" /> */}
                                             </div>
-                                            <p className="text-[13px] bg-blue-500 font-bold text-white rounded-[3px]"><RenderText group="shared" variable="percel" /></p>
+                                            <p className="text-[13px] pb-0.5 bg-blue-500 font-bold text-white rounded-[3px]"><RenderText group="shared" variable="percel" /></p>
                                         </div>
                                         :
                                         <div className="bg-black flex flex-col w-[70px] h-[70px] overflow-hidden rounded-md">
@@ -74,14 +81,13 @@ function OrdersTabContent({ activeTab }: OrdersTabContentProps) {
                                                 <Image src={"/images/shared/table-white.svg"} className='z-10 w-full duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Table icon" />
                                                 {/* <Image src={"/images/shared/table.svg"} className='block dark:hidden z-10 w-full duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Table icon" /> */}
                                             </div>
-                                            <p className="text-[13px] font-bold text-white rounded-[3px]"><RenderText group="shared" variable="table" />-5</p>
+                                            <p className="text-[13px] pb-0.5 font-bold text-white rounded-[3px]"><RenderText group="shared" variable="table" />-5</p>
                                         </div>
                                 }
                             </div>
 
-                            <div className="grow flex flex-col bg-clr-card relative">
+                            <div className="grow flex z-10 flex-col bg-clr-card relative">
                                 <h5 className="bg-slate-200 dark:bg-slate-800 w-full text-sm px-2 py-0.5 flex items-center gap-3 justify-between">
-                                    {/* <span className=""><RenderText group="shared" variable="waiter" />: <span className="font-semibold" >Akash</span></span> */}
                                     <span className="w-[18px] h-[18px] text-sm flex items-center gap-1.5 rounded-full bg-primary p-0.5" >
                                         <Image src={"/images/shared/waiter-icon.png"} className='mr-1 z-10 w-full h-full' width={300} height={400} alt="Delivery Icon" /><span>Akash</span>
                                     </span>
@@ -99,9 +105,9 @@ function OrdersTabContent({ activeTab }: OrdersTabContentProps) {
                                         </h6>
                                         <p className="text-sm ">
                                             {order.customer_type === "Dine-In" ?
-                                                <span className="text-primary" ><RenderText group="shared" variable="table" /></span> :
-                                                order.customer_type === "Online" ? <span className="text-secondary" ><RenderText group="shared" variable="percel" /></span> :
-                                                    <span className="text-blue-500" ><RenderText group="shared" variable="percel" /></span>}
+                                                <span className="text-primary" ><RenderText group="shared" variable="onlineHomeDelivery" /></span> :
+                                                order.customer_type === "Online" ? <span className="text-secondary" ><RenderText group="shared" variable="onlineHomeDelivery" /></span> :
+                                                    <span className="text-blue-500" ><RenderText group="shared" variable="onlineTakeWay" /></span>}
                                         </p>
                                     </div>
                                     <p className="text-[15px] px-2 py-0.5 rounded-md font-bold text-primary" >

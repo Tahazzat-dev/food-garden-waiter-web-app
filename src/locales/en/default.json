@@ -53,6 +53,7 @@
     "add": "Add",
     "addShortText": "Add",
     "itemList": "Item Lists",
+    "orderItems": "Order Items",
     "table": "Table",
     "ago": "Ago",
     "waiter": "Waiter",
@@ -65,7 +66,13 @@
     "invPrint": "Inv-Print",
     "kot": "KOT",
     "edit": "Edit",
-    "sale": "Sale"
+    "sale": "Sale",
+    "callHomeDelivery": "Call Home Delivery",
+    "dineIn": "Dine-In",
+    "takeAway": "Take Away",
+    "onlineHomeDelivery": "Online Home Delivery",
+    "onlineDineIn": "Online Dine-In",
+    "onlineTakeAway": "Online Take Away"
   },
 
   "pages": {

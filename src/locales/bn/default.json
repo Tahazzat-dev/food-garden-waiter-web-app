@@ -54,6 +54,7 @@
     "add": "এড করুন",
     "addShortText": "এড",
     "itemList": "আইটেমের তালিকা",
+    "orderItems": "অর্ডারের তালিকা",
     "table": "টেবিল",
     "ago": "পূর্বে",
     "waiter": "ওয়েটার",
@@ -66,7 +67,13 @@
     "invPrint": "ইনভয়েস প্রিন্ট",
     "kot": "কে.ও.টি",
     "edit": "এডিট",
-    "sale": "বিক্রয়"
+    "sale": "বিক্রয়",
+    "callHomeDelivery": "ফোনে হোম ডেলিভারি",
+    "dineIn": "রেস্টুরেন্টে খাব",
+    "takeWay": "এসে নেব",
+    "onlineHomeDelivery": "(অনলাইন) হোম ডেলিভারি",
+    "onlineDineIn": "(অনলাইন) রেস্টুরেন্টে খাব",
+    "onlineTakeWay": "(অনলাইন) এসে নেব"
   },
 
   "pages": {
