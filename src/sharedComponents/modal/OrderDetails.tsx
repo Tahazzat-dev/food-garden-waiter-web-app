@@ -89,7 +89,7 @@ export default function OrderDetailsModal() {
                                 detailsOrder.items.map(item => <DetailsItemCard key={item.id} item={item} />)
                             }
                         </div>
-                        <div className="mt-2 w-full bg-black py-1 rounded-md px-2 text-white ">
+                        <div className="mt-2 w-full clr-opposite py-1 rounded-md px-2 ">
                             <p className="flex font-semibold w-full items-center justify-between" ><span><RenderText group="shared" variable="total" /></span><span>{formatPrice(totalAmount)}</span></p>
                         </div>
                     </div>
@@ -103,7 +103,7 @@ export default function OrderDetailsModal() {
                         <Button size="sm" className=" !rounded-[3px] grow text-white" variant="secondary" >
                             <RenderText group="shared" variable="edit" />
                         </Button>
-                        <Button size="sm" className=" !rounded-[3px] grow" >
+                        <Button onClick={() => dispatch(SET_EXPAND("OPEN_MAKE_SELL_CUSTOMER_MODAL"))} size="sm" className=" !rounded-[3px] grow" >
                             <RenderText group="shared" variable="sale" />
                         </Button>
                     </div>

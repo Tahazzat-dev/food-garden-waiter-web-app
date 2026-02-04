@@ -53,7 +53,7 @@ export default function MakeSellModal() {
     const dispatch = useDispatch();
     const t = useTranslations('checkout');
     const { EXPAND } = useSelector((state: RootState) => state.actions);
-    const { cartProducts, cartTotal } = useSelector((state: RootState) => state.productSlice);
+    const { cartTotal } = useSelector((state: RootState) => state.productSlice);
 
     const [addCustomer, { isLoading }] = useAddCustomerMutation()
     const [isOpen, setIsOpen] = useState(false);
@@ -113,7 +113,7 @@ export default function MakeSellModal() {
     }
 
     const closeModal = () => {
-        dispatch(SET_EXPAND("CART_SHEET"));
+        dispatch(SET_EXPAND(null));
     }
 
     //  ========== hidden overflow of body ========
@@ -251,7 +251,7 @@ export default function MakeSellModal() {
                             </div>
                             {
                                 dewAmount > 0 &&
-                                <div className="w-full mb-3 mt-4 px-2.5 rounded-md py-0.5 border">
+                                <div className="w-full mb-3 mt-4 px-2.5 rounded-md py-0.5 border border-slate-400/70 dark:border-slate-600">
                                     <p className="flex min-h-[32] items-center justify-between" ><span>{t("dewAmount")} </span> <span className="text-secondary">{formatPrice(dewAmount)}</span></p>
                                 </div>
                             }
@@ -303,7 +303,7 @@ export function SelectPaymentMethod({
             <button
                 type="button"
                 onClick={() => setIsOpen(v => !v)}
-                className="checkout-input w-full relative flex justify-between gap-4 items-center px-3 py-1 rounded border"
+                className="checkout-input w-full relative flex justify-between gap-4 items-center px-3 py-1 rounded border border-slate-400/70 dark:border-slate-600"
             >
                 {!!selected && selectedProvider &&
                     <span className="text-sm">{renderText(selectedProvider.name.bn, selectedProvider.name.en)}</span>
@@ -330,7 +330,7 @@ export function SelectPaymentMethod({
                                     e.preventDefault();
                                     handleSelect(method);
                                 }}
-                                className={cn("text-sm prevent-body-trigger w-full px-3 py-1 md:py-1.5 hover:bg-gray-100 text-left", method.provider === selected ? "bg-slate-200 dark:bg-slate-700" : "")}
+                                className={cn("text-sm prevent-body-trigger w-full px-3 py-1 md:py-1.5 hover:bg-gray-100 dark:hover-bg-slate-700 dark:hover:text-slate-900 text-left", method.provider === selected ? "bg-slate-200 dark:bg-slate-700" : "")}
                             >
                                 {renderText(method.name.en, method.name.bn)}
                             </button>

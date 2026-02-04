@@ -47,7 +47,7 @@ export const Input = <T extends FieldValues>({
                     type={type}
                     id={name}
                     className={cn(
-                        "peer bg-clr-card border-[1.5px] transition-colors duration-200 py-1.5 px-2 md:p-2 lg:px-4 md:px-3 rounded-[5px] border-slate-400/70 focus:border-slate-800 outline-0! focus:outline-none w-full md:h-10",
+                        "peer bg-clr-card border-[1.5px] transition-colors duration-200 py-1.5 px-2 md:p-2 lg:px-4 md:px-3 rounded-[5px] border-slate-400/70 dark:border-slate-600 focus:!border-slate-400 outline-0! focus:outline-none w-full md:h-10",
                         error && showErrorBorder && "border-secondary",
                         inputStyle
                         // hasValue && "border-2 border-ring"
