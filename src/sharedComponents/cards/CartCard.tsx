@@ -3,9 +3,9 @@ import { Button } from '@/components/ui/button';
 import useFormatPrice from '@/hooks/useFormatPrice';
 import useRenderText from '@/hooks/useRenderText';
 import { calculateSubtotal, getDiscountPrice, getImage, getSellingPrice, getTranslationReadyText } from '@/lib/utils';
-import { updateCartProduct } from '@/redux/features/product/productSlice';
+import { removeCartProduct, updateCartProduct } from '@/redux/features/product/productSlice';
 import { TCartProduct } from '@/types/types';
-import { Minus, Plus } from 'lucide-react';
+import { Minus, Plus, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { useDispatch } from 'react-redux';
 
@@ -33,9 +33,13 @@ export function CartCard({ item }: { item: TCartProduct }) {
           <Image src={item?.img ? getImage(item?.img) : "/images/shared/food-placeholder.jpg"} className='z-10 w-full duration-300 group-hover:scale-105 h-full' width={300} height={400} alt={en} />
         </div>
       </div>
-      <div className='flex flex-col grow p-1 pr-2 bg-clr-card'>
+      <div className=' relative flex flex-col grow p-1 pr-2 bg-clr-card'>
         <h3 className='line-clamp-2 break-words fg_fs-xs text-primary leading-tight font-medium'>
           {renderText(en, bn)}</h3>
+
+        <button onClick={() => dispatch(removeCartProduct(item.id))} className='absolute top-0.5 right-2 prevent-body-trigger' >
+          <Trash2 className=' w-4 hover:text-secondary' />
+        </button>
         <div className="w-full flex gap-2 items-center justify-between">
           <div className="flex flex-col">
             <p><span className='text-xs rounded-[6px] font-medium text-secondary'>{item?.name}</span></p>
