@@ -39,7 +39,7 @@ export function CartCard({ item }: { item: TCartProduct }) {
         <div className="w-full flex gap-2 items-center justify-between">
           <div className="flex flex-col">
             <p><span className='text-xs rounded-[6px] font-medium text-secondary'>{item?.name}</span></p>
-            <p className='fg_fs-xxs  text-left grow dark:!text-black'>{item.discount < 1 ? formatPrice(item?.price) : getDiscountPrice(item?.price || 0, item?.discount || 0)}</p>
+            <p className='fg_fs-xxs  text-left grow'>{item.discount < 1 ? formatPrice(item?.price) : getDiscountPrice(item?.price || 0, item?.discount || 0)}</p>
           </div>
           <div className='flex w-[60%] items-center gap-4 justify-between'>
             <div className='flex items-center gap-1 rounded-md py-0.5'>
@@ -61,7 +61,7 @@ export function CartCard({ item }: { item: TCartProduct }) {
                 <Plus className='' />
               </Button>
             </div>
-            <p className='text-[13px] text-primary font-semibold text-right grow dark:!text-black'>{formatPrice(calculateSubtotal(getSellingPrice(item?.price || 0, item?.discount || 0), item.quantity))}</p>
+            <p className='text-[13px] text-primary font-semibold text-right grow'>{formatPrice(calculateSubtotal(getSellingPrice(item?.price || 0, item?.discount || 0), item.quantity))}</p>
           </div>
         </div>
 

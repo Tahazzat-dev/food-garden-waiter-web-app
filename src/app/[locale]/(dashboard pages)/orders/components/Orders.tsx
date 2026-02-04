@@ -104,11 +104,11 @@ export default function Orders() {
                                                 <span className="text-[12px]" >{order.customer.name.length > 25 ? `${order.customer.name.slice(0, 25)}...` : order.customer.name}</span>
 
                                             </h6>
-                                            <p className="text-[12px] ">
+                                            <p className="text-[10px]">
                                                 {order.customer_type === "Dine-In" ?
-                                                    <span className="text-primary" ><RenderText group="shared" variable="onlineHomeDelivery" /></span> :
-                                                    order.customer_type === "Online" ? <span className="text-secondary" ><RenderText group="shared" variable="onlineHomeDelivery" /></span> :
-                                                        <span className="text-blue-500" ><RenderText group="shared" variable="onlineTakeWay" /></span>}
+                                                    <span className="text-primary py-0.5 bg-green-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="onlineHomeDelivery" /></span> :
+                                                    order.customer_type === "Online" ? <span className="text-secondary bg-red-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="onlineHomeDelivery" /></span> :
+                                                        <span className="text-blue-500 bg-blue-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="onlineTakeWay" /></span>}
                                             </p>
                                         </div>
                                         <p className="text-[15px] px-2 py-0.5 rounded-md font-bold text-primary" >
@@ -178,11 +178,11 @@ export default function Orders() {
                                                 <span className="text-[12px]" >{order.customer.name.length > 25 ? `${order.customer.name.slice(0, 25)}...` : order.customer.name}</span>
 
                                             </h6>
-                                            <p className="text-[12px] ">
+                                            <p className="text-[10px]">
                                                 {order.customer_type === "Dine-In" ?
-                                                    <span className="text-primary" ><RenderText group="shared" variable="onlineHomeDelivery" /></span> :
-                                                    order.customer_type === "Online" ? <span className="text-secondary" ><RenderText group="shared" variable="onlineHomeDelivery" /></span> :
-                                                        <span className="text-blue-500" ><RenderText group="shared" variable="onlineTakeWay" /></span>}
+                                                    <span className="text-primary py-0.5 bg-green-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="onlineHomeDelivery" /></span> :
+                                                    order.customer_type === "Online" ? <span className="text-secondary bg-red-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="onlineHomeDelivery" /></span> :
+                                                        <span className="text-blue-500 bg-blue-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="onlineTakeWay" /></span>}
                                             </p>
                                         </div>
                                         <p className="text-[15px] px-2 py-0.5 rounded-md font-bold text-primary" >
