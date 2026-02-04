@@ -4,7 +4,8 @@ import useFormatPrice from '@/hooks/useFormatPrice';
 import { calculateSubtotal, cn, getSellingPrice } from '@/lib/utils';
 import { SET_EXPAND, updatePrevAction } from '@/redux/features/actions/actionSlice';
 import { RootState } from '@/redux/store';
-import { ITable, TAddress } from '@/types/types';
+import { ITable, TAddress, TCustomerType } from '@/types/types';
+import * as Dialog from "@radix-ui/react-dialog";
 import { Plus, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { MouseEvent, useState } from 'react';
@@ -16,10 +17,23 @@ import RenderText from '../utils/RenderText';
 import { CustomerSelect } from './CustomerSelect';
 import Tables from './Tables';
 
-
 export type CustomerFormValues = {
   address: TAddress;
   table: ITable;
+}
+
+
+type TOrderType = "table" | "percel" | 'online';
+
+type TOrderResponse = {
+  success: boolean;
+  message: string;
+  orderId?: number;
+  totalCost?: number;
+  customerType?: TCustomerType;
+  status?: number;
+  orderIdentity?: number;
+  orderType: TOrderType;
 }
 
 
@@ -32,9 +46,10 @@ export function CartSheet() {
   const dispatch = useDispatch();
   const { cartProducts } = useSelector((state: RootState) => state.productSlice);
   const [selectedTable, setSelectedTable] = useState(0)
+  const [orderResponse, setOrderResponse] = useState<TOrderResponse | null>(null)
   const { EXPAND } = useSelector((state: RootState) => state.actions);
   const openCart = EXPAND === KEY;
-  const { formatPrice } = useFormatPrice()
+  const { formatPrice, translateNumber } = useFormatPrice()
   const [isOpen, setIsOpen] = useState(false);
 
   const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<CustomerFormValues>()
@@ -51,14 +66,27 @@ export function CartSheet() {
 
 
   const onSubmit = async (data: CustomerFormValues) => {
-    console.log(data, ' data');
-    dispatch(SET_EXPAND("OPEN_MAKE_SELL_CUSTOMER_MODAL"))
+    dispatch(SET_EXPAND(null));
+    setOrderResponse({
+      message: "orderSuccess",
+      success: true,
+      orderId: 233,
+      status: 200,
+      orderType: "online",
+      orderIdentity: 1,
+      customerType: 'Dine-In',
+      totalCost: 2000
+    })
   }
 
 
   const handleOpenAddCustomerModal = () => {
     dispatch(updatePrevAction("CART_SHEET"))
     dispatch(SET_EXPAND("OPEN_ADD_CUSTOMER_MODAL"))
+  }
+
+  const closeModal = () => {
+    setOrderResponse(null)
   }
 
 
@@ -118,6 +146,25 @@ export function CartSheet() {
           </form>
         </div>
       </CustomDrawer>
+
+      <Dialog.Root open={orderResponse !== null} onOpenChange={closeModal}>
+        <Dialog.Portal>
+          <div className="fixed inset-0 global-overlay z-[999999]" />
+          <Dialog.Content className="prevent-body-trigger border border-slate-300 dark:border-slate-700 fixed top-1/2 left-1/2  max-w-[93vw] md:max-w-[700px] lg:!rounded-[12px] overflow-hidden w-full -translate-x-1/2 -translate-y-1/2 bg-body rounded-lg shadow-lg dark:shadow-slate-800 z-[9999999]">
+            <div className="flex items-center justify-between bg-primary px-4 py-2">
+              <Dialog.Title className="fg_fs-md text-white">
+                <RenderText group='orders' variable={orderResponse?.message || 'success'} />
+              </Dialog.Title>
+              <Button onClick={closeModal} className="rounded-full !px-2.5" variant="secondary"> <X className="!text-white w-5 md:w-6 md:h-6 h-5 lg:w-8 lg:h-8" /></Button>
+            </div>
+            <div className="p-4">
+              {orderResponse?.orderId && <p className='text-center flex gap-2 justify-center' ><span><RenderText group='checkout' variable='orderId' /> :</span><span>{translateNumber(orderResponse.orderId)}</span></p>}
+              {orderResponse?.orderType && <p className='text-center flex gap-2 justify-center' ><span><RenderText group='orders' variable='orderDetails' /> :</span> <span><RenderText group='shared' variable={orderResponse.orderType} /></span>{orderResponse.orderType !== "online" && !!orderResponse.orderIdentity && translateNumber(orderResponse.orderIdentity)}</p>}
+              {orderResponse?.totalCost && <p className='text-center flex gap-2 justify-center' ><span><RenderText group='shared' variable='total' /> :</span> <span>{formatPrice(orderResponse.totalCost)}</span></p>}
+            </div>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
     </>
   );
 }

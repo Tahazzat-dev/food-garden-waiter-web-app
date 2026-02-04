@@ -177,7 +177,7 @@ export interface OrderItem {
 }
 
 
-type TCustomerType = "Online" | "Dine-In" | "Self Pickup";
+export type TCustomerType = "Online" | "Dine-In" | "Self Pickup";
 // export interface TOrder {
 //     id: number;
 //     customer_id: number;
