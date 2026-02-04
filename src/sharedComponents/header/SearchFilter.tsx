@@ -7,6 +7,7 @@ import { fakeSearch } from '../utils/Utils';
 // import SearchProductLoader from '../loading/searchingLoader';
 import Image from 'next/image';
 // import { getDiscountPrice } from '@/lib/utils';
+import useFormatPrice from '@/hooks/useFormatPrice';
 import { getImage } from '@/lib/utils';
 import { SET_EXPAND } from '@/redux/features/actions/actionSlice';
 import { setModalProduct } from '@/redux/features/product/productSlice';
@@ -24,6 +25,7 @@ export default function SearchFilter({ className }: { className?: string }) {
     const [searchTxt, setSearchTxt] = useState('');
     const [results, setResults] = useState<TProduct[]>([]);
     const [loading, setLoading] = useState(true);
+    const { formatPrice } = useFormatPrice()
     const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
@@ -98,7 +100,7 @@ export default function SearchFilter({ className }: { className?: string }) {
                                                 <h6>
                                                     <CreateTrnslateText text={item.name} />
                                                 </h6>
-                                                <p className='flex items-center gap-3'><span>৳{item.variations[0]?.price ? Number(item.variations[0]?.price) : 0}</span>
+                                                <p className='flex items-center gap-3'><span>{formatPrice(item.variations[0]?.price ? Number(item.variations[0]?.price) : 0)}</span>
                                                     {/* <span className='line-through'>৳{item?.variations[0]?.price || 0}</span> */}
                                                 </p>
                                             </div>

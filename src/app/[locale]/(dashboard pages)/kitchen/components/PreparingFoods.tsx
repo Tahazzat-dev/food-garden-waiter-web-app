@@ -1,6 +1,4 @@
-
 "use client"
-
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
 import useFormatPrice from "@/hooks/useFormatPrice"
 import useRenderText from "@/hooks/useRenderText"
@@ -8,36 +6,58 @@ import { cn, getTranslationReadyText } from "@/lib/utils"
 import { updateKitchenOrderItemStatus } from "@/redux/features/product/productSlice"
 import { RootState } from "@/redux/store"
 import Timer from "@/sharedComponents/shared/Timer"
-import { OrdersTab, TOrderTabs } from "@/sharedComponents/tab/Tab"
+import { OrdersTab } from "@/sharedComponents/tab/Tab"
 import RenderText from "@/sharedComponents/utils/RenderText"
 import { KitchenOrder, TKitchenOrderItem } from "@/types/types"
 import { ClipboardList } from "lucide-react"
 import Image from "next/image"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import type { Swiper as SwiperType } from "swiper"
+import { Swiper, SwiperSlide } from "swiper/react"
+import "swiper/swiper.css"
 
 export default function PreparingFoods() {
-    const [activeTab, setActiveTab] = useState<TOrderTabs>("myOrders")
+    const [activeTab, setActiveTab] = useState(0)
+    const ordersSwiperRef = useRef<SwiperType | null>(null);
+    const { kitchenOrders } = useSelector((state: RootState) => state.productSlice)
+
+    const changeSlider = (index: number) => {
+        setActiveTab(index);
+        ordersSwiperRef.current?.slideTo(index);
+    }
     return (
         <>
-            <OrdersTab activeTab={activeTab} setActiveTab={setActiveTab} />
-            <OrdersTabContent activeTab={activeTab} />
+            <OrdersTab activeTab={activeTab} changeSlider={changeSlider} />
+            <Swiper
+                autoHeight={true}
+                speed={450}
+                spaceBetween={20}
+                watchSlidesProgress={true}
+                onSwiper={(swiper) => (ordersSwiperRef.current = swiper)}
+                onSlideChange={(swiper) => {
+                    setActiveTab(swiper.activeIndex);
+                }}
+            >
+                {/* <NoDataMsg group='shared' variable='noFoodFound' className='min-h-20 lg:min-h-40 xl:min-h-56' />  */}
+
+                <SwiperSlide >
+                    <div className="w-full flex py-3 flex-col gap-4 sm:gap-5">
+                        {
+                            kitchenOrders.map(order => <Table key={order.id} order={order} />)
+                        }
+                    </div>
+                </SwiperSlide>
+                <SwiperSlide >
+                    <div className="w-full flex py-3 flex-col gap-4 sm:gap-5">
+                        {
+                            kitchenOrders.map(order => <Table key={order.id} order={order} />)
+                        }
+                    </div>
+                </SwiperSlide>
+            </Swiper>
         </>
     )
-}
-
-
-
-type OrdersTabContentProps = {
-    activeTab: TOrderTabs,
-}
-function OrdersTabContent({ activeTab }: OrdersTabContentProps) {
-    const { kitchenOrders } = useSelector((state: RootState) => state.productSlice)
-    return <div className="w-full flex py-3 flex-col gap-4 sm:gap-5">
-        {
-            kitchenOrders.map(order => <Table key={order.id} order={order} />)
-        }
-    </div>
 }
 
 

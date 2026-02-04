@@ -42,7 +42,6 @@ export default function CategoryAndProductSlider({ className = "", categories = 
 
     // handlers
     const handleSelectCategory = (index: number) => {
-        // dispatch(setHomeActiveCategoryIndex(index))
         setActiveIndex(index);
         foodsSwiperRef.current?.slideTo(index);
     }
@@ -61,14 +60,6 @@ export default function CategoryAndProductSlider({ className = "", categories = 
         const productData = categories.map((c) => allProducts.filter((p) => p.category_id === c.id));
         setProductsArr(productData);
     }, [allProducts, categories])
-
-    //   set the first category as default
-    // useEffect(() => {
-    //     if (!categories.length) return;
-    //     const firstCategory = categories[0];
-    //     dispatch(setHomeActiveCategoryIndex(firstCategory.id || 1))
-    // }, [dispatch, categories])
-
 
     // mount the component
     useEffect(() => {
