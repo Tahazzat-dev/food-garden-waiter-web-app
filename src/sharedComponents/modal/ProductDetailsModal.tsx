@@ -180,24 +180,23 @@ export default function ProductDetailsModal() {
                                 {variant ? " - " : ""}
                                 {variant ? variant.variation : ""}</h5>
                             <div className="flex gap-3 lg:gap-4 mt-4">
-                                <div ref={imageRef} className="max-w-[120px] md:max-w-[180px] lg:max-w-[250px] max-h-[120px] md:max-h-[180px] lg:max-h-[250px] rounded-[8px] overflow-hidden">
-                                    <Image className="w-full h-full" src={modalProduct?.image ? getImage(modalProduct?.image) : "/images/shared/food-placeholder.jpg"} width={300} height={400} alt="Food Image" />
+                                <div ref={imageRef} className="max-w-20 border  max-h-20 rounded-[8px] overflow-hidden">
+                                    <Image className="w-20 h-20" src={modalProduct?.image ? getImage(modalProduct?.image) : "/images/shared/food-placeholder.jpg"} width={300} height={400} alt="Food Image" />
                                 </div>
                                 <div className="grow flex justify-between flex-col gap-2">
-                                    <div className="flex flex-col gap-5">
-                                        <div className="flex flex-wrap items-center gap-2">
-                                            {
-                                                !!modalProduct?.variations && modalProduct?.variations?.map(item => <Button key={item.id}
-                                                    onClick={() => {
-                                                        setVariant(item);
-                                                        setShowVariantWarning(false);
-                                                    }}
-                                                    variant={item.id === variant?.id ? "secondary" : "primary"} className="text-white custom-shadow-md !py-0.5">{item.variation}</Button>)
-                                            }
-                                        </div>
+                                    <div className="flex flex-wrap items-center gap-2">
                                         {
-                                            variant?.price ? <p className='fg_fs-sm flex gap-2'>{t('price')} : {formatPrice(+variant.price)}</p> :
-                                                showVariantWarning ? <p className={cn('fg_fs-sm flex gap-2', showVariantWarning && "text-red-500")}>{t('selectVariants')}</p> : <></>
+                                            !!modalProduct?.variations && modalProduct?.variations?.map(item => <button key={item.id}
+                                                onClick={() => {
+                                                    setVariant(item);
+                                                    setShowVariantWarning(false);
+                                                }}
+                                                className={cn("!py-0.5 flex flex-col items-center rounded-md text-white px-3", item.id === variant?.id ? "bg-primary text-white" : "bg-slate-500")}
+                                            >
+                                                <span>{item.variation}</span>
+                                                <span className="fg_fs-xxs">{formatPrice(+item.price)}</span>
+                                            </button>
+                                            )
                                         }
                                     </div>
 
