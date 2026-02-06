@@ -128,7 +128,8 @@
     "rememberedPassword": "Remembered password?",
     "success": "Success",
     "profile": "Profile",
-    "logout": "Log Out"
+    "logout": "Log Out",
+    "invalidCredentials": "Incorrect email or password, Try again"
   },
   "header": {
     "categories": {

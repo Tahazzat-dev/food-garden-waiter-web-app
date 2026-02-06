@@ -2,6 +2,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import actionSlice from "./features/actions/actionSlice";
 import addressApiSlice from "./features/address/addressApiSlice";
 import addressSlice from "./features/address/addressSlice";
+import { authApi } from "./features/auth/AuthApiSlice";
+import AuthSlice from "./features/auth/AuthSlice";
 import categoryApiSlice from "./features/category/categoryApiSlice";
 import categorySlice from "./features/category/categorySlice";
 import customerApiSlice from "./features/customer/customerApiSlice";
@@ -10,13 +12,14 @@ import productApiSlice from "./features/product/productApiSlice";
 import productSlice from "./features/product/productSlice";
 export const store = configureStore({
   reducer: {
-    // packages: packagesSlice,
+    auth: AuthSlice,
     locale: localeReducer,
     categorySlice: categorySlice,
     productSlice: productSlice,
     actions: actionSlice,
     address: addressSlice,
 
+    [authApi.reducerPath]: authApi.reducer,
     [customerApiSlice.reducerPath]: customerApiSlice.reducer,
     [productApiSlice.reducerPath]: productApiSlice.reducer,
     [categoryApiSlice.reducerPath]: categoryApiSlice.reducer,
@@ -24,6 +27,7 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
+      .concat(authApi.middleware)
       .concat(productApiSlice.middleware)
       .concat(categoryApiSlice.middleware)
       .concat(addressApiSlice.middleware)

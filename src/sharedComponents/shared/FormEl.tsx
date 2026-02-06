@@ -70,7 +70,7 @@ export const Input = <T extends FieldValues>({
             </div>
 
             {error && showErrorMessage && errorMessage && (
-                <p className="mt-1 text-sm text-red-500">{errorMessage}</p>
+                <p className="mt-2 text-sm text-red-500">{errorMessage}</p>
             )}
         </div>
     );
@@ -115,7 +115,7 @@ export function PasswordToggler({ dispatcher, show }: TPasswordToggleProps) {
 }
 
 export const FormLoader = () => {
-    return <div className="w-full h-9 flex items-center justify-center">
+    return <div className="w-full mt-2 h-9 flex items-center justify-center">
         <LoadingSpinner />
     </div>
 }

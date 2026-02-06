@@ -98,7 +98,7 @@
     "email": "ইমেইল",
     "emailError": "ইমেইল অবশ্যই দিতে হবে",
     "emailPlaceholder": "ইমেইল লিখুন",
-    "invalidEmailError": "সঠিক ইমেইল ঠিকানা লিখুন",
+    "invalidEmailError": "সঠিক ইমেইল লিখুন",
     "phone": "ফোন নম্বর",
     "verifyPhone": "ফোন নম্বর যাচাই করুন",
     "phoneError": "ফোন নম্বর অবশ্যই কমপক্ষে ১১ সংখ্যার হতে হবে",
@@ -128,7 +128,8 @@
     "rememberedPassword": "পাসওয়ার্ড মনে পড়েছে?",
     "success": "সফল হয়েছে",
     "profile": "প্রোফাইল",
-    "logout": "লগ আউট"
+    "logout": "লগ আউট",
+    "invalidCredentials": "ইমেইল অথবা পাসওয়ার্ড সঠিক নয়, পুনরায় চেষ্টা করুন।"
   },
   "header": {
     "categories": {

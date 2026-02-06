@@ -2,8 +2,6 @@
 import { fetchBaseQuery } from "@reduxjs/toolkit/query";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
-console.log(baseUrl, ' : baseurl')
-
 export const baseQuery = fetchBaseQuery({
     baseUrl: `${baseUrl}/api`,
     credentials: "include",

@@ -30,7 +30,7 @@ export default function middleware(request: NextRequest) {
     // already logged in → prevent login page
     if (token && isAuthPage) {
         const url = request.nextUrl.clone();
-        url.pathname = '/dashboard';
+        url.pathname = '/';
         return NextResponse.redirect(url);
     }
 
@@ -41,3 +41,13 @@ export default function middleware(request: NextRequest) {
 export const config = {
     matcher: '/((?!api|trpc|_next|_vercel|.*\\..*).*)'
 };
+
+
+// import createMiddleware from 'next-intl/middleware';
+// import { routing } from './i18n/routing';
+
+// export default createMiddleware({ ...routing, localeDetection: false });
+
+// export const config = {
+//     matcher: '/((?!api|trpc|_next|_vercel|.*\\..*).*)'
+// }

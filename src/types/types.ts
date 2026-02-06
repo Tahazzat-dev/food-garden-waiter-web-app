@@ -381,3 +381,14 @@ export interface KitchenOrder {
     items: TKitchenOrderItem[];
     waiter: TWaiter
 }
+
+export type TUser = {
+    id: number;
+    brand_id: string;
+    fname: string;
+    lname: string;
+    email: string;
+    email_verified_at: string | null;
+    created_at: string;
+    updated_at: string;
+};
