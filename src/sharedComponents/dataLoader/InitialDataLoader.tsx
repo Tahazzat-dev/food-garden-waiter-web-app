@@ -1,21 +1,27 @@
 "use client"
+import { profileInfo } from '@/actions/user'
 import { getFromStorage } from '@/lib/storage'
 import { updateFetchOrders } from '@/redux/features/actions/actionSlice'
 import { useGetAddressesQuery } from '@/redux/features/address/addressApiSlice'
 import { setAddress } from '@/redux/features/address/addressSlice'
+import { setAuthUser } from '@/redux/features/auth/AuthSlice'
 import { useGetAllProductsQuery, useLazyGetAllOrdersQuery } from '@/redux/features/product/productApiSlice'
 import { setAllProduct, setCartProducts, setFavouriteProducts, setOrders } from '@/redux/features/product/productSlice'
 import { RootState } from '@/redux/store'
 import { TCartProduct, TProduct } from '@/types/types'
+import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 export default function InitialDataLoader() {
     const dispatch = useDispatch()
+    const router = useRouter()
     const { data: productData } = useGetAllProductsQuery("");
     const { data: addressData } = useGetAddressesQuery('');
     const [loadOrders] = useLazyGetAllOrdersQuery();
     const { fetchOrders } = useSelector((state: RootState) => state.actions);
+    const { authUser } = useSelector((state: RootState) => state.auth);
+
     useEffect(() => {
         // set product data;
         if (productData && productData?.success) {
@@ -70,6 +76,23 @@ export default function InitialDataLoader() {
         })()
 
     }, [loadOrders, fetchOrders, dispatch])
+
+
+    useEffect(() => {
+
+        if (authUser?.email) return;
+
+        const loadData = async () => {
+            try {
+                const res = await profileInfo();
+                dispatch(setAuthUser(res));
+            } catch (error) {
+                console.log(error)
+                router.push('/login')
+            }
+        }
+        loadData();
+    }, [dispatch, router, authUser])
 
     return (
         <></>

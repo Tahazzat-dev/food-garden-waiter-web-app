@@ -73,7 +73,8 @@
     "takeAway": "Take Away",
     "onlineHomeDelivery": "Online Home Delivery",
     "onlineDineIn": "Online Dine-In",
-    "onlineTakeAway": "Online Take Away"
+    "onlineTakeAway": "Online Take Away",
+    "pageLoading": "Heating up the kitchen"
   },
 
   "pages": {

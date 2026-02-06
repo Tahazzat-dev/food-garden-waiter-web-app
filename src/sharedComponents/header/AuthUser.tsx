@@ -1,27 +1,32 @@
 "use client"
 
+import { logoutUser } from "@/actions/login";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "@/i18n/navigation";
 import { getResponsiveRightStyle } from '@/lib/utils';
 import { SET_EXPAND } from '@/redux/features/actions/actionSlice';
 import { RootState } from '@/redux/store';
 import * as Dialog from "@radix-ui/react-dialog";
-import { User, X } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { IdCardLanyard, User, X } from 'lucide-react';
 import { CSSProperties, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import LoadingSpinner from "../loading/LoadingSpinner";
 import RenderText from "../utils/RenderText";
+
 
 export function AuthUser() {
     // variables
     const KEY = "OPEN_PROFILE_MODAL"
     // hooks
     const dispatch = useDispatch();
+    const router = useRouter()
     const { favouriteProducts } = useSelector((state: RootState) => state.productSlice);
+    const { authUser } = useSelector((state: RootState) => state.auth);
     const { EXPAND } = useSelector((state: RootState) => state.actions);
     const [mounted, setMounted] = useState(false);
-    const t = useTranslations('shared');
     const cartRef = useRef<HTMLButtonElement | null>(null)
     const [style, setStyle] = useState<CSSProperties>({})
+    const [isLoading, setIsLoading] = useState(false)
 
     // handlers 
     const openModal = () => {
@@ -33,6 +38,18 @@ export function AuthUser() {
 
     const closeModal = () => {
         dispatch(SET_EXPAND(null));
+    }
+
+    const handleLogout = async () => {
+        setIsLoading(true)
+        try {
+            await logoutUser()
+            router.replace('/login');
+        } catch (error) {
+            console.log(error, ' error msg');
+        } finally {
+            setIsLoading(false)
+        }
     }
 
 
@@ -47,8 +64,6 @@ export function AuthUser() {
 
 
     if (!mounted) return null;
-
-
     return (
         <>
             <button ref={cartRef} onClick={openModal} className='relative'>
@@ -71,13 +86,21 @@ export function AuthUser() {
                             </Dialog.Title>
                             <Button onClick={closeModal} className="rounded-full !px-2 max-h-8" variant="secondary"> <X className="!text-white w-5 md:w-6 md:h-6 h-5 lg:w-8 lg:h-8" /></Button>
                         </div>
-                        <div className="px-3 md:px-4 my-2.5 md:my-4 overflow-y-auto grow flex flex-col gap-1">
-                            <p><RenderText group="authentication" variable="name" />: Akash Rahman </p>
-                            <p><RenderText group="authentication" variable="email" />: example@gmail.com</p>
+                        <div className="px-3 md:px-4 my-2.5 md:my-4 overflow-y-auto grow flex flex-col gap-2">
+                            <p className="flex items-center gap-1.5" ><span className="min-w-11"><IdCardLanyard className="w-6 h-auto" /></span><span>:</span> <span>{authUser?.id}</span></p>
+                            <p className="flex items-center gap-1.5" ><span className="min-w-11"><RenderText group="authentication" variable="name" /></span><span>:</span> <span>{authUser?.fname} {authUser?.lname}</span></p>
+                            <p className="flex items-center gap-1.5" ><span className="min-w-11"><RenderText group="authentication" variable="email" /></span><span>:</span> <span>{authUser?.email}</span></p>
                             <div className="w-full flex justify-end">
-                                <Button variant="secondary" size="sm" className="text-white font-semibold" >
-                                    <RenderText group="authentication" variable="logout" />
-                                </Button>
+                                {
+                                    isLoading ?
+                                        <div className="w-full min-h-[32px] overflow-hidden justify-end px-5 flex items-center">
+                                            <LoadingSpinner className="" />
+                                        </div>
+                                        :
+                                        <Button onClick={handleLogout} variant="secondary" size="sm" className="text-white font-semibold" >
+                                            <RenderText group="authentication" variable="logout" />
+                                        </Button>
+                                }
                             </div>
                         </div>
                     </Dialog.Content>

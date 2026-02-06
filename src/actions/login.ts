@@ -15,11 +15,10 @@ export async function loginUser(email: string, password: string) {
         throw new Error(data.message || 'Login failed')
     }
 
-    // Correct way to set cookie in Next.js 14+ Server Actions
-    const cookieStore = await cookies() // <-- returns mutable CookieStore in server actions
-    cookieStore.set({
-        name: 'auth_token',
-        value: data.token,
+    // Important: do NOT use `await` here
+    const cookieStore = await cookies() // mutable CookieStore in server actions
+
+    cookieStore.set('auth_token', data.token, {
         path: '/',
         httpOnly: true,
         sameSite: 'lax',
@@ -28,4 +27,10 @@ export async function loginUser(email: string, password: string) {
     })
 
     return data.user
+}
+
+
+export async function logoutUser() {
+    const cookieStore = await cookies();
+    cookieStore.delete('auth_token');
 }

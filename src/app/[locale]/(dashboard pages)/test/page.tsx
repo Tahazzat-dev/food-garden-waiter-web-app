@@ -1,14 +1,28 @@
 "use client"
 
-import { SET_EXPAND } from '@/redux/features/actions/actionSlice';
 import { useDispatch } from 'react-redux';
 
 export default function TestPage() {
     const dispatch = useDispatch();
     return (
-        <div className="flex flex-col items-center justify-center h-full w-full min-h-screen">
-            <button onClick={() => dispatch(SET_EXPAND("OPEN_MAKE_SELL_CUSTOMER_MODAL"))} >Make Sell </button>
+
+        <div className="min-h-screen flex bg-inherit items-center justify-center">
+            <div className="flex flex-col items-center gap-6">
+                <div className="relative w-14 h-14 md:w-20 md:h-20">
+                    <div className="absolute inset-0 rounded-full border-4 border-[#fe0103]/50"></div>
+                    <div className="absolute inset-0 rounded-full border-4 border-secondary border-t-transparent animate-spin"></div>
+                </div>
+                <div className="text-center">
+                    <p className="text-xl font-semibold text-gray-800 dark:text-gray-200">
+                        Heating up the kitchen 🔥
+                    </p>
+                    <p className="text-gray-600 dark:text-gray-300 mt-1">
+                        Please wait a moment...
+                    </p>
+                </div>
+            </div>
         </div>
+
     )
 }
 
