@@ -26,7 +26,7 @@ export async function loginUser(email: string, password: string) {
         maxAge: 60 * 60 * 24, // 1 day
     })
 
-    return data.user
+    return data
 }
 
 

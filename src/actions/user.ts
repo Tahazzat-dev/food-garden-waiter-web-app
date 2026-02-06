@@ -20,5 +20,5 @@ export async function profileInfo() {
     if (!res.ok) {
         throw new Error(data.message || "Couldn't get profile information")
     }
-    return data.profile
+    return { profile: data.profile, token }
 }

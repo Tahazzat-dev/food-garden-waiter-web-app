@@ -4,7 +4,7 @@ import { getFromStorage } from '@/lib/storage'
 import { updateFetchOrders } from '@/redux/features/actions/actionSlice'
 import { useGetAddressesQuery } from '@/redux/features/address/addressApiSlice'
 import { setAddress } from '@/redux/features/address/addressSlice'
-import { setAuthUser } from '@/redux/features/auth/AuthSlice'
+import { setAuthUser, updateToken } from '@/redux/features/auth/AuthSlice'
 import { useGetAllProductsQuery, useLazyGetAllOrdersQuery } from '@/redux/features/product/productApiSlice'
 import { setAllProduct, setCartProducts, setFavouriteProducts, setOrders } from '@/redux/features/product/productSlice'
 import { RootState } from '@/redux/store'
@@ -85,9 +85,12 @@ export default function InitialDataLoader() {
         const loadData = async () => {
             try {
                 const res = await profileInfo();
-                dispatch(setAuthUser(res));
+                dispatch(setAuthUser(res.profile));
+                dispatch(updateToken(res.token ?? null));
             } catch (error) {
                 console.log(error)
+                dispatch(setAuthUser(null));
+                dispatch(updateToken(null));
                 router.push('/login')
             }
         }

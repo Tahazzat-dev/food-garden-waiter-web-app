@@ -1,7 +1,7 @@
 "use client"
 import { loginUser } from "@/actions/login";
 import { cn } from "@/lib/utils";
-import { setAuthUser } from "@/redux/features/auth/AuthSlice";
+import { setAuthUser, updateToken } from "@/redux/features/auth/AuthSlice";
 import SiteLogo from "@/sharedComponents/header/SiteLogo";
 import { Input, PasswordToggler, SubmitBtn } from "@/sharedComponents/shared/FormEl";
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -50,7 +50,8 @@ export default function LoginForm() {
         setIsLoading(true)
         try {
             const res = await loginUser(data.email, data.password);
-            dispatch(setAuthUser(res));
+            dispatch(setAuthUser(res.user));
+            dispatch(updateToken(res.token));
             reset({
                 email: "",
                 password: ""
