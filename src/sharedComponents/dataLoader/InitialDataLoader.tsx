@@ -5,7 +5,7 @@ import { updateFetchOrders } from '@/redux/features/actions/actionSlice'
 import { useGetAddressesQuery } from '@/redux/features/address/addressApiSlice'
 import { setAddress } from '@/redux/features/address/addressSlice'
 import { setAuthUser, updateToken } from '@/redux/features/auth/AuthSlice'
-import { useGetAllProductsQuery, useLazyGetAllOrdersQuery } from '@/redux/features/product/productApiSlice'
+import { useGetAllProductsQuery, useLazyGetAllOrdersQuery, useProductPrefetch } from '@/redux/features/product/productApiSlice'
 import { setAllProduct, setCartProducts, setFavouriteProducts, setOrders } from '@/redux/features/product/productSlice'
 import { RootState } from '@/redux/store'
 import { TCartProduct, TProduct } from '@/types/types'
@@ -21,6 +21,8 @@ export default function InitialDataLoader() {
     const [loadOrders] = useLazyGetAllOrdersQuery();
     const { fetchOrders } = useSelector((state: RootState) => state.actions);
     const { authUser } = useSelector((state: RootState) => state.auth);
+
+    const prefetchOnlineOrders = useProductPrefetch('getOnlineOrders');
 
     useEffect(() => {
         // set product data;
@@ -76,6 +78,12 @@ export default function InitialDataLoader() {
         })()
 
     }, [loadOrders, fetchOrders, dispatch])
+
+
+    // online order prefetch
+    useEffect(() => {
+        prefetchOnlineOrders(undefined, { force: true })
+    }, [prefetchOnlineOrders])
 
 
     useEffect(() => {

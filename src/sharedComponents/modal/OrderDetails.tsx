@@ -5,34 +5,43 @@ import useFormatPrice from "@/hooks/useFormatPrice";
 import useRenderText from "@/hooks/useRenderText";
 import { cn, getImage, getTranslationReadyText } from "@/lib/utils";
 import { SET_EXPAND } from "@/redux/features/actions/actionSlice";
+import { useUpdateOnlineOrdersMutation } from "@/redux/features/product/productApiSlice";
 import { RootState } from "@/redux/store";
 import { OrderItem } from "@/types/types";
 import * as Dialog from "@radix-ui/react-dialog";
 import { ChevronDown, House, MapPin, Phone, X } from "lucide-react"; // optional icon
-import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import LoadingSpinner from "../loading/LoadingSpinner";
 import RenderText from "../utils/RenderText";
 
 
 
 export default function OrderDetailsModal() {
-    const t = useTranslations('orders');
+    // hooks
     const [showFullDeails, setShowFullDetials] = useState(false)
+    const [updateOnlineOrder, { isLoading: isOnlineOrderUpdating }] = useUpdateOnlineOrdersMutation();
     const dispatch = useDispatch();
     const { formatPrice } = useFormatPrice();
     const { renderText } = useRenderText()
-    const { EXPAND } = useSelector((state: RootState) => state.actions);
+    const { EXPAND, activeOrderDetailsModal } = useSelector((state: RootState) => state.actions);
     const { detailsOrder } = useSelector((state: RootState) => state.productSlice);
     const { address } = useSelector((state: RootState) => state.address);
     const KEY = "ORDER_DETAILS_MODAL";
 
-
-
     // handlers
     const closeModal = () => {
         dispatch(SET_EXPAND(null));
+    }
+
+    const udpateOnlineOrderStatus = async (id: number, status: number) => {
+        try {
+            const res = await updateOnlineOrder({ id, status })
+            console.log(res, ' res from updating online orders')
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     useEffect(() => {
@@ -51,7 +60,6 @@ export default function OrderDetailsModal() {
 
     const customerAdress = address.find(addr => addr.id === detailsOrder.customer.address_id);
     const { en: addressEn, bn: addressBn } = getTranslationReadyText(customerAdress?.name || "");
-    console.log(detailsOrder.items, ' order items')
     const totalAmount = detailsOrder.items.reduce((acc, item) => { return (acc + (Number(item.variation.price) * item.qty)) }, 0)
     return (
         <Dialog.Root open={KEY === EXPAND} onOpenChange={closeModal}>
@@ -93,20 +101,40 @@ export default function OrderDetailsModal() {
                             <p className="flex font-semibold w-full items-center justify-between" ><span><RenderText group="shared" variable="total" /></span><span>{formatPrice(totalAmount)}</span></p>
                         </div>
                     </div>
-                    <div className="p-3 pt-0 gap-1 flex justify-between flex-wrap">
-                        <Button size="sm" className=" !rounded-[3px] !px-2 bg-[#58C354] text-white" >
-                            <RenderText group="shared" variable="invPrint" />
-                        </Button>
-                        <Button size="sm" className=" !rounded-[3px] grow bg-[#F66FFF] text-white" variant="outline" >
-                            <RenderText group="shared" variable="kot" />
-                        </Button>
-                        <Button size="sm" className=" !rounded-[3px] grow text-white" variant="secondary" >
-                            <RenderText group="shared" variable="edit" />
-                        </Button>
-                        <Button onClick={() => dispatch(SET_EXPAND("OPEN_MAKE_SELL_CUSTOMER_MODAL"))} size="sm" className=" !rounded-[3px] grow" >
-                            <RenderText group="shared" variable="sale" />
-                        </Button>
-                    </div>
+                    {
+                        activeOrderDetailsModal === "web" && <div className="p-3 pt-0 gap-1 flex justify-between flex-wrap">
+                            <Button size="sm" className=" !rounded-[3px] !px-2 bg-[#58C354] text-white" >
+                                <RenderText group="shared" variable="invPrint" />
+                            </Button>
+                            <Button size="sm" className=" !rounded-[3px] grow bg-[#F66FFF] text-white" variant="outline" >
+                                <RenderText group="shared" variable="kot" />
+                            </Button>
+                            <Button size="sm" className=" !rounded-[3px] grow text-white" variant="secondary" >
+                                <RenderText group="shared" variable="edit" />
+                            </Button>
+                            <Button onClick={() => dispatch(SET_EXPAND("OPEN_MAKE_SELL_CUSTOMER_MODAL"))} size="sm" className=" !rounded-[3px] grow" >
+                                <RenderText group="shared" variable="sale" />
+                            </Button>
+                        </div>
+                    }
+
+                    {
+                        activeOrderDetailsModal === "online" && <div className="prevent-body-trigger p-3 pt-0 gap-1 flex justify-between flex-wrap">
+                            {
+                                isOnlineOrderUpdating ? <div className="h-[32px] w-full flex items-center justify-center overflow-hidden">
+                                    <LoadingSpinner />
+                                </div> :
+                                    <>
+                                        <Button onClick={() => udpateOnlineOrderStatus(detailsOrder.id, 2)} disabled={isOnlineOrderUpdating} size="sm" className=" !rounded-[3px] grow text-white" variant="secondary" >
+                                            <RenderText group="shared" variable="reject" />
+                                        </Button>
+                                        <Button onClick={() => udpateOnlineOrderStatus(detailsOrder.id, 1)} disabled={isOnlineOrderUpdating} size="sm" className=" !rounded-[3px] grow" >
+                                            <RenderText group="shared" variable="accept" />
+                                        </Button>
+                                    </>
+                            }
+                        </div>
+                    }
                 </Dialog.Content>
             </Dialog.Portal>
         </Dialog.Root>

@@ -9,6 +9,8 @@
 //     slug: string;
 // }
 
+export type TActiveOrderDetailsModal = "online" | "web" | null;
+
 // TODO: temp_
 export type TCategory = {
     id: number;
@@ -36,6 +38,28 @@ export type TLocal = {
     en: string;
     bn: string;
 }
+
+
+// pagination 
+export interface Pagination {
+    current_page: number
+    first_page_url: string
+    from: number | null
+    last_page: number
+    last_page_url: string
+    next_page_url: string | null
+    prev_page_url: string | null
+    path: string
+    per_page: number
+    to: number | null
+    total: number
+    links: {
+        url: string | null
+        label: string
+        active: boolean
+    }[]
+}
+
 
 
 // TODO: have to add necessary properties
@@ -263,25 +287,7 @@ export interface TOrder {
     updated_at: string;
     customer: Customer;
     items: OrderItem[];
-}
-
-export interface Customer {
-    id: number;
-    name: string;
-    phone: string;
-    shop_name: string | null;
-    shop_name_bangla: string | null;
-    address_id: number;
-    sr_id: number | null;
-    business_cat_id: number | null;
-    opening_receivable: string;
-    opening_payable: string;
-    wallet_balance: string;
-    total_receivable: string;
-    total_payable: string;
-    note: string | null;
-    created_at: string;
-    updated_at: string;
+    waiter: TUser
 }
 
 export interface OrderItem {
@@ -344,6 +350,27 @@ export interface Product {
     updated_at: string;
 }
 
+
+export interface Customer {
+    id: number;
+    name: string;
+    phone: string;
+    shop_name: string | null;
+    shop_name_bangla: string | null;
+    address_id: number;
+    sr_id: number | null;
+    business_cat_id: number | null;
+    opening_receivable: string;
+    opening_payable: string;
+    wallet_balance: string;
+    total_receivable: string;
+    total_payable: string;
+    note: string | null;
+    created_at: string;
+    updated_at: string;
+}
+
+
 export interface Variation {
     id: number;
     product_id: number;
@@ -359,10 +386,24 @@ export interface Variation {
     updated_at: string | null;
 }
 
-type TWaiter = {
+export type TUser = {
     id: number;
-    name: string;
+    brand_id: string;
+    fname: string;
+    lname: string;
+    email: string;
+    email_verified_at: string | null;
+    created_at: string;
+    updated_at: string;
+};
+export interface KitchenOrder {
+    id: number;
+    orderFor: TCustomerType;
+    tableId?: number | null;
+    items: TKitchenOrderItem[];
+    waiter: TUser
 }
+
 
 export type TKitchenOrderItem = {
     id: number;
@@ -374,21 +415,9 @@ export type TKitchenOrderItem = {
     quantity: number;
     status: "pending" | "success";
 }
-export interface KitchenOrder {
-    id: number;
-    orderFor: TCustomerType;
-    tableId?: number | null;
-    items: TKitchenOrderItem[];
-    waiter: TWaiter
-}
 
-export type TUser = {
-    id: number;
-    brand_id: string;
-    fname: string;
-    lname: string;
-    email: string;
-    email_verified_at: string | null;
-    created_at: string;
-    updated_at: string;
-};
+
+
+export interface IOrderResult extends Pagination {
+    data: TOrder[]
+}

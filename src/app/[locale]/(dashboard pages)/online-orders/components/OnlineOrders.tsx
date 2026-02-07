@@ -1,34 +1,89 @@
 "use client"
-import { orders as fakeOrders } from "@/lib/demo-data";
-import { SET_EXPAND } from "@/redux/features/actions/actionSlice";
+import { SET_EXPAND, updateActiveOrderDetailsModal } from "@/redux/features/actions/actionSlice";
+import { useLazyGetOnlineOrdersQuery } from "@/redux/features/product/productApiSlice";
 import { updateDetailsOrder } from "@/redux/features/product/productSlice";
+import LoadingSpinner from "@/sharedComponents/loading/LoadingSpinner";
+import NoDataMsg from "@/sharedComponents/shared/NoDataMsg";
+import Pagination from "@/sharedComponents/shared/Pagination";
 import Timer from "@/sharedComponents/shared/Timer";
 import RenderFormatedPrice from "@/sharedComponents/utils/RenderFormatedPrice";
 import RenderText from "@/sharedComponents/utils/RenderText";
-import { TOrder } from "@/types/types";
+import { IOrderResult, TOrder } from "@/types/types";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 export type TTabs = "myOrders" | "allOrders";
 
 export default function OnlineOrders() {
     const dispatch = useDispatch()
-    // const [orders, setOrders] = useState<TOrder[]>([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [results, setResults] = useState<IOrderResult | null>(null)
+    const [refetch, setRefetch] = useState(true);
+    const [mount, setMount] = useState(false)
+    const [loadOrders, { isLoading }] = useLazyGetOnlineOrdersQuery();
     // const { orders } = useSelector((state: RootState) => state.productSlice);
     // console.log(orders)
-    const orders = fakeOrders as TOrder[];
 
     // handlers
     const handleEditOrder = (order: TOrder) => {
         dispatch(updateDetailsOrder(order));
-        dispatch(SET_EXPAND("ONLINE_ORDER_DETAILS_MODAL"));
+        dispatch(updateActiveOrderDetailsModal("online"));
+        dispatch(SET_EXPAND("ORDER_DETAILS_MODAL"));
     }
+
+    useEffect(() => {
+        setMount(true);
+    }, [])
+
+    //   load data
+    useEffect(() => {
+
+        if (!refetch) return;
+
+        const loadData = async () => {
+            try {
+                const res = await loadOrders(`page=${currentPage}`).unwrap()
+                if (res.success) {
+                    setResults(res?.data || null);
+                } else {
+                    throw new Error("Something went wrong");
+                }
+            } catch (error) {
+                console.log(error);
+                setResults(null)
+            } finally {
+                setRefetch(false);
+            }
+        }
+
+        loadData()
+    }, [currentPage, loadOrders, refetch])
+
+    // interval for manual pooling
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         setRefetch(true)
+    //     }, 10000)
+
+    //     return () => clearInterval(interval)
+    // }, [])
+
+
+
+    if (!mount) return null;
+
+    if (isLoading) return <LoadingSpinner />
+
+    console.log("Refreshing...")
+
     return (
         <>
             {
-                !!orders?.length && <div className="flex flex-col pt-2 gap-2">
+
+                results?.data && !!results?.data?.length ? <div className="flex flex-col pt-2 gap-2">
                     {
-                        orders.map(order => <button key={order.id} onClick={() => handleEditOrder(order)} className='w-full flex bg-clr-card overflow-hidden custom-shadow-md group z-0'>
+                        results?.data.map(order => <button key={order.id} onClick={() => handleEditOrder(order)} className='w-full flex bg-clr-card overflow-hidden custom-shadow-md group z-0'>
                             <div className="relative p-1 flex items-center justify-center">
                                 {order.customer_type === "Online" ?
                                     <div className="gap-1 bg-secondary pb-0 flex flex-col w-[70px] h-[70px] overflow-hidden rounded-md">
@@ -87,6 +142,10 @@ export default function OnlineOrders() {
                         </button>)
                     }
                 </div>
+                    : <NoDataMsg group="orders" variable="notOrderFound" />
+            }
+            {
+                !!results && results?.last_page > 1 && <Pagination className="my-5" currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={results.last_page} />
             }
         </>
     )

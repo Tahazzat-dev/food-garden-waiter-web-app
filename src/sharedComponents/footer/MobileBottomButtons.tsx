@@ -71,7 +71,7 @@ export default function MobileBottomButtons() {
     const cartOpen = EXPAND === "CART_SHEET"
 
     return (
-        <div className='w-full dark:border-t dark:border-slate-400 md:hidden bg-black fixed py-2 z-[999999] bottom-0 left-0'>
+        <div className='w-full dark:border-t dark:border-slate-400 bg-black fixed py-2 z-[999999] bottom-0 left-0'>
             <Container className='flex justify-between'>
                 <Link className='flex flex-col gap-1 items-center justify-between min-w-[70px]' href="/" >
                     <Image src="/images/shared/menu-white.png" className={isActive('/') ? "hidden" : "block"} width={22} height={40} alt="Menu icon" />

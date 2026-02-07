@@ -12,7 +12,7 @@ export default async function HomePage() {
         <>
             <MobileSearch />
             <CategoryAndProductSlider categories={categories} className="sticky top-[133px] lg:top-[83.53px] left-0 z-[9998]" />
-            <div className="w-full pb-[75px] md:pb-5"></div>
+            <div className="w-full pb-[75px]"></div>
         </>
     );
 }

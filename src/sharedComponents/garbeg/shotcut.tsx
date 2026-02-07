@@ -6,15 +6,15 @@ export default function Shotcut() {
 
   // data-prevent-body-trigger
   const dispatch = useDispatch();
-    // const {authAccessToken} = useSelector((state:RootState) => state.authInfo
-    const handler = ()=>{}
-    handler()
+  // const {authAccessToken} = useSelector((state:RootState) => state.authInfo
+  const handler = () => { }
+  handler()
   return (
     <div>
 
-<div className="grid dark:bg-[#1c1d1e] grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-4 shadow-[0px_1px_4px_0px_rgba(0,0,0,0.25)] dark:shadow-[0px_1px_4px_0px_rgba(255,255,255,0.2)]">
-  <Image src="/public/images/services/service-marketing-white-icon.png" width={300} height={400} alt="" />
-</div>
+      <div className="grid dark:bg-[#1c1d1e] grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-4 shadow-[0px_1px_4px_0px_rgba(0,0,0,0.25)] dark:shadow-[0px_1px_4px_0px_rgba(255,255,255,0.2)]">
+        <Image src="/public/images/services/service-marketing-white-icon.png" width={300} height={400} alt="" />
+      </div>
 
     </div>
   )
@@ -29,12 +29,12 @@ export default function Shotcut() {
 // const handleClose = ()=>{}
 
 // load data
-  // useEffect(() => {
-  //    const loadData = async ()=>{
-  //      const res = await ().unwrap()
-  //    }
-  //    loadData()
-  //  }, [])
+// useEffect(() => {
+//    const loadData = async ()=>{
+//      const res = await ().unwrap()
+//    }
+//    loadData()
+//  }, [])
 
 
 // slider
@@ -54,164 +54,169 @@ export default function Shotcut() {
 
 
 
-    // export const  InstraIcon = ({className=''}:{className?:string})=> {
-      //     <svg className={className}
-    //   return (
-    
-    //   )
-    // }
+// export const  InstraIcon = ({className=''}:{className?:string})=> {
+//     <svg className={className}
+//   return (
 
-    
-
-    /*
-    <Image src="" width={} height={} alt="" />
-    */
-
-    // components
-
-
-    // useEffect(()=>{},[])
-
-
-    /*
-     color loading spinner
-     <LoadingSpinner
-                    totalVisuals={3}
-                    containerClass="w-6  h-8"
-                    squareClasses={["bg-[#6C63FF]", "bg-[#6C63FF]", "bg-[#6C63FF]"]}
-                  />
-    */ 
-
-
-                  // ====== socket trigger event from front-end
-                  //  if (!activityInfo?._id) {
-                  //       // something wrong setting activity info
-                  //       toast.error("internal server error");
-                  //       return;
-                  //     }
-                  //     console.log("clicked ", socket);
-                  //     if (socket) {
-                  //       socket.emit("createGroup", {
-                  //         activityId: activityInfo?._id,
-                  //       });
-                  //     } else {
-                  //       toast.error("internal server error");
-                  //       // TOOD: have to create rest api to create new group
-                  //     }
-
-
-                  // receive event in useEffect
-                  //  useEffect(() => {
-                  //     if (!socket) return;
-                  //     socket.on("joinRequestSent", async (activity) => {
-                  //       dispatch(deleteSearchedActivities(activity.activityId));
-                  //       toast.success("Request sent");
-                  //     });
-                  
-                  //     // Clean up when component unmounts or socket changes
-                  //     return () => {
-                  //       socket.off("joinRequestSent", () => {});
-                  //     };
-                  //   }, [socket]);
-
-
-                      // authenticate user
-                      // try {
-                      // await dbConnect();
-                      //     await verifyAdmin(req);
-                      // } catch (error) {
-                      //     return NextResponse.json({ success: false, message: (error as Error).message }, { status: 401 });
-                      // }
+//   )
+// }
 
 
 
-  // useEffect(() => {
-  //   const loadData = async()=>{
-  //     try {
-  //       const res = await loadMedia({ type: "image" }).unwrap()
-  //     console.log(res, ' res from the load data')
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
-  //   loadData()
-  // }, [loadMedia])
+/*
+<Image src="" width={} height={} alt="" />
+*/
+
+// components
 
 
-                      /*
-                      urls 
-                      https://res.cloudinary.com/dirjayri8/image/upload/v1748526122/zfmkx1ssrfbtsiibeeze.png
-                      https://res.cloudinary.com/dirjayri8/raw/upload/v1748532597/k0tyb0wshuc3ei0oqvae.svg
-                      https://res.cloudinary.com/dirjayri8/raw/upload/v1748532597/r2rg0cgdr3xa8e8bctbw.svg
-                      */ 
+// useEffect(()=>{},[])
+
+
+/*
+ color loading spinner
+ <LoadingSpinner
+                totalVisuals={3}
+                containerClass="w-6  h-8"
+                squareClasses={["bg-[#6C63FF]", "bg-[#6C63FF]", "bg-[#6C63FF]"]}
+              />
+*/
+
+
+// ====== socket trigger event from front-end
+//  if (!activityInfo?._id) {
+//       // something wrong setting activity info
+//       toast.error("internal server error");
+//       return;
+//     }
+//     console.log("clicked ", socket);
+//     if (socket) {
+//       socket.emit("createGroup", {
+//         activityId: activityInfo?._id,
+//       });
+//     } else {
+//       toast.error("internal server error");
+//       // TOOD: have to create rest api to create new group
+//     }
+
+
+// receive event in useEffect
+//  useEffect(() => {
+//     if (!socket) return;
+//     socket.on("joinRequestSent", async (activity) => {
+//       dispatch(deleteSearchedActivities(activity.activityId));
+//       toast.success("Request sent");
+//     });
+
+//     // Clean up when component unmounts or socket changes
+//     return () => {
+//       socket.off("joinRequestSent", () => {});
+//     };
+//   }, [socket]);
+
+
+// authenticate user
+// try {
+// await dbConnect();
+//     await verifyAdmin(req);
+// } catch (error) {
+//     return NextResponse.json({ success: false, message: (error as Error).message }, { status: 401 });
+// }
+
+
+
+// useEffect(() => {
+//   const loadData = async()=>{
+//     try {
+//       const res = await loadMedia({ type: "image" }).unwrap()
+//     console.log(res, ' res from the load data')
+//     } catch (error) {
+//       console.log(error)
+//     }
+//   }
+//   loadData()
+// }, [loadMedia])
+
+
+/*
+urls
+https://res.cloudinary.com/dirjayri8/image/upload/v1748526122/zfmkx1ssrfbtsiibeeze.png
+https://res.cloudinary.com/dirjayri8/raw/upload/v1748532597/k0tyb0wshuc3ei0oqvae.svg
+https://res.cloudinary.com/dirjayri8/raw/upload/v1748532597/r2rg0cgdr3xa8e8bctbw.svg
+*/
 
 
 
 
-      // {/* SUCCESS */}
-      // {type === "success" && (
-      //   <CustomAlert
-      //     open={open}
-      //     onOpenChange={setOpen}
-      //     type="success"
-      //     title="Saved Successfully!"
-      //     description="Your data has been saved."
-      //   />
-      // )}
+// {/* SUCCESS */}
+// {type === "success" && (
+//   <CustomAlert
+//     open={open}
+//     onOpenChange={setOpen}
+//     type="success"
+//     title="Saved Successfully!"
+//     description="Your data has been saved."
+//   />
+// )}
 
-      // {/* WARNING */}
-      // {type === "warning" && (
-      //   <CustomAlert
-      //     open={open}
-      //     onOpenChange={setOpen}
-      //     type="warning"
-      //     title="Feature in progress"
-      //     description="This feature will be available soon."
-      //   />
-      // )}
+// {/* WARNING */}
+// {type === "warning" && (
+//   <CustomAlert
+//     open={open}
+//     onOpenChange={setOpen}
+//     type="warning"
+//     title="Feature in progress"
+//     description="This feature will be available soon."
+//   />
+// )}
 
-      // {/* ERROR */}
-      // {type === "error" && (
-      //   <CustomAlert
-      //     open={open}
-      //     onOpenChange={setOpen}
-      //     type="error"
-      //     title="Something went wrong"
-      //     description="Please try again later."
-      //   />
-      // )}
+// {/* ERROR */}
+// {type === "error" && (
+//   <CustomAlert
+//     open={open}
+//     onOpenChange={setOpen}
+//     type="error"
+//     title="Something went wrong"
+//     description="Please try again later."
+//   />
+// )}
 
-      // {/* INFO */}
-      // {type === "info" && (
-      //   <CustomAlert
-      //     open={open}
-      //     onOpenChange={setOpen}
-      //     type="info"
-      //     title="Heads up!"
-      //     description="This action may affect your account."
-      //   />
-      // )}
+// {/* INFO */}
+// {type === "info" && (
+//   <CustomAlert
+//     open={open}
+//     onOpenChange={setOpen}
+//     type="info"
+//     title="Heads up!"
+//     description="This action may affect your account."
+//   />
+// )}
 
-      // {/* CONFIRM */}
-      // {type === "warning" && (
-      //   <CustomAlert
-      //     open={open}
-      //     onOpenChange={setOpen}
-      //     type="warning"
-      //     title="Are you sure?"
-      //     description="This action cannot be undone."
-      //     showCancel
-      //     confirmText="Yes, continue"
-      //     cancelText="Cancel"
-      //     onConfirm={() => console.log("Confirmed")}
-      //   />
-      // )}
+// {/* CONFIRM */}
+// {type === "warning" && (
+//   <CustomAlert
+//     open={open}
+//     onOpenChange={setOpen}
+//     type="warning"
+//     title="Are you sure?"
+//     description="This action cannot be undone."
+//     showCancel
+//     confirmText="Yes, continue"
+//     cancelText="Cancel"
+//     onConfirm={() => console.log("Confirmed")}
+//   />
+// )}
 
 
 //       const getCategoryData = ()=>{
 //     try{
 
 //     }catch{
-        
+
 //     }
 // }
+
+
+
+
+

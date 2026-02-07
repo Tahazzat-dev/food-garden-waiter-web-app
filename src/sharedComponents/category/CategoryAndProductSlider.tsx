@@ -78,7 +78,7 @@ export default function CategoryAndProductSlider({ className = "", categories = 
     return (
         <>
             <section className={cn("bg-inherit ", className)}>
-                <div className="w-full pb-1 mb-1">
+                <div className="w-full pb-1 mb-1 md:mb-0">
                     <Container className=''>
                         <div className="w-full category-container overflow-x-auto mt-2 lg:mt-1 lg:pt-3 pb-2">
                             <div style={{ position: "relative", width: "100%" }}>
@@ -139,7 +139,7 @@ export default function CategoryAndProductSlider({ className = "", categories = 
                 </div>
 
             </section>
-            <section className={cn("mb-4 z-10 mt-[75px]")}>
+            <section className={cn("mb-4 z-10 mt-[75px] md:mt-0")}>
                 <Container>
                     <Swiper
                         autoHeight={true}

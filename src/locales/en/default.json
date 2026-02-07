@@ -74,7 +74,11 @@
     "onlineHomeDelivery": "Online Home Delivery",
     "onlineDineIn": "Online Dine-In",
     "onlineTakeAway": "Online Take Away",
-    "pageLoading": "Heating up the kitchen"
+    "pageLoading": "Heating up the kitchen",
+    "next": "Next",
+    "prev": "Prev",
+    "accept": "Accept",
+    "reject": "Reject"
   },
 
   "pages": {
@@ -219,6 +223,7 @@
     "orderSuccess": "Order success",
     "orderError": "Error occur during order",
     "itemSelectError": "Please select a item first",
-    "orderDetails": "Order Details"
+    "orderDetails": "Order Details",
+    "notOrderFound": "No orders found"
   }
 }
