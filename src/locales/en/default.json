@@ -78,7 +78,8 @@
     "next": "Next",
     "prev": "Prev",
     "accept": "Accept",
-    "reject": "Reject"
+    "reject": "Reject",
+    "noDataFound": "কোনো তথ্য পাওয়া যাই নি"
   },
 
   "pages": {
@@ -205,7 +206,9 @@
     "dewAmount": "Dew Amount",
     "sale": "Sale",
     "enterDeliveryCharge": "Enter Delivery Charge",
-    "discountExceedError": "Discount is too high"
+    "discountExceedError": "Discount is too high",
+    "searchCustomer": "Search customer",
+    "noCustomerFound": "No customer found"
   },
   "home": {
     "title": "Hello"

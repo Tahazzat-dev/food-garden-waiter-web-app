@@ -237,6 +237,9 @@ export type TAddress = {
 }
 
 
+
+
+
 export type TCartIconposition = {
     top: number;
     right: number;
@@ -249,10 +252,17 @@ export type TCartIconposition = {
 
 export interface ITable {
     id: number;
-    tableNumber: number;
-    isBooked: boolean;
+    table_no: string;
+    capacity: number | null;
+    status: 'available' | 'occupied' | 'reserved'; // Added common status types
+    created_at: string; // ISO Date string
+    updated_at: string; // ISO Date string
 }
 
+export type TSelectedTable = {
+    table_id: number;
+    customer_type: "Online" | "Take Way" | "Dine-In"
+}
 
 export interface TOrder {
     id: number;
@@ -370,6 +380,10 @@ export interface Customer {
     updated_at: string;
 }
 
+export interface TCustomer extends Customer {
+    address: TAddress;
+}
+
 
 export interface Variation {
     id: number;
@@ -421,3 +435,5 @@ export type TKitchenOrderItem = {
 export interface IOrderResult extends Pagination {
     data: TOrder[]
 }
+
+

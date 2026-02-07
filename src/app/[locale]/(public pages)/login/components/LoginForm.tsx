@@ -1,5 +1,6 @@
 "use client"
 import { loginUser } from "@/actions/login";
+import { setToStorage } from "@/lib/storage";
 import { cn } from "@/lib/utils";
 import { setAuthUser, updateToken } from "@/redux/features/auth/AuthSlice";
 import SiteLogo from "@/sharedComponents/header/SiteLogo";
@@ -51,6 +52,8 @@ export default function LoginForm() {
         try {
             const res = await loginUser(data.email, data.password);
             dispatch(setAuthUser(res.user));
+            setToStorage("auth_token", res.token);
+            setToStorage("user", res.user);
             dispatch(updateToken(res.token));
             reset({
                 email: "",

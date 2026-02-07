@@ -1,5 +1,5 @@
 import createMiddleware from 'next-intl/middleware';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { routing } from './i18n/routing';
 
 // create next-intl middleware instance
@@ -21,18 +21,18 @@ export default function middleware(request: NextRequest) {
     //     pathname.includes('/profile');
 
     // no token → redirect to login
-    if (!token && !isAuthPage) {
-        const url = request.nextUrl.clone();
-        url.pathname = '/login';
-        return NextResponse.redirect(url);
-    }
+    // if (!token && !isAuthPage) {
+    //     const url = request.nextUrl.clone();
+    //     url.pathname = '/login';
+    //     return NextResponse.redirect(url);
+    // }
 
     // already logged in → prevent login page
-    if (token && isAuthPage) {
-        const url = request.nextUrl.clone();
-        url.pathname = '/';
-        return NextResponse.redirect(url);
-    }
+    // if (token && isAuthPage) {
+    //     const url = request.nextUrl.clone();
+    //     url.pathname = '/';
+    //     return NextResponse.redirect(url);
+    // }
 
     // run next-intl middleware normally
     return intlMiddleware(request);

@@ -30,8 +30,7 @@ const AuthSlice = createSlice({
         setUserDataLoading(state, action: { payload: boolean }) {
             state.isUserLoading = action.payload;
         },
-
-        resetAuthInfo: () => initialState,
+        resetAuthInfo: () => initialState
     },
 });
 
@@ -39,7 +38,7 @@ export const {
     setAuthUser,
     updateToken,
     resetAuthInfo,
-    setUserDataLoading,
+    setUserDataLoading
 } = AuthSlice.actions;
 
 export default AuthSlice.reducer;

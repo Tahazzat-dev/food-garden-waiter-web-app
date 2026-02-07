@@ -79,7 +79,8 @@
     "next": "পরবর্তী",
     "prev": "পূর্ববর্তী",
     "accept": "গ্রহণ করুন",
-    "reject": "বাতিল করুন"
+    "reject": "বাতিল করুন",
+    "noDataFound": ""
   },
 
   "pages": {
@@ -205,7 +206,9 @@
     "dewAmount": "বাকি টাকা",
     "sale": "বিক্রয়",
     "enterDeliveryCharge": "ডেলিভারি চার্জ লিখুন",
-    "discountExceedError": "ডিসকাউন্ট অনেক বেশি"
+    "discountExceedError": "ডিসকাউন্ট অনেক বেশি",
+    "searchCustomer": "কাস্টমার খুঁজুন",
+    "noCustomerFound": "কোনো কাস্টমার পাওয়া যায়নি"
   },
   "home": {
     "title": "হ্যালো"

@@ -1,9 +1,9 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { baseQuery } from '../baseQuery';
+import { baseQueryWithAuth } from '../baseQuery';
 
 export const addressApiSlice = createApi({
     reducerPath: 'addressApi',
-    baseQuery: baseQuery,
+    baseQuery: baseQueryWithAuth,
     endpoints: (builder) => ({
 
         getAddresses: builder.query({

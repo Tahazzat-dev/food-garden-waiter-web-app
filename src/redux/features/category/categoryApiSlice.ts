@@ -1,9 +1,9 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { baseQuery } from '../baseQuery';
+import { baseQueryWithAuth } from '../baseQuery';
 
 export const categoryApiSlice = createApi({
     reducerPath: 'categoryApi',
-    baseQuery: baseQuery,
+    baseQuery: baseQueryWithAuth,
     tagTypes: ['Post'], // Used for automatic invalidation (refetching)
     endpoints: (builder) => ({
 

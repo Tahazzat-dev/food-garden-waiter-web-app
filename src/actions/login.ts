@@ -18,7 +18,7 @@ export async function loginUser(email: string, password: string) {
     // Important: do NOT use `await` here
     const cookieStore = await cookies() // mutable CookieStore in server actions
 
-    cookieStore.set('auth_token', data.token, {
+    await cookieStore.set('auth_token', data.token, {
         path: '/',
         httpOnly: true,
         sameSite: 'lax',
@@ -32,5 +32,5 @@ export async function loginUser(email: string, password: string) {
 
 export async function logoutUser() {
     const cookieStore = await cookies();
-    cookieStore.delete('auth_token');
+    await cookieStore.delete('auth_token');
 }

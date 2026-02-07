@@ -1,9 +1,19 @@
 "use client"
 
-import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 
 export default function TestPage() {
-    const dispatch = useDispatch();
+    useEffect(() => {
+        const loadData = async () => {
+            const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+            const res = await fetch(`${baseUrl}/api/test-token`)
+            const result = await res.json();
+            console.log(result, ' result from test token');
+        }
+        loadData()
+    }, [])
+
+
     return (
 
         <div className="min-h-screen flex bg-inherit items-center justify-center">

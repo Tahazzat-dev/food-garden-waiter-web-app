@@ -197,3 +197,9 @@ export const getTranslationReadyText = (text: string) => {
   };
   return nameObject;
 }
+
+
+export const isTable = (item: { table_no: string }): boolean => {
+  const identifier = item.table_no.toLowerCase();
+  return !identifier.includes('parcel');
+};

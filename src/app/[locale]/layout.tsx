@@ -1,7 +1,6 @@
 import { routing } from "@/i18n/routing";
 import ReduxProvider from "@/provider/ReduxProvider";
 import { ThemeProvider } from "@/provider/ThemeProvider";
-import InitialDataLoader from "@/sharedComponents/dataLoader/InitialDataLoader";
 import BodyEventListeners from "@/sharedComponents/DOM/BodyEventListener";
 import SharedModals from "@/sharedComponents/modal/SharedModals";
 import type { Metadata } from "next";
@@ -94,7 +93,6 @@ export default async function RootLayout({
           <ThemeProvider>
             <NextIntlClientProvider locale={locale} messages={messages} >
               {children}
-              <InitialDataLoader />
               <SharedModals />
             </NextIntlClientProvider>
           </ThemeProvider>

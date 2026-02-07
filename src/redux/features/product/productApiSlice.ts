@@ -1,10 +1,10 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { baseQuery } from '../baseQuery';
+import { baseQueryWithAuth } from '../baseQuery';
 
 export const productApiSlice = createApi({
     reducerPath: 'productApi',
-    baseQuery: baseQuery,
-    tagTypes: ['Post', 'OnlineOrders'], // Used for automatic invalidation (refetching)
+    baseQuery: baseQueryWithAuth,
+    tagTypes: ['Post', 'OnlineOrders', 'myOrders', 'allOrders'],
     endpoints: (builder) => ({
         // GET query for fetching data
         getCategoryProducts: builder.query({
@@ -17,6 +17,19 @@ export const productApiSlice = createApi({
         }),
 
         // orders
+        getMyOrders: builder.query({
+            query: (q) => '/waiter/orders?' + q,
+            providesTags: ['myOrders'],
+        }),
+
+        getAllOrders: builder.query({
+            query: (q) => '/waiter/all-orders?' + q,
+            keepUnusedDataFor: 60,
+            providesTags: ['allOrders'],
+        }),
+
+
+        // online orders
         getOnlineOrders: builder.query({
             query: (q) => '/waiter/online-orders?' + q,
             keepUnusedDataFor: 60,
@@ -40,12 +53,14 @@ export const productApiSlice = createApi({
             })
         }),
 
-        getAllOrders: builder.query({
-            query: (q) => `/orders?${q}`
-        }),
         getCustomerInfo: builder.query({
             query: (phone) => `/customers/${phone}`,
             keepUnusedDataFor: 0,
+        }),
+
+        // tables
+        getTables: builder.query({
+            query: () => `/waiter/tables`
         })
     }),
 });
@@ -56,6 +71,11 @@ export const {
     useLazyGetAllOrdersQuery,
     useGetAllProductsQuery,
 
+    // orders
+    useGetMyOrdersQuery,
+    useLazyGetMyOrdersQuery,
+    useLazyGetAllProductsQuery,
+
     // online orders
     useGetOnlineOrdersQuery,
     useLazyGetOnlineOrdersQuery,
@@ -65,6 +85,9 @@ export const {
     useConfirmOrderMutation,
     useGetCategoryProductsQuery,
     useLazyGetCategoryProductsQuery,
+
+    // table
+    useLazyGetTablesQuery,
 
     usePrefetch: useProductPrefetch
 } = productApiSlice;

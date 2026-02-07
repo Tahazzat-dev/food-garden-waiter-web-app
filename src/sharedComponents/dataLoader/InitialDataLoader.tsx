@@ -1,5 +1,5 @@
 "use client"
-import { profileInfo } from '@/actions/user'
+
 import { getFromStorage } from '@/lib/storage'
 import { updateFetchOrders } from '@/redux/features/actions/actionSlice'
 import { useGetAddressesQuery } from '@/redux/features/address/addressApiSlice'
@@ -8,7 +8,7 @@ import { setAuthUser, updateToken } from '@/redux/features/auth/AuthSlice'
 import { useGetAllProductsQuery, useLazyGetAllOrdersQuery, useProductPrefetch } from '@/redux/features/product/productApiSlice'
 import { setAllProduct, setCartProducts, setFavouriteProducts, setOrders } from '@/redux/features/product/productSlice'
 import { RootState } from '@/redux/store'
-import { TCartProduct, TProduct } from '@/types/types'
+import { TCartProduct, TProduct, TUser } from '@/types/types'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -20,12 +20,24 @@ export default function InitialDataLoader() {
     const { data: addressData } = useGetAddressesQuery('');
     const [loadOrders] = useLazyGetAllOrdersQuery();
     const { fetchOrders } = useSelector((state: RootState) => state.actions);
-    const { authUser } = useSelector((state: RootState) => state.auth);
+
+    const token = getFromStorage('auth_token');
+    const authUser = getFromStorage('user');
 
     const prefetchOnlineOrders = useProductPrefetch('getOnlineOrders');
 
+
+
     useEffect(() => {
-        // set product data;
+        if (authUser && token) {
+            dispatch(setAuthUser(authUser as TUser));
+            dispatch(updateToken(token as string));
+        } else {
+            router.push('/login')
+        };
+    }, [dispatch, router, authUser, token])
+
+    useEffect(() => {
         if (productData && productData?.success) {
             dispatch(setAllProduct(productData?.data));
 
@@ -37,7 +49,6 @@ export default function InitialDataLoader() {
                     .filter((p: TProduct) => favSet.has(p.id))
                 dispatch(setFavouriteProducts(favoriteProducts));
             }
-
 
             // set cart items
             const cart_items: TCartProduct[] = getFromStorage('cart_items') || [];
@@ -56,7 +67,6 @@ export default function InitialDataLoader() {
 
 
     useEffect(() => {
-
         if (!fetchOrders) return;
 
         (async () => {
@@ -84,26 +94,6 @@ export default function InitialDataLoader() {
     useEffect(() => {
         prefetchOnlineOrders(undefined, { force: true })
     }, [prefetchOnlineOrders])
-
-
-    useEffect(() => {
-
-        if (authUser?.email) return;
-
-        const loadData = async () => {
-            try {
-                const res = await profileInfo();
-                dispatch(setAuthUser(res.profile));
-                dispatch(updateToken(res.token ?? null));
-            } catch (error) {
-                console.log(error)
-                dispatch(setAuthUser(null));
-                dispatch(updateToken(null));
-                router.push('/login')
-            }
-        }
-        loadData();
-    }, [dispatch, router, authUser])
 
     return (
         <></>

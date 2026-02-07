@@ -3,8 +3,9 @@ import { Button } from '@/components/ui/button';
 import useFormatPrice from '@/hooks/useFormatPrice';
 import { calculateSubtotal, cn, getSellingPrice } from '@/lib/utils';
 import { SET_EXPAND, updatePrevAction } from '@/redux/features/actions/actionSlice';
+import { useConfirmOrderMutation } from '@/redux/features/product/productApiSlice';
 import { RootState } from '@/redux/store';
-import { ITable, TAddress, TCustomerType } from '@/types/types';
+import { TCustomer, TCustomerType, TSelectedTable } from '@/types/types';
 import * as Dialog from "@radix-ui/react-dialog";
 import { Plus, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -12,14 +13,15 @@ import { MouseEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { CartCard } from '../cards/CartCard';
+import LoadingSpinner from '../loading/LoadingSpinner';
 import { CustomDrawer } from '../modal/CustomDrawer';
 import RenderText from '../utils/RenderText';
 import { CustomerSelect } from './CustomerSelect';
 import Tables from './Tables';
 
 export type CustomerFormValues = {
-  address: TAddress;
-  table: ITable;
+  customer: TCustomer
+  table: TSelectedTable;
 }
 
 
@@ -36,7 +38,6 @@ type TOrderResponse = {
   orderType: TOrderType;
 }
 
-
 export function CartSheet() {
   // variables
   const KEY = "CART_SHEET"
@@ -44,39 +45,77 @@ export function CartSheet() {
   // hooks
   const t = useTranslations('shared')
   const dispatch = useDispatch();
+  const [confirmOrder, { isLoading }] = useConfirmOrderMutation()
   const { cartProducts } = useSelector((state: RootState) => state.productSlice);
-  const [selectedTable, setSelectedTable] = useState(0)
+  const [selectedTable, setSelectedTable] = useState<TSelectedTable | null>(null)
   const [orderResponse, setOrderResponse] = useState<TOrderResponse | null>(null)
   const { EXPAND } = useSelector((state: RootState) => state.actions);
   const openCart = EXPAND === KEY;
   const { formatPrice, translateNumber } = useFormatPrice()
   const [isOpen, setIsOpen] = useState(false);
 
-  const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<CustomerFormValues>()
+  const { register, handleSubmit, setValue, watch, setError, formState: { errors } } = useForm<CustomerFormValues>()
+
 
   // handlers
   const handleModalClick = (event: MouseEvent<HTMLDivElement>) => {
 
-    if (!isOpen) return;
+    if (!isOpen || isLoading) return;
 
     const targetElement = event.target as HTMLElement;
     if (targetElement.closest(".custom-select-el")) return;
     setIsOpen(false);
   }
 
+  const selectedCustomer = watch("customer")
 
   const onSubmit = async (data: CustomerFormValues) => {
-    dispatch(SET_EXPAND(null));
-    setOrderResponse({
-      message: "orderSuccess",
-      success: true,
-      orderId: 233,
-      status: 200,
-      orderType: "online",
-      orderIdentity: 1,
-      customerType: 'Dine-In',
-      totalCost: 2000
-    })
+    if (!data.customer) {
+      setError("customer", { type: "manual", message: 'Select Customer' })
+      return;
+    }
+
+    if (!selectedTable) {
+      setError("table", { type: "manual", message: 'Select table' })
+      return;
+    }
+
+
+    /*
+ 'customer_id' => 'required|integer',
+            'customer_type' => ['required', Rule::in(['Online', 'Take Way', 'Dine-In'])],
+            'table_id' => 'nullable|integer',
+            'discount' => 'nullable|integer',
+            'products' => 'required|array|min:1',
+            'products.*.product_id' => 'required|integer',
+            'products.*.variant_id' => 'nullable|integer',
+            'products.*.quantity' => 'required|numeric|min:1',
+*/
+
+    try {
+      const choosedProducts = cartProducts.map(item => ({ product_id: item.productId, variant_id: item.id, quantity: item.quantity }))
+      const res = await confirmOrder({
+        customer_id: selectedCustomer.id,
+        table_id: selectedTable.table_id,
+        discount: 0,
+        products: choosedProducts
+      });
+
+      console.log(res, ' res from adding product');
+    } catch (error) {
+      console.log(error);
+      setOrderResponse({
+        message: "orderFail",
+        success: false,
+        orderId: 233,
+        status: 500,
+        orderType: "online",
+        orderIdentity: 1,
+        customerType: 'Dine-In',
+      })
+    } finally {
+      dispatch(SET_EXPAND(null));
+    }
   }
 
 
@@ -97,7 +136,7 @@ export function CartSheet() {
     <>
       <CustomDrawer
         overlayClassName="!top-0"
-        className='!top-0 !z-[9999999]'
+        className={`!top-0 !z-[9999999] ${isLoading && "pointer-events-none"}`}
         open={openCart}
       >
         <div onClick={handleModalClick} className="w-full h-full flex flex-col">
@@ -126,23 +165,28 @@ export function CartSheet() {
               <Button type='button' onClick={handleOpenAddCustomerModal} className='!px-2 gap-0.5' ><Plus /> <RenderText group='shared' variable='addShortText' /> </Button>
             </div>
             {
-              errors?.address?.message || errors?.table?.message ? <div className="w-full py-2">
-                <p className='text-secondary px-2 text-sm'><RenderText group='checkout' variable={errors?.address ? 'addressError' : 'tableError'} /></p>
+              errors?.customer?.message && !selectedCustomer || errors?.table?.message && !selectedTable ? <div className="w-full pb-2">
+                <p className='text-secondary px-2 text-sm'><RenderText group='checkout' variable={errors?.customer ? 'customerError' : 'tableError'} /></p>
               </div> : <></>
             }
             <div className="w-full bg-slate-300 rounded-md border border-slate-400 dark:border-slate-600 dark:bg-slate-700 px-1.5">
               <Tables selectedTable={selectedTable} setSelectedTable={setSelectedTable} />
             </div>
-            <button
-              disabled={!cartProducts.length}
-              type="submit"
-              className={cn(
-                "fg_fs-md rounded-0! py-3 !text-white font-semibold bg-primary w-full flex items-center gap-5 justify-center",
-                !cartProducts.length && "pointer-events-none"
-              )}
-            >
-              <span>{t("checkout")}</span> <span>{formatPrice(Number(totalPrice.toFixed(2)))}</span>
-            </button>
+            {
+              isLoading ? <div className="w-full min-h-[51px] flex items-center justify-center">
+                <LoadingSpinner />
+              </div> :
+                <button
+                  disabled={!cartProducts.length}
+                  type="submit"
+                  className={cn(
+                    "fg_fs-md rounded-0! py-3 !text-white font-semibold bg-primary w-full flex items-center gap-5 justify-center",
+                    // !cartProducts.length && "pointer-events-none"
+                  )}
+                >
+                  <span>{t("checkout")}</span> <span>{formatPrice(Number(totalPrice.toFixed(2)))}</span>
+                </button>
+            }
           </form>
         </div>
       </CustomDrawer>

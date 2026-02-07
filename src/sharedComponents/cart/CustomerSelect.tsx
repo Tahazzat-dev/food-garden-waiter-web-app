@@ -1,10 +1,11 @@
-import useRenderText from "@/hooks/useRenderText";
-import { cn, getTranslationReadyText } from "@/lib/utils";
-import { useGetAddressesQuery } from "@/redux/features/address/addressApiSlice";
-import { TAddress } from "@/types/types";
+import { cn } from "@/lib/utils";
+import { setAllCustomers } from "@/redux/features/address/addressSlice";
+import { useLazyGetCustomersQuery } from "@/redux/features/customer/customerApiSlice";
+import { TCustomer } from "@/types/types";
 import { ChevronDown } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import LoadingSpinner from "../loading/LoadingSpinner";
 import RenderText from "../utils/RenderText";
 
@@ -16,56 +17,68 @@ export function CustomerSelect({
     setIsOpen,
 }) {
     // hooks
-    const { isLoading, data } = useGetAddressesQuery('');
-    const [addresses, setAddresses] = useState<TAddress[]>([])
+    const dispatch = useDispatch()
+    const [getCustomers, { isLoading }] = useLazyGetCustomersQuery();
+    const [customers, setCustomers] = useState<TCustomer[] | null>();
     const dropdownRef = useRef(null)
     const [search, setSearch] = useState("")
-    const { renderText } = useRenderText()
     const t = useTranslations("checkout");
-    const selected = watch("address")
+    const selected = watch("customer")
 
     // Filtered addresses
     const filtered = useMemo(() => {
-        return addresses?.filter(a =>
-            a.name.toLowerCase().includes(search.toLowerCase())
+        return customers?.filter(item =>
+            item.name.toLowerCase().includes(search.toLowerCase())
         )
-    }, [addresses, search])
+    }, [customers, search])
 
-    useEffect(() => {
-        if (data?.data && data.data?.length) {
-            setAddresses(data?.data);
-        }
-    }, [data?.data])
-
-    const handleSelect = (addr) => {
-        setValue("address", addr, { shouldValidate: true })
+    // hanlders
+    const handleSelect = (customer) => {
+        setValue("customer", customer, { shouldValidate: true })
         setIsOpen(false)
         setSearch("")
     }
 
-    const selectedAddress = addresses?.find(a => a.id === selected.id)
-    const { en, bn } = getTranslationReadyText(selectedAddress?.name || "");
+
+    useEffect(() => {
+        const loadData = async () => {
+            try {
+                const res = await getCustomers('').unwrap()
+                if (res.success) {
+                    dispatch(setAllCustomers(res.data));
+                    setCustomers(res.data);
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        loadData();
+    }, [dispatch, getCustomers])
 
     if (isLoading) return <div className="grow flex items-center justify-center">
         <LoadingSpinner />
     </div>
 
+    if (!customers?.length) return;
+
+    const selectedCustomer = customers?.find(item => item.id === selected?.id)
     return (
         <div className="prevent-body-trigger custom-select-el relative w-full" ref={dropdownRef}>
-            <input type="hidden" {...register("address")} />
+            <input type="hidden" {...register("customer")} />
             <button
                 type="button"
                 onClick={() => setIsOpen(v => !v)}
                 className="checkout-input w-full relative flex justify-between gap-4 items-center px-3 py-1.5 h-[36px] rounded border"
             >
-                {!!selectedAddress &&
-                    <span className="text-base">{renderText(bn, en)}</span>
+                {!!selectedCustomer &&
+                    <span className="text-base">{selectedCustomer.name}</span>
                 }
                 <span
                     className={cn(
                         "pointer-events-none duration-200 m-0 p-0 absolute left-3 top-1/2 -translate-y-1/2",
                         "peer-focus:top-0 bg-clr-card peer-focus:text-[11px] peer-focus:px-1 peer-focus:left-1.5",
-                        selectedAddress && "top-0 text-[11px] px-0.5 left-2"
+                        selectedCustomer && "top-0 text-[11px] px-0.5 left-2"
                     )}
                 >{t('customer')}</span>
                 <ChevronDown className='!w-5 !h-5' />
@@ -78,7 +91,7 @@ export function CustomerSelect({
                     <div className="p-1 border-b">
                         <input
                             type="text"
-                            placeholder={t("searchAddress")}
+                            placeholder={t("searchCustomer")}
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             className="checkout-input"
@@ -87,25 +100,23 @@ export function CustomerSelect({
 
                     {/* Options */}
                     <div className="max-h-[110px] overflow-y-auto">
-                        {filtered.length > 0 ? (
-                            filtered.map(addr => {
-                                const { en: En, bn: Bn } = getTranslationReadyText(addr.name)
-                                return <button
-                                    key={addr.id}
-                                    type="button"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        handleSelect(addr);
-                                    }}
-                                    className="prevent-body-trigger w-full px-3 py-0.5 hover:bg-gray-100 text-left"
-                                >
-                                    {renderText(Bn, En)}
-                                </button>
-                            })
+                        {filtered && filtered?.length > 0 ? (
+                            filtered.map(customer => <button
+                                key={customer.id}
+                                type="button"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    handleSelect(customer);
+                                }}
+                                className="prevent-body-trigger w-full px-3 py-0.5 hover:bg-gray-100 text-left"
+                            >
+                                {customer.name}
+                            </button>
+                            )
 
                         ) : (
                             <div className="px-3 py-2 text-gray-400 dark:text-gray-200 text-sm">
-                                <RenderText group='checkout' variable='noAddressFound' />
+                                <RenderText group='checkout' variable='noCustomerFound' />
                             </div>
                         )}
                     </div>

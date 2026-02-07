@@ -2,7 +2,7 @@
 import { SET_EXPAND, updateActiveOrderDetailsModal } from "@/redux/features/actions/actionSlice";
 import { useLazyGetOnlineOrdersQuery } from "@/redux/features/product/productApiSlice";
 import { updateDetailsOrder } from "@/redux/features/product/productSlice";
-import LoadingSpinner from "@/sharedComponents/loading/LoadingSpinner";
+import DataLoading from "@/sharedComponents/shared/Loading";
 import NoDataMsg from "@/sharedComponents/shared/NoDataMsg";
 import Pagination from "@/sharedComponents/shared/Pagination";
 import Timer from "@/sharedComponents/shared/Timer";
@@ -70,13 +70,10 @@ export default function OnlineOrders() {
     // }, [])
 
 
-
     if (!mount) return null;
 
-    if (isLoading) return <LoadingSpinner />
-
-    console.log("Refreshing...")
-
+    console.log("Refreshing from online orders...")
+    if (isLoading) return <DataLoading />
     return (
         <>
             {
