@@ -1,6 +1,7 @@
 "use client";
 
 import { getFromStorage } from "@/lib/storage";
+import { getTranslationReadyText } from "@/lib/utils";
 import { RootState } from "@/redux/store";
 import { OrderItem, TCustomerType, TUser } from "@/types/types";
 import { forwardRef } from "react";
@@ -68,10 +69,11 @@ export const KOTPrint = forwardRef<HTMLDivElement, Props>(
                     </thead>
 
                     <tbody>
-                        {orderData.items && orderData.items.map((item, index) => (
-                            <tr key={item.id} className={orderData.items.length > (index + 1) ? 'border-b' : ""}>
+                        {orderData.items && orderData.items.map((item, index) => {
+                            const { en, bn } = getTranslationReadyText(item.product_name);
+                            return <tr key={item.id} className={orderData.items.length > (index + 1) ? 'border-b' : ""}>
                                 <td className="p-1">
-                                    <strong>{item.product_name}</strong>
+                                    <strong>{bn ?? en}</strong>
 
                                     {/* {item.isDeleted && (
                                                        <span className="bg-red-600 text-white text-[12px] px-1 ml-1 rounded">
@@ -88,7 +90,7 @@ export const KOTPrint = forwardRef<HTMLDivElement, Props>(
                                     <strong>{item.qty}</strong>
                                 </td>
                             </tr>
-                        ))}
+                        })}
                     </tbody>
                 </table>
 

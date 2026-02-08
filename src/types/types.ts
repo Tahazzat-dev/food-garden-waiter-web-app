@@ -301,6 +301,11 @@ export interface TOrder {
     waiter: TUser
 }
 
+
+export interface InvoiceData extends TOrder {
+    billingBy: string;
+}
+
 export interface OrderItem {
     id: number;
     estimate_id: number;

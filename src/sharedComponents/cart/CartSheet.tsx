@@ -4,8 +4,9 @@ import useFormatPrice from '@/hooks/useFormatPrice';
 import { calculateSubtotal, cn, getSellingPrice } from '@/lib/utils';
 import { SET_EXPAND, updatePrevAction } from '@/redux/features/actions/actionSlice';
 import { useConfirmOrderMutation } from '@/redux/features/product/productApiSlice';
+import { setCartProducts } from '@/redux/features/product/productSlice';
 import { RootState } from '@/redux/store';
-import { TCustomer, TSelectedTable } from '@/types/types';
+import { OrderItem, TCustomer, TCustomerType, TSelectedTable } from '@/types/types';
 import * as Dialog from "@radix-ui/react-dialog";
 import { Plus, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -30,10 +31,12 @@ export type CustomerFormValues = {
 type TOrderResponse = {
   success: boolean;
   message: string;
-  orderId?: number;
+  id?: number;
   token?: string;
-  orderType?: string;
-  table?: string;
+  orderType?: TCustomerType;
+  table_id: number | null;
+  waiter: string;
+  items: OrderItem[]
 }
 
 export function CartSheet() {
@@ -45,6 +48,7 @@ export function CartSheet() {
   const printRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
   const [confirmOrder, { isLoading }] = useConfirmOrderMutation()
+  const { authUser } = useSelector((state: RootState) => state.auth);
   const { cartProducts } = useSelector((state: RootState) => state.productSlice);
   const [selectedTable, setSelectedTable] = useState<TSelectedTable | null>(null)
   const [orderResponse, setOrderResponse] = useState<TOrderResponse | null>(null)
@@ -79,14 +83,27 @@ export function CartSheet() {
         products: choosedProducts
       }).unwrap();
 
+      const addedItems = cartProducts.map(item => (
+        {
+          product_name: item.title,
+          variation: {
+            variation: item.name,
+          },
+          qty: item.quantity,
+
+        }
+      ))
+
       if (res.success) {
         setOrderResponse({
           message: "orderSuccess",
           success: true,
-          orderId: res.id,
+          id: res.id,
           token: res.token,
-          table: selectedTable.label,
-          orderType: selectedTable.customer_type,
+          table_id: selectedTable.table_id,
+          orderType: selectedTable.customer_type === "Take Way" ? "Self Pickup" : selectedTable.customer_type,
+          items: addedItems as OrderItem[],
+          waiter: authUser?.fname || ''
         })
       }
     } catch (error) {
@@ -94,8 +111,10 @@ export function CartSheet() {
       setOrderResponse({
         message: "orderFail",
         success: false,
-        orderId: 0,
-        orderType: "online",
+        id: 0,
+        table_id: null,
+        waiter: "",
+        items: []
       })
     } finally {
       dispatch(SET_EXPAND(null));
@@ -115,15 +134,16 @@ export function CartSheet() {
   });
 
 
-
   const handleOpenAddCustomerModal = () => {
     dispatch(updatePrevAction("CART_SHEET"))
     dispatch(SET_EXPAND("OPEN_ADD_CUSTOMER_MODAL"))
   }
 
   const closeModal = () => {
-    setOrderResponse(null)
+    setOrderResponse(null);
+    dispatch(setCartProducts(null));
   }
+
   // calculated cart total 
   const totalPrice = cartProducts.reduce((total, item) => total + (calculateSubtotal(getSellingPrice(item.price, item.discount), item.quantity)), 0)
   return (
@@ -196,7 +216,7 @@ export function CartSheet() {
               <Button onClick={closeModal} className="rounded-full !px-2.5" variant="secondary"> <X className="!text-white w-5 md:w-6 md:h-6 h-5 lg:w-8 lg:h-8" /></Button>
             </div>
             <div className="p-4">
-              {orderResponse?.orderId && <p className='text-center flex gap-2 justify-center' ><span><RenderText group='checkout' variable='orderId' /> :</span><span>{translateNumber(orderResponse.orderId)}</span></p>}
+              {orderResponse?.id && <p className='text-center flex gap-2 justify-center' ><span><RenderText group='checkout' variable='orderId' /> :</span><span>{translateNumber(orderResponse.id)}</span></p>}
               {
                 !!orderResponse?.success && <>
                   <p className='text-center flex gap-2 justify-center' ><RenderText group='checkout' variable='wantToPrintKot' /></p>
@@ -219,10 +239,12 @@ export function CartSheet() {
         <KOTPrint
           orderData={
             {
-              id: orderResponse?.orderId,
-              orderType: orderResponse?.orderType,
+              id: orderResponse?.id,
+              orderType: orderResponse?.orderType ?? "Online",
               token: orderResponse?.token,
-              table: orderResponse?.table
+              table_id: orderResponse?.table_id || null,
+              items: orderResponse?.items || [],
+              waiter: orderResponse?.waiter || ""
             }
           }
           ref={printRef}

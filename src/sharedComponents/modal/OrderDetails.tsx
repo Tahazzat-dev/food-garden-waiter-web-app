@@ -15,6 +15,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useReactToPrint } from "react-to-print";
 import LoadingSpinner from "../loading/LoadingSpinner";
+import InvoicePrint from "../shared/InvoicePrint";
 import { KOTPrint } from "../shared/KotPrint";
 import RenderText from "../utils/RenderText";
 
@@ -22,13 +23,15 @@ import RenderText from "../utils/RenderText";
 
 export default function OrderDetailsModal() {
     // hooks
-    const printRef = useRef<HTMLDivElement>(null);
+    const kotPrintRef = useRef<HTMLDivElement>(null);
+    const invoicePrintRef = useRef<HTMLDivElement>(null);
     const [showFullDeails, setShowFullDetials] = useState(false)
     const [updateOnlineOrder, { isLoading: isOnlineOrderUpdating }] = useUpdateOnlineOrdersMutation();
     const dispatch = useDispatch();
     const { formatPrice } = useFormatPrice();
     const { renderText } = useRenderText()
     const { EXPAND, activeOrderDetailsModal } = useSelector((state: RootState) => state.actions);
+    const { authUser } = useSelector((state: RootState) => state.auth);
     const { detailsOrder } = useSelector((state: RootState) => state.productSlice);
     const { address } = useSelector((state: RootState) => state.address);
     const KEY = "ORDER_DETAILS_MODAL";
@@ -39,7 +42,12 @@ export default function OrderDetailsModal() {
     }
 
     const handleKotPrint = useReactToPrint({
-        contentRef: printRef,
+        contentRef: kotPrintRef,
+    });
+
+
+    const handleDueInvoicePrint = useReactToPrint({
+        contentRef: invoicePrintRef,
     });
 
 
@@ -113,7 +121,7 @@ export default function OrderDetailsModal() {
                         </div>
                         {
                             activeOrderDetailsModal === "web" && <div className="p-3 pt-0 gap-1 flex justify-between flex-wrap">
-                                <Button size="sm" className=" !rounded-[3px] !px-2 bg-[#58C354] text-white" >
+                                <Button onClick={handleDueInvoicePrint} size="sm" className=" !rounded-[3px] !px-2 bg-[#58C354] text-white" >
                                     <RenderText group="shared" variable="invPrint" />
                                 </Button>
                                 <Button onClick={handleKotPrint} size="sm" className=" !rounded-[3px] grow bg-[#F66FFF] text-white" variant="outline" >
@@ -161,7 +169,19 @@ export default function OrderDetailsModal() {
                             waiter: detailsOrder.waiter.fname
                         }
                     }
-                    ref={printRef}
+                    ref={kotPrintRef}
+                />
+            </div>
+
+            <div className="w-full hidden print:block">
+                <InvoicePrint
+                    invoiceData={
+                        {
+                            ...detailsOrder,
+                            billingBy: authUser?.fname || ''
+                        }
+                    }
+                    ref={invoicePrintRef}
                 />
             </div>
         </>

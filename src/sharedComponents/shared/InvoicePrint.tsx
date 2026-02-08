@@ -1,23 +1,22 @@
 "use client";
 
+import { getTranslationReadyText } from "@/lib/utils";
+import { InvoiceData } from "@/types/types";
+import Image from "next/image";
 import { forwardRef } from "react";
 
 type Props = {
-    order: any; // you can replace with your Order ypet
+    invoiceData: InvoiceData
 };
 
-const InvoicePrint = forwardRef<HTMLDivElement, Props>(({ order }, ref) => {
+const InvoicePrint = forwardRef<HTMLDivElement, Props>(({ invoiceData }, ref) => {
 
-    const previous_due =
-        order.customer_id === 1
-            ? 0
-            : (order.customer?.due ?? 0) - (order.due ?? 0);
-
-    const final_receivable = previous_due + Number(order.final_receivable);
-    const total_due = previous_due + Number(order.due);
+    const previous_due = Number(invoiceData.customer.total_receivable);
+    const final_receivable = previous_due + Number(invoiceData.final_receivable);
+    const total_due = Number(previous_due) + Number(invoiceData.final_receivable);
 
     return (
-        <div ref={ref} className="w-[320px] mx-auto border border-black p-2 text-[13px] text-black">
+        <div ref={ref} className="w-[320px] mt-5 mx-auto border-x border-black p-2 text-[13px] text-black">
 
             {/* Header */}
             <div className="text-center">
@@ -38,19 +37,19 @@ const InvoicePrint = forwardRef<HTMLDivElement, Props>(({ order }, ref) => {
             <div className="flex justify-between text-[12px]">
                 <div>
                     <b>Customer:</b>{" "}
-                    {order.customer?.name ?? "N/A"} (
-                    {order.customer?.phone ?? "N/A"})
+                    {invoiceData.customer?.name ?? "N/A"} (
+                    {invoiceData.customer?.phone ?? "N/A"})
                 </div>
             </div>
 
             <div className="flex justify-between text-[12px]">
                 <div>
                     <b>Date:</b>{" "}
-                    {new Date(order.created_at).toLocaleDateString()}
+                    {new Date(invoiceData.created_at).toLocaleDateString()}
                 </div>
                 <div>
                     <b>Time:</b>{" "}
-                    {new Date(order.created_at).toLocaleTimeString()}
+                    {new Date(invoiceData.created_at).toLocaleTimeString()}
                 </div>
             </div>
 
@@ -66,10 +65,11 @@ const InvoicePrint = forwardRef<HTMLDivElement, Props>(({ order }, ref) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {order.items?.map((item: any) => (
-                        <tr key={item.id} className="font-bold border-b border-dashed">
+                    {invoiceData.items?.map((item, index) => {
+                        const { en, bn } = getTranslationReadyText(item.product.name);
+                        return <tr key={item.id} className={invoiceData.items.length > (index + 1) ? 'border-b' : ""}>
                             <td className="py-1">
-                                {item.product?.name}
+                                {bn ?? en}
                                 <br />
                                 <span className="text-[14px]">
                                     {item.variation?.variation}
@@ -84,50 +84,53 @@ const InvoicePrint = forwardRef<HTMLDivElement, Props>(({ order }, ref) => {
                                 {Number(item.sub_total).toFixed(0)} Tk
                             </td>
                         </tr>
-                    ))}
+                    }
+                    )}
                 </tbody>
             </table>
 
             <div className="border-t border-black my-2" />
 
             {/* Summary */}
-            <Row label="Subtotal" value={order.receivable} bold />
-            <Row label="Discount" value={`(-) ${order.discount}`} />
-            <Row label="Delivery Charge" value={`(+) ${order.delivery_charge}`} />
-            <Row label="Previous Due" value={`(+) ${previous_due}`} />
+            <Row label="Subtotal" value={Number(invoiceData.receivable)} bold />
+            <Row label="Discount" value={`(-) ${Number(invoiceData.discount).toFixed?.(0) ?? 0}`} />
+            <Row label="Delivery Charge" value={`(+) ${Number(invoiceData.delivery_charge).toFixed?.(0) ?? 0}`} />
+            <Row label="Previous Due" value={`(+) ${previous_due ?? 0}`} />
 
             <div className="flex justify-between font-bold text-[14px] border-t border-black pt-1">
                 <span>Grand Total</span>
                 <span>{final_receivable} Tk</span>
             </div>
 
-            <Row label="Total Paid" value={order.paid} />
+            <Row label="Total Paid" value={0} />
             <Row label="Total Due" value={total_due} />
 
             <div className="border-t border-dashed border-black mt-8 mb-2" />
 
             <div className="flex justify-between text-[12px]">
-                <div>Billing By : {order.sales_man?.fname ?? "N/A"}</div>
-                <div>Waiter : {order.waiter?.fname ?? "N/A"}</div>
+                <div>Billing By : {invoiceData.billingBy ?? "N/A"}</div>
+                <div>Waiter : {invoiceData.waiter?.fname ?? "N/A"}</div>
             </div>
 
             <div className="flex justify-between text-[12px]">
-                <div>Table No : {order.table?.table_no ?? "N/A"}</div>
-                <div>Order ID : {order.id}</div>
+                <div>Table No : {invoiceData.table_id ?? "N/A"}</div>
+                <div>Order ID : {invoiceData.id}</div>
             </div>
 
             <div className="border-t border-dashed border-black my-2" />
 
             <div className="text-center font-bold mb-2">
-                Payment Status : {order.due > 0 ? "Due" : "Paid"}
+                Payment Status : Due
             </div>
 
             {/* QR */}
-            {/* <Image
-        src="/qr.jpeg"
-        className="mx-auto w-[80px]"
-        alt="qr"
-      /> */}
+            <Image
+                src="https://test.bdchefchoice.com/dashboard/images/qr.jpeg"
+                className="mx-auto w-[80px]"
+                width={80}
+                height={80}
+                alt="qr"
+            />
 
             <div className="text-center text-[11px] mt-2">
                 <div>Make Bkash Payment (Scan QR Code)</div>
@@ -143,11 +146,12 @@ const InvoicePrint = forwardRef<HTMLDivElement, Props>(({ order }, ref) => {
 export default InvoicePrint;
 InvoicePrint.displayName = "InvoicePrint"
 
+// eslint-disable-next-line
 function Row({ label, value, bold }: any) {
     return (
         <div className={`flex justify-between text-[12px] ${bold ? "font-bold text-[13px]" : ""}`}>
             <span>{label}</span>
-            <span>{Number(value).toFixed?.(0) ?? value} Tk</span>
+            <span>{value} Tk</span>
         </div>
     );
 }
