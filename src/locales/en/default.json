@@ -81,7 +81,8 @@
     "reject": "Reject",
     "noDataFound": "No data found",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "onlineOrderPendingForApproval": "Online order pending for approval"
   },
 
   "pages": {

@@ -82,7 +82,8 @@
     "reject": "বাতিল করুন",
     "noDataFound": "কোনো তথ্য পাওয়া যাই নি",
     "yes": "হ্যা",
-    "no": "না"
+    "no": "না",
+    "onlineOrderPendingForApproval": "অনলাইন অর্ডার এপ্প্রুভ করার জন্য পেন্ডিং এ আছে"
   },
 
   "pages": {

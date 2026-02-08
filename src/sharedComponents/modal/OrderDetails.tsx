@@ -55,7 +55,6 @@ export default function OrderDetailsModal() {
     const udpateOnlineOrderStatus = async (id: number, status: number) => {
         try {
             const res = await updateOnlineOrder({ id, status })
-            console.log(res, ' res from updating online orders')
         } catch (error) {
             console.log(error);
         }

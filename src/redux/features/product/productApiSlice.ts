@@ -51,7 +51,7 @@ export const productApiSlice = createApi({
                 method: "PUT",
                 body: data
             }),
-            invalidatesTags: ['OnlineOrders']
+            invalidatesTags: ['OnlineOrders', "allOrders"]
         }),
 
         confirmOrder: builder.mutation({

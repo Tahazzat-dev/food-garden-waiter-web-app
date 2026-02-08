@@ -1,4 +1,5 @@
 "use client"
+import { cn } from "@/lib/utils";
 import { SET_EXPAND, updateActiveOrderDetailsModal } from "@/redux/features/actions/actionSlice";
 import { useGetAllOrdersQuery, useGetMyOrdersQuery } from "@/redux/features/product/productApiSlice";
 import { updateDetailsOrder } from "@/redux/features/product/productSlice";
@@ -132,7 +133,7 @@ const MyOrders = () => {
                                             {order.customer_type === "Dine-In" ?
                                                 <span className="text-primary py-0.5 bg-green-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="onlineHomeDelivery" /></span> :
                                                 order.customer_type === "Online" ? <span className="text-secondary bg-red-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="onlineHomeDelivery" /></span> :
-                                                    <span className="text-blue-500 bg-blue-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="onlineTakeWay" /></span>}
+                                                    <span className="text-blue-500 bg-blue-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="onlineTakeAway" /></span>}
                                         </p>
                                     </div>
                                     <p className="text-[15px] px-2 py-0.5 rounded-md font-bold text-primary" >
@@ -179,13 +180,12 @@ const AllOrders = () => {
             results?.data?.data && !!results?.data?.data?.length ?
                 <div className="flex flex-col gap-2">
                     {
-                        results?.data?.data?.map(order => <button key={order.id} onClick={() => handleEditOrder(order)} className='relative w-full flex bg-clr-card  overflow-hidden rounded-md border-slate-300 dark:border-slate-600 border group z-0'>
-                            {/* demo overlay */}
-                            {/* <div className="w-full flex items-center justify-center h-full z-20  absolute top-0 left-0 bg-slate-700/70">
-                                <p className="text-white">Pending for approval</p>
-                            </div> */}
-                            {/* demo overlay */}
-
+                        (results?.data?.data as TOrder[])?.map(order => <button key={order.id} onClick={() => handleEditOrder(order)} className={cn('relative w-full flex bg-clr-card  overflow-hidden rounded-md border-slate-300 dark:border-slate-600 border group z-0', order.is_web === 1 && order.is_online_app == 0 && "pointer-events-none")}>
+                            {
+                                order.is_web === 1 && order.is_online_app == 0 && <div className="w-full flex items-center justify-center h-full z-20  absolute top-0 left-0 bg-slate-700/80 backdrop-blur-[1px]">
+                                    <p className="text-white"><RenderText group="shared" variable="onlineOrderPendingForApproval" /></p>
+                                </div>
+                            }
                             <div className="relative z-10 p-1 flex items-center justify-center">
                                 {order.customer_type === "Online" ?
                                     <div className="gap-1 bg-secondary pb-0 flex flex-col w-[70px] h-[70px] overflow-hidden rounded-md">
@@ -237,7 +237,7 @@ const AllOrders = () => {
                                             {order.customer_type === "Dine-In" ?
                                                 <span className="text-primary py-0.5 bg-green-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="onlineHomeDelivery" /></span> :
                                                 order.customer_type === "Online" ? <span className="text-secondary bg-red-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="onlineHomeDelivery" /></span> :
-                                                    <span className="text-blue-500 bg-blue-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="onlineTakeWay" /></span>}
+                                                    <span className="text-blue-500 bg-blue-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="onlineTakeAway" /></span>}
                                         </p>
                                     </div>
                                     <p className="text-[15px] px-2 py-0.5 rounded-md font-bold text-primary" >
