@@ -6,14 +6,17 @@ import {
     Clock7, Clock8, Clock9
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
+import RenderText from '../utils/RenderText';
 
 type Props = {
     showClock?: boolean;
     date: Date;
     className?: string;
+    showMomentText?: boolean;
+    showTime?: boolean;
 };
 
-export default function Timer({ showClock = true, className = '', date }: Props) {
+export default function Timer({ showClock = true, showMomentText = false, showTime = false, className = '', date }: Props) {
     const [now, setNow] = useState(new Date());
 
     useEffect(() => {
@@ -76,14 +79,21 @@ export default function Timer({ showClock = true, className = '', date }: Props)
                     <span className="">
                         {getOrderClockIcon()}
                     </span>
-                    {/* <span className="">
-                        {formattedTime}
-                    </span> */}
+                    {
+                        showTime &&
+                        <span className="text-sm">
+                            {formattedTime}
+                        </span>
+                    }
                 </>
             )}
-            <span className="leading-[100%] mt-1">
+            <span className="leading-[100%] mt-1 text-sm ">
                 {getTimeLabel()}
-                {/* <RenderText group='shared' variable='ago' /> */}
+                {showMomentText &&
+                    <span className='ml-1' >
+                        <RenderText group='shared' variable='ago' />
+                    </span>
+                }
             </span>
         </div>
     );

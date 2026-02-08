@@ -6,7 +6,7 @@ type Props = {
     variable: string;
     group: string;
 }
-export default function NoDataMsg({ className = '', group, variable }: Props) {
+export default function NoDataMsg({ className = 'min-h-[200px] mt-10', group, variable }: Props) {
     return (
         <BoxSpace className={className}>
             <p><RenderText group={group} variable={variable} /></p>

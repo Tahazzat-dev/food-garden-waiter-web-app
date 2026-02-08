@@ -1,6 +1,6 @@
 "use client"
 import { SET_EXPAND, updateActiveOrderDetailsModal } from "@/redux/features/actions/actionSlice";
-import { useLazyGetOnlineOrdersQuery } from "@/redux/features/product/productApiSlice";
+import { useGetOnlineOrdersQuery } from "@/redux/features/product/productApiSlice";
 import { updateDetailsOrder } from "@/redux/features/product/productSlice";
 import DataLoading from "@/sharedComponents/shared/Loading";
 import NoDataMsg from "@/sharedComponents/shared/NoDataMsg";
@@ -8,7 +8,7 @@ import Pagination from "@/sharedComponents/shared/Pagination";
 import Timer from "@/sharedComponents/shared/Timer";
 import RenderFormatedPrice from "@/sharedComponents/utils/RenderFormatedPrice";
 import RenderText from "@/sharedComponents/utils/RenderText";
-import { IOrderResult, TOrder } from "@/types/types";
+import { TOrder } from "@/types/types";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -18,12 +18,13 @@ export type TTabs = "myOrders" | "allOrders";
 export default function OnlineOrders() {
     const dispatch = useDispatch()
     const [currentPage, setCurrentPage] = useState(1);
-    const [results, setResults] = useState<IOrderResult | null>(null)
-    const [refetch, setRefetch] = useState(true);
     const [mount, setMount] = useState(false)
-    const [loadOrders, { isLoading }] = useLazyGetOnlineOrdersQuery();
-    // const { orders } = useSelector((state: RootState) => state.productSlice);
-    // console.log(orders)
+    const { data: results, isLoading } = useGetOnlineOrdersQuery(`page=${currentPage}`, {
+        pollingInterval: 5000, // auto pooling after 5s.
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true,
+        refetchOnReconnect: true,
+    });
 
     // handlers
     const handleEditOrder = (order: TOrder) => {
@@ -36,51 +37,17 @@ export default function OnlineOrders() {
         setMount(true);
     }, [])
 
-    //   load data
-    useEffect(() => {
-
-        if (!refetch) return;
-
-        const loadData = async () => {
-            try {
-                const res = await loadOrders(`page=${currentPage}`).unwrap()
-                if (res.success) {
-                    setResults(res?.data || null);
-                } else {
-                    throw new Error("Something went wrong");
-                }
-            } catch (error) {
-                console.log(error);
-                setResults(null)
-            } finally {
-                setRefetch(false);
-            }
-        }
-
-        loadData()
-    }, [currentPage, loadOrders, refetch])
-
-    // interval for manual pooling
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         setRefetch(true)
-    //     }, 10000)
-
-    //     return () => clearInterval(interval)
-    // }, [])
-
-
     if (!mount) return null;
 
-    console.log("Refreshing from online orders...")
+    // console.log("Refreshing from online orders...")
     if (isLoading) return <DataLoading />
     return (
         <>
             {
 
-                results?.data && !!results?.data?.length ? <div className="flex flex-col pt-2 gap-2">
+                results.data?.data && !!results?.data?.data?.length ? <div className="flex flex-col pt-2 gap-2">
                     {
-                        results?.data.map(order => <button key={order.id} onClick={() => handleEditOrder(order)} className='w-full flex bg-clr-card overflow-hidden custom-shadow-md group z-0'>
+                        results?.data?.data.map(order => <button key={order.id} onClick={() => handleEditOrder(order)} className='w-full flex bg-clr-card overflow-hidden custom-shadow-md group z-0'>
                             <div className="relative p-1 flex items-center justify-center">
                                 {order.customer_type === "Online" ?
                                     <div className="gap-1 bg-secondary pb-0 flex flex-col w-[70px] h-[70px] overflow-hidden rounded-md">
@@ -142,7 +109,7 @@ export default function OnlineOrders() {
                     : <NoDataMsg group="orders" variable="notOrderFound" />
             }
             {
-                !!results && results?.last_page > 1 && <Pagination className="my-5" currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={results.last_page} />
+                !!results && results?.data?.last_page > 1 && <Pagination className="my-5" currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={results?.data?.last_page} />
             }
         </>
     )

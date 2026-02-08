@@ -1,6 +1,6 @@
 "use client"
 import { SET_EXPAND, updateActiveOrderDetailsModal } from "@/redux/features/actions/actionSlice";
-import { useLazyGetAllOrdersQuery, useLazyGetMyOrdersQuery } from "@/redux/features/product/productApiSlice";
+import { useGetAllOrdersQuery, useGetMyOrdersQuery } from "@/redux/features/product/productApiSlice";
 import { updateDetailsOrder } from "@/redux/features/product/productSlice";
 import DataLoading from "@/sharedComponents/shared/Loading";
 import NoDataMsg from "@/sharedComponents/shared/NoDataMsg";
@@ -9,9 +9,9 @@ import Timer from "@/sharedComponents/shared/Timer";
 import { OrdersTab } from "@/sharedComponents/tab/Tab";
 import RenderFormatedPrice from "@/sharedComponents/utils/RenderFormatedPrice";
 import RenderText from "@/sharedComponents/utils/RenderText";
-import { IOrderResult, TOrder } from "@/types/types";
+import { TOrder } from "@/types/types";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import type { Swiper as SwiperType } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -57,10 +57,16 @@ export default function Orders() {
 
 const MyOrders = () => {
     // hooks
-    const [currentPage, setCurrentPage] = useState(1);
-    const [results, setResults] = useState<IOrderResult | null>(null)
-    const [loadOrders, { isLoading }] = useLazyGetMyOrdersQuery();
     const dispatch = useDispatch()
+    const [currentPage, setCurrentPage] = useState(1);
+    const { data: results, isLoading } = useGetMyOrdersQuery(`page=${currentPage}`,
+        {
+            refetchOnFocus: true,
+            refetchOnMountOrArgChange: true,
+            refetchOnReconnect: true,
+        }
+    );
+
     // handlers
     const handleEditOrder = (order: TOrder) => {
         dispatch(updateDetailsOrder(order));
@@ -68,38 +74,13 @@ const MyOrders = () => {
         dispatch(SET_EXPAND("ORDER_DETAILS_MODAL"));
     }
 
-
-    useEffect(() => {
-        const loadData = async () => {
-            try {
-                const res = await loadOrders(`page=${currentPage}`).unwrap()
-                if (res.success) {
-                    setResults(res?.data || null);
-                } else {
-                    throw new Error("Something went wrong");
-                }
-            } catch (error) {
-                console.log(error);
-                setResults(null)
-            }
-        }
-
-        loadData()
-    }, [currentPage, loadOrders])
-
     if (isLoading) return <DataLoading />
     return <>
         {
-            results?.data && !!results?.data?.length ?
+            results?.data?.data && !!results?.data?.data?.length ?
                 <div className="flex flex-col gap-2">
                     {
-                        results?.data.map(order => <button key={order.id} onClick={() => handleEditOrder(order)} className='relative w-full flex bg-clr-card  overflow-hidden rounded-md border-slate-300 dark:border-slate-600 border group z-0'>
-                            {/* demo overlay */}
-                            {/* <div className="w-full flex items-center justify-center h-full z-20  absolute top-0 left-0 bg-slate-700/70">
-                                <p className="text-white">Pending for approval</p>
-                            </div> */}
-                            {/* demo overlay */}
-
+                        results?.data?.data?.map(order => <button key={order.id} onClick={() => handleEditOrder(order)} className='relative w-full flex bg-clr-card  overflow-hidden rounded-md border-slate-300 dark:border-slate-600 border group z-0'>
                             <div className="relative z-10 p-1 flex items-center justify-center">
                                 {order.customer_type === "Online" ?
                                     <div className="gap-1 bg-secondary pb-0 flex flex-col w-[70px] h-[70px] overflow-hidden rounded-md">
@@ -165,7 +146,7 @@ const MyOrders = () => {
                 : <NoDataMsg group="orders" variable="notOrderFound" />
         }
         {
-            !!results && results?.last_page > 1 && <Pagination className="my-5" currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={results.last_page} />
+            !!results && results?.data?.last_page > 1 && <Pagination className="my-5" currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={results.data?.last_page} />
         }
     </>
 }
@@ -174,11 +155,17 @@ const MyOrders = () => {
 
 const AllOrders = () => {
     // hooks
-    const [refetch, setRefetch] = useState(true);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [results, setResults] = useState<IOrderResult | null>(null)
-    const [loadOrders, { isLoading }] = useLazyGetAllOrdersQuery();
     const dispatch = useDispatch()
+    const [currentPage, setCurrentPage] = useState(1);
+    const { data: results, isLoading } = useGetAllOrdersQuery(`page=${currentPage}`,
+        {
+            pollingInterval: 10000, // auto pooling after 10s.
+            refetchOnFocus: true,
+            refetchOnMountOrArgChange: true,
+            refetchOnReconnect: true,
+        }
+
+    );
     // handlers
     const handleEditOrder = (order: TOrder) => {
         dispatch(updateDetailsOrder(order));
@@ -186,48 +173,13 @@ const AllOrders = () => {
         dispatch(SET_EXPAND("ORDER_DETAILS_MODAL"));
     }
 
-    useEffect(() => {
-
-        if (!refetch) return;
-
-        const loadData = async () => {
-            try {
-                const res = await loadOrders(`page=${currentPage}`).unwrap()
-                if (res.success) {
-                    setResults(res?.data || null);
-                } else {
-                    throw new Error("Something went wrong");
-                }
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            } catch (error: any) {
-                console.log(error);
-                setResults(null)
-            } finally {
-                setRefetch(false);
-            }
-        }
-
-        loadData()
-    }, [currentPage, loadOrders, refetch])
-
-    // interval for manual pooling
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         setRefetch(true)
-    //     }, 10000)
-
-    //     return () => clearInterval(interval)
-    // }, [])
-
     if (isLoading) return <DataLoading />
-    // console.log("Refreshing from all orders...", results);
-
     return <>
         {
-            results?.data && !!results?.data?.length ?
+            results?.data?.data && !!results?.data?.data?.length ?
                 <div className="flex flex-col gap-2">
                     {
-                        results?.data.map(order => <button key={order.id} onClick={() => handleEditOrder(order)} className='relative w-full flex bg-clr-card  overflow-hidden rounded-md border-slate-300 dark:border-slate-600 border group z-0'>
+                        results?.data?.data?.map(order => <button key={order.id} onClick={() => handleEditOrder(order)} className='relative w-full flex bg-clr-card  overflow-hidden rounded-md border-slate-300 dark:border-slate-600 border group z-0'>
                             {/* demo overlay */}
                             {/* <div className="w-full flex items-center justify-center h-full z-20  absolute top-0 left-0 bg-slate-700/70">
                                 <p className="text-white">Pending for approval</p>
@@ -299,7 +251,7 @@ const AllOrders = () => {
                 : <NoDataMsg group="orders" variable="notOrderFound" />
         }
         {
-            !!results && results?.last_page > 1 && <Pagination className="my-5" currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={results.last_page} />
+            !!results && results?.data?.last_page > 1 && <Pagination className="my-5" currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={results?.data?.last_page} />
         }
     </>
 }

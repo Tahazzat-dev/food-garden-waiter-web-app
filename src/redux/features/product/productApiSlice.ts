@@ -22,6 +22,15 @@ export const productApiSlice = createApi({
             providesTags: ['myOrders'],
         }),
 
+        updateOrderItemStatus: builder.mutation({
+            query: (data) => ({
+                url: "/waiter/kitchen-item-status",
+                method: "PUT",
+                body: data
+            }),
+            invalidatesTags: ['myOrders', "allOrders"]
+        }),
+
         getAllOrders: builder.query({
             query: (q) => '/waiter/all-orders?' + q,
             keepUnusedDataFor: 60,
@@ -73,8 +82,10 @@ export const {
 
     // orders
     useGetMyOrdersQuery,
+    useUpdateOrderItemStatusMutation,
     useLazyGetMyOrdersQuery,
     useLazyGetAllProductsQuery,
+    useGetAllOrdersQuery,
 
     // online orders
     useGetOnlineOrdersQuery,
