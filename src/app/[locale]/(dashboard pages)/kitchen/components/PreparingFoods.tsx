@@ -23,7 +23,6 @@ import "swiper/swiper.css"
 export default function PreparingFoods() {
     const [activeTab, setActiveTab] = useState(0)
     const ordersSwiperRef = useRef<SwiperType | null>(null);
-    const { kitchenOrders } = useSelector((state: RootState) => state.productSlice)
 
     const changeSlider = (index: number) => {
         setActiveTab(index);

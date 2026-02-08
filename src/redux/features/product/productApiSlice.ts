@@ -62,6 +62,14 @@ export const productApiSlice = createApi({
             })
         }),
 
+        sellOrder: builder.mutation({
+            query: (data) => ({
+                url: "/waiter/sale-order",
+                method: "POST",
+                body: data
+            })
+        }),
+
         getCustomerInfo: builder.query({
             query: (phone) => `/customers/${phone}`,
             keepUnusedDataFor: 0,
@@ -86,6 +94,7 @@ export const {
     useLazyGetMyOrdersQuery,
     useLazyGetAllProductsQuery,
     useGetAllOrdersQuery,
+    useSellOrderMutation,
 
     // online orders
     useGetOnlineOrdersQuery,

@@ -35,7 +35,7 @@ export type OrderFormValues = z.infer<typeof orderSchema>;
 import useFormatPrice from "@/hooks/useFormatPrice";
 import useRenderText from '@/hooks/useRenderText';
 import { paymentMethods } from "@/lib/demo-data";
-import { useAddCustomerMutation } from "@/redux/features/customer/customerApiSlice";
+import { useSellOrderMutation } from "@/redux/features/product/productApiSlice";
 import LoadingSpinner from "@/sharedComponents/loading/LoadingSpinner";
 import { Input } from "@/sharedComponents/shared/FormEl";
 import RenderText from "@/sharedComponents/utils/RenderText";
@@ -51,11 +51,10 @@ export default function MakeSellModal() {
     // hooks
     const [mounted, setMounted] = useState(false);
     const dispatch = useDispatch();
+    const [sellOrder, { isLoading }] = useSellOrderMutation()
     const t = useTranslations('checkout');
     const { EXPAND } = useSelector((state: RootState) => state.actions);
-    const { cartTotal } = useSelector((state: RootState) => state.productSlice);
-
-    const [addCustomer, { isLoading }] = useAddCustomerMutation()
+    const { cartTotal, detailsOrder } = useSelector((state: RootState) => state.productSlice);
     const [isOpen, setIsOpen] = useState(false);
     const { translateNumber, formatPrice } = useFormatPrice()
 
@@ -78,29 +77,50 @@ export default function MakeSellModal() {
         }
     });
 
+    const discount = watch("discount") ?? 0;
+    const deliveryCharge = watch("deliveryCharge") ?? 0;
+    const payAmount = watch("payAmount") ?? 0;
+    const totalAmount = detailsOrder?.items ? detailsOrder?.items.reduce((acc, cur) => acc + Number(cur.variation.price), 0) : 0;
+    const grandTotal = totalAmount + deliveryCharge - discount;
+    const dewAmount = grandTotal - payAmount;
+
     // conditional variables
     const openModal = EXPAND === KEY;
 
     // handlers
     const onSubmit = async (data: OrderFormValues) => {
+        alert("api integration in progress");
+        return;
         const bodyData = {
-            name: data.discount,
-            phone: data.deliveryCharge,
-            address_id: data.paymentMethod,
-            address_note: data.payAmount,
+            "order_id": [detailsOrder?.id],
+            "sale_date": detailsOrder?.created_at,
+            "customer_type": detailsOrder?.customer_type,
+            "waiter_id": detailsOrder?.waiter_id,
+            "table_id": detailsOrder?.table_id,
+            "customer_id": detailsOrder?.customer_id,
+            "delivery_date": detailsOrder?.delivery_date,
+            "discount": discount,
+            "actual_discount": discount,
+            "delivery_charge": deliveryCharge,
+            "note": detailsOrder?.note,
+            "dew_by": null,
+            "dew_commit_date": new Date(),
+            "estimate_amount": Number(detailsOrder?.estimate_number),
+            "paid": payAmount,
+            "due": dewAmount,
+            "payment_method": 1
         }
-        alert("Api integration in progress");
-        console.log(bodyData);
-        // try {
-        //     const res = await confirmOrder(bodyData).unwrap();
-        //     if (res.success) {
-        //         dispatch(clearCartProducts());
-        //         // save the order to localStorage
-        //         dispatch(updateFetchOrders(true))
-        //     }
-        // } catch (error) {
-        //     console.error(error);
-        // }
+        try {
+            const res = await sellOrder(bodyData).unwrap();
+            console.log(res, ' res from')
+            if (res.success) {
+
+            } else {
+                throw new Error("Something went wrong");
+            }
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     const handleModalClick = (event: MouseEvent<HTMLDivElement>) => {
@@ -148,15 +168,6 @@ export default function MakeSellModal() {
         };
     }, [isLoading])
 
-
-    const discount = watch("discount") ?? 0;
-    const deliveryCharge = watch("deliveryCharge") ?? 0;
-    const payAmount = watch("payAmount") ?? 0;
-
-    const grandTotal = cartTotal + deliveryCharge - discount;
-    const dewAmount = grandTotal - payAmount;
-
-
     useEffect(() => {
         if (discount > cartTotal) {
             setError("discount", {
@@ -169,7 +180,6 @@ export default function MakeSellModal() {
     }, [discount, cartTotal, setError, clearErrors, t]);
 
     if (!mounted) return <></>;
-
 
     return createPortal(
         <>
@@ -187,7 +197,7 @@ export default function MakeSellModal() {
                         <div className="flex items-center justify-between bg-primary px-2.5 sm:px-4 py-3 mb-1">
                             <h3 className="fg_fs-lg text-white gap-2 flex">
                                 <span><RenderText group="checkout" variable="makeSell" /></span>
-                                <span className="text-base" >(<RenderText group="checkout" variable="orderId" /> : {translateNumber(34235)})</span>
+                                <span className="text-base" >(<RenderText group="checkout" variable="orderId" /> : {translateNumber(detailsOrder?.id || 0)})</span>
                             </h3>
                             <Button onClick={closeModal} className="rounded-full !px-2.5" variant="secondary"> <X className="!text-white w-5 md:w-6 md:h-6 h-5 lg:w-8 lg:h-8" /></Button>
                         </div>
@@ -208,7 +218,7 @@ export default function MakeSellModal() {
                                 <Input
                                     showErrorBorder={false}
                                     control={control}
-                                    label={t("enterDeliveryCharge")}
+                                    label={t("deliveryCharge")}
                                     name='deliveryCharge'
                                     type="number"
                                     inputStyle="text-center !py-1"
@@ -216,7 +226,7 @@ export default function MakeSellModal() {
                                 />
                             </div>
                             <div className="w-full flex flex-col mb-1 gap-0.5 px-2.5">
-                                <p className="flex items-center justify-between" ><span>{t("totalOrderAmount")} </span> <span>{formatPrice(cartTotal)}</span></p>
+                                <p className="flex items-center justify-between" ><span>{t("totalOrderAmount")} </span> <span>{formatPrice(totalAmount)}</span></p>
                                 <p className="flex items-center justify-between" ><span>{t("discountAmount")} </span><span className="flex items-center justify-between min-w-[70px]" ><span className="mr-1 text-secondary text-sm">(-)</span><span>{formatPrice(discount)}</span></span></p>
                                 <p className="flex items-center justify-between" ><span>{t("deliveryCharge")} </span><span className="flex items-center justify-between min-w-[70px]" ><span className="mr-1 text-secondary text-sm">(+)</span><span>{formatPrice(deliveryCharge)}</span></span></p>
                             </div>

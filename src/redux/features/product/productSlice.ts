@@ -1,6 +1,5 @@
-import { kitchenOrders, tableData } from "@/lib/demo-data";
 import { setToStorage } from "@/lib/storage";
-import { ITable, KitchenOrder, TCartProduct, TOrder, TProduct } from "@/types/types";
+import { TCartProduct, TOrder, TProduct } from "@/types/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface IInitialState {
@@ -13,12 +12,10 @@ interface IInitialState {
     showOfferedMark: boolean;
     pendingOrders: TOrder[];
     allProducts: TProduct[];
-    kitchenOrders: KitchenOrder[];
     detailsOrder: TOrder | null;
 
     // temp
     orders: TOrder[];
-    tables: ITable[];
 }
 
 const initialState: IInitialState = {
@@ -31,10 +28,8 @@ const initialState: IInitialState = {
     showOfferedMark: false,
     pendingOrders: [],
     allProducts: [],
-    kitchenOrders: kitchenOrders,
     detailsOrder: null,
     orders: [],
-    tables: tableData
 };
 
 
@@ -116,21 +111,6 @@ const productSlice = createSlice({
             setToStorage('fav_items', state.favouriteProducts.map(item => item.id));
         },
 
-        // table
-        updateTable: (state, action: PayloadAction<{ id: number, bookingStatus: boolean }>) => {
-            state.tables = state.tables.map(table => table.id === action.payload.id ? { ...table, isBooked: action.payload.bookingStatus } : table)
-        },
-
-        updateKitchenOrderItemStatus: (state, action: PayloadAction<{ id: number, itemId: number }>) => {
-            const { id, itemId } = action.payload;
-            const order = state.kitchenOrders.find(o => o.id === id);
-            if (!order) return;
-
-            const item = order.items.find(item => item.id === itemId);
-            if (item) {
-                item.status = item.status === "pending" ? "success" : "pending";
-            }
-        },
         updateDetailsOrder: (state, action: PayloadAction<TOrder | null>) => {
             state.detailsOrder = action.payload;
         },
@@ -153,9 +133,7 @@ export const {
     clearCartProducts,
     updateCartProduct,
     setAllProduct,
-    updateTable,
     updateCategoryActiveSlide,
-    updateKitchenOrderItemStatus,
     setFavouriteProducts,
     addFavouriteProduct,
     removeFavouriteProduct,
