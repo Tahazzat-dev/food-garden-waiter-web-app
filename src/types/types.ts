@@ -261,7 +261,8 @@ export interface ITable {
 
 export type TSelectedTable = {
     table_id: number;
-    customer_type: "Online" | "Take Way" | "Dine-In"
+    customer_type: "Online" | "Take Way" | "Dine-In",
+    label: string;
 }
 
 export interface TOrder {

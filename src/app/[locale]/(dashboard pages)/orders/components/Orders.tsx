@@ -1,5 +1,4 @@
 "use client"
-import { orders as fakeOrders } from "@/lib/demo-data";
 import { SET_EXPAND, updateActiveOrderDetailsModal } from "@/redux/features/actions/actionSlice";
 import { useLazyGetAllOrdersQuery, useLazyGetMyOrdersQuery } from "@/redux/features/product/productApiSlice";
 import { updateDetailsOrder } from "@/redux/features/product/productSlice";
@@ -20,16 +19,10 @@ import "swiper/swiper.css";
 
 
 export default function Orders() {
-    const dispatch = useDispatch()
     const ordersSwiperRef = useRef<SwiperType | null>(null);
     const [activeTab, setActiveTab] = useState(0)
-    const orders = fakeOrders as TOrder[];
 
     // handlers
-    const handleEditOrder = (order: TOrder) => {
-        dispatch(updateDetailsOrder(order));
-        dispatch(SET_EXPAND("ORDER_DETAILS_MODAL"));
-    }
 
     const changeSlider = (index: number) => {
         setActiveTab(index);
@@ -74,6 +67,7 @@ const MyOrders = () => {
         dispatch(updateActiveOrderDetailsModal("web"));
         dispatch(SET_EXPAND("ORDER_DETAILS_MODAL"));
     }
+
 
     useEffect(() => {
         const loadData = async () => {

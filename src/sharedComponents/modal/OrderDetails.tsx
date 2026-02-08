@@ -11,15 +11,18 @@ import { OrderItem } from "@/types/types";
 import * as Dialog from "@radix-ui/react-dialog";
 import { ChevronDown, House, MapPin, Phone, X } from "lucide-react"; // optional icon
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useReactToPrint } from "react-to-print";
 import LoadingSpinner from "../loading/LoadingSpinner";
+import { KOTPrint } from "../shared/KotPrint";
 import RenderText from "../utils/RenderText";
 
 
 
 export default function OrderDetailsModal() {
     // hooks
+    const printRef = useRef<HTMLDivElement>(null);
     const [showFullDeails, setShowFullDetials] = useState(false)
     const [updateOnlineOrder, { isLoading: isOnlineOrderUpdating }] = useUpdateOnlineOrdersMutation();
     const dispatch = useDispatch();
@@ -34,6 +37,12 @@ export default function OrderDetailsModal() {
     const closeModal = () => {
         dispatch(SET_EXPAND(null));
     }
+
+    const handleKotPrint = useReactToPrint({
+        contentRef: printRef,
+    });
+
+
 
     const udpateOnlineOrderStatus = async (id: number, status: number) => {
         try {
@@ -62,82 +71,100 @@ export default function OrderDetailsModal() {
     const { en: addressEn, bn: addressBn } = getTranslationReadyText(customerAdress?.name || "");
     const totalAmount = detailsOrder.items.reduce((acc, item) => { return (acc + (Number(item.variation.price) * item.qty)) }, 0)
     return (
-        <Dialog.Root open={KEY === EXPAND} onOpenChange={closeModal}>
-            <Dialog.Portal>
-                <div className=" fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999]" />
-                <Dialog.Content className="prevent-body-trigger fixed top-1/2 left-1/2  max-w-[94vw] md:max-w-[500px] !rounded-[10px] lg:!rounded-[12px] overflow-hidden w-full -translate-x-1/2 -translate-y-1/2 bg-body shadow-lg dark:shadow-slate-800 z-[99999]">
-                    <Dialog.Title className="flex items-center justify-between px-4 py-2 fg_fs-md bg-primary text-white text-center">
-                        <RenderText group="orders" variable="orderDetails" />
-                        <Button onClick={closeModal} className="rounded-full !px-2.5" variant="secondary"> <X className="!text-white w-5 md:w-6 md:h-6 h-5 lg:w-8 lg:h-8" /></Button>
-                    </Dialog.Title>
-                    <div className="p-1 px-2 m-2 border border-slate-400 rounded-md">
-                        <h6 onClick={() => setShowFullDetials(prev => !prev)} className="text-base mt-1 gap-2 flex items-center justify-between leading-[130%]" >
-                            <span className="flex flex-wrap items-center" >
-                                <span className="mr-1">
-                                    <Image src={"/images/shared/customer-white-icon.png"} className='hidden dark:block z-10 w-5 h-auto' width={200} height={200} alt="Customer Icon" />
-                                    <Image src={"/images/shared/customer-black-icon.png"} className='dark:hidden z-10 w-5 h-auto' width={200} height={200} alt="Customer Icon" />
+        <>
+            <Dialog.Root open={KEY === EXPAND} onOpenChange={closeModal}>
+                <Dialog.Portal>
+                    <div className=" fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999]" />
+                    <Dialog.Content className="prevent-body-trigger fixed top-1/2 left-1/2  max-w-[94vw] md:max-w-[500px] !rounded-[10px] lg:!rounded-[12px] overflow-hidden w-full -translate-x-1/2 -translate-y-1/2 bg-body shadow-lg dark:shadow-slate-800 z-[99999]">
+                        <Dialog.Title className="flex items-center justify-between px-4 py-2 fg_fs-md bg-primary text-white text-center">
+                            <RenderText group="orders" variable="orderDetails" />
+                            <Button onClick={closeModal} className="rounded-full !px-2.5" variant="secondary"> <X className="!text-white w-5 md:w-6 md:h-6 h-5 lg:w-8 lg:h-8" /></Button>
+                        </Dialog.Title>
+                        <div className="p-1 px-2 m-2 border border-slate-400 rounded-md">
+                            <h6 onClick={() => setShowFullDetials(prev => !prev)} className="text-base mt-1 gap-2 flex items-center justify-between leading-[130%]" >
+                                <span className="flex flex-wrap items-center" >
+                                    <span className="mr-1">
+                                        <Image src={"/images/shared/customer-white-icon.png"} className='hidden dark:block z-10 w-5 h-auto' width={200} height={200} alt="Customer Icon" />
+                                        <Image src={"/images/shared/customer-black-icon.png"} className='dark:hidden z-10 w-5 h-auto' width={200} height={200} alt="Customer Icon" />
+                                    </span>
+                                    <span>{detailsOrder.customer.name}</span>
                                 </span>
-                                <span>{detailsOrder.customer.name}</span>
-                            </span>
-                            <ChevronDown className={cn("duration-200 w-5", showFullDeails && "rotate-180")} />
-                        </h6>
+                                <ChevronDown className={cn("duration-200 w-5", showFullDeails && "rotate-180")} />
+                            </h6>
+                            {
+                                showFullDeails && <div className="w-full">
+                                    <p className="mt-1 text-sm flex items-center gap-4"><Phone className="w-4" />{detailsOrder?.customer?.phone || ""}</p>
+                                    <p className="mt-1 text-sm flex items-center gap-4"><MapPin className="w-4" />{renderText(addressEn, addressBn)}</p>
+                                    <p className="text-sm flex items-center gap-4"><House className="w-[15px]" />{detailsOrder.customer.note}</p>
+                                </div>
+                            }
+
+                        </div>
+                        <div className="p-3">
+                            <p className="mb-1 fg_fs-xs "><RenderText group="shared" variable="orderItems" /></p>
+                            <div className="max-h-[45vh] overflow-y-auto rounded-md">
+                                {
+                                    detailsOrder.items.map(item => <DetailsItemCard key={item.id} item={item} />)
+                                }
+                            </div>
+                            <div className="mt-2 w-full clr-opposite py-1 rounded-md px-2 ">
+                                <p className="flex font-semibold w-full items-center justify-between" ><span><RenderText group="shared" variable="total" /></span><span>{formatPrice(totalAmount)}</span></p>
+                            </div>
+                        </div>
                         {
-                            showFullDeails && <div className="w-full">
-                                <p className="mt-1 text-sm flex items-center gap-4"><Phone className="w-4" />{detailsOrder?.customer?.phone || ""}</p>
-                                <p className="mt-1 text-sm flex items-center gap-4"><MapPin className="w-4" />{renderText(addressEn, addressBn)}</p>
-                                <p className="text-sm flex items-center gap-4"><House className="w-[15px]" />{detailsOrder.customer.note}</p>
+                            activeOrderDetailsModal === "web" && <div className="p-3 pt-0 gap-1 flex justify-between flex-wrap">
+                                <Button size="sm" className=" !rounded-[3px] !px-2 bg-[#58C354] text-white" >
+                                    <RenderText group="shared" variable="invPrint" />
+                                </Button>
+                                <Button onClick={handleKotPrint} size="sm" className=" !rounded-[3px] grow bg-[#F66FFF] text-white" variant="outline" >
+                                    <RenderText group="shared" variable="kot" />
+                                </Button>
+                                <Button size="sm" className=" !rounded-[3px] grow text-white" variant="secondary" >
+                                    <RenderText group="shared" variable="edit" />
+                                </Button>
+                                <Button onClick={() => dispatch(SET_EXPAND("OPEN_MAKE_SELL_CUSTOMER_MODAL"))} size="sm" className=" !rounded-[3px] grow" >
+                                    <RenderText group="shared" variable="sale" />
+                                </Button>
                             </div>
                         }
 
-                    </div>
-                    <div className="p-3">
-                        <p className="mb-1 fg_fs-xs "><RenderText group="shared" variable="orderItems" /></p>
-                        <div className="max-h-[45vh] overflow-y-auto rounded-md">
-                            {
-                                detailsOrder.items.map(item => <DetailsItemCard key={item.id} item={item} />)
-                            }
-                        </div>
-                        <div className="mt-2 w-full clr-opposite py-1 rounded-md px-2 ">
-                            <p className="flex font-semibold w-full items-center justify-between" ><span><RenderText group="shared" variable="total" /></span><span>{formatPrice(totalAmount)}</span></p>
-                        </div>
-                    </div>
-                    {
-                        activeOrderDetailsModal === "web" && <div className="p-3 pt-0 gap-1 flex justify-between flex-wrap">
-                            <Button size="sm" className=" !rounded-[3px] !px-2 bg-[#58C354] text-white" >
-                                <RenderText group="shared" variable="invPrint" />
-                            </Button>
-                            <Button size="sm" className=" !rounded-[3px] grow bg-[#F66FFF] text-white" variant="outline" >
-                                <RenderText group="shared" variable="kot" />
-                            </Button>
-                            <Button size="sm" className=" !rounded-[3px] grow text-white" variant="secondary" >
-                                <RenderText group="shared" variable="edit" />
-                            </Button>
-                            <Button onClick={() => dispatch(SET_EXPAND("OPEN_MAKE_SELL_CUSTOMER_MODAL"))} size="sm" className=" !rounded-[3px] grow" >
-                                <RenderText group="shared" variable="sale" />
-                            </Button>
-                        </div>
-                    }
+                        {
+                            activeOrderDetailsModal === "online" && <div className="prevent-body-trigger p-3 pt-0 gap-1 flex justify-between flex-wrap">
+                                {
+                                    isOnlineOrderUpdating ? <div className="h-[32px] w-full flex items-center justify-center overflow-hidden">
+                                        <LoadingSpinner />
+                                    </div> :
+                                        <>
+                                            <Button onClick={() => udpateOnlineOrderStatus(detailsOrder.id, 2)} disabled={isOnlineOrderUpdating} size="sm" className=" !rounded-[3px] grow text-white" variant="secondary" >
+                                                <RenderText group="shared" variable="reject" />
+                                            </Button>
+                                            <Button onClick={() => udpateOnlineOrderStatus(detailsOrder.id, 1)} disabled={isOnlineOrderUpdating} size="sm" className=" !rounded-[3px] grow" >
+                                                <RenderText group="shared" variable="accept" />
+                                            </Button>
+                                        </>
+                                }
+                            </div>
+                        }
+                    </Dialog.Content>
+                </Dialog.Portal>
+            </Dialog.Root>
 
-                    {
-                        activeOrderDetailsModal === "online" && <div className="prevent-body-trigger p-3 pt-0 gap-1 flex justify-between flex-wrap">
-                            {
-                                isOnlineOrderUpdating ? <div className="h-[32px] w-full flex items-center justify-center overflow-hidden">
-                                    <LoadingSpinner />
-                                </div> :
-                                    <>
-                                        <Button onClick={() => udpateOnlineOrderStatus(detailsOrder.id, 2)} disabled={isOnlineOrderUpdating} size="sm" className=" !rounded-[3px] grow text-white" variant="secondary" >
-                                            <RenderText group="shared" variable="reject" />
-                                        </Button>
-                                        <Button onClick={() => udpateOnlineOrderStatus(detailsOrder.id, 1)} disabled={isOnlineOrderUpdating} size="sm" className=" !rounded-[3px] grow" >
-                                            <RenderText group="shared" variable="accept" />
-                                        </Button>
-                                    </>
-                            }
-                        </div>
+            <div className="w-full hidden print:block">
+                <KOTPrint
+                    orderData={
+                        {
+                            id: detailsOrder.id,
+                            orderType: detailsOrder.customer_type,
+                            token: detailsOrder.token_no,
+                            table_id: detailsOrder.table_id,
+                            items: detailsOrder.items,
+                            waiter: detailsOrder.waiter.fname
+                        }
                     }
-                </Dialog.Content>
-            </Dialog.Portal>
-        </Dialog.Root>
+                    ref={printRef}
+                />
+            </div>
+        </>
     );
 }
 

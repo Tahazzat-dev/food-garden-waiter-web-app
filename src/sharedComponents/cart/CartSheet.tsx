@@ -5,16 +5,18 @@ import { calculateSubtotal, cn, getSellingPrice } from '@/lib/utils';
 import { SET_EXPAND, updatePrevAction } from '@/redux/features/actions/actionSlice';
 import { useConfirmOrderMutation } from '@/redux/features/product/productApiSlice';
 import { RootState } from '@/redux/store';
-import { TCustomer, TCustomerType, TSelectedTable } from '@/types/types';
+import { TCustomer, TSelectedTable } from '@/types/types';
 import * as Dialog from "@radix-ui/react-dialog";
 import { Plus, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { MouseEvent, useState } from 'react';
+import { MouseEvent, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
+import { useReactToPrint } from "react-to-print";
 import { CartCard } from '../cards/CartCard';
 import LoadingSpinner from '../loading/LoadingSpinner';
 import { CustomDrawer } from '../modal/CustomDrawer';
+import { KOTPrint } from '../shared/KotPrint';
 import RenderText from '../utils/RenderText';
 import { CustomerSelect } from './CustomerSelect';
 import Tables from './Tables';
@@ -25,17 +27,13 @@ export type CustomerFormValues = {
 }
 
 
-type TOrderType = "table" | "percel" | 'online';
-
 type TOrderResponse = {
   success: boolean;
   message: string;
   orderId?: number;
-  totalCost?: number;
-  customerType?: TCustomerType;
-  status?: number;
-  orderIdentity?: number;
-  orderType: TOrderType;
+  token?: string;
+  orderType?: string;
+  table?: string;
 }
 
 export function CartSheet() {
@@ -44,6 +42,7 @@ export function CartSheet() {
 
   // hooks
   const t = useTranslations('shared')
+  const printRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
   const [confirmOrder, { isLoading }] = useConfirmOrderMutation()
   const { cartProducts } = useSelector((state: RootState) => state.productSlice);
@@ -57,9 +56,53 @@ export function CartSheet() {
   const { register, handleSubmit, setValue, watch, setError, formState: { errors } } = useForm<CustomerFormValues>()
 
 
-  // handlers
-  const handleModalClick = (event: MouseEvent<HTMLDivElement>) => {
+  const selectedCustomer = watch("customer")
 
+  // handlers
+  const onSubmit = async (data: CustomerFormValues) => {
+    if (!data.customer) {
+      setError("customer", { type: "manual", message: 'Select Customer' })
+      return;
+    }
+    if (!selectedTable) {
+      setError("table", { type: "manual", message: 'Select table' })
+      return;
+    }
+
+    try {
+      const choosedProducts = cartProducts.map(item => ({ product_id: item.productId, variant_id: item.id, quantity: item.quantity }))
+      const res = await confirmOrder({
+        customer_id: selectedCustomer.id,
+        customer_type: selectedTable.customer_type,
+        table_id: selectedTable.table_id,
+        discount: 0,
+        products: choosedProducts
+      }).unwrap();
+
+      if (res.success) {
+        setOrderResponse({
+          message: "orderSuccess",
+          success: true,
+          orderId: res.id,
+          token: res.token,
+          table: selectedTable.label,
+          orderType: selectedTable.customer_type,
+        })
+      }
+    } catch (error) {
+      console.log(error);
+      setOrderResponse({
+        message: "orderFail",
+        success: false,
+        orderId: 0,
+        orderType: "online",
+      })
+    } finally {
+      dispatch(SET_EXPAND(null));
+    }
+  }
+
+  const handleModalClick = (event: MouseEvent<HTMLDivElement>) => {
     if (!isOpen || isLoading) return;
 
     const targetElement = event.target as HTMLElement;
@@ -67,56 +110,10 @@ export function CartSheet() {
     setIsOpen(false);
   }
 
-  const selectedCustomer = watch("customer")
+  const handlePrint = useReactToPrint({
+    contentRef: printRef,
+  });
 
-  const onSubmit = async (data: CustomerFormValues) => {
-    if (!data.customer) {
-      setError("customer", { type: "manual", message: 'Select Customer' })
-      return;
-    }
-
-    if (!selectedTable) {
-      setError("table", { type: "manual", message: 'Select table' })
-      return;
-    }
-
-
-    /*
- 'customer_id' => 'required|integer',
-            'customer_type' => ['required', Rule::in(['Online', 'Take Way', 'Dine-In'])],
-            'table_id' => 'nullable|integer',
-            'discount' => 'nullable|integer',
-            'products' => 'required|array|min:1',
-            'products.*.product_id' => 'required|integer',
-            'products.*.variant_id' => 'nullable|integer',
-            'products.*.quantity' => 'required|numeric|min:1',
-*/
-
-    try {
-      const choosedProducts = cartProducts.map(item => ({ product_id: item.productId, variant_id: item.id, quantity: item.quantity }))
-      const res = await confirmOrder({
-        customer_id: selectedCustomer.id,
-        table_id: selectedTable.table_id,
-        discount: 0,
-        products: choosedProducts
-      });
-
-      console.log(res, ' res from adding product');
-    } catch (error) {
-      console.log(error);
-      setOrderResponse({
-        message: "orderFail",
-        success: false,
-        orderId: 233,
-        status: 500,
-        orderType: "online",
-        orderIdentity: 1,
-        customerType: 'Dine-In',
-      })
-    } finally {
-      dispatch(SET_EXPAND(null));
-    }
-  }
 
 
   const handleOpenAddCustomerModal = () => {
@@ -127,9 +124,6 @@ export function CartSheet() {
   const closeModal = () => {
     setOrderResponse(null)
   }
-
-
-
   // calculated cart total 
   const totalPrice = cartProducts.reduce((total, item) => total + (calculateSubtotal(getSellingPrice(item.price, item.discount), item.quantity)), 0)
   return (
@@ -203,12 +197,37 @@ export function CartSheet() {
             </div>
             <div className="p-4">
               {orderResponse?.orderId && <p className='text-center flex gap-2 justify-center' ><span><RenderText group='checkout' variable='orderId' /> :</span><span>{translateNumber(orderResponse.orderId)}</span></p>}
-              {orderResponse?.orderType && <p className='text-center flex gap-2 justify-center' ><span><RenderText group='orders' variable='orderDetails' /> :</span> <span><RenderText group='shared' variable={orderResponse.orderType} /></span>{orderResponse.orderType !== "online" && !!orderResponse.orderIdentity && translateNumber(orderResponse.orderIdentity)}</p>}
-              {orderResponse?.totalCost && <p className='text-center flex gap-2 justify-center' ><span><RenderText group='shared' variable='total' /> :</span> <span>{formatPrice(orderResponse.totalCost)}</span></p>}
+              {
+                !!orderResponse?.success && <>
+                  <p className='text-center flex gap-2 justify-center' ><RenderText group='checkout' variable='wantToPrintKot' /></p>
+                  <div className="flex justify-center gap-5 mt-2">
+                    <Button onClick={closeModal} variant="secondary" className='text-white' ><RenderText group='shared' variable='no' /></Button>
+                    <Button onClick={() => {
+                      handlePrint()
+                      closeModal()
+                    }} variant="primary" className='text-white' ><RenderText group='shared' variable='yes' /></Button>
+                  </div>
+                </>
+              }
+
             </div>
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog.Root>
+
+      <div className="w-full hidden print:block">
+        <KOTPrint
+          orderData={
+            {
+              id: orderResponse?.orderId,
+              orderType: orderResponse?.orderType,
+              token: orderResponse?.token,
+              table: orderResponse?.table
+            }
+          }
+          ref={printRef}
+        />
+      </div>
     </>
   );
 }

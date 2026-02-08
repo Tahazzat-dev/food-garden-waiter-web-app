@@ -79,7 +79,9 @@
     "prev": "Prev",
     "accept": "Accept",
     "reject": "Reject",
-    "noDataFound": "কোনো তথ্য পাওয়া যাই নি"
+    "noDataFound": "No data found",
+    "yes": "Yes",
+    "no": "No"
   },
 
   "pages": {
@@ -208,7 +210,8 @@
     "enterDeliveryCharge": "Enter Delivery Charge",
     "discountExceedError": "Discount is too high",
     "searchCustomer": "Search customer",
-    "noCustomerFound": "No customer found"
+    "noCustomerFound": "No customer found",
+    "wantToPrintKot": "Do you want to print KOT"
   },
   "home": {
     "title": "Hello"
@@ -220,6 +223,7 @@
   },
   "orders": {
     "myOrders": "My Orders",
+    "success": "Success",
     "allOrders": "All Orders",
     "addOrder": "Add Order",
     "unsaveOrder": "You have an unsave order. Save or discard that order",

@@ -47,7 +47,7 @@ export const productApiSlice = createApi({
 
         confirmOrder: builder.mutation({
             query: (data) => ({
-                url: "/orders",
+                url: "/waiter/orders",
                 method: "POST",
                 body: data
             })
