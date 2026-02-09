@@ -21,7 +21,7 @@ type TLoginErrorResponse = {
 // Login form
 const loginSchema = z.object({
     email: z.email("authentication.invalidEmailError"),
-    password: z.string().nonempty("authentication.passwordError").min(6, "authentication.passwordError"),
+    password: z.string().nonempty("authentication.passwordError").min(4, "authentication.passwordError"),
 })
 
 type LoginSchema = z.infer<typeof loginSchema>;
@@ -51,21 +51,27 @@ export default function LoginForm() {
         setIsLoading(true)
         try {
             const res = await loginUser(data.email, data.password);
-            dispatch(setAuthUser(res.user));
-            setToStorage("auth_token", res.token);
-            setToStorage("user", res.user);
-            dispatch(updateToken(res.token));
-            reset({
-                email: "",
-                password: ""
-            });
+            if (res.status === 200) {
+                dispatch(setAuthUser(res.user));
+                setToStorage("auth_token", res.token);
+                setToStorage("user", res.user);
+                dispatch(updateToken(res.token));
+                reset({
+                    email: "",
+                    password: ""
+                });
 
-            router.replace('/')
+                router.replace('/')
+            }
+            console.log(res, ' res ');
+            return;
+
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (e: any) {
             if (e?.status === 401) {
                 setError('password', { type: "manual", message: "authentication.invalidCredentials" })
             }
+            setError('password', { type: "manual", message: "authentication.invalidCredentials" })
         } finally {
             setIsLoading(false)
         }
