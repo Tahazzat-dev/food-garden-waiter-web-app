@@ -1,4 +1,4 @@
-import { TActiveOrderDetailsModal, TCartIconposition } from "@/types/types";
+import { TActiveOrderDetailsModal, TCartIconposition, TOrderAction } from "@/types/types";
 import { createSlice } from "@reduxjs/toolkit";
 
 
@@ -9,6 +9,7 @@ interface IInitialState {
     preventScrolling: boolean;
     cartIconPosition: TCartIconposition | null;
     runExpandAnimation: boolean;
+    orderAction: TOrderAction;
     activeOrderDetailsModal: TActiveOrderDetailsModal;
 
     // temporary
@@ -22,6 +23,7 @@ const initialState: IInitialState = {
     runExpandAnimation: false,
     cartIconPosition: null,
     activeOrderDetailsModal: null,
+    orderAction: "new",
     // temp
     fetchOrders: true,
 };
@@ -57,6 +59,9 @@ const actionsSlice = createSlice({
             state.activeOrderDetailsModal = action.payload
         },
 
+        udpateOrderAction(state, action: { payload: TOrderAction }) {
+            state.orderAction = action.payload
+        },
     },
 });
 
@@ -67,6 +72,7 @@ export const {
     updateCartIconPosition,
     toggleRunExpandAnimation,
     updatePrevAction,
+    udpateOrderAction,
     updateActiveOrderDetailsModal
 } = actionsSlice.actions;
 export default actionsSlice.reducer;

@@ -1,16 +1,10 @@
-// types/lang.ts
-// export type TCategory = {
-//     id: string;
-//     name: {
-//         en: string;
-//         bn: string;
-//     };
-//     img: string;
-//     slug: string;
-// }
+export type TCartFormSavedData = {
+    customerId: number;
+    tableId: number;
 
+}
 export type TActiveOrderDetailsModal = "online" | "web" | null;
-
+export type TOrderAction = "new" | "edit";
 // TODO: temp_
 export type TCategory = {
     id: number;

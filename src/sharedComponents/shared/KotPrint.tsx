@@ -71,7 +71,7 @@ export const KOTPrint = forwardRef<HTMLDivElement, Props>(
                     <tbody>
                         {orderData.items && orderData.items.map((item, index) => {
                             const { en, bn } = getTranslationReadyText(item.product_name);
-                            return <tr key={item.id} className={orderData.items.length > (index + 1) ? 'border-b' : ""}>
+                            return <tr key={item.id + index} className={orderData.items.length > (index + 1) ? 'border-b' : ""}>
                                 <td className="p-1">
                                     <strong>{bn ?? en}</strong>
 

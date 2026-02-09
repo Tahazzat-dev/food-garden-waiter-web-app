@@ -4,10 +4,11 @@ import { Button } from "@/components/ui/button";
 import useFormatPrice from "@/hooks/useFormatPrice";
 import useRenderText from "@/hooks/useRenderText";
 import { cn, getImage, getTranslationReadyText } from "@/lib/utils";
-import { SET_EXPAND } from "@/redux/features/actions/actionSlice";
+import { SET_EXPAND, udpateOrderAction } from "@/redux/features/actions/actionSlice";
 import { useUpdateOnlineOrdersMutation } from "@/redux/features/product/productApiSlice";
+import { setCartProducts, updateCartFormSavedData } from "@/redux/features/product/productSlice";
 import { RootState } from "@/redux/store";
-import { OrderItem } from "@/types/types";
+import { OrderItem, TCartProduct } from "@/types/types";
 import * as Dialog from "@radix-ui/react-dialog";
 import { ChevronDown, House, MapPin, Phone, X } from "lucide-react"; // optional icon
 import Image from "next/image";
@@ -50,7 +51,25 @@ export default function OrderDetailsModal() {
         contentRef: invoicePrintRef,
     });
 
+    const handleEditOrder = () => {
+        if (!detailsOrder) return;
 
+        dispatch(udpateOrderAction("edit"));
+        const cartProducts: TCartProduct[] = detailsOrder.items.map(item => ({
+            id: item.id,
+            productId: item.product_id,
+            title: item.product_name,
+            categoryId: 1,
+            img: item.variation.image || "",
+            name: item.variation.variation,
+            price: Number(item.variation.price),
+            discount: 0,
+            quantity: item.qty
+        }))
+        dispatch(setCartProducts(cartProducts))
+        dispatch(updateCartFormSavedData({ customerId: detailsOrder.customer_id, tableId: detailsOrder.table_id || 1 }));
+        dispatch(SET_EXPAND("CART_SHEET"));
+    }
 
     const udpateOnlineOrderStatus = async (id: number, status: number) => {
         try {
@@ -129,7 +148,7 @@ export default function OrderDetailsModal() {
                                 <Button onClick={handleKotPrint} size="sm" className=" !rounded-[3px] grow bg-[#F66FFF] text-white" variant="outline" >
                                     <RenderText group="shared" variable="kot" />
                                 </Button>
-                                <Button size="sm" className=" !rounded-[3px] grow text-white" variant="secondary" >
+                                <Button onClick={handleEditOrder} size="sm" className=" !rounded-[3px] grow text-white" variant="secondary" >
                                     <RenderText group="shared" variable="edit" />
                                 </Button>
                                 <Button onClick={() => dispatch(SET_EXPAND("OPEN_MAKE_SELL_CUSTOMER_MODAL"))} size="sm" className=" !rounded-[3px] grow" >

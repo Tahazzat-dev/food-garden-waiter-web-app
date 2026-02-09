@@ -17,6 +17,15 @@ export const productApiSlice = createApi({
         }),
 
         // orders
+        updateOrder: builder.mutation({
+            query: ({ id, data }) => ({
+                url: `/waiter/orders/${id}`,
+                method: "PUT",
+                body: data
+            }),
+            invalidatesTags: ['myOrders', "allOrders", "OnlineOrders"]
+        }),
+
         getMyOrders: builder.query({
             query: (q) => '/waiter/orders?' + q,
             providesTags: ['myOrders'],
@@ -59,7 +68,8 @@ export const productApiSlice = createApi({
                 url: "/waiter/orders",
                 method: "POST",
                 body: data
-            })
+            }),
+            invalidatesTags: ['myOrders', 'allOrders']
         }),
 
         sellOrder: builder.mutation({
@@ -89,6 +99,7 @@ export const {
     useGetAllProductsQuery,
 
     // orders
+    useUpdateOrderMutation,
     useGetMyOrdersQuery,
     useUpdateOrderItemStatusMutation,
     useLazyGetMyOrdersQuery,

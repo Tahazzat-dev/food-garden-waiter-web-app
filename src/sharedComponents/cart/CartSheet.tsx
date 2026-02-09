@@ -1,10 +1,11 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import useFormatPrice from '@/hooks/useFormatPrice';
+import { removeStorage } from '@/lib/storage';
 import { calculateSubtotal, cn, getSellingPrice } from '@/lib/utils';
-import { SET_EXPAND, updatePrevAction } from '@/redux/features/actions/actionSlice';
-import { useConfirmOrderMutation } from '@/redux/features/product/productApiSlice';
-import { setCartProducts } from '@/redux/features/product/productSlice';
+import { SET_EXPAND, udpateOrderAction, updatePrevAction } from '@/redux/features/actions/actionSlice';
+import { useConfirmOrderMutation, useUpdateOrderMutation } from '@/redux/features/product/productApiSlice';
+import { setCartProducts, updateCartFormSavedData } from '@/redux/features/product/productSlice';
 import { RootState } from '@/redux/store';
 import { OrderItem, TCustomer, TCustomerType, TSelectedTable } from '@/types/types';
 import * as Dialog from "@radix-ui/react-dialog";
@@ -48,11 +49,12 @@ export function CartSheet() {
   const printRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
   const [confirmOrder, { isLoading }] = useConfirmOrderMutation()
+  const [updateOrder, { isLoading: isUpdating }] = useUpdateOrderMutation()
   const { authUser } = useSelector((state: RootState) => state.auth);
-  const { cartProducts } = useSelector((state: RootState) => state.productSlice);
+  const { cartProducts, detailsOrder } = useSelector((state: RootState) => state.productSlice);
   const [selectedTable, setSelectedTable] = useState<TSelectedTable | null>(null)
   const [orderResponse, setOrderResponse] = useState<TOrderResponse | null>(null)
-  const { EXPAND } = useSelector((state: RootState) => state.actions);
+  const { EXPAND, orderAction } = useSelector((state: RootState) => state.actions);
   const openCart = EXPAND === KEY;
   const { formatPrice, translateNumber } = useFormatPrice()
   const [isOpen, setIsOpen] = useState(false);
@@ -75,37 +77,122 @@ export function CartSheet() {
 
     try {
       const choosedProducts = cartProducts.map(item => ({ product_id: item.productId, variant_id: item.id, quantity: item.quantity }))
-      const res = await confirmOrder({
-        customer_id: selectedCustomer.id,
-        customer_type: selectedTable.customer_type,
-        table_id: selectedTable.table_id,
-        discount: 0,
-        products: choosedProducts
-      }).unwrap();
 
-      const addedItems = cartProducts.map(item => (
-        {
+      if (orderAction === 'edit') {
+
+        if (!detailsOrder) return;
+
+        const updateTotal = cartProducts.reduce((total, item) => total + (calculateSubtotal(getSellingPrice(item.price, item.discount), item.quantity)), 0);
+        const updateItems = cartProducts.map((item) => ({
+          product_id: item.productId,
           product_name: item.title,
-          variation: {
-            variation: item.name,
-          },
-          qty: item.quantity,
-
-        }
-      ))
-
-      if (res.success) {
-        setOrderResponse({
-          message: "orderSuccess",
-          success: true,
-          id: res.id,
-          token: res.token,
+          rate: item.price,
+          main_qty: item.quantity,
+          sub_qty: 0,
+          sub_total: item.quantity * item.price,
+          total_purchase_cost: 0,
+          has_sub_unit: null
+        }))
+        const editData = {
+          brand_filter: "1",
+          customer_id: selectedCustomer.id,
+          customer_type: selectedTable.customer_type,
+          waiter_id: detailsOrder.waiter_id,
           table_id: selectedTable.table_id,
-          orderType: selectedTable.customer_type === "Take Way" ? "Self Pickup" : selectedTable.customer_type,
-          items: addedItems as OrderItem[],
-          waiter: authUser?.fname || ''
-        })
+          delivery_date: detailsOrder.delivery_date,
+          sale_date: new Date(detailsOrder.created_at).toISOString().split('T')[0],
+          sale_by: detailsOrder.waiter_id,
+          total: updateTotal,
+          discount: detailsOrder.discount,
+          actual_discount: detailsOrder.actual_discount,
+          delivery_charge: detailsOrder.delivery_charge,
+          receivable: updateTotal,
+          paid: "0",
+          due: updateTotal,
+          note: detailsOrder.note,
+          items: updateItems,
+          payment_method: null,
+          dew_by: null,
+          dew_commit_date: null,
+          is_quick_sale: "0",
+          customer: selectedCustomer.id,
+          customer_type_select: selectedTable.customer_type,
+          delivery_date_input: detailsOrder.delivery_date,
+          name: updateItems.map(item => item.product_name), // you had array:2 but values hidden
+          product_id: updateItems.map(item => item.product_id),
+          variation_id: cartProducts.map(item => item.id),
+          rate: cartProducts.map(item => item.price),
+          brand_id: "undefined",
+          main_qty: cartProducts.map(item => item.quantity),
+          sub_total: cartProducts.map(item => (item.price * item.quantity)),
+          discount_input: "0",
+          delivery_charge_input: "0.00"
+        };
+
+        const res = await updateOrder({ id: detailsOrder.id, data: editData }).unwrap();
+
+        const addedItems = cartProducts.map(item => (
+          {
+            product_name: item.title,
+            variation: {
+              variation: item.name,
+            },
+            qty: item.quantity,
+
+          }
+        ))
+
+        if (res.success) {
+          setOrderResponse({
+            message: "orderUpdated",
+            success: true,
+            id: res.id,
+            token: res.token,
+            table_id: selectedTable.table_id,
+            orderType: selectedTable.customer_type === "Take Way" ? "Self Pickup" : selectedTable.customer_type,
+            items: addedItems as OrderItem[],
+            waiter: authUser?.fname || ''
+          })
+        }
+      } else {
+        const res = await confirmOrder({
+          customer_id: selectedCustomer.id,
+          customer_type: selectedTable.customer_type,
+          table_id: selectedTable.table_id,
+          discount: 0,
+          products: choosedProducts
+        }).unwrap();
+
+        const addedItems = cartProducts.map(item => (
+          {
+            product_name: item.title,
+            variation: {
+              variation: item.name,
+            },
+            qty: item.quantity,
+
+          }
+        ))
+
+
+        if (res.success) {
+          setOrderResponse({
+            message: "orderSuccess",
+            success: true,
+            id: res.id,
+            token: res.token,
+            table_id: selectedTable.table_id,
+            orderType: selectedTable.customer_type === "Take Way" ? "Self Pickup" : selectedTable.customer_type,
+            items: addedItems as OrderItem[],
+            waiter: authUser?.fname || ''
+          })
+        }
       }
+
+      dispatch(setCartProducts(null));
+      removeStorage("cart_items");
+      dispatch(udpateOrderAction("new"));
+      dispatch(updateCartFormSavedData(null));
     } catch (error) {
       console.log(error);
       setOrderResponse({
@@ -122,7 +209,7 @@ export function CartSheet() {
   }
 
   const handleModalClick = (event: MouseEvent<HTMLDivElement>) => {
-    if (!isOpen || isLoading) return;
+    if (!isOpen || isLoading || isUpdating) return;
 
     const targetElement = event.target as HTMLElement;
     if (targetElement.closest(".custom-select-el")) return;
@@ -150,7 +237,7 @@ export function CartSheet() {
     <>
       <CustomDrawer
         overlayClassName="!top-0"
-        className={`!top-0 !z-[9999999] ${isLoading && "pointer-events-none"}`}
+        className={`!top-0 !z-[9999999] ${isLoading || isUpdating && "pointer-events-none"}`}
         open={openCart}
       >
         <div onClick={handleModalClick} className="w-full h-full flex flex-col">
@@ -187,19 +274,32 @@ export function CartSheet() {
               <Tables selectedTable={selectedTable} setSelectedTable={setSelectedTable} />
             </div>
             {
-              isLoading ? <div className="w-full min-h-[51px] flex items-center justify-center">
+              isLoading || isUpdating ? <div className="w-full min-h-[51px] flex items-center justify-center">
                 <LoadingSpinner />
               </div> :
-                <button
-                  disabled={!cartProducts.length}
-                  type="submit"
-                  className={cn(
-                    "fg_fs-md rounded-0! py-3 !text-white font-semibold bg-primary w-full flex items-center gap-5 justify-center",
-                    // !cartProducts.length && "pointer-events-none"
-                  )}
-                >
-                  <span>{t("checkout")}</span> <span>{formatPrice(Number(totalPrice.toFixed(2)))}</span>
-                </button>
+
+                orderAction === "new" ?
+                  <button
+                    disabled={!cartProducts.length}
+                    type="submit"
+                    className={cn(
+                      "fg_fs-md rounded-0! py-3 !text-white font-semibold bg-primary w-full flex items-center gap-5 justify-center",
+                      // !cartProducts.length && "pointer-events-none"
+                    )}
+                  >
+                    <span>{t("checkout")}</span> <span>{formatPrice(Number(totalPrice.toFixed(2)))}</span>
+                  </button>
+                  :
+                  <button
+                    disabled={!cartProducts.length}
+                    type="submit"
+                    className={cn(
+                      "fg_fs-md rounded-0! py-3 !text-white font-semibold bg-primary w-full flex items-center gap-5 justify-center",
+                      // !cartProducts.length && "pointer-events-none"
+                    )}
+                  >
+                    <span><RenderText group='orders' variable='updateOrder' /></span> <span>{formatPrice(Number(totalPrice.toFixed(2)))}</span>
+                  </button>
             }
           </form>
         </div>

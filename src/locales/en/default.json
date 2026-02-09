@@ -229,9 +229,11 @@
     "addOrder": "Add Order",
     "unsaveOrder": "You have an unsave order. Save or discard that order",
     "orderSuccess": "Order success",
+    "orderUpdated": "Order Updated",
     "orderError": "Error occur during order",
     "itemSelectError": "Please select a item first",
     "orderDetails": "Order Details",
-    "notOrderFound": "No orders found"
+    "notOrderFound": "No orders found",
+    "updateOrder": "Update Order"
   }
 }

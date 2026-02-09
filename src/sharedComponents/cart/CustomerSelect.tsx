@@ -1,11 +1,12 @@
 import { cn } from "@/lib/utils";
 import { setAllCustomers } from "@/redux/features/address/addressSlice";
 import { useLazyGetCustomersQuery } from "@/redux/features/customer/customerApiSlice";
+import { RootState } from "@/redux/store";
 import { TCustomer } from "@/types/types";
 import { ChevronDown } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import LoadingSpinner from "../loading/LoadingSpinner";
 import RenderText from "../utils/RenderText";
 
@@ -19,6 +20,7 @@ export function CustomerSelect({
     // hooks
     const dispatch = useDispatch()
     const [getCustomers, { isLoading }] = useLazyGetCustomersQuery();
+    const { cartFormSavedData } = useSelector((state: RootState) => state.productSlice);
     const [customers, setCustomers] = useState<TCustomer[] | null>();
     const dropdownRef = useRef(null)
     const [search, setSearch] = useState("")
@@ -55,6 +57,18 @@ export function CustomerSelect({
 
         loadData();
     }, [dispatch, getCustomers])
+
+
+    useEffect(() => {
+        if (!cartFormSavedData || !customers?.length) return;
+
+        const filteredCustomer = customers.find(
+            customer => customer.id === cartFormSavedData.customerId
+        );
+        if (!filteredCustomer) return;
+
+        setValue("customer", filteredCustomer, { shouldValidate: true })
+    }, [cartFormSavedData, customers, setValue]);
 
     if (isLoading) return <div className="grow flex items-center justify-center">
         <LoadingSpinner />

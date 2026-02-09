@@ -2,10 +2,11 @@
 import { cn, isTable } from "@/lib/utils";
 import { setTables } from "@/redux/features/address/addressSlice";
 import { useLazyGetTablesQuery } from "@/redux/features/product/productApiSlice";
+import { RootState } from "@/redux/store";
 import { ITable, TSelectedTable } from "@/types/types";
 import Image from "next/image";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import LoadingSpinner from "../loading/LoadingSpinner";
 import NoDataMsg from "../shared/NoDataMsg";
 
@@ -16,6 +17,7 @@ type Props = {
 }
 export default function Tables({ selectedTable, setSelectedTable }: Props) {
     const dispatch = useDispatch()
+    const { cartFormSavedData } = useSelector((state: RootState) => state.productSlice);
     const [loadTables, { isLoading }] = useLazyGetTablesQuery();
     const [tableData, setTableData] = useState<ITable[]>([]);
 
@@ -30,6 +32,34 @@ export default function Tables({ selectedTable, setSelectedTable }: Props) {
         }
         loadData()
     }, [loadTables, dispatch])
+
+    useEffect(() => {
+        if (!cartFormSavedData || !tableData.length) return;
+
+        const filteredTable = tableData.find(
+            table => table.id === cartFormSavedData.tableId
+        );
+        if (!filteredTable) return;
+
+        let customer_type: "Dine-In" | "Online" | "Take Way" = "Dine-In";
+
+        if (!isTable(filteredTable)) {
+            // parcel / takeaway / online
+            if (filteredTable.table_no?.toLowerCase() === "online") {
+                customer_type = "Online";
+            } else {
+                customer_type = "Take Way";
+            }
+        }
+
+        setSelectedTable({
+            customer_type,
+            table_id: filteredTable.id,
+            label: filteredTable.table_no,
+        });
+    }, [cartFormSavedData, tableData, setSelectedTable]);
+
+
 
     if (isLoading) return <div className="table-container w-full flex items-center justify-center max-w-full overflow-x-auto gap-2.5 py-1.5">
         <LoadingSpinner />

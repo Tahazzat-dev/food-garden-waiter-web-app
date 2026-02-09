@@ -115,7 +115,7 @@ const MyOrders = () => {
                             <div className="grow flex z-10 flex-col bg-clr-card relative">
                                 <h5 className="bg-slate-200 dark:bg-slate-800 w-full text-sm px-2 py-0.5 flex items-center gap-3 justify-between">
                                     <span className="w-[18px] h-[18px] text-sm flex items-center gap-1.5 rounded-full bg-primary p-0.5" >
-                                        <Image src={"/images/shared/waiter-icon.png"} className='mr-1 z-10 w-full h-full' width={300} height={400} alt="Delivery Icon" /><span>Akash</span>
+                                        <Image src={"/images/shared/waiter-icon.png"} className='mr-1 z-10 w-full h-full' width={300} height={400} alt="Delivery Icon" /><span>{order?.waiter_id}</span>
                                     </span>
                                     <Timer className="fg_fs-xxs" date={new Date(order.created_at)} />
                                 </h5>
@@ -219,7 +219,7 @@ const AllOrders = () => {
                             <div className="grow flex z-10 flex-col bg-clr-card relative">
                                 <h5 className="bg-slate-200 dark:bg-slate-800 w-full text-sm px-2 py-0.5 flex items-center gap-3 justify-between">
                                     <span className="w-[18px] h-[18px] text-sm flex items-center gap-1.5 rounded-full bg-primary p-0.5" >
-                                        <Image src={"/images/shared/waiter-icon.png"} className='mr-1 z-10 w-full h-full' width={300} height={400} alt="Delivery Icon" /><span>Akash</span>
+                                        <Image src={"/images/shared/waiter-icon.png"} className='mr-1 z-10 w-full h-full' width={300} height={400} alt="Delivery Icon" /><span>{order.waiter_id}</span>
                                     </span>
                                     <Timer className="fg_fs-xxs" date={new Date(order.created_at)} />
                                 </h5>
