@@ -51,7 +51,7 @@ export default function LoginForm() {
         setIsLoading(true)
         try {
             const res = await loginUser(data.email, data.password);
-            if (res.status === 200) {
+            if (res.success) {
                 dispatch(setAuthUser(res.user));
                 setToStorage("auth_token", res.token);
                 setToStorage("user", res.user);
@@ -63,9 +63,6 @@ export default function LoginForm() {
 
                 router.replace('/')
             }
-            console.log(res, ' res ');
-            return;
-
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (e: any) {
             if (e?.status === 401) {
