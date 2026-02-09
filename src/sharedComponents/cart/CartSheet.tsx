@@ -244,7 +244,7 @@ export function CartSheet() {
           <div className="w-full flex items-center gap-5 py-3 px-4 bg-primary">
             <h3 className="grow flex items-end gap-2 text-white">
               <span className='fg_fs-lg'><RenderText group='shared' variable='item' /> ({cartProducts.length})</span>
-              <span className='text-sm text-[#5BFFFF]'>( Table - 5 )</span>
+              {/* <span className='text-sm text-[#5BFFFF]'>( Table - 5 )</span> */}
             </h3>
             <div className="w-full max-w-6">
               <button onClick={() => dispatch(SET_EXPAND(null))} className='bg-secondary p-1 rounded-full' >

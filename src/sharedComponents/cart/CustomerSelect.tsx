@@ -70,6 +70,12 @@ export function CustomerSelect({
         setValue("customer", filteredCustomer, { shouldValidate: true })
     }, [cartFormSavedData, customers, setValue]);
 
+
+    useEffect(() => {
+        // setValue("customer", filteredCustomer, { shouldValidate: true })
+    }, [setValue])
+
+
     if (isLoading) return <div className="grow flex items-center justify-center">
         <LoadingSpinner />
     </div>

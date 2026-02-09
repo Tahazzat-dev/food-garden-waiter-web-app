@@ -51,6 +51,9 @@ export default function OrderDetailsModal() {
         contentRef: invoicePrintRef,
     });
 
+
+    console.log(detailsOrder, ' details order');
+
     const handleEditOrder = () => {
         if (!detailsOrder) return;
 
@@ -98,7 +101,7 @@ export default function OrderDetailsModal() {
 
     const customerAdress = address.find(addr => addr.id === detailsOrder.customer.address_id);
     const { en: addressEn, bn: addressBn } = getTranslationReadyText(customerAdress?.name || "");
-    const totalAmount = detailsOrder.items.reduce((acc, item) => { return (acc + (Number(item.variation.price) * item.qty)) }, 0)
+    const totalAmount = detailsOrder.items.reduce((acc, item) => { return (acc + (Number(item?.variation?.price || '0') * item.qty)) }, 0)
     return (
         <>
             <Dialog.Root open={KEY === EXPAND} onOpenChange={closeModal}>
@@ -229,7 +232,7 @@ const DetailsItemCard = ({ item }: { item: OrderItem }) => {
                 <h3 className='line-clamp-2 break-words fg_fs-xs text-primary leading-tight font-medium'>{renderText(en, bn)}</h3>
                 <p><span className='rounded-[6px] text-xs font-medium text-secondary'>{item?.variation?.variation}</span></p>
             </div>
-            <p className='text-[15px] font-semibold grow max-w-[50%] flex items-center justify-between text-left'><span>{translateNumber(item.qty)}</span> <span >{formatPrice(Number(item.variation.price) * item.qty)}</span></p>
+            <p className='text-[15px] font-semibold grow max-w-[50%] flex items-center justify-between text-left'><span>{translateNumber(item.qty)}</span> <span >{formatPrice(Number(item?.variation?.price || '0') * item.qty)}</span></p>
         </div>
     </div>
 }

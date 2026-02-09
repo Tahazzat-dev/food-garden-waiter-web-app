@@ -72,18 +72,18 @@ export default function MakeSellModal() {
     } = useForm<OrderFormValues>({
         resolver: zodResolver(orderSchema) as Resolver<OrderFormValues>,
         defaultValues: {
-            discount: 50,
-            deliveryCharge: 100
+            discount: 0,
+            deliveryCharge: 0
         }
     });
 
     const discount = watch("discount") ?? 0;
     const deliveryCharge = watch("deliveryCharge") ?? 0;
     const payAmount = watch("payAmount") ?? 0;
-    const totalAmount = detailsOrder?.items ? detailsOrder?.items.reduce((acc, cur) => acc + Number(cur.variation.price), 0) : 0;
+    const totalAmount = detailsOrder?.items ? detailsOrder?.items.reduce((acc, cur) => acc + Number(cur?.variation?.price || '0'), 0) : 0;
     const grandTotal = totalAmount + deliveryCharge - discount;
     const dewAmount = grandTotal - payAmount;
-
+    console.log(cartTotal, ' cart total');
     // conditional variables
     const openModal = EXPAND === KEY;
 
@@ -169,7 +169,7 @@ export default function MakeSellModal() {
     }, [isLoading])
 
     useEffect(() => {
-        if (discount > cartTotal) {
+        if (discount > totalAmount) {
             setError("discount", {
                 type: "manual",
                 message: t("discountExceedError"),
@@ -177,7 +177,7 @@ export default function MakeSellModal() {
         } else {
             clearErrors("discount");
         }
-    }, [discount, cartTotal, setError, clearErrors, t]);
+    }, [discount, totalAmount, setError, clearErrors, t]);
 
     if (!mounted) return <></>;
 
@@ -320,7 +320,7 @@ export function SelectPaymentMethod({
                 }
                 <span
                     className={cn(
-                        "pointer-events-none duration-200 m-0 p-0 absolute left-3 top-1/2 -translate-y-1/2",
+                        "pointer-events-none text-base duration-200 m-0 p-0 absolute left-3 top-1/2 -translate-y-1/2",
                         "peer-focus:top-0 bg-clr-card peer-focus:text-[11px] peer-focus:px-1 peer-focus:left-1.5",
                         selected && "top-0 text-[11px] px-0.5 left-2"
                     )}

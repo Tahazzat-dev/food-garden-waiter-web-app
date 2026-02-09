@@ -83,7 +83,7 @@ export const KOTPrint = forwardRef<HTMLDivElement, Props>(
                                 </td>
 
                                 <td className="text-center p-1">
-                                    <strong>{item.variation.variation ?? "—"}</strong>
+                                    <strong>{item?.variation?.variation ?? "—"}</strong>
                                 </td>
 
                                 <td className="text-center p-1">
