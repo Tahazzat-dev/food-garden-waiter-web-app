@@ -190,12 +190,21 @@ const OrderCard = ({ order, cb }: TOrderCardProps) => {
                         <span className="text-[12px]" >{order.customer.name.length > 25 ? `${order.customer.name.slice(0, 25)}...` : order.customer.name}</span>
 
                     </h6>
-                    <p className="text-[10px]">
-                        {order.customer_type === "Dine-In" ?
-                            <span className="text-primary py-0.5 bg-green-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="dineIn" /></span> :
-                            order.customer_type === "Online" ? <span className="text-secondary bg-red-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="callHomeDelivery" /></span> :
-                                <span className="text-blue-500 bg-blue-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="takeAway" /></span>}
-                    </p>
+
+                    {
+                        order.is_web === 1 ? <p className="px-2 text-sm ">
+                            {order.customer_type === "Dine-In" ?
+                                <span className="text-primary py-0.5 bg-green-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="onlineDineIn" /></span> :
+                                order.customer_type === "Online" ? <span className="text-secondary bg-red-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="onlineHomeDelivery" /></span> :
+                                    <span className="text-blue-500 bg-blue-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="onlineTakeAway" /></span>}
+                        </p> :
+                            <p className="text-[10px]">
+                                {order.customer_type === "Dine-In" ?
+                                    <span className="text-primary py-0.5 bg-green-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="dineIn" /></span> :
+                                    order.customer_type === "Online" ? <span className="text-secondary bg-red-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="callHomeDelivery" /></span> :
+                                        <span className="text-blue-500 bg-blue-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="takeAway" /></span>}
+                            </p>
+                    }
                 </div>
                 <p className="text-[15px] px-2 py-0.5 rounded-md font-bold text-primary" >
                     <RenderFormatedPrice price={+order.final_receivable} />
