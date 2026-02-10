@@ -1,5 +1,5 @@
 "use client"
-import { cn } from "@/lib/utils";
+import { cn, log } from "@/lib/utils";
 import { SET_EXPAND, updateActiveOrderDetailsModal } from "@/redux/features/actions/actionSlice";
 import { useGetAllOrdersQuery, useGetMyOrdersQuery } from "@/redux/features/product/productApiSlice";
 import { updateDetailsOrder } from "@/redux/features/product/productSlice";
@@ -137,6 +137,7 @@ type TOrderCardProps = {
     cb: (order: TOrder) => void;
 }
 const OrderCard = ({ order, cb }: TOrderCardProps) => {
+    log(order, ' order from card')
     return <button key={order.id} onClick={() => cb(order)} className={cn('relative w-full flex bg-clr-card  overflow-hidden rounded-md border-slate-300 dark:border-slate-600 border group z-0', order.is_web === 1 && order.is_online_app == 0 && "pointer-events-none")}>
         {
             order.is_web === 1 && order.is_online_app == 0 && <div className="w-full flex items-center justify-center h-full z-20  absolute top-0 left-0 bg-slate-700/80 backdrop-blur-[1px]">

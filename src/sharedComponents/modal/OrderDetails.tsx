@@ -216,10 +216,11 @@ const DetailsItemCard = ({ item }: { item: OrderItem }) => {
     const { renderText } = useRenderText()
     const { formatPrice, translateNumber } = useFormatPrice();
     const { en, bn } = getTranslationReadyText(item.product_name)
+    console.log(item.product_name, ' pd name');
     return <div className='w-full rounded-md  bg-clr-card flex gap-1 mb-2 overflow-hidden group'>
         <div className="relative p-1 flex items-center justify-center">
             <div className="w-full h-full max-w-[50px] max-h-[40px] overflow-hidden rounded-md">
-                <Image src={item?.variation?.image ? getImage(item?.variation?.image) : "/images/shared/food-placeholder.jpg"} className='z-10 w-full duration-300 group-hover:scale-105 h-full' width={300} height={400} alt="Food image" />
+                <Image src={item?.product?.image ? getImage(item?.product?.image) : "/images/shared/food-placeholder.jpg"} className='z-10 w-full duration-300 group-hover:scale-105 h-full' width={300} height={400} alt="Food image" />
             </div>
         </div>
         <div className='flex items-center justify-between grow p-1 pr-2 bg-clr-card'>
