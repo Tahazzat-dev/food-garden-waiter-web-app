@@ -1,5 +1,5 @@
 "use client"
-import { cn, isTable, log } from "@/lib/utils";
+import { cn, isTable } from "@/lib/utils";
 import { setTables } from "@/redux/features/address/addressSlice";
 import { useLazyGetTablesQuery } from "@/redux/features/product/productApiSlice";
 import { RootState } from "@/redux/store";
@@ -46,7 +46,7 @@ export default function Tables({ register, selectedTable, setSelectedTable }: Pr
         fetchTables();
 
         // 👇 Poll every 5 seconds (adjust as needed)
-        const interval = setInterval(fetchTables, 60000);
+        const interval = setInterval(fetchTables, 300000);
 
         return () => clearInterval(interval);
 
@@ -116,8 +116,6 @@ export default function Tables({ register, selectedTable, setSelectedTable }: Pr
     }
 
     if (!parcels.length) return null;
-
-    log(tableData, ' table data');
     return (
         <>
             <input type="hidden" {...register("table")} value={selectedTable?.table_id || ""} />
