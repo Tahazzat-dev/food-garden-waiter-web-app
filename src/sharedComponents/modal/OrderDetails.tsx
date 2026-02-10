@@ -52,7 +52,6 @@ export default function OrderDetailsModal() {
     });
 
 
-    console.log(detailsOrder, ' details order');
 
     const handleEditOrder = () => {
         if (!detailsOrder) return;
@@ -102,6 +101,7 @@ export default function OrderDetailsModal() {
     const customerAdress = address.find(addr => addr.id === detailsOrder.customer.address_id);
     const { en: addressEn, bn: addressBn } = getTranslationReadyText(customerAdress?.name || "");
     const totalAmount = detailsOrder.items.reduce((acc, item) => { return (acc + (Number(item?.variation?.price || '0') * item.qty)) }, 0)
+
     return (
         <>
             <Dialog.Root open={KEY === EXPAND} onOpenChange={closeModal}>

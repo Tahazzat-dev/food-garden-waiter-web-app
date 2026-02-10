@@ -4,7 +4,7 @@ import { baseQueryWithAuth } from '../baseQuery';
 export const productApiSlice = createApi({
     reducerPath: 'productApi',
     baseQuery: baseQueryWithAuth,
-    tagTypes: ['Post', 'OnlineOrders', 'myOrders', 'allOrders'],
+    tagTypes: ['Post', 'OnlineOrders', 'myOrders', 'allOrders', 'countOnlineOrders'],
     endpoints: (builder) => ({
         // GET query for fetching data
         getCategoryProducts: builder.query({
@@ -13,8 +13,9 @@ export const productApiSlice = createApi({
         }),
 
         getAllProducts: builder.query({
-            query: () => `/products`,
-        }),
+            query: () => `/products`
+        }
+        ),
 
         // orders
         updateOrder: builder.mutation({
@@ -53,6 +54,11 @@ export const productApiSlice = createApi({
             keepUnusedDataFor: 60,
             providesTags: ['OnlineOrders'],
         }),
+        countOnlineOrders: builder.query({
+            query: () => '/waiter/online-orders-count',
+            keepUnusedDataFor: 60,
+            providesTags: ['countOnlineOrders'],
+        }),
 
         updateOnlineOrders: builder.mutation({
             query: (data) => ({
@@ -60,7 +66,7 @@ export const productApiSlice = createApi({
                 method: "PUT",
                 body: data
             }),
-            invalidatesTags: ['OnlineOrders', "allOrders"]
+            invalidatesTags: ['OnlineOrders', "allOrders", "countOnlineOrders"]
         }),
 
         confirmOrder: builder.mutation({
@@ -109,6 +115,7 @@ export const {
 
     // online orders
     useGetOnlineOrdersQuery,
+    useCountOnlineOrdersQuery,
     useLazyGetOnlineOrdersQuery,
     useUpdateOnlineOrdersMutation,
 

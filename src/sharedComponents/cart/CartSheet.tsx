@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button';
 import useFormatPrice from '@/hooks/useFormatPrice';
 import { removeStorage } from '@/lib/storage';
-import { calculateSubtotal, cn, getSellingPrice } from '@/lib/utils';
+import { calculateSubtotal, cn, getSellingPrice, log } from '@/lib/utils';
 import { SET_EXPAND, udpateOrderAction, updatePrevAction } from '@/redux/features/actions/actionSlice';
 import { useConfirmOrderMutation, useUpdateOrderMutation } from '@/redux/features/product/productApiSlice';
 import { setCartProducts, updateCartFormSavedData } from '@/redux/features/product/productSlice';
@@ -59,7 +59,7 @@ export function CartSheet() {
   const { formatPrice, translateNumber } = useFormatPrice()
   const [isOpen, setIsOpen] = useState(false);
 
-  const { register, handleSubmit, setValue, watch, setError, formState: { errors } } = useForm<CustomerFormValues>()
+  const { register, handleSubmit, setValue, watch, formState, setError, formState: { errors } } = useForm<CustomerFormValues>()
 
 
   const selectedCustomer = watch("customer")
@@ -74,6 +74,8 @@ export function CartSheet() {
       setError("table", { type: "manual", message: 'Select table' })
       return;
     }
+
+    log("brlow condition btn clicked");
 
     try {
       const choosedProducts = cartProducts.map(item => ({ product_id: item.productId, variant_id: item.id, quantity: item.quantity }))
@@ -262,7 +264,7 @@ export function CartSheet() {
           </div>
           <form onSubmit={handleSubmit(onSubmit)} className="w-full">
             <div className="w-full flex gap-2 px-2 mb-2">
-              <CustomerSelect isOpen={isOpen} setIsOpen={setIsOpen} setValue={setValue} register={register} watch={watch} />
+              <CustomerSelect formState={formState} isOpen={isOpen} setIsOpen={setIsOpen} setValue={setValue} register={register} watch={watch} />
               <Button type='button' onClick={handleOpenAddCustomerModal} className='!px-2 gap-0.5' ><Plus /> <RenderText group='shared' variable='addShortText' /> </Button>
             </div>
             {
@@ -271,7 +273,7 @@ export function CartSheet() {
               </div> : <></>
             }
             <div className="w-full bg-slate-300 rounded-md border border-slate-400 dark:border-slate-600 dark:bg-slate-700 px-1.5">
-              <Tables selectedTable={selectedTable} setSelectedTable={setSelectedTable} />
+              <Tables register={register} selectedTable={selectedTable} setSelectedTable={setSelectedTable} />
             </div>
             {
               isLoading || isUpdating ? <div className="w-full min-h-[51px] flex items-center justify-center">

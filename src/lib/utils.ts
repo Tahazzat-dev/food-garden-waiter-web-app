@@ -203,3 +203,20 @@ export const isTable = (item: { table_no: string }): boolean => {
   const identifier = item.table_no.toLowerCase();
   return !identifier.includes('parcel');
 };
+
+
+const isDev = process.env.NODE_ENV !== "production";
+export const log = (...args: unknown[]) => {
+  if (!isDev) return;
+  console.log(...args);
+};
+
+export const warn = (...args: unknown[]) => {
+  if (!isDev) return;
+  console.warn(...args);
+};
+
+export const error = (...args: unknown[]) => {
+  if (!isDev) return;
+  console.error(...args);
+};

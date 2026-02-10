@@ -3,6 +3,11 @@ export type TCartFormSavedData = {
     tableId: number;
 
 }
+
+
+export type TNotificationAction = "prevOnlneOrders" | "prevAllOrders"
+export type TOrderType = "onlineOrders" | "allOrders"
+
 export type TActiveOrderDetailsModal = "online" | "web" | null;
 export type TOrderAction = "new" | "edit";
 // TODO: temp_

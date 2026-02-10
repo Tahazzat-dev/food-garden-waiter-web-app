@@ -1,4 +1,4 @@
-import { TActiveOrderDetailsModal, TCartIconposition, TOrderAction } from "@/types/types";
+import { TActiveOrderDetailsModal, TCartIconposition, TNotificationAction, TOrderAction } from "@/types/types";
 import { createSlice } from "@reduxjs/toolkit";
 
 
@@ -14,6 +14,11 @@ interface IInitialState {
 
     // temporary
     fetchOrders: boolean;
+
+
+    // notification identifier
+    prevOnlneOrders: number;
+    prevAllOrders: number;
 }
 
 const initialState: IInitialState = {
@@ -26,6 +31,11 @@ const initialState: IInitialState = {
     orderAction: "new",
     // temp
     fetchOrders: true,
+
+
+    // notification identifier
+    prevOnlneOrders: 0,
+    prevAllOrders: 0
 };
 
 const actionsSlice = createSlice({
@@ -62,6 +72,10 @@ const actionsSlice = createSlice({
         udpateOrderAction(state, action: { payload: TOrderAction }) {
             state.orderAction = action.payload
         },
+
+        updateNotificationAction(state, action: { payload: { field: TNotificationAction, value: number } }) {
+            state[action.payload.field] = action.payload.value;
+        }
     },
 });
 
@@ -73,7 +87,8 @@ export const {
     toggleRunExpandAnimation,
     updatePrevAction,
     udpateOrderAction,
-    updateActiveOrderDetailsModal
+    updateActiveOrderDetailsModal,
+    updateNotificationAction
 } = actionsSlice.actions;
 export default actionsSlice.reducer;
 

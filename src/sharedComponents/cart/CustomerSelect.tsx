@@ -16,6 +16,7 @@ export function CustomerSelect({
     watch,
     isOpen,
     setIsOpen,
+    formState
 }) {
     // hooks
     const dispatch = useDispatch()
@@ -72,9 +73,9 @@ export function CustomerSelect({
 
 
     useEffect(() => {
-        // setValue("customer", filteredCustomer, { shouldValidate: true })
-    }, [setValue])
-
+        if (!customers?.length) return;
+        setValue("customer", customers[0], { shouldValidate: true })
+    }, [setValue, customers, formState.isSubmitSuccessful])
 
     if (isLoading) return <div className="grow flex items-center justify-center">
         <LoadingSpinner />

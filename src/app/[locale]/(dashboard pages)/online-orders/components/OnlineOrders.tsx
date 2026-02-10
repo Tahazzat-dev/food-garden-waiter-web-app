@@ -1,7 +1,7 @@
 "use client"
 import { SET_EXPAND, updateActiveOrderDetailsModal } from "@/redux/features/actions/actionSlice";
 import { useGetOnlineOrdersQuery } from "@/redux/features/product/productApiSlice";
-import { updateDetailsOrder } from "@/redux/features/product/productSlice";
+import { updateDetailsOrder, updateOrder } from "@/redux/features/product/productSlice";
 import DataLoading from "@/sharedComponents/shared/Loading";
 import NoDataMsg from "@/sharedComponents/shared/NoDataMsg";
 import Pagination from "@/sharedComponents/shared/Pagination";
@@ -37,9 +37,13 @@ export default function OnlineOrders() {
         setMount(true);
     }, [])
 
+    useEffect(() => {
+        if (!results || !results?.data?.data) return;
+        dispatch(updateOrder({ field: "onlineOrders", value: results.data.data }));
+    }, [dispatch, results])
+
     if (!mount) return null;
 
-    // console.log("Refreshing from online orders...")
     if (isLoading) return <DataLoading />
     return (
         <>

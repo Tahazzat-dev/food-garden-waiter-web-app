@@ -14,8 +14,9 @@ import NoDataMsg from "../shared/NoDataMsg";
 type Props = {
     setSelectedTable: Dispatch<SetStateAction<TSelectedTable | null>>;
     selectedTable: TSelectedTable | null;
+    register
 }
-export default function Tables({ selectedTable, setSelectedTable }: Props) {
+export default function Tables({ register, selectedTable, setSelectedTable }: Props) {
     const dispatch = useDispatch()
     const { cartFormSavedData } = useSelector((state: RootState) => state.productSlice);
     const { tables: tableData } = useSelector((state: RootState) => state.address);
@@ -91,6 +92,7 @@ export default function Tables({ selectedTable, setSelectedTable }: Props) {
     return (
 
         <>
+            <input type="hidden" {...register("table")} value={selectedTable?.table_id || ""} />
             <div className="table-container w-full flex max-w-full overflow-x-auto gap-2.5 py-1.5">
                 {
                     tables && tables?.map((table: ITable) => <button type="button" onClick={() => selectTable("Dine-In", table.id, table.table_no)} className={cn(" duration-200 border border-slate-400 dark:border-slate-600 rounded-md px-2 pt-2 pb-0.5 min-w-[80px]", selectedTable?.table_id === table.id ? "bg-primary text-clr-text-body" : table.status !== "available" ? "bg-secondary text-white" : "bg-slate-100 dark:bg-slate-900 text-clr-text-body")} key={"table_" + table.id}>

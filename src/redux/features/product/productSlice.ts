@@ -1,5 +1,5 @@
 import { setToStorage } from "@/lib/storage";
-import { TCartFormSavedData, TCartProduct, TOrder, TProduct } from "@/types/types";
+import { TCartFormSavedData, TCartProduct, TOrder, TOrderType, TProduct } from "@/types/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface IInitialState {
@@ -14,6 +14,10 @@ interface IInitialState {
     allProducts: TProduct[];
     detailsOrder: TOrder | null;
     cartFormSavedData: TCartFormSavedData | null;
+
+    // orders
+    onlineOrders: TOrder[];
+    allOrders: TOrder[];
 
     // temp
     orders: TOrder[];
@@ -31,7 +35,11 @@ const initialState: IInitialState = {
     allProducts: [],
     detailsOrder: null,
     orders: [],
-    cartFormSavedData: null
+    cartFormSavedData: null,
+
+    // orders
+    onlineOrders: [],
+    allOrders: []
 };
 
 
@@ -124,6 +132,10 @@ const productSlice = createSlice({
         setOrders: (state, action: PayloadAction<TOrder[]>) => {
             state.orders = action.payload
         },
+
+        updateOrder: (state, action: PayloadAction<{ field: TOrderType, value: TOrder[] }>) => {
+            state[action.payload.field] = action.payload.value;
+        },
     },
 });
 
@@ -144,6 +156,7 @@ export const {
     removeFavouriteProduct,
     updateDetailsOrder,
     updateCartFormSavedData,
-    setOrders
+    setOrders,
+    updateOrder
 } = productSlice.actions;
 export default productSlice.reducer;
