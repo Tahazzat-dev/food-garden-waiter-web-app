@@ -156,10 +156,10 @@ const OrderCard = ({ order, cb }: TOrderCardProps) => {
                 order.customer_type === "Take Way" ?
                     <div className="pt-1 bg-blue-500 gap-1 pb-0 flex flex-col w-[70px] h-[70px] overflow-hidden rounded-md">
                         <div className="grow overflow-hidden mx-auto w-6 flex items-center justify-center" >
-                            <Image src={"/images/shared/percel-icon-white.png"} className='z-10 w-auto duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Table icon" />
+                            <Image src={"/images/shared/percel-white.png"} className='z-10 w-full duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Table icon" />
                             {/* <Image src={"/images/shared/percel-icon-black.png"} className='block dark:hidden z-10 w-auto duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Table icon" /> */}
                         </div>
-                        <p className="text-[13px] pb-0.5 bg-blue-500 font-bold text-white rounded-[3px]"><RenderText group="shared" variable="percel" /></p>
+                        <p className="text-[13px] pb-0.5 bg-blue-500 font-bold text-white rounded-[3px]">{order.table?.table_no}</p>
                     </div>
                     :
                     <div className="bg-black flex flex-col w-[70px] h-[70px] overflow-hidden rounded-md">
@@ -168,7 +168,7 @@ const OrderCard = ({ order, cb }: TOrderCardProps) => {
                             <Image src={"/images/shared/table-white.svg"} className='z-10 w-full duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Table icon" />
                             {/* <Image src={"/images/shared/table.svg"} className='block dark:hidden z-10 w-full duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Table icon" /> */}
                         </div>
-                        <p className="text-[13px] pb-0.5 font-bold text-white rounded-[3px]">{order.table_id}</p>
+                        <p className="text-[13px] pb-0.5 font-bold text-white rounded-[3px]">{order?.table?.table_no}</p>
                     </div>
             }
         </div>
@@ -192,9 +192,9 @@ const OrderCard = ({ order, cb }: TOrderCardProps) => {
                     </h6>
                     <p className="text-[10px]">
                         {order.customer_type === "Dine-In" ?
-                            <span className="text-primary py-0.5 bg-green-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="onlineHomeDelivery" /></span> :
-                            order.customer_type === "Online" ? <span className="text-secondary bg-red-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="onlineHomeDelivery" /></span> :
-                                <span className="text-blue-500 bg-blue-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="onlineTakeAway" /></span>}
+                            <span className="text-primary py-0.5 bg-green-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="dineIn" /></span> :
+                            order.customer_type === "Online" ? <span className="text-secondary bg-red-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="callHomeDelivery" /></span> :
+                                <span className="text-blue-500 bg-blue-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="takeAway" /></span>}
                     </p>
                 </div>
                 <p className="text-[15px] px-2 py-0.5 rounded-md font-bold text-primary" >

@@ -46,7 +46,6 @@ export default function OnlineOrders() {
 
     if (isLoading) return <DataLoading />
 
-    console.log(results.data?.data, ' online oreders')
     return (
         <>
             {
