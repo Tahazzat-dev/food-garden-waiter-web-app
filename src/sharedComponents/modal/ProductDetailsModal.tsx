@@ -85,6 +85,7 @@ export default function ProductDetailsModal() {
         if (isMobile) {
             setBeginAnimation(true);
         }
+
         toggleModal(cartItem)
     }
 

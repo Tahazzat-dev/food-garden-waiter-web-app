@@ -51,20 +51,18 @@ export default function OrderDetailsModal() {
         contentRef: invoicePrintRef,
     });
 
-
-
     const handleEditOrder = () => {
         if (!detailsOrder) return;
 
         dispatch(udpateOrderAction("edit"));
         const cartProducts: TCartProduct[] = detailsOrder.items.map(item => ({
-            id: item.id,
+            id: item.variation_id,
             productId: item.product_id,
             title: item.product_name,
             categoryId: 1,
-            img: item.variation.image || "",
-            name: item.variation.variation,
-            price: Number(item.variation.price),
+            img: item?.variation?.image || "",
+            name: item?.variation?.variation,
+            price: Number(item?.variation?.price || '0'),
             discount: 0,
             quantity: item.qty
         }))
@@ -75,10 +73,7 @@ export default function OrderDetailsModal() {
 
     const udpateOnlineOrderStatus = async (id: number, status: number) => {
         try {
-            const res = await updateOnlineOrder({ id, status }).unwrap()
-            // if(res.success){
-
-            // }
+            await updateOnlineOrder({ id, status }).unwrap()
         } catch (error) {
             console.log(error);
         }
@@ -139,7 +134,7 @@ export default function OrderDetailsModal() {
                                     detailsOrder.items.map(item => <DetailsItemCard key={item.id} item={item} />)
                                 }
                             </div>
-                            <div className="mt-2 w-full clr-opposite py-1 rounded-md px-2 ">
+                            <div className="mt-2 w-full bg-clr-card py-1 rounded-md px-2 ">
                                 <p className="flex font-semibold w-full items-center justify-between" ><span><RenderText group="shared" variable="total" /></span><span>{formatPrice(totalAmount)}</span></p>
                             </div>
                         </div>

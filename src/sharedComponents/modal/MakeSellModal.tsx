@@ -83,7 +83,6 @@ export default function MakeSellModal() {
     const totalAmount = detailsOrder?.items ? detailsOrder?.items.reduce((acc, cur) => acc + Number(cur?.variation?.price || '0'), 0) : 0;
     const grandTotal = totalAmount + deliveryCharge - discount;
     const dewAmount = grandTotal - payAmount;
-    console.log(cartTotal, ' cart total');
     // conditional variables
     const openModal = EXPAND === KEY;
 

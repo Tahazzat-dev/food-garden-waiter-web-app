@@ -200,7 +200,7 @@ export interface OrderItem {
 }
 
 
-export type TCustomerType = "Online" | "Dine-In" | "Self Pickup";
+export type TCustomerType = "Online" | "Dine-In" | "Take Way";
 // export interface TOrder {
 //     id: number;
 //     customer_id: number;
@@ -297,7 +297,8 @@ export interface TOrder {
     updated_at: string;
     customer: Customer;
     items: OrderItem[];
-    waiter: TUser
+    waiter: TUser;
+    table: ITable;
 }
 
 

@@ -4,7 +4,7 @@ import { baseQueryWithAuth } from '../baseQuery';
 export const productApiSlice = createApi({
     reducerPath: 'productApi',
     baseQuery: baseQueryWithAuth,
-    tagTypes: ['Post', 'OnlineOrders', 'myOrders', 'allOrders', 'countOnlineOrders'],
+    tagTypes: ['Post', 'OnlineOrders', 'kitchenMyOrders', 'myOrders', 'allOrders', 'countOnlineOrders'],
     endpoints: (builder) => ({
         // GET query for fetching data
         getCategoryProducts: builder.query({
@@ -24,7 +24,7 @@ export const productApiSlice = createApi({
                 method: "PUT",
                 body: data
             }),
-            invalidatesTags: ['myOrders', "allOrders", "OnlineOrders"]
+            invalidatesTags: ['myOrders', "allOrders", 'kitchenMyOrders', "OnlineOrders"]
         }),
 
         getMyOrders: builder.query({
@@ -38,13 +38,19 @@ export const productApiSlice = createApi({
                 method: "PUT",
                 body: data
             }),
-            invalidatesTags: ['myOrders', "allOrders"]
+            invalidatesTags: ['myOrders', "allOrders", 'kitchenMyOrders']
         }),
 
         getAllOrders: builder.query({
             query: (q) => '/waiter/all-orders?' + q,
             keepUnusedDataFor: 60,
             providesTags: ['allOrders'],
+        }),
+
+        getkitchenMyOrders: builder.query({
+            query: (q) => '/waiter/kitchen-my-orders?' + q,
+            keepUnusedDataFor: 60,
+            providesTags: ['kitchenMyOrders'],
         }),
 
 
@@ -66,7 +72,7 @@ export const productApiSlice = createApi({
                 method: "PUT",
                 body: data
             }),
-            invalidatesTags: ['OnlineOrders', "allOrders", "countOnlineOrders"]
+            invalidatesTags: ['OnlineOrders', "allOrders", 'kitchenMyOrders', "countOnlineOrders"]
         }),
 
         confirmOrder: builder.mutation({
@@ -75,7 +81,7 @@ export const productApiSlice = createApi({
                 method: "POST",
                 body: data
             }),
-            invalidatesTags: ['myOrders', 'allOrders']
+            invalidatesTags: ['myOrders', 'allOrders', 'kitchenMyOrders']
         }),
 
         sellOrder: builder.mutation({
@@ -83,7 +89,8 @@ export const productApiSlice = createApi({
                 url: "/waiter/sale-order",
                 method: "POST",
                 body: data
-            })
+            }),
+            invalidatesTags: ['myOrders', 'allOrders', 'kitchenMyOrders']
         }),
 
         getCustomerInfo: builder.query({
@@ -111,6 +118,7 @@ export const {
     useLazyGetMyOrdersQuery,
     useLazyGetAllProductsQuery,
     useGetAllOrdersQuery,
+    useGetkitchenMyOrdersQuery,
     useSellOrderMutation,
 
     // online orders

@@ -11,7 +11,7 @@ type Props = {
 
 const InvoicePrint = forwardRef<HTMLDivElement, Props>(({ invoiceData }, ref) => {
 
-    const previous_due = Number(invoiceData.customer.total_receivable);
+    const previous_due = invoiceData.customer_id == 1 ? 0 : Number(invoiceData.customer.total_receivable);
     const final_receivable = previous_due + Number(invoiceData.final_receivable);
     const total_due = Number(previous_due) + Number(invoiceData.final_receivable);
 

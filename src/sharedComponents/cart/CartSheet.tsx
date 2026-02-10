@@ -151,7 +151,7 @@ export function CartSheet() {
             id: res.id,
             token: res.token,
             table_id: selectedTable.table_id,
-            orderType: selectedTable.customer_type === "Take Way" ? "Self Pickup" : selectedTable.customer_type,
+            orderType: selectedTable.customer_type,
             items: addedItems as OrderItem[],
             waiter: authUser?.fname || ''
           })
@@ -184,7 +184,7 @@ export function CartSheet() {
             id: res.id,
             token: res.token,
             table_id: selectedTable.table_id,
-            orderType: selectedTable.customer_type === "Take Way" ? "Self Pickup" : selectedTable.customer_type,
+            orderType: selectedTable.customer_type,
             items: addedItems as OrderItem[],
             waiter: authUser?.fname || ''
           })

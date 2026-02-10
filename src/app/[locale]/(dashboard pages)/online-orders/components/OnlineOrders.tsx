@@ -45,13 +45,15 @@ export default function OnlineOrders() {
     if (!mount) return null;
 
     if (isLoading) return <DataLoading />
+
+    console.log(results.data?.data, ' online oreders')
     return (
         <>
             {
 
                 results.data?.data && !!results?.data?.data?.length ? <div className="flex flex-col pt-2 gap-2">
                     {
-                        results?.data?.data.map(order => <button key={order.id} onClick={() => handleEditOrder(order)} className='w-full flex bg-clr-card overflow-hidden custom-shadow-md group z-0'>
+                        (results?.data?.data as TOrder[])?.map(order => <button key={order.id} onClick={() => handleEditOrder(order)} className='w-full flex bg-clr-card overflow-hidden custom-shadow-md group z-0'>
                             <div className="relative p-1 flex items-center justify-center">
                                 {order.customer_type === "Online" ?
                                     <div className="gap-1 bg-secondary pb-0 flex flex-col w-[70px] h-[70px] overflow-hidden rounded-md">
@@ -59,10 +61,19 @@ export default function OnlineOrders() {
                                             <Image src={"/images/shared/Delivery-icon-white.png"} className='hidden dark:block z-10 w-full duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Delivery Icon" />
                                             <Image src={"/images/shared/Delivery-icon-black.png"} className='block dark:hidden z-10 w-full duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Delivery Icon" />
                                         </div>
-                                        <p className="text-sm rounded-[3px] bg-secondary px-0.5 font-bold text-white"><RenderText group="shared" variable="online" /></p>
+                                        <p className="text-sm rounded-[3px] bg-secondary px-0.5 font-bold text-white"><RenderText group="shared" variable="percel" /></p>
                                     </div>
                                     :
-                                    order.customer_type === "Self Pickup" ?
+                                    order.customer_type === "Dine-In" ?
+                                        <div className="bg-black flex flex-col w-[70px] h-[70px] overflow-hidden rounded-md">
+                                            <div className=" px-1.5 flex items-center justify-center w-[55px] mx-auto overflow-hidden grow" >
+                                                {/* <Image src={"/images/shared/table-white.svg"} className='hidden dark:block z-10 w-full duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Table icon" /> */}
+                                                <Image src={"/images/shared/table-white.svg"} className='z-10 w-full duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Table icon" />
+                                                {/* <Image src={"/images/shared/table.svg"} className='block dark:hidden z-10 w-full duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Table icon" /> */}
+                                            </div>
+                                            <p className="text-sm font-bold text-white rounded-[3px]"><RenderText group="shared" variable="table" /></p>
+                                        </div>
+                                        :
                                         <div className="pt-1 bg-blue-500 gap-1 pb-0 flex flex-col w-[70px] h-[70px] overflow-hidden rounded-md">
                                             <div className="grow overflow-hidden mx-auto w-7 flex items-center justify-center" >
                                                 <Image src={"/images/shared/percel-icon-white.png"} className='hidden dark:block z-10 w-auto duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Table icon" />
@@ -70,15 +81,7 @@ export default function OnlineOrders() {
                                             </div>
                                             <p className="text-sm bg-blue-500 font-bold text-white rounded-[3px]"><RenderText group="shared" variable="percel" /></p>
                                         </div>
-                                        :
-                                        <div className="bg-black flex flex-col w-[70px] h-[70px] overflow-hidden rounded-md">
-                                            <div className=" px-1.5 flex items-center justify-center w-[55px] mx-auto overflow-hidden grow" >
-                                                {/* <Image src={"/images/shared/table-white.svg"} className='hidden dark:block z-10 w-full duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Table icon" /> */}
-                                                <Image src={"/images/shared/table-white.svg"} className='z-10 w-full duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Table icon" />
-                                                {/* <Image src={"/images/shared/table.svg"} className='block dark:hidden z-10 w-full duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Table icon" /> */}
-                                            </div>
-                                            <p className="text-sm font-bold text-white rounded-[3px]"><RenderText group="shared" variable="table" />-5</p>
-                                        </div>
+
                                 }
                             </div>
 
@@ -102,9 +105,9 @@ export default function OnlineOrders() {
                                 </div>
                                 <p className="px-2 text-sm ">
                                     {order.customer_type === "Dine-In" ?
-                                        <span className="text-primary" ><RenderText group="shared" variable="table" /></span> :
-                                        order.customer_type === "Online" ? <span className="text-secondary" ><RenderText group="shared" variable="percel" /></span> :
-                                            <span className="text-blue-500" ><RenderText group="shared" variable="percel" /></span>}
+                                        <span className="text-primary py-0.5 bg-green-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="onlineDineIn" /></span> :
+                                        order.customer_type === "Online" ? <span className="text-secondary bg-red-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="onlineHomeDelivery" /></span> :
+                                            <span className="text-blue-500 bg-blue-500/20 px-1 rounded-sm" ><RenderText group="shared" variable="onlineTakeAway" /></span>}
                                 </p>
                             </div>
                         </button>)

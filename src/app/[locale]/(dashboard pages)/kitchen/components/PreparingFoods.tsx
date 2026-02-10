@@ -3,7 +3,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import useFormatPrice from "@/hooks/useFormatPrice"
 import useRenderText from "@/hooks/useRenderText"
 import { cn, getTranslationReadyText } from "@/lib/utils"
-import { useGetAllOrdersQuery, useGetMyOrdersQuery, useUpdateOrderItemStatusMutation } from "@/redux/features/product/productApiSlice"
+import { useGetAllOrdersQuery, useGetkitchenMyOrdersQuery, useUpdateOrderItemStatusMutation } from "@/redux/features/product/productApiSlice"
 import { RootState } from "@/redux/store"
 import LoadingSpinner from "@/sharedComponents/loading/LoadingSpinner"
 import DataLoading from "@/sharedComponents/shared/Loading"
@@ -57,7 +57,7 @@ export default function PreparingFoods() {
 const MyOrders = () => {
     // hooks
     const [currentPage, setCurrentPage] = useState(1);
-    const { data: results, isLoading } = useGetMyOrdersQuery(`page=${currentPage}`,
+    const { data: results, isLoading } = useGetkitchenMyOrdersQuery(`page=${currentPage}`,
         {
             refetchOnFocus: true,
             refetchOnMountOrArgChange: true,
@@ -106,9 +106,11 @@ const Table = ({ order }: { order: TOrder }) => {
     const { translateNumber } = useFormatPrice();
     const { tables } = useSelector((state: RootState) => state.address);
     const isAllFinished = order.items.every(item => item.is_prepared);
+
+    const tableInfo = tables.find(item => item.id == order.table_id)?.table_no;
     return <div key={order.id} className={cn("w-full bg-white dark:bg-black custom-shadow-card-sm border border-slate-400 dark:border-slate-600  rounded-[4px] overflow-hidden")}>
         <div className={cn("flex py-2 items-center justify-between text-white px-2.5", isAllFinished ? "bg-primary" : "bg-secondary")} >
-            <h6 className="fg_fs-md">{tables.find(item => item.id === order.table_id)?.table_no}</h6>
+            <h6 className="fg_fs-md">{tableInfo || "Parcel"}</h6>
             <p className="flex text-[13px] items-center gap-0.5">
                 {/* <RenderText group="checkout" variable="orderId" /> */}
                 <ClipboardList className="w-5" />

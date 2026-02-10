@@ -62,6 +62,7 @@ const MyOrders = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const { data: results, isLoading } = useGetMyOrdersQuery(`page=${currentPage}`,
         {
+            pollingInterval: 10000,
             refetchOnFocus: true,
             refetchOnMountOrArgChange: true,
             refetchOnReconnect: true,
@@ -76,8 +77,6 @@ const MyOrders = () => {
     }
 
     if (isLoading) return <DataLoading />
-
-    console.log(results, ' result from my order')
     return <>
         {
             results?.data?.data && !!results?.data?.data?.length ?
@@ -154,7 +153,7 @@ const OrderCard = ({ order, cb }: TOrderCardProps) => {
                     <p className="text-[13px] pb-0.5 rounded-[3px] bg-secondary px-0.5 font-bold text-white"><RenderText group="shared" variable="percel" /></p>
                 </div>
                 :
-                order.customer_type === "Self Pickup" ?
+                order.customer_type === "Take Way" ?
                     <div className="pt-1 bg-blue-500 gap-1 pb-0 flex flex-col w-[70px] h-[70px] overflow-hidden rounded-md">
                         <div className="grow overflow-hidden mx-auto w-6 flex items-center justify-center" >
                             <Image src={"/images/shared/percel-icon-white.png"} className='z-10 w-auto duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Table icon" />
@@ -169,7 +168,7 @@ const OrderCard = ({ order, cb }: TOrderCardProps) => {
                             <Image src={"/images/shared/table-white.svg"} className='z-10 w-full duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Table icon" />
                             {/* <Image src={"/images/shared/table.svg"} className='block dark:hidden z-10 w-full duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Table icon" /> */}
                         </div>
-                        <p className="text-[13px] pb-0.5 font-bold text-white rounded-[3px]"><RenderText group="shared" variable="table" />-5</p>
+                        <p className="text-[13px] pb-0.5 font-bold text-white rounded-[3px]">{order.table_id}</p>
                     </div>
             }
         </div>
