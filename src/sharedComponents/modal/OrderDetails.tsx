@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import useFormatPrice from "@/hooks/useFormatPrice";
 import useRenderText from "@/hooks/useRenderText";
+import { useRouter } from "@/i18n/navigation";
 import { cn, getImage, getTranslationReadyText } from "@/lib/utils";
 import { SET_EXPAND, udpateOrderAction } from "@/redux/features/actions/actionSlice";
 import { useUpdateOnlineOrdersMutation } from "@/redux/features/product/productApiSlice";
@@ -25,6 +26,7 @@ import RenderText from "../utils/RenderText";
 export default function OrderDetailsModal() {
     // hooks
     const kotPrintRef = useRef<HTMLDivElement>(null);
+    const router = useRouter()
     const invoicePrintRef = useRef<HTMLDivElement>(null);
     const [showFullDeails, setShowFullDetials] = useState(false)
     // const [updateStatus, {isLoading:isDuePrintUpdating}] = useUpdateIsDuePrintMutation()
@@ -69,7 +71,10 @@ export default function OrderDetailsModal() {
         }))
         dispatch(setCartProducts(cartProducts))
         dispatch(updateCartFormSavedData({ customerId: detailsOrder.customer_id, tableId: detailsOrder.table_id || 1 }));
-        dispatch(SET_EXPAND("CART_SHEET"));
+        dispatch(SET_EXPAND(null));
+
+        // navigate to home page
+        router.push("/");
     }
 
     const udpateOnlineOrderStatus = async (id: number, status: number) => {
