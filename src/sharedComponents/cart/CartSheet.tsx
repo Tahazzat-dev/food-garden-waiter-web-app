@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button';
 import useFormatPrice from '@/hooks/useFormatPrice';
 import { removeStorage } from '@/lib/storage';
-import { calculateSubtotal, cn, getSellingPrice, log } from '@/lib/utils';
+import { calculateSubtotal, cn, getSellingPrice, isTable, log } from '@/lib/utils';
 import { SET_EXPAND, udpateOrderAction, updatePrevAction } from '@/redux/features/actions/actionSlice';
 import { useConfirmOrderMutation, useUpdateOrderMutation } from '@/redux/features/product/productApiSlice';
 import { setCartProducts, updateCartFormSavedData } from '@/redux/features/product/productSlice';
@@ -11,6 +11,7 @@ import { OrderItem, TCustomer, TCustomerType, TSelectedTable } from '@/types/typ
 import * as Dialog from "@radix-ui/react-dialog";
 import { Plus, Undo2, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import { MouseEvent, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -252,10 +253,7 @@ export function CartSheet() {
       >
         <div onClick={handleModalClick} className="w-full h-full flex flex-col">
           <div className="w-full flex items-center gap-5 py-3 px-4 bg-primary">
-            <h3 className="grow flex items-end gap-2 text-white">
-              <span className='fg_fs-lg'><RenderText group='shared' variable='item' /> ({cartProducts.length})</span>
-              {/* <span className='text-sm text-[#5BFFFF]'>( Table - 5 )</span> */}
-            </h3>
+            <CartHeading />
             <div className="w-full max-w-6">
               <button onClick={() => dispatch(SET_EXPAND(null))} className='bg-secondary p-1 rounded-full' >
                 <X className="text-white w-5 md:w-6 md:h-6 h-5" />
@@ -365,4 +363,38 @@ export function CartSheet() {
       </div>
     </>
   );
+}
+
+const CartHeading = () => {
+  const { authUser } = useSelector((state: RootState) => state.auth);
+  const { detailsOrder } = useSelector((state: RootState) => state.productSlice);
+  const { orderAction } = useSelector((state: RootState) => state.actions);
+  return <h3 className="grow flex text-base gap-7 text-white">
+    <span className="flex items-center gap-1" >
+      <Image src={"/images/shared/waiter-icon.png"} className='mr-1 w-6 h-auto' width={300} height={400} alt="Delivery Icon" />
+      {
+        orderAction === "edit" ?
+          detailsOrder?.waiter?.fname : authUser?.fname
+      }
+    </span>
+    <TableInfo />
+  </h3>
+}
+
+const TableInfo = () => {
+  const { authUser } = useSelector((state: RootState) => state.auth);
+  const { detailsOrder } = useSelector((state: RootState) => state.productSlice);
+  const { orderAction } = useSelector((state: RootState) => state.actions);
+
+  if (orderAction !== "edit" || !detailsOrder || !authUser) return;
+
+  if (detailsOrder.table_id !== 1 && isTable(detailsOrder.table)) return <span className='flex items-center gap-1' >
+    <Image src={"/images/shared/table-white.svg"} className='w-7 h-auto' width={300} height={400} alt="Table icon" />
+    {detailsOrder.table.table_no}
+  </span>
+
+  return <span className="flex items-center gap-1">
+    <Image src={"/images/shared/percel-white.png"} className='w-4 h-auto' width={300} height={400} alt="Table icon" />
+    {detailsOrder.table_id == 1 ? "Parcel" : detailsOrder.table.table_no}
+  </span>
 }

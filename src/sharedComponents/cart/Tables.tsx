@@ -201,7 +201,7 @@ const Icon = ({ active, type, className }: IconProps) => {
 
     return <>
         <Image src={whiteIcon} className={cn("dark:hidden mx-auto h-[18px]", className)} width={100} height={60} alt="Table icon" />
-        <Image src={blackIcon} className={cn("dark:block mx-auto h-[18px]", className)} width={100} height={60} alt="Table icon" />
+        <Image src={blackIcon} className={cn("hidden dark:block mx-auto h-[18px]", className)} width={100} height={60} alt="Table icon" />
     </>
 };
 
