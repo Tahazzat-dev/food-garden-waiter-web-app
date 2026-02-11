@@ -83,7 +83,8 @@
     "noDataFound": "No data found",
     "yes": "Yes",
     "no": "No",
-    "onlineOrderPendingForApproval": "Online order pending for approval"
+    "onlineOrderPendingForApproval": "Online order pending for approval",
+    "actionPermissionError": "You are not authorized for this action"
   },
 
   "pages": {

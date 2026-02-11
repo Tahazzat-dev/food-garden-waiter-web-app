@@ -90,6 +90,7 @@ const AllOrders = () => {
 
     );
     if (isLoading) return <DataLoading />
+
     return <div className="w-full flex py-3 flex-col gap-4 sm:gap-5">
         {
             !!results?.data?.data &&
@@ -135,13 +136,27 @@ const Table = ({ order }: { order: TOrder }) => {
 const TableItem = ({ item }: { item: OrderItem }) => {
     // hook
     const [updateStatus, { isLoading }] = useUpdateOrderItemStatusMutation()
+    const { authUser } = useSelector((state: RootState) => state.auth)
     const { renderText } = useRenderText()
     const [isOpen, setIsOpen] = useState(false);
+    const [showPermissionError, setShowPermissionError] = useState(false);
     const { en, bn } = getTranslationReadyText(item.product_name)
 
     // handlers
+
+    const handleWarning = () => {
+        if (!authUser) return;
+        if (authUser.id !== 1 && item.is_prepared) {
+            setShowPermissionError(true)
+        } else {
+            setIsOpen(true)
+        }
+    }
+
     const handleConfirm = async () => {
         // update the order status
+        if (!authUser) return;
+
         try {
             const res = await updateStatus({
                 item_id: item.id,
@@ -165,7 +180,7 @@ const TableItem = ({ item }: { item: OrderItem }) => {
                 <span className="w-5 h-5 overflow-hidden flex items-center justify-center">
                     <LoadingSpinner className="w-4 h-4" />
                 </span> :
-                <input checked={!!item.is_prepared} onChange={() => setIsOpen(true)} className="w-5 h-5" type="checkbox" />
+                <input checked={!!item.is_prepared} onChange={handleWarning} className="w-5 h-5" type="checkbox" />
             }
         </p>
         <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
@@ -189,6 +204,29 @@ const TableItem = ({ item }: { item: OrderItem }) => {
                         <AlertDialogAction className="w-full !border-0 bg-primary text-white" onClick={handleConfirm}>
                             {renderText("Yes", "হ্যাঁ")}
                         </AlertDialogAction>
+                    </div>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
+
+        <AlertDialog open={showPermissionError} onOpenChange={() => setShowPermissionError(false)}>
+            <AlertDialogContent className="" >
+                <AlertDialogHeader>
+                    <AlertDialogTitle className="text-secondary" >
+                        <RenderText group="shared" variable="actionPermissionError" />
+                    </AlertDialogTitle>
+                    {/* <AlertDialogDescription>
+                        {renderText(
+                            "Are you sure you want to update this item status?",
+                            "আপনি কি নিশ্চিত যে আপনি এই আইটেমের স্ট্যাটাস আপডেট করতে চান?"
+                        )}
+                    </AlertDialogDescription> */}
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                    <div className="w-full flex gap-2 justify-center">
+                        <AlertDialogCancel className="bg-secondary text-white !border-0" onClick={() => setShowPermissionError(false)}>
+                            <RenderText group="shared" variable="cancel" />
+                        </AlertDialogCancel>
                     </div>
                 </AlertDialogFooter>
             </AlertDialogContent>

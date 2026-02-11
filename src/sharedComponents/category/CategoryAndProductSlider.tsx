@@ -94,11 +94,16 @@ export default function CategoryAndProductSlider({ className = "", categories = 
                                     freeMode={{
                                         enabled: true,
                                         momentum: true,
-                                        momentumRatio: 1,
-                                        momentumVelocityRatio: 1.2,
+                                        momentumRatio: 2,
+                                        momentumVelocityRatio: 2,
+                                        momentumBounce: false,
                                         sticky: false,
                                     }}
 
+                                    longSwipes={true}
+                                    longSwipesRatio={0}
+                                    resistance={false}
+                                    touchReleaseOnEdges={true}
                                     mousewheel={{
                                         forceToAxis: true,
                                         sensitivity: 1,
