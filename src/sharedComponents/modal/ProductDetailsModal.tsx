@@ -123,6 +123,10 @@ export default function ProductDetailsModal() {
     }
 
     useEffect(() => {
+        setQuantity(1);
+    }, [EXPAND])
+
+    useEffect(() => {
         setShowVariantWarning(false);
         setVariant(modalProduct?.variations[0] || null);
         if (KEY === EXPAND) {
