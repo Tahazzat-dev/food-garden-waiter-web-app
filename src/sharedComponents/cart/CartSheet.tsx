@@ -261,7 +261,7 @@ export function CartSheet() {
               </button>
             </div>
           </div>
-          <div className="w-full h-full grow px-2.5 sm:px-4 overflow-y-auto py-3 dark:border-l dark:border-slate-700">
+          <div className="w-full h-full grow bg-body px-2.5 sm:px-4 overflow-y-auto py-3 dark:border-l dark:border-slate-700">
             {cartProducts.map((item) => (
               <CartCard
                 key={item.id}
@@ -269,8 +269,8 @@ export function CartSheet() {
               />
             ))}
           </div>
-          <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-            <div className="w-full flex gap-2 px-2 mb-2">
+          <form onSubmit={handleSubmit(onSubmit)} className="bg-body w-full">
+            <div className="w-full bg-body flex gap-2 px-2 mb-2">
               <CustomerSelect formState={formState} isOpen={isOpen} setIsOpen={setIsOpen} setValue={setValue} register={register} watch={watch} />
               <Button type='button' onClick={handleOpenAddCustomerModal} className='!px-2 gap-0.5' ><Plus /> <RenderText group='shared' variable='addShortText' /> </Button>
             </div>

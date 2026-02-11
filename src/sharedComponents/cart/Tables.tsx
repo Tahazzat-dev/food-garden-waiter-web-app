@@ -68,12 +68,17 @@ export default function Tables({ register, selectedTable, setSelectedTable }: Pr
     );
 
 
-    const { tables, parcels } = useMemo(() => {
+    const { firstRow, secondRow } = useMemo(() => {
+        const list: ITable[] = data?.data || [];
+
+        const mid = Math.ceil(list.length / 2); // ⭐ first row gets extra if odd
+
         return {
-            tables: data?.data?.filter(isTable),
-            parcels: data?.data?.filter(item => !isTable(item))
-        }
-    }, [data?.data])
+            firstRow: list.slice(0, mid),
+            secondRow: list.slice(mid),
+        };
+    }, [data?.data]);
+
 
 
     const isSelected = (table: ITable) => selectedTable?.table_id === table.id;
@@ -93,70 +98,85 @@ export default function Tables({ register, selectedTable, setSelectedTable }: Pr
         return <NoDataMsg group="shared" variable="noDataFound" />
     }
 
-    if (!parcels.length) return null;
+
     return (
         <>
             <input type="hidden" {...register("table")} value={selectedTable?.table_id || ""} />
 
-            {/* Dine-In Tables */}
-            <div className="table-container w-full flex max-w-full overflow-x-auto gap-2.5 py-1.5">
-                {tables?.map((table: ITable) => (
-                    <button
-                        type="button"
-                        onClick={() => selectTable("Dine-In", table.id, table.table_no)}
-                        className={cn(
-                            "duration-200 border border-slate-400 dark:border-slate-600 rounded-md px-2 pt-2 pb-0.5 min-w-[80px]",
-                            selectedTable?.table_id === table.id
-                                ? "bg-primary text-clr-text-body"
-                                : table.status !== "available"
-                                    ? "bg-secondary text-white"
-                                    : "bg-slate-100 dark:bg-slate-900 text-clr-text-body"
-                        )}
-                        key={"table_" + table.id}
-                    >
-                        <Icon className="w-[30px]" type="table" active={isActive(table)} />
-                        <Label isSelected={isSelected(table)} text={table?.table_no} />
-                    </button>
-                ))}
-            </div>
+            <div className="w-full py-0.5 overflow-x-auto">
+                <div className="inline-flex flex-col gap-1.5 min-w-max">
 
-            {/* Parcels / Online / Takeaway */}
-            <div className="table-container w-full flex max-w-full overflow-x-auto gap-2.5 py-1.5">
-                <button
-                    type="button"
-                    onClick={() => selectTable("Online", 1, parcels[0].table_no)}
-                    className={cn(
-                        "duration-200 border border-slate-400 dark:border-slate-600 rounded-md px-2 pt-2 pb-0.5 min-w-[80px]",
-                        selectedTable?.table_id === 1
-                            ? "bg-primary text-clr-text-body"
-                            : parcels[0].status !== "available"
-                                ? "bg-secondary text-white"
-                                : "bg-slate-100 dark:bg-slate-900 text-clr-text-body"
-                    )}
-                    key={"table_" + parcels[0].id}
-                >
-                    <Icon className="w-[18px]" type="percel" active={isActive(parcels[0])} />
-                    <Label isSelected={isSelected(parcels[0])} text="Online" />
-                </button>
+                    {/* ROW 1 */}
+                    <div className="flex gap-1.5">
+                        {firstRow.map((table: ITable) => {
+                            const customer_type =
+                                table.table_no?.toLowerCase() === "online"
+                                    ? "Online"
+                                    : isTable(table)
+                                        ? "Dine-In"
+                                        : "Take Way";
 
-                {parcels?.slice(1, -1).map((table: ITable) => (
-                    <button
-                        type="button"
-                        onClick={() => selectTable("Take Way", table.id, table.table_no)}
-                        className={cn(
-                            "duration-200 border border-slate-400 dark:border-slate-600 rounded-md px-2 pt-2 pb-0.5 min-w-[80px]",
-                            selectedTable?.table_id === table.id
-                                ? "bg-primary text-clr-text-body"
-                                : table.status !== "available"
-                                    ? "bg-secondary text-white"
-                                    : "bg-slate-100 dark:bg-slate-900 text-clr-text-body"
-                        )}
-                        key={"table_" + table.id}
-                    >
-                        <Icon className="w-[18px]" type="percel" active={isActive(table)} />
-                        <Label isSelected={isSelected(table)} text={table.table_no} />
-                    </button>
-                ))}
+                            return (
+                                <button
+                                    key={"table_" + table.id}
+                                    type="button"
+                                    onClick={() => selectTable(customer_type, table.id, table.table_no)}
+                                    className={cn(
+                                        "duration-200 border border-slate-400 dark:border-slate-600 rounded-md px-1 pt-1 pb-0.5 min-w-[60px]",
+                                        selectedTable?.table_id === table.id
+                                            ? "bg-primary text-clr-text-body"
+                                            : table.status !== "available"
+                                                ? "bg-secondary text-white"
+                                                : "bg-slate-100 dark:bg-slate-900 text-clr-text-body"
+                                    )}
+                                >
+                                    <Icon
+                                        className="w-[22px]"
+                                        type={isTable(table) ? "table" : "percel"}
+                                        active={isActive(table)}
+                                    />
+                                    <Label isSelected={isSelected(table)} text={table.table_no} />
+                                </button>
+                            );
+                        })}
+                    </div>
+
+                    {/* ROW 2 */}
+                    <div className="flex gap-1.5">
+                        {secondRow.map((table: ITable) => {
+                            const customer_type =
+                                table.table_no?.toLowerCase() === "online"
+                                    ? "Online"
+                                    : isTable(table)
+                                        ? "Dine-In"
+                                        : "Take Way";
+
+                            return (
+                                <button
+                                    key={"table_" + table.id}
+                                    type="button"
+                                    onClick={() => selectTable(customer_type, table.id, table.table_no)}
+                                    className={cn(
+                                        "duration-200 border border-slate-400 dark:border-slate-600 rounded-md px-1 pt-1 pb-0.5 min-w-[60px]",
+                                        selectedTable?.table_id === table.id
+                                            ? "bg-primary text-clr-text-body"
+                                            : table.status !== "available"
+                                                ? "bg-secondary text-white"
+                                                : "bg-slate-100 dark:bg-slate-900 text-clr-text-body"
+                                    )}
+                                >
+                                    <Icon
+                                        className="w-[22px]"
+                                        type={isTable(table) ? "table" : "percel"}
+                                        active={isActive(table)}
+                                    />
+                                    <Label isSelected={isSelected(table)} text={table.table_no} />
+                                </button>
+                            );
+                        })}
+                    </div>
+
+                </div>
             </div>
         </>
     )
