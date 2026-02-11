@@ -159,7 +159,7 @@ const OrderCard = ({ order, cb }: TOrderCardProps) => {
                             <Image src={"/images/shared/percel-white.png"} className='z-10 w-full duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Table icon" />
                             {/* <Image src={"/images/shared/percel-icon-black.png"} className='block dark:hidden z-10 w-auto duration-300 group-hover:scale-105 h-auto' width={300} height={400} alt="Table icon" /> */}
                         </div>
-                        <p className="text-[13px] pb-0.5 bg-blue-500 font-bold text-white rounded-[3px]">{order.table?.table_no}</p>
+                        <p className="text-[13px] pb-0.5 bg-blue-500 font-bold text-white rounded-[3px]">{order.table?.table_no || "Parcel"}</p>
                     </div>
                     :
                     <div className="bg-black flex flex-col w-[70px] h-[70px] overflow-hidden rounded-md">

@@ -59,7 +59,6 @@ export function CartSheet() {
   const openCart = EXPAND === KEY;
   const { formatPrice, translateNumber } = useFormatPrice()
   const [isOpen, setIsOpen] = useState(false);
-
   const { register, handleSubmit, setValue, watch, formState, setError, formState: { errors } } = useForm<CustomerFormValues>()
 
 
@@ -130,7 +129,9 @@ export function CartSheet() {
           discount_input: "0",
           delivery_charge_input: "0.00",
         };
+
         const res = await updateOrder({ id: detailsOrder.id, data: editData }).unwrap();
+
         const addedItems = cartProducts.map(item => (
           {
             product_name: item.title,
@@ -172,7 +173,6 @@ export function CartSheet() {
               variation: item.name,
             },
             qty: item.quantity,
-
           }
         ))
 
@@ -389,13 +389,18 @@ const TableInfo = () => {
 
   if (orderAction !== "edit" || !detailsOrder || !authUser) return;
 
+  if (!detailsOrder.table) return <span className="flex items-center gap-1">
+    <Image src={"/images/shared/percel-white.png"} className='w-4 h-auto' width={300} height={400} alt="Table icon" />
+    Parcel
+  </span>
+
   if (detailsOrder.table_id !== 1 && isTable(detailsOrder.table)) return <span className='flex items-center gap-1' >
     <Image src={"/images/shared/table-white.svg"} className='w-7 h-auto' width={300} height={400} alt="Table icon" />
-    {detailsOrder.table.table_no}
+    {detailsOrder?.table?.table_no}
   </span>
 
   return <span className="flex items-center gap-1">
     <Image src={"/images/shared/percel-white.png"} className='w-4 h-auto' width={300} height={400} alt="Table icon" />
-    {detailsOrder.table_id == 1 ? "Parcel" : detailsOrder.table.table_no}
+    {detailsOrder.table_id == 1 ? "Parcel" : detailsOrder?.table?.table_no}
   </span>
 }

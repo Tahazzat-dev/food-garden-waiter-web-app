@@ -123,7 +123,7 @@ export default function MobileBottomButtons() {
                     <span className={cn('font-semibold text-sm sm:text-base', isActive('/kitchen') ? "text-[#00f9ff]" : "text-white")}><RenderText group="mobileBottomActions" variable="kitchen" /></span>
                 </Link>
 
-                <Link href="/online-orders" className={cn('flex flex-col gap-1 items-center justify-between min-w-[70px]', updatingOrder && "pointer-events-none opacity-40")} >
+                <Link href="/online-orders" className={cn('flex relative flex-col gap-1 items-center justify-between min-w-[70px]', updatingOrder && "pointer-events-none opacity-40")} >
                     <Globe className={cn("h-6 w-6 cursor-pointer", isActive("/online-orders") ? "text-[#00f9ff]" : "text-white ")} />
                     <span className={cn('font-semibold text-sm sm:text-base', isActive('/online-orders') ? "text-[#00f9ff]" : "text-white")}><RenderText group="mobileBottomActions" variable="online" /></span>
                     {
