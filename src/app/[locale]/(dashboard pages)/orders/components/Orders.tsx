@@ -62,7 +62,7 @@ const MyOrders = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const { data: results, isLoading } = useGetMyOrdersQuery(`page=${currentPage}`,
         {
-            pollingInterval: 10000,
+            pollingInterval: 5000,
             refetchOnFocus: true,
             refetchOnMountOrArgChange: true,
             refetchOnReconnect: true,
@@ -77,6 +77,7 @@ const MyOrders = () => {
     }
 
     if (isLoading) return <DataLoading />
+    log("pooling data for my order");
     return <>
         {
             results?.data?.data && !!results?.data?.data?.length ?
@@ -137,7 +138,6 @@ type TOrderCardProps = {
     cb: (order: TOrder) => void;
 }
 const OrderCard = ({ order, cb }: TOrderCardProps) => {
-    log(order, ' order from card')
     return <button key={order.id} onClick={() => cb(order)} className={cn('relative w-full flex bg-clr-card  overflow-hidden rounded-md border-slate-300 dark:border-slate-600 border group z-0', order.is_web === 1 && order.is_online_app == 0 && "pointer-events-none")}>
         {
             order.is_web === 1 && order.is_online_app == 0 && <div className="w-full flex items-center justify-center h-full z-20  absolute top-0 left-0 bg-slate-700/80 backdrop-blur-[1px]">

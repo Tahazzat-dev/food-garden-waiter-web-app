@@ -212,11 +212,9 @@ export default function OrderDetailsModal() {
 
 const DetailsItemCard = ({ item }: { item: OrderItem }) => {
     // hooks
-    const dispatch = useDispatch()
     const { renderText } = useRenderText()
     const { formatPrice, translateNumber } = useFormatPrice();
-    const { en, bn } = getTranslationReadyText(item.product_name)
-    console.log(item.product_name, ' pd name');
+    const { en, bn } = getTranslationReadyText(item.product.name)
     return <div className='w-full rounded-md  bg-clr-card flex gap-1 mb-2 overflow-hidden group'>
         <div className="relative p-1 flex items-center justify-center">
             <div className="w-full h-full max-w-[50px] max-h-[40px] overflow-hidden rounded-md">
