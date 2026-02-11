@@ -90,7 +90,7 @@ export function CustomerSelect({
             <button
                 type="button"
                 onClick={() => setIsOpen(v => !v)}
-                className="checkout-input w-full  relative flex justify-between gap-4 items-center px-3 py-1.5 h-[36px] rounded border"
+                className="w-full rounded-[4px] bg-body outline-none border duration-200 border-slate-400/70 focus:border-slate-500/70 text-sm  relative flex justify-between gap-4 items-center px-3 py-1.5 h-[36px]"
             >
                 {!!selectedCustomer &&
                     <span className="text-base">{selectedCustomer.name}</span>

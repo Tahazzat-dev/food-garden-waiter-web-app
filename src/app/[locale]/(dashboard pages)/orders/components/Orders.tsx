@@ -11,6 +11,7 @@ import { OrdersTab } from "@/sharedComponents/tab/Tab";
 import RenderFormatedPrice from "@/sharedComponents/utils/RenderFormatedPrice";
 import RenderText from "@/sharedComponents/utils/RenderText";
 import { TOrder } from "@/types/types";
+import { PrinterCheck } from "lucide-react";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -143,6 +144,10 @@ const OrderCard = ({ order, cb }: TOrderCardProps) => {
                 <p className="text-white"><RenderText group="shared" variable="onlineOrderPendingForApproval" /></p>
             </div>
         }
+
+        {
+            !!order.is_due_print && <div className="w-full flex items-center justify-center h-full z-20  absolute top-0 left-0 bg-green-300/20 pointer-events-none"></div>
+        }
         <div className="relative z-10 p-1 flex items-center justify-center">
             {order.customer_type === "Online" ?
                 <div className="gap-1 bg-secondary pb-0 flex flex-col w-[70px] h-[70px] overflow-hidden rounded-md">
@@ -175,9 +180,15 @@ const OrderCard = ({ order, cb }: TOrderCardProps) => {
 
         <div className="grow flex z-10 flex-col bg-clr-card relative">
             <h5 className="bg-slate-200 dark:bg-slate-800 w-full text-sm px-2 py-0.5 flex items-center gap-3 justify-between">
-                <span className="w-[18px] h-[18px] text-sm flex items-center gap-1.5 rounded-full bg-primary p-0.5" >
-                    <Image src={"/images/shared/waiter-icon.png"} className='mr-1 z-10 w-full h-full' width={300} height={400} alt="Delivery Icon" /><span>{order?.waiter?.fname || ""}</span>
+                <span className="flex items-center gap-1.5 " >
+                    <span className="w-[18px] h-[18px] text-sm rounded-full bg-primary p-0.5" >
+                        <Image src={"/images/shared/waiter-icon.png"} className='mr-1 z-10 w-full h-full' width={300} height={400} alt="Delivery Icon" />
+                    </span>
+                    <span>{order?.waiter?.fname || ""}</span>
                 </span>
+                {
+                    !!order.is_due_print && <PrinterCheck className="size-[18px]" />
+                }
                 <Timer className="fg_fs-xxs" date={new Date(order.created_at)} />
             </h5>
             <div className="w-full grow flex mt-2 mb-1 justify-between items-center">
