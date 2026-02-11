@@ -1,5 +1,5 @@
 "use client"
-import { cn, log } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { SET_EXPAND, updateActiveOrderDetailsModal } from "@/redux/features/actions/actionSlice";
 import { useGetAllOrdersQuery, useGetMyOrdersQuery } from "@/redux/features/product/productApiSlice";
 import { updateDetailsOrder } from "@/redux/features/product/productSlice";
@@ -62,7 +62,7 @@ const MyOrders = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const { data: results, isLoading } = useGetMyOrdersQuery(`page=${currentPage}`,
         {
-            pollingInterval: 5000,
+            pollingInterval: 10000,
             refetchOnFocus: true,
             refetchOnMountOrArgChange: true,
             refetchOnReconnect: true,
@@ -77,7 +77,6 @@ const MyOrders = () => {
     }
 
     if (isLoading) return <DataLoading />
-    log("pooling data for my order");
     return <>
         {
             results?.data?.data && !!results?.data?.data?.length ?

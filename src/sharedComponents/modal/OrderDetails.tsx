@@ -27,6 +27,7 @@ export default function OrderDetailsModal() {
     const kotPrintRef = useRef<HTMLDivElement>(null);
     const invoicePrintRef = useRef<HTMLDivElement>(null);
     const [showFullDeails, setShowFullDetials] = useState(false)
+    // const [updateStatus, {isLoading:isDuePrintUpdating}] = useUpdateIsDuePrintMutation()
     const [updateOnlineOrder, { isLoading: isOnlineOrderUpdating }] = useUpdateOnlineOrdersMutation();
     const dispatch = useDispatch();
     const { formatPrice } = useFormatPrice();

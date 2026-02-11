@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button';
 import useFormatPrice from '@/hooks/useFormatPrice';
 import { removeStorage } from '@/lib/storage';
-import { calculateSubtotal, cn, getSellingPrice, isTable, log } from '@/lib/utils';
+import { calculateSubtotal, cn, getSellingPrice, isTable } from '@/lib/utils';
 import { SET_EXPAND, udpateOrderAction, updatePrevAction } from '@/redux/features/actions/actionSlice';
 import { useConfirmOrderMutation, useUpdateOrderMutation } from '@/redux/features/product/productApiSlice';
 import { setCartProducts, updateCartFormSavedData } from '@/redux/features/product/productSlice';
@@ -76,8 +76,6 @@ export function CartSheet() {
       return;
     }
 
-    log("brlow condition btn clicked");
-
     try {
       const choosedProducts = cartProducts.map(item => ({ product_id: item.productId, variant_id: item.id, quantity: item.quantity }))
 
@@ -96,6 +94,7 @@ export function CartSheet() {
           total_purchase_cost: 0,
           has_sub_unit: null
         }))
+
         const editData = {
           brand_filter: "1",
           customer_id: selectedCustomer.id,
@@ -129,11 +128,9 @@ export function CartSheet() {
           main_qty: cartProducts.map(item => item.quantity),
           sub_total: cartProducts.map(item => (item.price * item.quantity)),
           discount_input: "0",
-          delivery_charge_input: "0.00"
+          delivery_charge_input: "0.00",
         };
-
         const res = await updateOrder({ id: detailsOrder.id, data: editData }).unwrap();
-
         const addedItems = cartProducts.map(item => (
           {
             product_name: item.title,
@@ -156,6 +153,8 @@ export function CartSheet() {
             items: addedItems as OrderItem[],
             waiter: authUser?.fname || ''
           })
+
+          setSelectedTable(null)
         }
       } else {
         const res = await confirmOrder({
@@ -189,6 +188,8 @@ export function CartSheet() {
             items: addedItems as OrderItem[],
             waiter: authUser?.fname || ''
           })
+
+          setSelectedTable(null)
         }
       }
 
@@ -298,13 +299,13 @@ export function CartSheet() {
                     <span>{t("checkout")}</span> <span>{formatPrice(Number(totalPrice.toFixed(2)))}</span>
                   </button>
                   :
-                  <div className="w-full bg-primary flex items-center gap-5">
-                    <button onClick={handleDiscard} className='px-2.5' ><Undo2 className='size-5' /></button>
+                  <div className="w-full bg-primary flex items-center gap-1">
+                    <button onClick={handleDiscard} className='bg-secondary p-1 mx-3 rounded-full'   ><Undo2 className='text-white dark:text-white size-5' /></button>
                     <button
                       disabled={!cartProducts.length}
                       type="submit"
                       className={cn(
-                        "fg_fs-md grow rounded-0! pr-10 py-3 !text-white font-semibold bg-primary w-full flex items-center justify-center gap-5",
+                        "fg_fs-md grow rounded-0! pr-[52px] py-3 !text-white font-semibold bg-primary w-full flex items-center justify-center gap-5",
                         // !cartProducts.length && "pointer-events-none"
                       )}
                     >

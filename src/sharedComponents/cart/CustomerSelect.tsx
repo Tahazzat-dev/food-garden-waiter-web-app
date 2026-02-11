@@ -90,15 +90,15 @@ export function CustomerSelect({
             <button
                 type="button"
                 onClick={() => setIsOpen(v => !v)}
-                className="checkout-input w-full relative flex justify-between gap-4 items-center px-3 py-1.5 h-[36px] rounded border"
+                className="checkout-input w-full  relative flex justify-between gap-4 items-center px-3 py-1.5 h-[36px] rounded border"
             >
                 {!!selectedCustomer &&
                     <span className="text-base">{selectedCustomer.name}</span>
                 }
                 <span
                     className={cn(
-                        "pointer-events-none duration-200 m-0 p-0 absolute left-3 top-1/2 -translate-y-1/2",
-                        "peer-focus:top-0 bg-clr-card peer-focus:text-[11px] peer-focus:px-1 peer-focus:left-1.5",
+                        "pointer-events-none bg-body duration-200 m-0 p-0 absolute left-3 top-1/2 -translate-y-1/2",
+                        "peer-focus:top-0 peer-focus:text-[11px] peer-focus:px-1 peer-focus:left-1.5",
                         selectedCustomer && "top-0 text-[11px] px-0.5 left-2"
                     )}
                 >{t('customer')}</span>
@@ -106,7 +106,7 @@ export function CustomerSelect({
             </button>
             {/* Dropdown */}
             {isOpen && (
-                <div className=" absolute z-[9999] top-0 w-full bg-clr-card rounded shadow-lg border">
+                <div className=" absolute z-[9999] top-0 w-full bg-body rounded shadow-lg border">
 
                     {/* Search input */}
                     <div className="p-1 border-b">

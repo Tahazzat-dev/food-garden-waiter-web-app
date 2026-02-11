@@ -4,7 +4,7 @@ import { baseQueryWithAuth } from '../baseQuery';
 export const productApiSlice = createApi({
     reducerPath: 'productApi',
     baseQuery: baseQueryWithAuth,
-    tagTypes: ['Post', 'OnlineOrders', 'kitchenMyOrders', 'myOrders', 'allOrders', 'countOnlineOrders'],
+    tagTypes: ['Post', 'OnlineOrders', 'kitchenMyOrders', 'myOrders', 'allOrders', 'countOnlineOrders', "tables"],
     endpoints: (builder) => ({
         // GET query for fetching data
         getCategoryProducts: builder.query({
@@ -24,7 +24,7 @@ export const productApiSlice = createApi({
                 method: "PUT",
                 body: data
             }),
-            invalidatesTags: ['myOrders', "allOrders", 'kitchenMyOrders', "OnlineOrders"]
+            invalidatesTags: ['myOrders', "allOrders", 'kitchenMyOrders', "OnlineOrders", "tables"]
         }),
 
         getMyOrders: builder.query({
@@ -81,7 +81,7 @@ export const productApiSlice = createApi({
                 method: "POST",
                 body: data
             }),
-            invalidatesTags: ['myOrders', 'allOrders', 'kitchenMyOrders']
+            invalidatesTags: ['myOrders', 'allOrders', 'kitchenMyOrders', 'tables']
         }),
 
         sellOrder: builder.mutation({
@@ -98,9 +98,20 @@ export const productApiSlice = createApi({
             keepUnusedDataFor: 0,
         }),
 
+        updateIsDuePrint: builder.mutation({
+            query: (data) => ({
+                url: "/waiter/due-invoice-status",
+                method: "PUT",
+                body: data
+            }),
+            invalidatesTags: ['myOrders', 'allOrders', 'kitchenMyOrders']
+        }),
+
         // tables
         getTables: builder.query({
-            query: () => `/waiter/tables`
+            query: () => `/waiter/tables`,
+            keepUnusedDataFor: 10,
+            providesTags: ["tables"]
         })
     }),
 });
@@ -131,9 +142,10 @@ export const {
     useConfirmOrderMutation,
     useGetCategoryProductsQuery,
     useLazyGetCategoryProductsQuery,
+    useUpdateIsDuePrintMutation,
 
     // table
-    useLazyGetTablesQuery,
+    useGetTablesQuery,
 
     usePrefetch: useProductPrefetch
 } = productApiSlice;

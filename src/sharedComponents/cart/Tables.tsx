@@ -1,7 +1,7 @@
 "use client"
 import { cn, isTable } from "@/lib/utils";
 import { setTables } from "@/redux/features/address/addressSlice";
-import { useLazyGetTablesQuery } from "@/redux/features/product/productApiSlice";
+import { useGetTablesQuery } from "@/redux/features/product/productApiSlice";
 import { RootState } from "@/redux/store";
 import { ITable, TSelectedTable } from "@/types/types";
 import Image from "next/image";
@@ -21,37 +21,15 @@ export default function Tables({ register, selectedTable, setSelectedTable }: Pr
     const { cartFormSavedData } = useSelector((state: RootState) => state.productSlice);
     const { tables: tableData } = useSelector((state: RootState) => state.address);
 
-    // ✅ Lazy Query
-    const [loadTables, { isLoading }] = useLazyGetTablesQuery();
 
-    /**
-     * ✅ Lazy Fetch + Polling Logic
-     * Since lazy query has NO built-in polling,
-     * we manually trigger it.
-     */
+    const { data, isLoading } = useGetTablesQuery('', {
+        pollingInterval: 10000,
+        refetchOnReconnect: true,
+    });
     useEffect(() => {
-
-        const fetchTables = async () => {
-            try {
-                const res = await loadTables('').unwrap();
-                if (res?.success) {
-                    dispatch(setTables(res.data as ITable[]));
-                }
-            } catch (err) {
-                console.error("Failed to load tables:", err);
-            }
-        };
-
-        // First load
-        fetchTables();
-
-        // 👇 Poll every 5 seconds (adjust as needed)
-        const interval = setInterval(fetchTables, 300000);
-
-        return () => clearInterval(interval);
-
-    }, [loadTables, dispatch]);
-
+        if (tableData.length || !data || !data?.data) return;
+        dispatch(setTables(data?.data as ITable[]));
+    }, [data, dispatch, tableData]);
 
     /**
      * Auto select table from saved cart data
@@ -92,10 +70,10 @@ export default function Tables({ register, selectedTable, setSelectedTable }: Pr
 
     const { tables, parcels } = useMemo(() => {
         return {
-            tables: tableData?.filter(isTable),
-            parcels: tableData?.filter(item => !isTable(item))
+            tables: data?.data?.filter(isTable),
+            parcels: data?.data?.filter(item => !isTable(item))
         }
-    }, [tableData])
+    }, [data?.data])
 
 
     const isSelected = (table: ITable) => selectedTable?.table_id === table.id;
