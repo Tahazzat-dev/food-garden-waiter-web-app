@@ -34,7 +34,7 @@ export default function MobileBottomButtons() {
     const { cartProducts, hasOfferedProducts } = useSelector((state: RootState) => state.productSlice);
     const [onlineOrdersCount, setOnlineOrdersCount] = useState(0)
 
-    const { runExpandAnimation, EXPAND } = useSelector((state: RootState) => state.actions);
+    const { runExpandAnimation, EXPAND, orderAction } = useSelector((state: RootState) => state.actions);
 
     const isActive = (path: string) => pathname === path;
 
@@ -85,6 +85,7 @@ export default function MobileBottomButtons() {
     }, [data, setOnlineOrdersCount])
 
     const cartOpen = EXPAND === "CART_SHEET"
+    const updatingOrder = orderAction === "edit";
     return (
         <div className='w-full dark:border-t dark:border-slate-400 bg-black fixed py-2 z-[999999] bottom-0 left-0'>
             <Container className='flex justify-between'>
@@ -93,7 +94,7 @@ export default function MobileBottomButtons() {
                     <Image src="/images/shared/menu-active.png" className={isActive('/') ? "block" : "hidden"} width={22} height={40} alt="Menu icon" />
                     <span className={cn('font-semibold text-sm sm:text-base', isActive('/') ? "text-[#00f9ff]" : "text-white")}><RenderText group="mobileBottomActions" variable="menu" /></span>
                 </Link>
-                <Link href="/orders" className='mr-3 flex flex-col gap-1 items-center justify-between min-w-[70px]' >
+                <Link href="/orders" className={cn('mr-3 flex flex-col gap-1 items-center justify-between min-w-[70px]', updatingOrder && "pointer-events-none opacity-40")} >
                     <Image src="/images/shared/order-white.png" className={isActive('/orders') ? "hidden" : "block"} width={25} height={40} alt="Orders icon" />
                     <Image src="/images/shared/order-active.png" className={isActive('/orders') ? "block" : "hidden"} width={25} height={40} alt="Orders icon" />
                     <span className={cn('font-semibold text-sm sm:text-base', isActive('/orders') ? "text-[#00f9ff]" : "text-white")}><RenderText group="mobileBottomActions" variable="orders" /></span>
@@ -116,14 +117,13 @@ export default function MobileBottomButtons() {
                         />
                     </div>
                 </button>
-
-                <Link href="/kitchen" className='ml-3 relative flex flex-col gap-1 items-center justify-between min-w-[70px]' >
+                <Link href="/kitchen" className={cn('ml-3 flex flex-col gap-1 items-center justify-between min-w-[70px]', updatingOrder && "pointer-events-none opacity-40")} >
                     <Image src="/images/shared/cooking-white.png" className={isActive('/kitchen') ? "hidden" : "block"} width={25} height={40} alt="Kitchen Icon" />
                     <Image src="/images/shared/cooking-active.png" className={isActive('/kitchen') ? "block" : "hidden"} width={25} height={40} alt="Kitchen Icon" />
                     <span className={cn('font-semibold text-sm sm:text-base', isActive('/kitchen') ? "text-[#00f9ff]" : "text-white")}><RenderText group="mobileBottomActions" variable="kitchen" /></span>
                 </Link>
 
-                <Link href="/online-orders" className='flex flex-col gap-1 items-center justify-between min-w-[70px] relative ' >
+                <Link href="/online-orders" className={cn('flex flex-col gap-1 items-center justify-between min-w-[70px]', updatingOrder && "pointer-events-none opacity-40")} >
                     <Globe className={cn("h-6 w-6 cursor-pointer", isActive("/online-orders") ? "text-[#00f9ff]" : "text-white ")} />
                     <span className={cn('font-semibold text-sm sm:text-base', isActive('/online-orders') ? "text-[#00f9ff]" : "text-white")}><RenderText group="mobileBottomActions" variable="online" /></span>
                     {

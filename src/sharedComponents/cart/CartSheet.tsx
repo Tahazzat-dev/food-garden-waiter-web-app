@@ -9,7 +9,7 @@ import { setCartProducts, updateCartFormSavedData } from '@/redux/features/produ
 import { RootState } from '@/redux/store';
 import { OrderItem, TCustomer, TCustomerType, TSelectedTable } from '@/types/types';
 import * as Dialog from "@radix-ui/react-dialog";
-import { Plus, X } from 'lucide-react';
+import { Plus, Undo2, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { MouseEvent, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -233,6 +233,14 @@ export function CartSheet() {
     dispatch(setCartProducts(null));
   }
 
+  const handleDiscard = () => {
+    dispatch(setCartProducts(null));
+    removeStorage("cart_items");
+    dispatch(udpateOrderAction("new"));
+    dispatch(updateCartFormSavedData(null));
+    dispatch(SET_EXPAND(null));
+  }
+
   // calculated cart total 
   const totalPrice = cartProducts.reduce((total, item) => total + (calculateSubtotal(getSellingPrice(item.price, item.discount), item.quantity)), 0)
   return (
@@ -292,16 +300,19 @@ export function CartSheet() {
                     <span>{t("checkout")}</span> <span>{formatPrice(Number(totalPrice.toFixed(2)))}</span>
                   </button>
                   :
-                  <button
-                    disabled={!cartProducts.length}
-                    type="submit"
-                    className={cn(
-                      "fg_fs-md rounded-0! py-3 !text-white font-semibold bg-primary w-full flex items-center gap-5 justify-center",
-                      // !cartProducts.length && "pointer-events-none"
-                    )}
-                  >
-                    <span><RenderText group='orders' variable='updateOrder' /></span> <span>{formatPrice(Number(totalPrice.toFixed(2)))}</span>
-                  </button>
+                  <div className="w-full bg-primary flex items-center gap-5">
+                    <button onClick={handleDiscard} className='px-2.5' ><Undo2 className='size-5' /></button>
+                    <button
+                      disabled={!cartProducts.length}
+                      type="submit"
+                      className={cn(
+                        "fg_fs-md grow rounded-0! pr-10 py-3 !text-white font-semibold bg-primary w-full flex items-center justify-center gap-5",
+                        // !cartProducts.length && "pointer-events-none"
+                      )}
+                    >
+                      <span><RenderText group='orders' variable='updateOrder' /></span> <span>{formatPrice(Number(totalPrice.toFixed(2)))}</span>
+                    </button>
+                  </div>
             }
           </form>
         </div>
