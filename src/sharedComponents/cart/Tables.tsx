@@ -67,17 +67,27 @@ export default function Tables({ register, selectedTable, setSelectedTable }: Pr
         [setSelectedTable]
     );
 
-
     const { firstRow, secondRow } = useMemo(() => {
         const list: ITable[] = data?.data || [];
 
-        const mid = Math.ceil(list.length / 2); // ⭐ first row gets extra if odd
+        if (!list.length) {
+            return { firstRow: [], secondRow: [] };
+        }
 
-        return {
-            firstRow: list.slice(0, mid),
-            secondRow: list.slice(mid),
-        };
+        // ⭐ remove first item
+        const [firstItem, ...rest] = list;
+
+        // ⭐ calculate split using remaining items
+        const mid = Math.ceil(rest.length / 2);
+
+        const firstRow = rest.slice(0, mid);
+
+        // ⭐ put first item at the END of second row
+        const secondRow = [...rest.slice(mid), firstItem];
+
+        return { firstRow, secondRow };
     }, [data?.data]);
+
 
 
 
@@ -110,7 +120,7 @@ export default function Tables({ register, selectedTable, setSelectedTable }: Pr
                     <div className="flex gap-1.5">
                         {firstRow.map((table: ITable) => {
                             const customer_type =
-                                table.table_no?.toLowerCase() === "online"
+                                table.id === 1
                                     ? "Online"
                                     : isTable(table)
                                         ? "Dine-In"
@@ -145,7 +155,7 @@ export default function Tables({ register, selectedTable, setSelectedTable }: Pr
                     <div className="flex gap-1.5">
                         {secondRow.map((table: ITable) => {
                             const customer_type =
-                                table.table_no?.toLowerCase() === "online"
+                                table.id === 1
                                     ? "Online"
                                     : isTable(table)
                                         ? "Dine-In"
@@ -167,10 +177,11 @@ export default function Tables({ register, selectedTable, setSelectedTable }: Pr
                                 >
                                     <Icon
                                         className="w-[22px]"
+                                        // type={isTable(table) ? "table" : table?.id === 1 ? "phone" : "percel"}
                                         type={isTable(table) ? "table" : "percel"}
                                         active={isActive(table)}
                                     />
-                                    <Label isSelected={isSelected(table)} text={table.table_no} />
+                                    <Label isSelected={isSelected(table)} text={table?.id === 1 ? "Phone" : table.table_no} />
                                 </button>
                             );
                         })}
@@ -184,11 +195,15 @@ export default function Tables({ register, selectedTable, setSelectedTable }: Pr
 
 
 type IconProps = {
-    type: "table" | "percel";
+    type: "table" | "percel" | "phone";
     active: boolean;
     className?: string
 }
 const Icon = ({ active, type, className }: IconProps) => {
+
+
+    // if (type === "phone") return <PhoneCall className={cn("size-4 mx-auto", active && "text-white")} />
+
     const whiteIcon = active
         ? type === "table" ? "/images/shared/table-white.svg" : "/images/shared/percel-white.png"
         : type === "table" ? "/images/shared/table-black.svg" : "/images/shared/percel-black.png";

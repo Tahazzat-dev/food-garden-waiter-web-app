@@ -78,6 +78,7 @@ const MyOrders = () => {
     }
 
     if (isLoading) return <DataLoading />
+
     return <>
         {
             results?.data?.data && !!results?.data?.data?.length ?
@@ -138,6 +139,7 @@ type TOrderCardProps = {
     cb: (order: TOrder) => void;
 }
 const OrderCard = ({ order, cb }: TOrderCardProps) => {
+    // log(ord, "order data")
     return <button key={order.id} onClick={() => cb(order)} className={cn('relative w-full flex bg-clr-card  overflow-hidden rounded-md border-slate-300 dark:border-slate-600 border group z-0', order.is_web === 1 && order.is_online_app == 0 && "pointer-events-none")}>
         {
             order.is_web === 1 && order.is_online_app == 0 && <div className="w-full flex items-center justify-center h-full z-20  absolute top-0 left-0 bg-slate-700/80 backdrop-blur-[1px]">
