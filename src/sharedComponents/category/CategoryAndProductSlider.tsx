@@ -91,6 +91,19 @@ export default function CategoryAndProductSlider({ className = "", categories = 
                                         prevEl: ".swiper-button-prev-custom",
                                     }}
 
+                                    freeMode={{
+                                        enabled: true,
+                                        momentum: true,
+                                        momentumRatio: 1,
+                                        momentumVelocityRatio: 1.2,
+                                        sticky: false,
+                                    }}
+
+                                    mousewheel={{
+                                        forceToAxis: true,
+                                        sensitivity: 1,
+                                    }}
+
                                     onSwiper={(swiper) => {
                                         categorySwiperRef.current = swiper
                                         setIsBeginning(swiper.isBeginning)
@@ -139,7 +152,7 @@ export default function CategoryAndProductSlider({ className = "", categories = 
                 </div>
 
             </section>
-            <section className={cn("mb-4 z-10 mt-[75px] md:mt-0")}>
+            <section className={cn("z-10 mt-[75px] md:mt-0")}>
                 <Container>
                     <Swiper
                         autoHeight={true}
@@ -153,7 +166,7 @@ export default function CategoryAndProductSlider({ className = "", categories = 
                         }}
                     >
                         {
-                            productsArr.map((products, index) => <SwiperSlide key={index} >
+                            productsArr.map((products, index) => <SwiperSlide className='pb-4 min-h-[70vh]' key={index} >
                                 {
                                     !products.length ?
                                         <NoDataMsg group='shared' variable='noFoodFound' className='min-h-20 lg:min-h-40 xl:min-h-56' /> :
