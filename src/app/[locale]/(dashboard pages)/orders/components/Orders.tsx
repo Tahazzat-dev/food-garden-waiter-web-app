@@ -44,10 +44,10 @@ export default function Orders() {
                     setActiveTab(swiper.activeIndex);
                 }}
             >
-                <SwiperSlide >
+                <SwiperSlide className='pb-4 min-h-[70vh] '>
                     <MyOrders />
                 </SwiperSlide>
-                <SwiperSlide >
+                <SwiperSlide className='pb-4 min-h-[70vh]'>
                     <AllOrders />
                 </SwiperSlide>
             </Swiper>

@@ -7,6 +7,7 @@ import { useGetAllOrdersQuery, useGetkitchenMyOrdersQuery, useUpdateOrderItemSta
 import { RootState } from "@/redux/store"
 import LoadingSpinner from "@/sharedComponents/loading/LoadingSpinner"
 import DataLoading from "@/sharedComponents/shared/Loading"
+import NoDataMsg from "@/sharedComponents/shared/NoDataMsg"
 import Pagination from "@/sharedComponents/shared/Pagination"
 import Timer from "@/sharedComponents/shared/Timer"
 import { OrdersTab } from "@/sharedComponents/tab/Tab"
@@ -43,10 +44,10 @@ export default function PreparingFoods() {
             >
                 {/* <NoDataMsg group='shared' variable='noFoodFound' className='min-h-20 lg:min-h-40 xl:min-h-56' />  */}
 
-                <SwiperSlide >
+                <SwiperSlide className='pb-4 min-h-[70vh]'>
                     <MyOrders />
                 </SwiperSlide>
-                <SwiperSlide >
+                <SwiperSlide className='pb-4 min-h-[70vh]'>
                     <AllOrders />
                 </SwiperSlide>
             </Swiper>
@@ -67,8 +68,9 @@ const MyOrders = () => {
     if (isLoading) return <DataLoading />
     return <div className="w-full flex py-3 flex-col gap-4 sm:gap-5">
         {
-            !!results?.data?.data &&
-            (results?.data?.data as TOrder[])?.map(order => <Table key={order.id} order={order} />)
+            !!results?.data?.data?.length ?
+                (results?.data?.data as TOrder[])?.map(order => <Table key={order.id} order={order} />) :
+                <NoDataMsg group="orders" variable="notOrderFound" />
         }
         {
             !!results && results?.data?.last_page > 1 && <Pagination className="my-5" currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={results?.data?.last_page} />
@@ -93,8 +95,9 @@ const AllOrders = () => {
 
     return <div className="w-full flex py-3 flex-col gap-4 sm:gap-5">
         {
-            !!results?.data?.data &&
-            (results?.data?.data as TOrder[])?.map(order => <Table key={order.id} order={order} />)
+            !!results?.data?.data?.length ?
+                (results?.data?.data as TOrder[])?.map(order => <Table key={order.id} order={order} />)
+                : <NoDataMsg group="orders" variable="notOrderFound" />
         }
         {
             !!results && results?.data?.last_page > 1 && <Pagination className="my-5" currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={results?.data?.last_page} />
