@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button';
 import useFormatPrice from '@/hooks/useFormatPrice';
 import { removeStorage } from '@/lib/storage';
-import { calculateSubtotal, cn, getSellingPrice, isTable } from '@/lib/utils';
+import { calculateSubtotal, cn, getSellingPrice, getTranslationReadyText, isTable } from '@/lib/utils';
 import { SET_EXPAND, udpateOrderAction, updatePrevAction } from '@/redux/features/actions/actionSlice';
 import { useConfirmOrderMutation, useUpdateOrderMutation } from '@/redux/features/product/productApiSlice';
 import { setCartProducts, updateCartFormSavedData } from '@/redux/features/product/productSlice';
@@ -12,7 +12,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { Plus, Undo2, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { MouseEvent, useRef, useState } from 'react';
+import { MouseEvent, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useReactToPrint } from "react-to-print";
@@ -229,8 +229,16 @@ export function CartSheet() {
   const handlePrint = async () => {
     setIsPrinting(true);
     setPrintingMsg('');
+    const slicedOrder = orderResponse?.items.map(item => {
+      const { en } = getTranslationReadyText(item?.product_name);
+      return {
+        ...item,
+        product_name: en
+      }
+    });
+
     try {
-      const response = await fetch("http://192.168.1.50:3001/ping", {
+      const response = await fetch("http://192.168.1.181:3001/print-kot", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -240,7 +248,7 @@ export function CartSheet() {
           orderType: orderResponse?.orderType ?? "Online",
           token: orderResponse?.token,
           table_id: orderResponse?.table_id || null,
-          items: orderResponse?.items || [],
+          items: slicedOrder || [],
           waiter: orderResponse?.waiter || ""
         })
       });
@@ -277,6 +285,9 @@ export function CartSheet() {
     dispatch(updateCartFormSavedData(null));
     dispatch(SET_EXPAND(null));
   }
+  useEffect(() => {
+    setPrintingMsg("")
+  }, [detailsOrder])
 
   // calculated cart total 
   const totalPrice = cartProducts.reduce((total, item) => total + (calculateSubtotal(getSellingPrice(item.price, item.discount), item.quantity)), 0)

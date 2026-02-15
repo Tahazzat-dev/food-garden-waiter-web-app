@@ -58,8 +58,18 @@ export default function OrderDetailsModal() {
         if (!detailsOrder) return;
         setIsPrinting(true);
         setPrintingMsg('');
+
+        const slicedOrder = detailsOrder?.items.map(item => {
+            const { en } = getTranslationReadyText(item?.product_name);
+            return {
+                ...item,
+                product_name: en
+            }
+        });
+
+
         try {
-            const response = await fetch("http://192.168.1.50:3001/ping", {
+            const response = await fetch("http://192.168.1.181:3001/print-kot", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -69,7 +79,7 @@ export default function OrderDetailsModal() {
                     orderType: detailsOrder.customer_type,
                     token: detailsOrder.token_no,
                     table_id: detailsOrder.table_id,
-                    items: detailsOrder.items,
+                    items: slicedOrder || [],
                     waiter: detailsOrder.waiter.fname
                 })
             });
@@ -125,6 +135,9 @@ export default function OrderDetailsModal() {
         }
     }
 
+    useEffect(() => {
+        setPrintingMsg("")
+    }, [detailsOrder])
     useEffect(() => {
         if (KEY === EXPAND) {
             document.body.style.overflow = "hidden";
