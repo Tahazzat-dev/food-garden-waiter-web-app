@@ -61,6 +61,9 @@ export function CartSheet() {
   const [isOpen, setIsOpen] = useState(false);
   const { register, handleSubmit, setValue, watch, formState, setError, formState: { errors } } = useForm<CustomerFormValues>()
 
+  // TODO: we will change this later
+  const [isPrinting, setIsPrinting] = useState(false);
+  const [printingMsg, setPrintingMsg] = useState("");
 
   const selectedCustomer = watch("customer")
 
@@ -220,9 +223,33 @@ export function CartSheet() {
     setIsOpen(false);
   }
 
-  const handlePrint = useReactToPrint({
-    contentRef: printRef,
-  });
+  // const handlePrint = useReactToPrint({
+  //   contentRef: printRef,
+  // });
+  const handlePrint = async () => {
+    setIsPrinting(true);
+    setPrintingMsg('');
+    try {
+      const response = await fetch("http://192.168.1.50:3001/ping", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Print failed (${response.status})`);
+      }
+
+      const data = await response.text();
+      setPrintingMsg(data); // "Print job sent successfully!"
+    } catch (error) {
+      console.error("Print error:", error);
+      setPrintingMsg("❌ Printer not reachable. Check network.");
+    } finally {
+      setIsPrinting(false);
+    }
+  }
 
 
   const handleOpenAddCustomerModal = () => {
@@ -332,13 +359,21 @@ export function CartSheet() {
               {
                 !!orderResponse?.success && <>
                   <p className='text-center flex gap-2 justify-center' ><RenderText group='checkout' variable='wantToPrintKot' /></p>
-                  <div className="flex justify-center gap-5 mt-2">
-                    <Button onClick={closeModal} variant="secondary" className='text-white' ><RenderText group='shared' variable='no' /></Button>
-                    <Button onClick={() => {
-                      handlePrint()
-                      closeModal()
-                    }} variant="primary" className='text-white' ><RenderText group='shared' variable='yes' /></Button>
+                  <div className={cn("flex justify-center gap-5 mt-2", isPrinting && "pointer-events-none")}>
+                    {
+                      isPrinting ? <LoadingSpinner /> :
+                        <>
+                          <Button onClick={closeModal} variant="secondary" className='text-white' ><RenderText group='shared' variable='no' /></Button>
+                          <Button onClick={() => {
+                            handlePrint()
+                            closeModal()
+                          }} variant="primary" className='text-white' ><RenderText group='shared' variable='yes' /></Button>
+                        </>
+                    }
                   </div>
+                  {
+                    !!printingMsg && <p className='mt-1'>{printingMsg}</p>
+                  }
                 </>
               }
 
