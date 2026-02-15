@@ -40,14 +40,54 @@ export default function OrderDetailsModal() {
     const { address } = useSelector((state: RootState) => state.address);
     const KEY = "ORDER_DETAILS_MODAL";
 
+    // TODO: we will change this later
+    const [isPrinting, setIsPrinting] = useState(false);
+    const [printingMsg, setPrintingMsg] = useState("");
+
+
     // handlers
     const closeModal = () => {
         dispatch(SET_EXPAND(null));
     }
 
-    const handleKotPrint = useReactToPrint({
-        contentRef: kotPrintRef,
-    });
+    // const handleKotPrint = useReactToPrint({
+    //     contentRef: kotPrintRef,
+    // });
+
+    const handlePrint = async () => {
+        if (!detailsOrder) return;
+        setIsPrinting(true);
+        setPrintingMsg('');
+        try {
+            const response = await fetch("http://192.168.1.50:3001/ping", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    id: detailsOrder.id,
+                    orderType: detailsOrder.customer_type,
+                    token: detailsOrder.token_no,
+                    table_id: detailsOrder.table_id,
+                    items: detailsOrder.items,
+                    waiter: detailsOrder.waiter.fname
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`Print failed (${response.status})`);
+            }
+
+            const data = await response.text();
+            setPrintingMsg(data); // "Print job sent successfully!"
+        } catch (error) {
+            console.error("Print error:", error);
+            setPrintingMsg("❌ Printer not reachable. Check network.");
+        } finally {
+            setIsPrinting(false);
+        }
+    }
+
 
 
     const handleDueInvoicePrint = useReactToPrint({
@@ -145,20 +185,35 @@ export default function OrderDetailsModal() {
                             </div>
                         </div>
                         {
+
+
                             activeOrderDetailsModal === "web" && <div className="p-3 pt-0 gap-1 flex justify-between flex-wrap">
-                                <Button onClick={handleDueInvoicePrint} size="sm" className=" !rounded-[3px] !px-2 bg-[#58C354] text-white" >
-                                    <RenderText group="shared" variable="invPrint" />
-                                </Button>
-                                <Button onClick={handleKotPrint} size="sm" className=" !rounded-[3px] grow bg-[#F66FFF] text-white" variant="outline" >
-                                    <RenderText group="shared" variable="kot" />
-                                </Button>
-                                <Button onClick={handleEditOrder} size="sm" className=" !rounded-[3px] grow text-white" variant="secondary" >
-                                    <RenderText group="shared" variable="edit" />
-                                </Button>
-                                <Button onClick={() => dispatch(SET_EXPAND("OPEN_MAKE_SELL_CUSTOMER_MODAL"))} size="sm" className=" !rounded-[3px] grow" >
-                                    <RenderText group="shared" variable="sale" />
-                                </Button>
+
+                                {
+                                    isPrinting ? <div className="w-full min-h-[51px] flex items-center justify-center">
+                                        <LoadingSpinner />
+                                    </div> :
+
+                                        <>
+                                            <Button onClick={handleDueInvoicePrint} size="sm" className=" !rounded-[3px] !px-2 bg-[#58C354] text-white" >
+                                                <RenderText group="shared" variable="invPrint" />
+                                            </Button>
+                                            <Button onClick={handlePrint} size="sm" className=" !rounded-[3px] grow bg-[#F66FFF] text-white" variant="outline" >
+                                                <RenderText group="shared" variable="kot" />
+                                            </Button>
+                                            <Button onClick={handleEditOrder} size="sm" className=" !rounded-[3px] grow text-white" variant="secondary" >
+                                                <RenderText group="shared" variable="edit" />
+                                            </Button>
+                                            <Button onClick={() => dispatch(SET_EXPAND("OPEN_MAKE_SELL_CUSTOMER_MODAL"))} size="sm" className=" !rounded-[3px] grow" >
+                                                <RenderText group="shared" variable="sale" />
+                                            </Button></>
+                                }
+
                             </div>
+                        }
+
+                        {
+                            !!printingMsg && <p className='mt-1'>{printingMsg}</p>
                         }
 
                         {

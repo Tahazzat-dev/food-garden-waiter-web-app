@@ -231,10 +231,18 @@ export function CartSheet() {
     setPrintingMsg('');
     try {
       const response = await fetch("http://192.168.1.50:3001/ping", {
-        method: "GET",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          id: orderResponse?.id,
+          orderType: orderResponse?.orderType ?? "Online",
+          token: orderResponse?.token,
+          table_id: orderResponse?.table_id || null,
+          items: orderResponse?.items || [],
+          waiter: orderResponse?.waiter || ""
+        })
       });
 
       if (!response.ok) {
