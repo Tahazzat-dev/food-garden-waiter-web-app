@@ -81,7 +81,7 @@ export default function MakeSellModal() {
     const discount = watch("discount") ?? 0;
     const deliveryCharge = watch("deliveryCharge") ?? 0;
     const payAmount = watch("payAmount") ?? 0;
-    const totalAmount = detailsOrder?.items ? detailsOrder?.items.reduce((acc, cur) => acc + Number(cur?.variation?.price || '0'), 0) : 0;
+    const totalAmount = detailsOrder?.items ? detailsOrder?.items.reduce((acc, cur) => acc + (Number(cur?.variation?.price || '0') * cur?.qty), 0) : 0;
     const grandTotal = totalAmount + Number(deliveryCharge) - Number(discount);
     const dewAmount = grandTotal - payAmount;
     // conditional variables
@@ -96,23 +96,17 @@ export default function MakeSellModal() {
 
         const bodyData = {
             "order_id": detailsOrder?.id,
-            "sale_date": detailsOrder?.created_at,
-            "customer_type": detailsOrder?.customer_type,
-            "waiter_id": detailsOrder?.waiter_id,
-            "table_id": detailsOrder?.table_id,
-            "customer_id": detailsOrder?.customer_id,
-            "delivery_date": detailsOrder?.delivery_date,
             "discount": discount,
-            "actual_discount": discount,
             "delivery_charge": deliveryCharge,
-            "note": detailsOrder?.note,
-            "dew_by": dewAmount ? authUser?.id : null,
-            "dew_commit_date": new Date(),
             "estimate_amount": grandTotal,
             "paid": payAmount,
             "due": dewAmount,
-            "payment_method": 1,
-            "productId": detailsOrder?.items.map(item => item.id) || []
+            "product_id": detailsOrder?.items.map(item => item?.product_id) || [],
+            "variation_id": detailsOrder?.items.map(item => item.variation_id) || [],
+            "rate": detailsOrder?.items.map(item => item?.variation?.price) || [],
+            "main_qty": detailsOrder?.items.map(item => item?.qty) || [],
+            "sub_qty": detailsOrder?.items.map(item => item?.qty) || [],
+            "sub_total": detailsOrder?.items.map(item => item?.qty * Number(item.variation.price)) || [],
         }
 
         try {
