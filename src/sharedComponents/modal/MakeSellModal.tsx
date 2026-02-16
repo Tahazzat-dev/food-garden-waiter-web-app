@@ -84,6 +84,11 @@ export default function MakeSellModal() {
     const totalAmount = detailsOrder?.items ? detailsOrder?.items.reduce((acc, cur) => acc + (Number(cur?.variation?.price || '0') * cur?.qty), 0) : 0;
     const grandTotal = totalAmount + Number(deliveryCharge) - Number(discount);
     const dewAmount = grandTotal - payAmount;
+    // TODO: we will change this later
+    const [isPrinting, setIsPrinting] = useState(false);
+    const [printingMsg, setPrintingMsg] = useState("");
+
+
     // conditional variables
     const openModal = EXPAND === KEY;
 
@@ -93,6 +98,8 @@ export default function MakeSellModal() {
             setError("payAmount", { type: "manual", message: "payAmountError" })
             return;
         }
+        setPrintingMsg('');
+        setIsPrinting(true);
 
         const bodyData = {
             "order_id": detailsOrder?.id,
@@ -108,17 +115,34 @@ export default function MakeSellModal() {
             "sub_qty": detailsOrder?.items.map(item => item?.qty) || [],
             "sub_total": detailsOrder?.items.map(item => item?.qty * Number(item.variation.price)) || [],
         }
-
         try {
             const res = await sellOrder(bodyData).unwrap();
-            console.log(res, ' res from')
             if (res.success) {
+                const bodyData = {}
+                const response = await fetch("http://192.168.1.181:3001/print-invoice", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(bodyData)
+                });
 
-            } else {
+                if (!response.ok) {
+                    throw new Error(`Print failed (${response.status})`);
+                }
+
+                const data = await response.text();
+                setPrintingMsg(data); // "Print job sent successfully!"
+
+            }
+            else {
                 throw new Error("Something went wrong");
             }
         } catch (error) {
             console.error(error);
+        }
+        finally {
+            setIsPrinting(false);
         }
     }
 
@@ -267,7 +291,7 @@ export default function MakeSellModal() {
 
 
                             {
-                                isLoading ?
+                                isLoading || isPrinting ?
                                     <div className="w-full flex items-center min-h-10 justify-center">
                                         <LoadingSpinner />
                                     </div>
@@ -277,6 +301,11 @@ export default function MakeSellModal() {
                                         <Button size="sm" className='min-h-[32] w-full text-white font-semibold' type="submit"><span><RenderText group="checkout" variable="sale" /></span></Button>
                                     </div>
                             }
+
+                            {
+                                !!printingMsg && <p className='mt-1'>{printingMsg}</p>
+                            }
+
                         </form>
 
                     </div>

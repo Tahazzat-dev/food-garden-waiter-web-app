@@ -100,9 +100,36 @@ export default function OrderDetailsModal() {
 
 
 
-    const handleDueInvoicePrint = useReactToPrint({
-        contentRef: invoicePrintRef,
-    });
+    // const handleDueInvoicePrint = useReactToPrint({
+    //     contentRef: invoicePrintRef,
+    // });
+
+    const handleDueInvoicePrint = async () => {
+        setIsPrinting(true);
+        setPrintingMsg('');
+        const bodyData = {}
+        try {
+            const response = await fetch("http://192.168.1.181:3001/print-invoice", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(bodyData)
+            });
+
+            if (!response.ok) {
+                throw new Error(`Print failed (${response.status})`);
+            }
+
+            const data = await response.text();
+            setPrintingMsg(data); // "Print job sent successfully!"
+        } catch (error) {
+            console.error("Print error:", error);
+            setPrintingMsg("❌ Printer not reachable. Check network.");
+        } finally {
+            setIsPrinting(false);
+        }
+    };
 
     const handleEditOrder = () => {
         if (!detailsOrder) return;
