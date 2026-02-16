@@ -214,7 +214,8 @@
     "discountExceedError": "ডিসকাউন্ট অনেক বেশি",
     "searchCustomer": "কাস্টমার খুঁজুন",
     "noCustomerFound": "কোনো কাস্টমার পাওয়া যায়নি",
-    "wantToPrintKot": "আপনি কি কে,ও,টি প্রিন্ট করতে চান?"
+    "wantToPrintKot": "আপনি কি কে,ও,টি প্রিন্ট করতে চান?",
+    "wantToPrintInvoice": "আপনি কি ইনভয়েস প্রিন্ট করতে চান?"
   },
   "home": {
     "title": "হ্যালো"

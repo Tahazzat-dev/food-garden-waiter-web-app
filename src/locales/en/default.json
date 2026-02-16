@@ -214,7 +214,8 @@
     "discountExceedError": "Discount is too high",
     "searchCustomer": "Search customer",
     "noCustomerFound": "No customer found",
-    "wantToPrintKot": "Do you want to print KOT"
+    "wantToPrintKot": "Do you want to print KOT",
+    "wantToPrintInvoice": "Do you want to print invoice"
   },
   "home": {
     "title": "Hello"

@@ -1,6 +1,6 @@
 'use client';
 import { Button } from "@/components/ui/button";
-import { cn, log } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { SET_EXPAND } from '@/redux/features/actions/actionSlice';
 import { RootState } from '@/redux/store';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -10,6 +10,7 @@ import { MouseEvent, useEffect, useRef, useState } from "react";
 import { Resolver, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import z from 'zod';
+import * as Dialog from "@radix-ui/react-dialog";
 
 // schema/orderSchema.ts
 export const paymentTypes = ["cash", "bkash", "bank"] as const;
@@ -87,6 +88,7 @@ export default function MakeSellModal() {
     // TODO: we will change this later
     const [isPrinting, setIsPrinting] = useState(false);
     const [printingMsg, setPrintingMsg] = useState("");
+    const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
 
 
     // conditional variables
@@ -118,32 +120,73 @@ export default function MakeSellModal() {
         try {
             const res = await sellOrder(bodyData).unwrap();
             if (res.success) {
-                const bodyData = {}
-                const response = await fetch("http://192.168.1.181:3001/print-invoice", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(bodyData)
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Print failed (${response.status})`);
-                }
-
-                const data = await response.text();
-                setPrintingMsg(data); // "Print job sent successfully!"
-
+                setOpenConfirmDialog(true)
             }
             else {
                 throw new Error("Something went wrong");
             }
-        } catch (error) {
+            // eslint-disable-next-line
+        } catch (error: any) {
+            setPrintingMsg(error?.message || "Internal server error");
             console.error(error);
         }
         finally {
             setIsPrinting(false);
         }
+    }
+
+
+    // invoice print handler
+    const handlePrint = async () => {
+
+        if (!detailsOrder) return;
+        const itemData = detailsOrder?.items?.map(item => {
+            return {
+                "product": { "name": item.product_name },
+                "variation": { "variation": item.variation.variation },
+                "qty": item.qty,
+                "rate": item.variation.price,
+                "sub_total": item.sub_total
+            }
+        }) || [];
+
+        const bodyData = {
+            "id": detailsOrder?.id,
+            "created_at": detailsOrder?.created_at,
+            "customer_id": detailsOrder?.customer_id,
+            "customer": detailsOrder?.customer,
+            items: itemData,
+            "receivable": detailsOrder?.receivable,
+            "discount": detailsOrder?.discount,
+            "delivery_charge": detailsOrder?.delivery_charge,
+            "final_receivable": detailsOrder?.final_receivable,
+            "billingBy": authUser?.fname,
+            "waiter": { "fname": detailsOrder?.waiter?.fname },
+            "table_id": detailsOrder?.table?.table_no || "Online",
+            "payment_status": dewAmount ? "Due" : "Paid"
+        }
+        try {
+            const response = await fetch("http://192.168.1.181:3001/print-invoice", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(bodyData)
+            });
+
+            if (!response.ok) {
+                throw new Error(`Print failed (${response.status})`);
+            }
+
+            const data = await response.text();
+            setPrintingMsg(data); // "Print job sent successfully!"
+        } catch (error) {
+            console.error("Print error:", error);
+            setPrintingMsg("❌ Printer not reachable. Check network.");
+        } finally {
+            setIsPrinting(false);
+        }
+        closeModal()
     }
 
     const handleModalClick = (event: MouseEvent<HTMLDivElement>) => {
@@ -164,6 +207,11 @@ export default function MakeSellModal() {
         setMounted(true)
     }, [])
 
+
+    // useEffect(() => {
+    //     setMounted(true)
+    // }, [])
+
     useEffect(() => {
         if (typeof window === "undefined") return;
 
@@ -175,6 +223,7 @@ export default function MakeSellModal() {
 
         return () => {
             document.body.style.overflow = "auto";
+            setOpenConfirmDialog(false);
         };
     }, [openModal]);
 
@@ -311,6 +360,38 @@ export default function MakeSellModal() {
                     </div>
                 }
             </div>
+
+
+            {/* permission dialog to print invoice */}
+            <Dialog.Root open={openConfirmDialog && openModal} onOpenChange={closeModal}>
+                <Dialog.Portal>
+                    <div className="fixed inset-0 global-overlay z-[999999]" />
+                    <Dialog.Content className="prevent-body-trigger border border-slate-300 dark:border-slate-700 fixed top-1/2 left-1/2  max-w-[93vw] md:max-w-[700px] lg:!rounded-[12px] overflow-hidden w-full -translate-x-1/2 -translate-y-1/2 bg-body rounded-lg shadow-lg dark:shadow-slate-800 z-[9999999]">
+                        <div className="flex items-center justify-between bg-primary px-4 py-2">
+                            <Dialog.Title className="fg_fs-md text-white">
+                                {/* <RenderText group='orders' variable={orderResponse?.message || 'success'} /> */}
+                                <RenderText group='orders' variable={'success'} />
+                            </Dialog.Title>
+                            <Button onClick={closeModal} className="rounded-full !px-2.5" variant="secondary"> <X className="!text-white w-5 md:w-6 md:h-6 h-5 lg:w-8 lg:h-8" /></Button>
+                        </div>
+                        <div className="p-4">
+                            <p className='text-center flex gap-2 justify-center' ><RenderText group='checkout' variable='wantToPrintInvoice' /></p>
+                            <div className={cn("flex justify-center gap-5 mt-2", isPrinting && "pointer-events-none")}>
+                                {
+                                    isPrinting ? <LoadingSpinner /> :
+                                        <>
+                                            <Button onClick={handlePrint} variant="primary" className='w-full text-white' ><RenderText group='shared' variable='yes' /></Button>
+                                            <Button onClick={closeModal} variant="secondary" className='w-full text-white' ><RenderText group='shared' variable='no' /></Button>
+                                        </>
+                                }
+                            </div>
+                            {
+                                !!printingMsg && <p className='mt-1'>{printingMsg}</p>
+                            }
+                        </div>
+                    </Dialog.Content>
+                </Dialog.Portal>
+            </Dialog.Root>
         </>,
         window.document.body
     );

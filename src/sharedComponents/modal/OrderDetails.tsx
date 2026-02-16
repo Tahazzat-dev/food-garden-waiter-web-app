@@ -107,7 +107,32 @@ export default function OrderDetailsModal() {
     const handleDueInvoicePrint = async () => {
         setIsPrinting(true);
         setPrintingMsg('');
-        const bodyData = {}
+
+        const itemData = detailsOrder?.items?.map(item => {
+            return {
+                "product": { "name": item.product_name },
+                "variation": { "variation": item.variation.variation },
+                "qty": item.qty,
+                "rate": item.variation.price,
+                "sub_total": item.sub_total
+            }
+        }) || [];
+
+        const bodyData = {
+            "id": detailsOrder?.id,
+            "created_at": detailsOrder?.created_at,
+            "customer_id": detailsOrder?.customer_id,
+            "customer": detailsOrder?.customer,
+            items: itemData,
+            "receivable": detailsOrder?.receivable,
+            "discount": detailsOrder?.discount,
+            "delivery_charge": detailsOrder?.delivery_charge,
+            "final_receivable": detailsOrder?.final_receivable,
+            "billingBy": authUser?.fname,
+            "waiter": { "fname": detailsOrder?.waiter?.fname },
+            "table_id": detailsOrder?.table?.table_no || "Online",
+            "payment_status": "Due",
+        }
         try {
             const response = await fetch("http://192.168.1.181:3001/print-invoice", {
                 method: "POST",
@@ -164,7 +189,9 @@ export default function OrderDetailsModal() {
 
     useEffect(() => {
         setPrintingMsg("")
-    }, [detailsOrder])
+    }, [EXPAND])
+
+
     useEffect(() => {
         if (KEY === EXPAND) {
             document.body.style.overflow = "hidden";
