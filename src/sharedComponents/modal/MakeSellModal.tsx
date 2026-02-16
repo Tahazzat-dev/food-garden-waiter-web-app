@@ -1,6 +1,6 @@
 'use client';
 import { Button } from "@/components/ui/button";
-import { cn } from '@/lib/utils';
+import { cn, log } from '@/lib/utils';
 import { SET_EXPAND } from '@/redux/features/actions/actionSlice';
 import { RootState } from '@/redux/store';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -54,7 +54,8 @@ export default function MakeSellModal() {
     const [sellOrder, { isLoading }] = useSellOrderMutation()
     const t = useTranslations('checkout');
     const { EXPAND } = useSelector((state: RootState) => state.actions);
-    const { cartTotal, detailsOrder } = useSelector((state: RootState) => state.productSlice);
+    const { authUser } = useSelector((state: RootState) => state.auth);
+    const { detailsOrder } = useSelector((state: RootState) => state.productSlice);
     const [isOpen, setIsOpen] = useState(false);
     const { translateNumber, formatPrice } = useFormatPrice()
 
@@ -81,17 +82,20 @@ export default function MakeSellModal() {
     const deliveryCharge = watch("deliveryCharge") ?? 0;
     const payAmount = watch("payAmount") ?? 0;
     const totalAmount = detailsOrder?.items ? detailsOrder?.items.reduce((acc, cur) => acc + Number(cur?.variation?.price || '0'), 0) : 0;
-    const grandTotal = totalAmount + deliveryCharge - discount;
+    const grandTotal = totalAmount + Number(deliveryCharge) - Number(discount);
     const dewAmount = grandTotal - payAmount;
     // conditional variables
     const openModal = EXPAND === KEY;
 
     // handlers
     const onSubmit = async (data: OrderFormValues) => {
-        alert("api integration in progress");
-        return;
+        if (!data.payAmount || Number(data.payAmount) < 1) {
+            setError("payAmount", { type: "manual", message: "payAmountError" })
+            return;
+        }
+
         const bodyData = {
-            "order_id": [detailsOrder?.id],
+            "order_id": detailsOrder?.id,
             "sale_date": detailsOrder?.created_at,
             "customer_type": detailsOrder?.customer_type,
             "waiter_id": detailsOrder?.waiter_id,
@@ -102,13 +106,15 @@ export default function MakeSellModal() {
             "actual_discount": discount,
             "delivery_charge": deliveryCharge,
             "note": detailsOrder?.note,
-            "dew_by": null,
+            "dew_by": dewAmount ? authUser?.id : null,
             "dew_commit_date": new Date(),
-            "estimate_amount": Number(detailsOrder?.estimate_number),
+            "estimate_amount": grandTotal,
             "paid": payAmount,
             "due": dewAmount,
-            "payment_method": 1
+            "payment_method": 1,
+            "productId": detailsOrder?.items.map(item => item.id) || []
         }
+
         try {
             const res = await sellOrder(bodyData).unwrap();
             console.log(res, ' res from')
@@ -242,7 +248,7 @@ export default function MakeSellModal() {
                                         setValue={setValue}
                                     />
                                     {errors.paymentMethod && (
-                                        <p className="mt-1 text-sm text-red-500">{t("deliveryAddressError")}</p>
+                                        <p className="mt-1 text-sm text-red-500">{t("selectPaymentMethodError")}</p>
                                     )}
                                 </div>
                                 <Input
