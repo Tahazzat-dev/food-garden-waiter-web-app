@@ -207,6 +207,7 @@
     "selectPaymentMethod": "পেমেন্ট মেথড",
     "selectPaymentMethodError": "একটি পেমেন্ট পদ্ধতি নির্বাচন করুন",
     "payAmountError": "অনুগ্রহ করে পেমেন্টের পরিমাণ লিখুন",
+    "dueNotAllowed": "অপরিচিত কাস্টমারের জন্য বাকি রাখা যাবে না",
     "payAmount": "প্রদত্ত টাকা",
     "dewAmount": "বাকি টাকা",
     "sale": "বিক্রয়",

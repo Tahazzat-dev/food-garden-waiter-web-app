@@ -15,7 +15,6 @@ import Image from 'next/image';
 import { MouseEvent, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useReactToPrint } from "react-to-print";
 import { CartCard } from '../cards/CartCard';
 import LoadingSpinner from '../loading/LoadingSpinner';
 import { CustomDrawer } from '../modal/CustomDrawer';

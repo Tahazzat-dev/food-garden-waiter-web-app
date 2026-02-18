@@ -74,8 +74,9 @@ export default function MakeSellModal() {
     } = useForm<OrderFormValues>({
         resolver: zodResolver(orderSchema) as Resolver<OrderFormValues>,
         defaultValues: {
-            discount: 0,
-            deliveryCharge: 0
+            // discount: 0,
+            // deliveryCharge: 0,
+            paymentMethod: "cash"
         }
     });
 
@@ -85,6 +86,7 @@ export default function MakeSellModal() {
     const totalAmount = detailsOrder?.items ? detailsOrder?.items.reduce((acc, cur) => acc + (Number(cur?.variation?.price || '0') * cur?.qty), 0) : 0;
     const grandTotal = totalAmount + Number(deliveryCharge) - Number(discount);
     const dewAmount = grandTotal - payAmount;
+
     // TODO: we will change this later
     const [isPrinting, setIsPrinting] = useState(false);
     const [printingMsg, setPrintingMsg] = useState("");
@@ -103,6 +105,16 @@ export default function MakeSellModal() {
         setPrintingMsg('');
         setIsPrinting(true);
 
+        const isAdmin = authUser?.id === 1;
+        const isWalkInCustomer = !detailsOrder?.customer_id || detailsOrder?.customer_id === 1;
+        const hasDueAmount = dewAmount > 0;
+
+        if (!isAdmin && isWalkInCustomer && hasDueAmount) {
+            setError("payAmount", { type: "manual", message: "dueNotAllowed" })
+            setIsPrinting(false);
+            return;
+        }
+
         const bodyData = {
             "order_id": detailsOrder?.id,
             "discount": discount,
@@ -120,6 +132,7 @@ export default function MakeSellModal() {
         try {
             const res = await sellOrder(bodyData).unwrap();
             if (res.success) {
+                reset()
                 setOpenConfirmDialog(true)
             }
             else {
@@ -202,15 +215,21 @@ export default function MakeSellModal() {
         dispatch(SET_EXPAND(null));
     }
 
+    // const calculateTotal = ()=>{
+    //             setValue("payAmount", grandTotal);
+    // }
+
     //  ========== hidden overflow of body ========
     useEffect(() => {
         setMounted(true)
     }, [])
 
+    useEffect(() => {
+        if (openModal && grandTotal > 0) {
+            setValue("payAmount", grandTotal, { shouldValidate: true });
+        }
+    }, [openModal, grandTotal, setValue]);
 
-    // useEffect(() => {
-    //     setMounted(true)
-    // }, [])
 
     useEffect(() => {
         if (typeof window === "undefined") return;
@@ -327,7 +346,7 @@ export default function MakeSellModal() {
                                     type="number"
                                     className="bg-clr-card"
                                     labelStyle='bg-clr-card'
-                                    errorMessage={t("payAmountError")}
+                                    errorMessage={t(errors.payAmount?.message || "payAmountError")}
                                     showErrorMessage={true}
                                 />
                             </div>

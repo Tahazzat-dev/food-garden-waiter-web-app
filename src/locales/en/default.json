@@ -207,6 +207,7 @@
     "selectPaymentMethod": "Select Payment Method",
     "selectPaymentMethodError": "Select a payment method",
     "payAmountError": "Please insert pay amount",
+    "dueNotAllowed": "Walk-in customers cannot have due amounts",
     "payAmount": "Pay Amount",
     "dewAmount": "Dew Amount",
     "sale": "Sale",

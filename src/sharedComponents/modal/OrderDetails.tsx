@@ -6,7 +6,7 @@ import useRenderText from "@/hooks/useRenderText";
 import { useRouter } from "@/i18n/navigation";
 import { cn, getImage, getTranslationReadyText } from "@/lib/utils";
 import { SET_EXPAND, udpateOrderAction } from "@/redux/features/actions/actionSlice";
-import { useUpdateOnlineOrdersMutation } from "@/redux/features/product/productApiSlice";
+import { useUpdateIsDuePrintMutation, useUpdateOnlineOrdersMutation } from "@/redux/features/product/productApiSlice";
 import { setCartProducts, updateCartFormSavedData } from "@/redux/features/product/productSlice";
 import { RootState } from "@/redux/store";
 import { OrderItem, TCartProduct } from "@/types/types";
@@ -15,7 +15,6 @@ import { ChevronDown, House, MapPin, Phone, X } from "lucide-react"; // optional
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useReactToPrint } from "react-to-print";
 import LoadingSpinner from "../loading/LoadingSpinner";
 import InvoicePrint from "../shared/InvoicePrint";
 import { KOTPrint } from "../shared/KotPrint";
@@ -29,7 +28,7 @@ export default function OrderDetailsModal() {
     const router = useRouter()
     const invoicePrintRef = useRef<HTMLDivElement>(null);
     const [showFullDeails, setShowFullDetials] = useState(false)
-    // const [updateStatus, {isLoading:isDuePrintUpdating}] = useUpdateIsDuePrintMutation()
+    const [updateStatus, { isLoading: isDuePrintUpdating }] = useUpdateIsDuePrintMutation()
     const [updateOnlineOrder, { isLoading: isOnlineOrderUpdating }] = useUpdateOnlineOrdersMutation();
     const dispatch = useDispatch();
     const { formatPrice } = useFormatPrice();
@@ -108,6 +107,7 @@ export default function OrderDetailsModal() {
         setIsPrinting(true);
         setPrintingMsg('');
 
+
         const itemData = detailsOrder?.items?.map(item => {
             return {
                 "product": { "name": item.product_name },
@@ -147,6 +147,10 @@ export default function OrderDetailsModal() {
             }
 
             const data = await response.text();
+
+            // // update the due invoice status
+            await updateStatus({ order_id: detailsOrder?.id })
+
             setPrintingMsg(data); // "Print job sent successfully!"
         } catch (error) {
             console.error("Print error:", error);
@@ -257,7 +261,7 @@ export default function OrderDetailsModal() {
                             activeOrderDetailsModal === "web" && <div className="p-3 pt-0 gap-1 flex justify-between flex-wrap">
 
                                 {
-                                    isPrinting ? <div className="w-full min-h-[51px] flex items-center justify-center">
+                                    isDuePrintUpdating || isPrinting ? <div className="w-full min-h-[51px] flex items-center justify-center">
                                         <LoadingSpinner />
                                     </div> :
 
