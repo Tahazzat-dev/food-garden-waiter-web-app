@@ -170,7 +170,6 @@ export function CartSheet() {
         if (newRequestId === requestId) {
           setToStorage("order_token", requestId);
         }
-
         const res = await confirmOrder({
           customer_id: selectedCustomer.id,
           customer_type: selectedTable.customer_type,
