@@ -71,19 +71,19 @@ export function CartCard({ item }: { item: TCartProduct }) {
 
 
         {/* <div className="flex items-center gap-2 justify-between">
-          <div className="flex flex-col items-start">
+            <div className="flex flex-col items-start">
 
 
-          </div>
-          <Button
-            variant='secondary'
-            size='icon'
-            className='prevent-body-trigger p-1 h-5.5 w-5.5 rounded-full shadow-sm'
-            onClick={() => dispatch(removeCartProduct(item.id))}
-          >
-            <Trash2 className='text-white  h-3 w-3' />
-          </Button>
-        </div> */}
+            </div>
+            <Button
+              variant='secondary'
+              size='icon'
+              className='prevent-body-trigger p-1 h-5.5 w-5.5 rounded-full shadow-sm'
+              onClick={() => dispatch(removeCartProduct(item.id))}
+            >
+              <Trash2 className='text-white  h-3 w-3' />
+            </Button>
+          </div> */}
 
       </div>
     </div>

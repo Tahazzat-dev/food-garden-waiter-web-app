@@ -1,7 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import useFormatPrice from '@/hooks/useFormatPrice';
-import { removeStorage } from '@/lib/storage';
+import { getFromStorage, removeStorage, setToStorage } from '@/lib/storage';
 import { calculateSubtotal, cn, getSellingPrice, getTranslationReadyText, isTable } from '@/lib/utils';
 import { SET_EXPAND, udpateOrderAction, updatePrevAction } from '@/redux/features/actions/actionSlice';
 import { useConfirmOrderMutation, useUpdateOrderMutation } from '@/redux/features/product/productApiSlice';
@@ -160,12 +160,24 @@ export function CartSheet() {
           setSelectedTable(null)
         }
       } else {
+
+        const newRequestId = crypto.randomUUID();
+
+        // get the previous request id
+        const requestId = getFromStorage("order_token", newRequestId);
+
+        // if it matched then store the new id.
+        if (newRequestId === requestId) {
+          setToStorage("order_token", requestId);
+        }
+
         const res = await confirmOrder({
           customer_id: selectedCustomer.id,
           customer_type: selectedTable.customer_type,
           table_id: selectedTable.table_id,
           discount: 0,
-          products: choosedProducts
+          products: choosedProducts,
+          request_id: requestId
         }).unwrap();
 
         const addedItems = cartProducts.map(item => (
@@ -211,6 +223,7 @@ export function CartSheet() {
       })
     } finally {
       dispatch(SET_EXPAND(null));
+      removeStorage("order_token");
     }
   }
 
