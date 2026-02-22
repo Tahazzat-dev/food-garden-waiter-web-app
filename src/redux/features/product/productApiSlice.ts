@@ -90,7 +90,7 @@ export const productApiSlice = createApi({
                 method: "POST",
                 body: data
             }),
-            invalidatesTags: ['myOrders', 'allOrders', 'kitchenMyOrders']
+            invalidatesTags: ['myOrders', 'allOrders', 'kitchenMyOrders', 'tables']
         }),
 
         getCustomerInfo: builder.query({
